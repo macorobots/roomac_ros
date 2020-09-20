@@ -1,0 +1,182 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="arm">
+    <xacro:property name="pan_to_lift" value="0.09" />
+    <xacro:property name="lift_to_elbow" value="0.202" />
+    <xacro:property name="elbow_to_wrist" value="0.133" />
+    <xacro:property name="wrist_to_twist" value="0.055" />
+    <xacro:property name="twist_to_gripper" value="0.023" />
+
+    <xacro:property name="radius" value="0.0075" />
+    <xacro:property name="pi" value="3.14159" />
+
+    <material name="grey">
+        <color rgba="0.8 0.8 0.8 1"/>
+    </material>
+
+    <material name="black">
+        <color rgba="0 0 0 1"/>
+    </material>
+
+    <link name="base_link">
+        <visual>
+            <geometry>
+                <box size="0.15 0.02 0.05"/>
+            </geometry>
+            <material name="black"/>
+            <origin rpy="0 0 0" xyz="0 0.01 0"/>
+        </visual>
+    </link>
+
+    <link name="shoulder_pan_link">
+        <visual>
+            <geometry>
+                <cylinder length="${pan_to_lift}" radius="${radius}"/>
+            </geometry>
+            <origin rpy="${pi/2} 0 0" xyz="0 ${-pan_to_lift/2} 0"/>
+            <material name="grey"/>
+        </visual>
+    </link>
+
+    <joint name="shoulder_pan_joint" type="revolute">
+        <axis xyz="0 -1 0"/>
+        <limit lower="-${pi/2}" upper="${pi/2}" effort="1000.0" velocity="0.5"/>
+        <parent link="base_link"/>
+        <child link="shoulder_pan_link"/>
+        <origin xyz="0 0 0"/>
+    </joint>
+
+    <link name="shoulder_lift_link">
+        <visual>
+            <geometry>
+                <cylinder length="${lift_to_elbow}" radius="${radius}"/>
+            </geometry>
+            <origin rpy="0 0 0" xyz="0 0 ${-lift_to_elbow/2}"/>
+            <material name="grey"/>
+        </visual>
+    </link>
+
+    <joint name="shoulder_lift_joint" type="revolute">
+        <axis xyz="1 0 0"/>
+        <limit lower="-${pi/2}" upper="${pi/2}" effort="1000.0" velocity="0.5"/>
+        <parent link="shoulder_pan_link"/>
+        <child link="shoulder_lift_link"/>
+        <origin xyz="0 -${pan_to_lift} 0" rpy="-${pi/20} 0 0" />
+    </joint>
+
+    <link name="elbow_link">
+        <visual>
+            <geometry>
+                <cylinder length="${elbow_to_wrist}" radius="${radius}"/>
+            </geometry>
+            <origin rpy="0 0 0" xyz="0 0 ${-elbow_to_wrist/2}"/>
+            <material name="grey"/>
+        </visual>
+    </link>
+
+    <joint name="elbow_joint" type="revolute">
+        <axis xyz="1 0 0"/>
+        <limit lower="-${pi/2}" upper="${pi/2}" effort="1000.0" velocity="0.5"/>
+        <parent link="shoulder_lift_link"/>
+        <child link="elbow_link"/>
+        <origin xyz="0 0 -${lift_to_elbow}" rpy="${pi/10} 0 0"/>
+    </joint>
+
+    <link name="wrist_link">
+        <visual>
+            <geometry>
+                <cylinder length="${wrist_to_twist}" radius="${radius}"/>
+            </geometry>
+            <origin rpy="0 0 0" xyz="0 0 ${-wrist_to_twist/2}"/>
+            <material name="grey"/>
+        </visual>
+    </link>
+
+    <joint name="wrist_joint" type="revolute">
+        <axis xyz="1 0 0"/>
+        <limit lower="-${pi/2}" upper="${pi/2}" effort="1000.0" velocity="0.5"/>
+        <parent link="elbow_link"/>
+        <child link="wrist_link"/>
+        <origin xyz="0 0 -${elbow_to_wrist}" rpy="${pi/10} 0 0"/>
+    </joint>
+
+    <link name="wrist_twist_link">
+        <visual>
+            <geometry>
+                <cylinder length="${twist_to_gripper}" radius="${radius}"/>
+            </geometry>
+            <origin rpy="0 0 0" xyz="0 0 ${-twist_to_gripper/2}"/>
+            <material name="grey"/>
+        </visual>
+    </link>
+
+    <joint name="wrist_twist_joint" type="revolute">
+        <axis xyz="0 0 1"/>
+        <limit lower="-${pi/2}" upper="${pi/2}" effort="1000.0" velocity="0.5"/>
+        <parent link="wrist_link"/>
+        <child link="wrist_twist_link"/>
+        <origin xyz="0 0 -${wrist_to_twist}" rpy="0 0 0"/>
+    </joint>
+
+	<!-- GRIPPER -->
+	<xacro:property name="scale" value="0.4" />
+
+	<link name="left_gripper">
+		<visual>
+			<origin rpy="0.0 ${pi/2} 0" xyz="0 0 0"/>
+			<geometry>
+				<mesh filename="package://robot_arm/meshes/l_finger.dae" scale="${scale} ${scale} ${scale}"/>
+			</geometry>
+		</visual>
+	</link>
+	<joint name="left_gripper_joint" type="revolute">
+		<axis xyz="1 0 0"/>
+		<limit effort="1000.0" lower="0.0" upper="0.548" velocity="0.5"/>
+		<origin rpy="0 0 0" xyz="0 ${radius/2} -${twist_to_gripper}"/>
+		<parent link="wrist_twist_link"/>
+		<child link="left_gripper"/>
+	</joint>
+
+	<link name="left_tip">
+		<visual>
+			<origin rpy="0.0 ${pi/2} 0" xyz="0 ${scale*0.00495} ${scale * -0.09137}"/>
+			<geometry>
+				<mesh filename="package://robot_arm/meshes/l_finger_tip.dae" scale="${scale} ${scale} ${scale}"/>
+			</geometry>
+		</visual>
+	</link>
+	<joint name="left_tip_joint" type="fixed">
+		<parent link="left_gripper"/>
+		<child link="left_tip"/>
+	</joint>
+
+	<link name="right_gripper">
+		<visual>
+			<origin rpy="-3.1415 ${pi/2} 0" xyz="0 0 0"/>
+			<geometry>
+				<mesh filename="package://robot_arm/meshes/l_finger.dae" scale="${scale} ${scale} ${scale}"/>
+			</geometry>
+		</visual>
+	</link>
+	<joint name="right_gripper_joint" type="revolute">
+		<axis xyz="-1 0 0"/>
+		<limit effort="1000.0" lower="0.0" upper="0.548" velocity="0.5"/>
+		<origin rpy="0 0 0" xyz="0 -${radius/2} -${twist_to_gripper}"/>
+		<parent link="wrist_twist_link"/>
+		<child link="right_gripper"/>
+		<mimic joint="left_gripper_joint" />
+	</joint>
+
+	<link name="right_tip">
+		<visual>
+			<origin rpy="-3.1415 ${pi/2} 0" xyz="0 ${scale*0.00495} ${scale*-0.09137}"/>
+			<geometry>
+				<mesh filename="package://robot_arm/meshes/l_finger_tip.dae" scale="${scale} ${scale} ${scale}" />
+			</geometry>
+		</visual>
+	</link>
+	<joint name="right_tip_joint" type="fixed">
+		<parent link="right_gripper"/>
+		<child link="right_tip"/>
+	</joint>
+
+</robot>
