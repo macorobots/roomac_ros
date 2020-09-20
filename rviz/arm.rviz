@@ -5,6 +5,7 @@ Panels:
     Property Tree Widget:
       Expanded:
         - /Global Options1
+        - /TF1
       Splitter Ratio: 0.5
     Tree Height: 734
   - Class: rviz/Selection
@@ -64,6 +65,31 @@ Visualization Manager:
           Show Axes: false
           Show Trail: false
           Value: true
+        elbow_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        left_gripper:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        left_tip:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        right_gripper:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        right_tip:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
         shoulder_lift_link:
           Alpha: 1
           Show Axes: false
@@ -74,12 +100,67 @@ Visualization Manager:
           Show Axes: false
           Show Trail: false
           Value: true
+        wrist_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        wrist_twist_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
       Name: RobotModel
       Robot Description: robot_description
       TF Prefix: ""
       Update Interval: 0
       Value: true
       Visual Enabled: true
+    - Class: rviz/TF
+      Enabled: true
+      Frame Timeout: 15
+      Frames:
+        All Enabled: true
+        base_link:
+          Value: true
+        elbow_link:
+          Value: true
+        left_gripper:
+          Value: true
+        left_tip:
+          Value: true
+        right_gripper:
+          Value: true
+        right_tip:
+          Value: true
+        shoulder_lift_link:
+          Value: true
+        shoulder_pan_link:
+          Value: true
+        wrist_link:
+          Value: true
+        wrist_twist_link:
+          Value: true
+      Marker Scale: 0.300000012
+      Name: TF
+      Show Arrows: true
+      Show Axes: true
+      Show Names: false
+      Tree:
+        base_link:
+          shoulder_pan_link:
+            shoulder_lift_link:
+              elbow_link:
+                wrist_link:
+                  wrist_twist_link:
+                    left_gripper:
+                      left_tip:
+                        {}
+                    right_gripper:
+                      right_tip:
+                        {}
+      Update Interval: 0
+      Value: true
   Enabled: true
   Global Options:
     Background Color: 48; 48; 48
@@ -105,25 +186,25 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/Orbit
-      Distance: 5.09726381
+      Distance: 0.874010563
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.0599999987
         Stereo Focal Distance: 1
         Swap Stereo Eyes: false
         Value: false
       Focal Point:
-        X: 0.0905480683
-        Y: -0.826419473
-        Z: 0.7477476
+        X: 0.126526684
+        Y: -0.0207435284
+        Z: -0.0773956552
       Focal Shape Fixed Size: true
       Focal Shape Size: 0.0500000007
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.00999999978
-      Pitch: 0.0797972754
+      Pitch: 0.12979725
       Target Frame: <Fixed Frame>
       Value: Orbit (rviz)
-      Yaw: 6.24858713
+      Yaw: 0.165402099
     Saved: ~
 Window Geometry:
   Displays:
