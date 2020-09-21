@@ -102,7 +102,6 @@ class ArmController:
             self.positionPub[i].publish(positionMsg)
         
         self.lastState = state
-        rospy.logwarn(movementTime)
         rospy.sleep(rospy.Duration(movementTime/100))
 
 if __name__ == '__main__':

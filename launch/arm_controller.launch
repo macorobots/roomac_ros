@@ -4,6 +4,8 @@
 
   <param name="robot_description" command="$(find xacro)/xacro $(find robot_arm)/urdf/arm.urdf.xacro" />
 
+  <node name="arm_controller" pkg="robot_arm" type="arm_controller.py"/>
+
   <node if="$(arg gui)" name="joint_state_publisher" pkg="joint_state_publisher_gui" type="joint_state_publisher_gui" />
   <node unless="$(arg gui)" name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher" />
   <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" />
