@@ -118,6 +118,23 @@
     </joint>
 
 	<!-- GRIPPER -->
+
+    <link name="gripper_link">
+		<visual>
+             <geometry>
+                <cylinder length="0.001" radius="${radius}"/>
+            </geometry>
+			<origin rpy="0 0 0" xyz="0 0 0"/>
+		</visual>
+	</link>
+	<joint name="gripper_joint" type="fixed">
+		<axis xyz="1 0 0"/>
+		<limit effort="1000.0" lower="0.0" upper="1.2" velocity="0.5"/>
+		<origin rpy="0 0 0" xyz="0 0 -${twist_to_gripper}"/>
+		<parent link="wrist_twist_link"/>
+		<child link="gripper_link"/>
+	</joint>
+
 	<xacro:property name="scale" value="0.4" />
 
 	<link name="left_gripper">
@@ -131,8 +148,8 @@
 	<joint name="left_gripper_joint" type="revolute">
 		<axis xyz="1 0 0"/>
 		<limit effort="1000.0" lower="0.0" upper="1.2" velocity="0.5"/>
-		<origin rpy="0 0 0" xyz="0 ${radius/2} -${twist_to_gripper}"/>
-		<parent link="wrist_twist_link"/>
+		<origin rpy="0 0 0" xyz="0 0 0"/>
+		<parent link="gripper_link"/>
 		<child link="left_gripper"/>
 	</joint>
 
@@ -160,8 +177,8 @@
 	<joint name="right_gripper_joint" type="revolute">
 		<axis xyz="-1 0 0"/>
 		<limit effort="1000.0" lower="0.0" upper="1.2" velocity="0.5"/>
-		<origin rpy="0 0 0" xyz="0 -${radius/2} -${twist_to_gripper}"/>
-		<parent link="wrist_twist_link"/>
+		<origin rpy="0 0 0" xyz="0 0 0"/>
+		<parent link="gripper_link"/>
 		<child link="right_gripper"/>
 		<mimic joint="left_gripper_joint" />
 	</joint>

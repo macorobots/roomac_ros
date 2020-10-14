@@ -8,5 +8,4 @@ controller_list:
       - wrist_twist_joint
   - name: fake_hand_controller
     joints:
-      - wrist_twist_joint
       - left_gripper_joint
