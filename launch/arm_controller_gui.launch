@@ -1,0 +1,6 @@
+<launch>
+  <arg name="gui" default="true" />
+  <arg name="rvizconfig" default="$(find robot_arm)/rviz/arm.rviz" />
+  <node if="$(arg gui)" name="joint_state_publisher" pkg="joint_state_publisher_gui" type="joint_state_publisher_gui" />
+  <node  if="$(arg gui)" name="rviz" pkg="rviz" type="rviz" args="-d $(arg rvizconfig)" required="true" />
+</launch>

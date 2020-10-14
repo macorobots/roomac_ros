@@ -1,0 +1,17 @@
+<launch>
+
+  <param name="robot_description" command="$(find xacro)/xacro $(find robot_arm)/urdf/arm.urdf.xacro" />
+
+  <node name="arm_controller" pkg="robot_arm" type="arm_controller.py"/>
+
+  <node name="serial_node_arm" pkg="rosserial_python" type="serial_node.py" output="screen">
+    <param name="port" type="string" value="/dev/ttyUSB1" />
+  </node>
+
+  <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" />
+
+  <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher">
+    <rosparam param="source_list">["/joy_joint_states"]</rosparam>
+  </node>
+
+</launch>
