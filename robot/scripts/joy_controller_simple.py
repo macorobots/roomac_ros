@@ -40,7 +40,7 @@ class JoyRobotController:
             self.jointsPub.publish(jointMsg)
         elif msg.buttons[10]:
             txt = String()
-            txt.data = "Essa wariaty"
+            txt.data = "Witam"
             self.ttsPub.publish(txt)
 
 
