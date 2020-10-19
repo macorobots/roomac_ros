@@ -1,0 +1,7 @@
+<launch>
+  <include file="$(find robot)/launch/kinect.launch" />
+  <node name="odom_tf_to_topic" pkg="robot" type="odom_tf_to_topic.py"/>
+  <include file="$(find robot_base)/launch/base_controller_hardware.launch" />
+  <include file="$(find robot)/launch/rgbd_sync.launch" />
+
+</launch>
