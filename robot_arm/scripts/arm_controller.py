@@ -9,7 +9,8 @@ class ArmController:
     lastState = None
     changeThreshold = 0.01
     maxSpeed = 0.005 #rad/s
-    analogUpdateDelay = 1. #in units of 10ms as playtime in digitalServo
+    maxMovementTime = 1000 #max value is 255, and it is rounded to it if excceding (in 10ms)
+    analogUpdateDelay = 0.7 #real value 0.7 (in units of 10ms as playtime in digitalServo)
     jointNames = ["shoulder_pan", "shoulder_lift", "elbow", "wrist", "wrist_twist", "gripper"]
     servoIds = {jointNames[0]:0, jointNames[1]:1, jointNames[2]:2, jointNames[3]:3, jointNames[4]:4, jointNames[5]:5}
     positionPub = []
@@ -28,20 +29,34 @@ class ArmController:
 
     digitalScaleFactor = 1024/((330./2.)*math.pi/180.)
     analogScaleFactor = 2000/(180.*math.pi/180.)
+    analogSpeed = 2 #Change in ms in signal per analogUpdateDelay
     scalingFactors = [digitalScaleFactor, digitalScaleFactor, digitalScaleFactor/2., analogScaleFactor, analogScaleFactor, analogScaleFactor]
     
     def __init__(self):
         self.jointsSub = rospy.Subscriber("/joint_states", JointState, self.jointsStateCb)
 
         for i in range(len(self.jointNames)):
-            self.positionPub.append(rospy.Publisher(self.jointNames[i]+"_position", UInt16, queue_size=5))
+            self.positionPub.append(rospy.Publisher(self.jointNames[i]+"_position", UInt16, queue_size=5, latch=True))
         
         for i in range(3):
-            self.speedsPub.append(rospy.Publisher(self.jointNames[i]+"_playtime", UInt8, queue_size=5))
+            self.speedsPub.append(rospy.Publisher(self.jointNames[i]+"_playtime", UInt8, queue_size=5, latch=True))
         
         for i in range(3, len(self.jointNames)):
-            self.speedsPub.append(rospy.Publisher(self.jointNames[i]+"_speed", Float32, queue_size=5))
+            self.speedsPub.append(rospy.Publisher(self.jointNames[i]+"_speed", Float32, queue_size=5, latch=True))
         
+        self.setDefaultPosition()
+        
+    def setDefaultPosition(self):
+        playtimeMsg = UInt8()
+        playtimeMsg.data = 255
+        for digitalId in ["shoulder_pan", "shoulder_lift", "elbow"]:
+            self.speedsPub[self.servoIds[digitalId]].publish(playtimeMsg)
+        
+        for i in range(len(self.positionPub)):
+            positionMsg = UInt16()
+            positionMsg.data = self.zeroPositions[i]
+            self.positionPub[i].publish(positionMsg)
+
 
 
     def transformAngleToSignal(self, angle, id):
@@ -51,50 +66,46 @@ class ArmController:
         return max(low, min(high, value))
 
     def jointsStateCb(self, state):
-        # state = JointState()
         if not self.lastState:
             self.lastState = state
             return
 
-        maxAngleDiff = 0
-        for i in range(len(state.position)):
-            diff = abs(state.position[i] - self.lastState.position[i])
-            if diff > maxAngleDiff:
-                maxAngleDiff = diff
+        maxDigitalAngleDiff = 0
+        for digitalId in ["shoulder_pan", "shoulder_lift", "elbow"]:
+            positionDiff = abs(state.position[self.servoIds[digitalId]] - self.lastState.position[self.servoIds[digitalId]])
+            if positionDiff > maxDigitalAngleDiff:
+                maxDigitalAngleDiff = positionDiff
+
+        maxAnalogAngleDiff = 0
+        for analogId in ["wrist", "wrist_twist", "gripper"]:
+            positionDiff = abs(state.position[self.servoIds[analogId]] - self.lastState.position[self.servoIds[analogId]])
+            if positionDiff > maxAnalogAngleDiff:
+                maxAnalogAngleDiff = positionDiff
         
-        if maxAngleDiff < self.changeThreshold:
+        if maxDigitalAngleDiff < self.changeThreshold and maxAnalogAngleDiff < self.changeThreshold:
             return
         
-        movementTime = maxAngleDiff/self.maxSpeed
-
-        digitalPlaytime = movementTime
-
-        analogUpdateTimes = (movementTime/self.analogUpdateDelay)
+        digitalMovementTime = min((maxDigitalAngleDiff/math.pi)*self.maxMovementTime, 255)
+        analogMovementTime = ((maxAnalogAngleDiff*self.analogScaleFactor)/self.analogSpeed)*self.analogUpdateDelay
+        
+        if digitalMovementTime > analogMovementTime:
+            movementTime = digitalMovementTime
+        else:
+            movementTime = analogMovementTime
+        
+        if movementTime > self.maxMovementTime:
+            movementTime = self.maxMovementTime
+        
         diffWrist = abs(state.position[self.servoIds["wrist"]] - self.lastState.position[self.servoIds["wrist"]])*self.scalingFactors[self.servoIds["wrist"]]
-        analogSpeedWrist = diffWrist/analogUpdateTimes
 
         diffWristTwist = abs(state.position[self.servoIds["wrist_twist"]] - self.lastState.position[self.servoIds["wrist_twist"]])*self.scalingFactors[self.servoIds["wrist_twist"]]
-        analogSpeedWristTwist = diffWristTwist/analogUpdateTimes
 
         diffGripper = abs(state.position[self.servoIds["gripper"]] - self.lastState.position[self.servoIds["gripper"]])*self.scalingFactors[self.servoIds["gripper"]]
-        analogSpeedGripper = diffGripper/analogUpdateTimes
 
         playtimeMsg = UInt8()
-        playtimeMsg.data = self.bound(0,255,digitalPlaytime)
-        self.speedsPub[self.servoIds["shoulder_pan"]].publish(playtimeMsg)
-        self.speedsPub[self.servoIds["shoulder_lift"]].publish(playtimeMsg)
-        self.speedsPub[self.servoIds["elbow"]].publish(playtimeMsg)
-
-        speedMsg = Float32()
-
-        speedMsg.data = analogSpeedWrist
-        self.speedsPub[self.servoIds["wrist"]].publish(speedMsg)
-
-        speedMsg.data = analogSpeedWristTwist
-        self.speedsPub[self.servoIds["wrist_twist"]].publish(speedMsg)
-
-        speedMsg.data = analogSpeedGripper
-        self.speedsPub[self.servoIds["gripper"]].publish(speedMsg)
+        playtimeMsg.data = self.bound(0,255,movementTime)
+        for digitalId in ["shoulder_pan", "shoulder_lift", "elbow"]:
+            self.speedsPub[self.servoIds[digitalId]].publish(playtimeMsg)
 
         positionMsg = UInt16()
         for i in range(len(self.positionPub)):
