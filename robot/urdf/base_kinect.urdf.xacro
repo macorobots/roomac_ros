@@ -1,7 +1,8 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="arm">
     <xacro:property name="pi" value="3.14159" />
-    <xacro:property name="kinect_angle_rad" value="0.71" />
+    <xacro:property name="kinect_angle_rad" value="0.40" />
+	<!-- 0.71 -->
 
 
 
