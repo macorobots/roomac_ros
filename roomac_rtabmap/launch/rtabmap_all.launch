@@ -1,0 +1,5 @@
+<launch>
+  <include file="$(find roomac_rtabmap)/launch/rtabmap.launch" />
+  <include file="$(find roomac_kinect)/launch/kinect.launch" />
+  <node name="odom_tf_to_topic" pkg="roomac_rtabmap" type="odom_tf_to_topic.py"/>
+</launch>

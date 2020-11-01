@@ -1,5 +1,0 @@
-<launch>
-  <include file="$(find roomac)/launch/rtabmap.launch" />
-  <include file="$(find roomac)/launch/kinect.launch" />
-
-</launch>

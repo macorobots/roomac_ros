@@ -1,4 +1,6 @@
 <launch>
+  <include file="$(find roomac_kinect)/launch/kinect.launch" />
+  
   <group ns="rtabmap">
     <node pkg="rtabmap_ros" type="rgbd_odometry" name="rgbd_odometry" output="screen">
       <param name="subscribe_rgbd" type="bool"   value="true"/>
