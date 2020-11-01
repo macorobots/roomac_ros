@@ -18,11 +18,12 @@
           <param name="subscribe_depth" type="bool" value="false"/>
           <param name="subscribe_rgbd" type="bool" value="true"/>
 
+          <!-- The frame attached to odometry. If empty, rtabmap will subscribe to odom topic to get odometry. If set, odometry is got from tf (in this case, a covariance of 1 is used).  -->
+          <param name="odom_frame_id" type="string" value="odom"/>
           <remap from="odom" to="/odom"/>
 
           <remap from="rgbd_image" to="rgbd_image"/>
 
-          <param name="queue_size" type="int" value="10"/>
 
           <!-- RTAB-Map's parameters -->
           <param name="RGBD/AngularUpdate"        type="string" value="0.01"/>
