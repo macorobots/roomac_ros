@@ -1,24 +1,55 @@
 <launch>
-  <group ns="rtabmap">
-    <node name="rtabmap" pkg="rtabmap_ros" type="rtabmap" output="screen" args="--delete_db_on_start">
-          <param name="frame_id" type="string" value="base_link"/>
+  <arg name="rgbd_sync" default="true"/>
 
-          <param name="subscribe_depth" type="bool" value="false"/>
-          <param name="subscribe_rgbd" type="bool" value="true"/>
+  <arg name="visual_odometry"       default="false"/>
+  <arg name="odom_topic"            default="/odom"/>
 
-           <!-- The frame attached to odometry. If empty, rtabmap will subscribe to odom topic to get odometry. If set, odometry is got from tf (in this case, a covariance of 1 is used).  -->
-          <param name="odom_frame_id" type="string" value="odom"/>
-          <remap from="odom" to="/odom"/>
+  <arg name="odom_frame_id"       default="odom"/>
+  <arg name="odom_tf_angular_variance"       default="1"/>
+  <arg name="odom_tf_linear_variance"       default="1"/>
 
-          <remap from="rgbd_image" to="rgbd_image"/>
-
-          <param name="queue_size" type="int" value="50"/>
-
-          <!-- RTAB-Map's parameters -->
-          <param name="RGBD/AngularUpdate"        type="string" value="0.01"/>
-          <param name="RGBD/LinearUpdate"         type="string" value="0.01"/>
-          <param name="RGBD/OptimizeFromGraphEnd" type="string" value="false"/>
-          <param name="Reg/Force3DoF"             type="string" value="true"/>
-    </node>
+  
+  <group ns="rtabmap/rtabmap">
+    <param name="RGBD/AngularUpdate"        type="string" value="0.01"/>
+    <param name="RGBD/LinearUpdate"         type="string" value="0.01"/>
+    <param name="RGBD/OptimizeFromGraphEnd" type="string" value="false"/>
+    <param name="Reg/Force3DoF"             type="string" value="true"/>
   </group>
+  
+  <group if="$(arg rgbd_sync)">
+    <arg name="subscribe_rgbd"       default="true"/>
+    <arg name="rgbd_topic"           default="/camera/rgbd_image"/>
+    <arg name="compressed"           default="true"/>
+    <arg name="rtabmap_args"         default="--delete_db_on_start"/>
+
+    <include file="$(find rtabmap_ros)/launch/rtabmap.launch" >
+      <arg name="subscribe_rgbd"        value="$(arg subscribe_rgbd)"/>
+      <arg name="rgbd_topic"            value="$(arg rgbd_topic)"/>
+      <arg name="compressed"            value="$(arg compressed)"/>
+      <arg name="rtabmap_args"          value="$(arg rtabmap_args)"/>
+
+      <arg name="visual_odometry"       value="$(arg visual_odometry)"/>
+      <arg name="odom_topic"            value="$(arg odom_topic)"/>
+
+      <arg name="odom_frame_id"       value="$(arg odom_frame_id)"/>
+      <arg name="odom_tf_angular_variance"            value="$(arg odom_tf_angular_variance)"/>
+      <arg name="odom_tf_linear_variance"       value="$(arg odom_tf_linear_variance)"/>
+    </include>
+  </group>
+
+  <group unless="$(arg rgbd_sync)">
+    <arg name="rgbd_topic"           default="/camera/throttled/rgb/image_rect_color"/>
+    <arg name="depth_topic"           default="/camera/throttled/depth_registered/image_raw"/>
+    <arg name="camera_info_topic"           default="/camera/throttled/rgb/camera_info"/>
+    <arg name="compressed"           default="/camera/throttled/rgb/camera_info"/>
+    <arg name="rtabmap_args"         default="--delete_db_on_start"/>
+
+    <include file="$(find rtabmap_ros)/launch/rtabmap.launch" >
+      <arg name="subscribe_rgbd"        value="$(arg subscribe_rgbd)"/>
+      <arg name="rgbd_topic"            value="$(arg rgbd_topic)"/>
+      <arg name="compressed"            value="$(arg compressed)"/>
+      <arg name="rtabmap_args"          value="$(arg rtabmap_args)"/>
+    </include>
+  </group>
+
 </launch>

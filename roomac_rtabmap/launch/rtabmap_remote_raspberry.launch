@@ -1,5 +1,34 @@
 <launch>
   <include file="$(find roomac_kinect)/launch/kinect.launch" />
   <node name="odom_tf_to_topic" pkg="roomac_rtabmap" type="odom_tf_to_topic.py"/>
-  <include file="$(find roomac_rtabmap)/launch/rgbd_sync.launch" />
+
+  <arg name="rate"  default="5"/>
+  <arg name="approx_sync" default="true" /> <!-- true for freenect driver -->
+  <arg name="rgbd_sync" default="true"/>
+
+  <group ns="camera">
+    <node if="$(arg rgbd_sync)" pkg="nodelet" type="nodelet" name="rgbd_sync" args="load rtabmap_ros/rgbd_sync camera_nodelet_manager" output="screen">
+      <param name="compressed_rate"  type="double" value="$(arg rate)"/>
+      <param name="approx_sync"      type="bool"   value="$(arg approx_sync)"/>
+
+      <remap from="rgb/image"       to="rgb/image_rect_color"/>
+      <remap from="depth/image"     to="depth_registered/image_raw"/>
+      <remap from="rgb/camera_info" to="rgb/camera_info"/>
+
+      <remap from="rgbd_image"      to="rgbd_image"/>
+    </node>
+
+    <node unless="$(arg rgbd_sync)" pkg="nodelet" type="nodelet" name="data_throttle" args="load rtabmap_ros/data_throttle camera_nodelet_manager" output="screen">
+      <param name="rate"         type="double" value="$(arg rate)"/>
+      <param name="approx_sync"  type="bool"   value="$(arg approx_sync)"/>
+
+      <remap from="rgb/image_in"       to="rgb/image_rect_color"/>
+      <remap from="depth/image_in"     to="depth_registered/image_raw"/>
+      <remap from="rgb/camera_info_in" to="rgb/camera_info"/>
+
+      <remap from="rgb/image_out"       to="throttled/rgb/image_rect_color"/>
+      <remap from="depth/image_out"     to="throttled/depth_registered/image_raw"/>
+      <remap from="rgb/camera_info_out" to="throttled/rgb/camera_info"/>
+    </node>
+  </group>      
 </launch>
