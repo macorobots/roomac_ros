@@ -1,11 +1,10 @@
 <launch>
-  <include file="$(find robot_arm)/launch/arm_controller_hardware.launch" />
-  <include file="$(find robot_base)/launch/base_controller_hardware.launch" />
-  <node name="joy_controller_simple" pkg="robot" type="joy_controller_simple.py"/>
+  <include file="$(find roomac_arm)/launch/arm_controller_hardware.launch" />
+  <include file="$(find roomac_base)/launch/base_controller_hardware.launch" />
+  <node name="joy_controller_simple" pkg="roomac" type="joy_controller_simple.py"/>
 
   <param name="language" value="pl"/>
   <node name="picotts" pkg="picotts" type="picotts.exe" output="screen">
     <param name="engine" value="espeak"/>
   </node>
-
 </launch>

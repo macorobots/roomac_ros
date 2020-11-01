@@ -1,6 +1,6 @@
 moveit_setup_assistant_config:
   URDF:
-    package: robot_arm
+    package: roomac_arm
     relative_path: urdf/arm.urdf.xacro
     xacro_args: "--inorder "
   SRDF:

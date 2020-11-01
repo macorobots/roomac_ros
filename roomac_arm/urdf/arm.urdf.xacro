@@ -141,7 +141,7 @@
 		<visual>
 			<origin rpy="0.0 ${pi/2} 0" xyz="0 0 0"/>
 			<geometry>
-				<mesh filename="package://robot_arm/meshes/l_finger.dae" scale="${scale} ${scale} ${scale}"/>
+				<mesh filename="package://roomac_arm/meshes/l_finger.dae" scale="${scale} ${scale} ${scale}"/>
 			</geometry>
 		</visual>
 	</link>
@@ -157,7 +157,7 @@
 		<visual>
 			<origin rpy="0.0 ${pi/2} 0" xyz="0 ${scale*0.00495} ${scale * -0.09137}"/>
 			<geometry>
-				<mesh filename="package://robot_arm/meshes/l_finger_tip.dae" scale="${scale} ${scale} ${scale}"/>
+				<mesh filename="package://roomac_arm/meshes/l_finger_tip.dae" scale="${scale} ${scale} ${scale}"/>
 			</geometry>
 		</visual>
 	</link>
@@ -170,7 +170,7 @@
 		<visual>
 			<origin rpy="-3.1415 ${pi/2} 0" xyz="0 0 0"/>
 			<geometry>
-				<mesh filename="package://robot_arm/meshes/l_finger.dae" scale="${scale} ${scale} ${scale}"/>
+				<mesh filename="package://roomac_arm/meshes/l_finger.dae" scale="${scale} ${scale} ${scale}"/>
 			</geometry>
 		</visual>
 	</link>
@@ -187,7 +187,7 @@
 		<visual>
 			<origin rpy="-3.1415 ${pi/2} 0" xyz="0 ${scale*0.00495} ${scale*-0.09137}"/>
 			<geometry>
-				<mesh filename="package://robot_arm/meshes/l_finger_tip.dae" scale="${scale} ${scale} ${scale}" />
+				<mesh filename="package://roomac_arm/meshes/l_finger_tip.dae" scale="${scale} ${scale} ${scale}" />
 			</geometry>
 		</visual>
 	</link>

@@ -1,5 +1,5 @@
 <launch>
-  <include file="$(find robot)/launch/rtabmap.launch" />
-  <include file="$(find robot)/launch/kinect.launch" />
+  <include file="$(find roomac)/launch/rtabmap.launch" />
+  <include file="$(find roomac)/launch/kinect.launch" />
 
 </launch>

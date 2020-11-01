@@ -1,10 +1,10 @@
 <launch>
   <arg name="gui" default="true" />
-  <arg name="rvizconfig" default="$(find robot_arm)/rviz/arm.rviz" />
+  <arg name="rvizconfig" default="$(find roomac_arm)/rviz/arm.rviz" />
 
-  <param name="robot_description" command="$(find xacro)/xacro $(find robot_arm)/urdf/arm.urdf.xacro" />
+  <param name="robot_description" command="$(find xacro)/xacro $(find roomac_arm)/urdf/arm.urdf.xacro" />
 
-  <node name="arm_controller" pkg="robot_arm" type="arm_controller.py" />
+  <node name="arm_controller" pkg="roomac_arm" type="arm_controller.py" />
 
   <node if="$(arg gui)" name="joint_state_publisher" pkg="joint_state_publisher_gui" type="joint_state_publisher_gui">
     <rosparam param="source_list">["/sequence_joint_states"]</rosparam>

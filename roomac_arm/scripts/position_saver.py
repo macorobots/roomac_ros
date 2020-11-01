@@ -21,12 +21,12 @@ class SequenceSaver:
 
         self.rospack = rospkg.RosPack()
 
-        # with open(self.rospack.get_path('robot_arm')+"/scripts/positions_saved.yaml", 'r') as stream:
+        # with open(self.rospack.get_path('roomac_arm')+"/scripts/positions_saved.yaml", 'r') as stream:
         #     data_loaded = yaml.safe_load(stream)
         #     rospy.logwarn("Positions loaded" + str(data_loaded))
     
     # def savePositionsToFile(self):
-    #     with io.open(self.rospack.get_path('robot_arm')+"/scripts/positions_saved.yaml", 'w', encoding='utf8') as outfile:
+    #     with io.open(self.rospack.get_path('roomac_arm')+"/scripts/positions_saved.yaml", 'w', encoding='utf8') as outfile:
     #         yaml.dump((self.states), outfile, default_flow_style=False, allow_unicode=True)
         
 

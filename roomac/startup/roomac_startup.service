@@ -3,6 +3,6 @@ After=NetworkManager.service time-sync.target
 [Service]
 Type=simple
 User=ubuntu
-ExecStart=/home/ubuntu/catkin_ws/src/roomac/robot/startup/roomac_startup.sh
+ExecStart=/home/ubuntu/catkin_ws/src/roomac/roomac/startup/roomac_startup.sh
 [Install]
 WantedBy=multi-user.target
