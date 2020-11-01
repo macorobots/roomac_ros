@@ -1,6 +1,6 @@
 <package>
 
-  <name>robot_arm_moveit</name>
+  <name>roomac_arm_moveit</name>
   <version>0.3.0</version>
   <description>
      An automatically generated package with all the configuration and launch files for using the arm with the MoveIt! Motion Planning Framework

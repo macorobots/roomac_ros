@@ -6,5 +6,5 @@
    <param name="planning_plugin" value="$(arg planning_plugin)" />
    <param name="start_state_max_bounds_error" value="$(arg start_state_max_bounds_error)" />
 
-   <rosparam command="load" file="$(find robot_arm_moveit)/config/chomp_planning.yaml" />
+   <rosparam command="load" file="$(find roomac_arm_moveit)/config/chomp_planning.yaml" />
 </launch>
