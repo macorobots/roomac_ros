@@ -5,6 +5,8 @@
 
     <node name="joy_node" pkg="joy" type="joy_node">
       <param name="autorepeat_rate" type="double" value="5.0" />
+      <!-- Limit send messages to 5Hz-->
+      <param name="coalesce_interval" type="double" value="0.2" /> 
     </node>
 
     <node name="teleop_node" pkg="teleop_twist_joy" type="teleop_node">
