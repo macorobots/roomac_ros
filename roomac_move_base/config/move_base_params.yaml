@@ -1,0 +1,12 @@
+
+# width 57.5
+# 35.5 to back from base_link
+# 15 to front from base_link
+footprint: [[0.15, 0.2875], [-0.355, 0.2875], [-0.355, -0.2875], [0.15, -0.2875]]
+footprint_padding: 0
+
+controller_frequency: 5.0
+controller_patience: 7.5
+clearing_radius: 0.59
+oscillation_timeout: 10.0
+oscillation_distance: 0.5
