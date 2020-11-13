@@ -6,6 +6,10 @@
     <!-- dwa local planner-->
     <param name="base_local_planner" value="dwa_local_planner/DWAPlannerROS" />
     <rosparam file="$(find roomac_move_base)/config/dwa_local_planner.yaml" command="load" ns="DWAPlannerROS" />
+
+    <!-- <param name="base_local_planner" value="teb_local_planner/TebLocalPlannerROS" />
+    <rosparam file="$(find roomac_move_base)/config/teb_local_planner.yaml" command="load" ns="TebLocalPlannerROS" /> -->
+
     <param name="base_global_planner" value="global_planner/GlobalPlanner" />
     
     <!-- Load common configuration files -->
