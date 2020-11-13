@@ -43,5 +43,38 @@ global_costmap:
     cost_scaling_factor: 10.0
     # (double, default: 10.0)
     # A scaling factor to apply to cost values during inflation. The cost function is computed as follows for all cells in the costmap further than the inscribed radius distance and closer than the inflation radius distance away from an actual obstacle: exp(-1.0 * cost_scaling_factor * (distance_from_obstacle - inscribed_radius)) * (costmap_2d::INSCRIBED_INFLATED_OBSTACLE - 1), where costmap_2d::INSCRIBED_INFLATED_OBSTACLE is currently 254. NOTE: since the cost_scaling_factor is multiplied by a negative in the formula, increasing the factor will decrease the resulting cost values. 
+  
+  static_map:
+    unknown_cost_value: -1
+    # (int, default: -1)
+    # The value for which a cost should be considered unknown when reading in a map from the map server. If the costmap is not tracking unknown space, costs of this value will be considered occupied. A value of zero also results in this parameter being unused. 
+
+    lethal_cost_threshold: 100
+    # (int, default: 100)
+    # The threshold value at which to consider a cost lethal when reading in a map from the map server. 
+
+    map_topic: amp
+    # (string, default: "map")
+    # The topic that the costmap subscribes to for the static map. This parameter is useful when you have multiple costmap instances within a single node that you want to use different static maps.
+
+    first_map_only: false
+    # (bool, default: false)
+    # Only subscribe to the first message on the map topic, ignoring all subsequent messages 
+
+    subscribe_to_updates: false
+    # (bool, default: false)
+    # In addition to map_topic, also subscribe to map_topic + "_updates" 
+
+    track_unknown_space: true
+    # (bool, default: true)
+    # If true, unknown values in the map messages are translated directly to the layer. Otherwise, unknown values in the map message are translated as FREE_SPACE in the layer. 
+
+    use_maximum : false
+    # (bool, default: false)
+    # Only matters if the static layer is not the bottom layer. If true, only the maximum value will be written to the master costmap. 
+
+    trinary_costmap: true
+    # (bool, default: true)
+    # If true, translates all map message values to NO_INFORMATION/FREE_SPACE/LETHAL_OBSTACLE (three values). If false, a full spectrum of intermediate values is possible. 
 
   
