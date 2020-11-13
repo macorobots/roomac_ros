@@ -8,12 +8,8 @@
     <rosparam file="$(find roomac_move_base)/config/dwa_local_planner.yaml" command="load" ns="DWAPlannerROS" />
     <param name="base_global_planner" value="global_planner/GlobalPlanner" />
     
-
     <!-- Load common configuration files -->
     <rosparam file="$(find roomac_move_base)/config/move_base_params.yaml" command="load" />
-    <!-- <rosparam file="$(find roomac_move_base)/config/costmap_common_params.yaml" command="load" ns="global_costmap" />
-    <rosparam file="$(find roomac_move_base)/config/costmap_common_params.yaml" command="load" ns="local_costmap" /> -->
-    <!-- <rosparam file="$(find roomac_move_base)/config/recovery_behaviors.yaml" command="load" /> -->
 
     <!-- Load global navigation specific parameters -->
     <rosparam file="$(find roomac_move_base)/config/local_costmap_params.yaml" command="load" />
