@@ -53,7 +53,7 @@ global_costmap:
     # (int, default: 100)
     # The threshold value at which to consider a cost lethal when reading in a map from the map server. 
 
-    map_topic: amp
+    map_topic: map
     # (string, default: "map")
     # The topic that the costmap subscribes to for the static map. This parameter is useful when you have multiple costmap instances within a single node that you want to use different static maps.
 

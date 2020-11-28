@@ -28,11 +28,11 @@ local_costmap:
   # (bool, default: false)
   # If true the full costmap is published to "~<name>/costmap" every update. If false only the part of the costmap that has changed is published on the "~<name>/costmap_updates" topic. 
 
-  width: 3.0
-  height: 3.0
+  width: 6.0
+  height: 6.0
   resolution: 0.05
-  origin_x: 0.0
-  origin_y: 0.0
+  origin_x: -1.5
+  origin_y: -1.5
   
   inflation_layer:
     inflation_radius: 0.55

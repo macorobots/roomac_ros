@@ -1,10 +1,10 @@
 #! Robot Configuration Parameters
 
-acc_lim_x : 0.1
+acc_lim_x : 0.3
 # (double, default: 2.5)
 # The x acceleration limit of the robot in meters/sec^2 
 
-acc_lim_th: 0.1
+acc_lim_th: 0.4
 # (double, default: 3.2)
 # The rotational acceleration limit of the robot in radians/sec^2 
 
@@ -12,7 +12,7 @@ max_vel_trans: 0.4
 # (double, default: 0.55)
 # The absolute value of the maximum translational velocity for the robot in m/s 
 
-min_vel_trans: 0.2
+min_vel_trans: 0.3
 # (double, default: 0.1)
 # The absolute value of the minimum translational velocity for the robot in m/s 
 
@@ -28,7 +28,7 @@ max_rot_vel: 0.7
 # (double, default: 1.0)
 # The absolute value of the maximum rotational velocity for the robot in rad/s 
 
-min_rot_vel: 0.3
+min_rot_vel: 0.4
 # (double, default: 0.4)
 # The absolute value of the minimum rotational velocity for the robot in rad/s 
 
@@ -78,8 +78,8 @@ vy_samples: 0
 # The number of samples to use when exploring the y velocity space 
 
 vth_samples: 20
-(integer, default: 20)
-The number of samples to use when exploring the theta velocity space 
+# (integer, default: 20)
+# The number of samples to use when exploring the theta velocity space 
 
 # controller_frequency:
 # (double, default: 20.0)
@@ -127,7 +127,7 @@ publish_cost_grid: false
 
 #! Oscillation Prevention Parameters
 
-oscillation_reset_dist: 0.2
+oscillation_reset_dist: 0.05
 # (double, default: 0.05)
 # How far the robot must travel in meters before oscillation flags are reset 
 
