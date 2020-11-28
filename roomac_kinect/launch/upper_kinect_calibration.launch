@@ -1,0 +1,34 @@
+<launch>
+
+  <node name="camera_pose_calibration_node" pkg="camera_pose_calibration" type="camera_pose_calibration_node" output="screen">
+    <remap from="/points_registered" to="/camera/depth_registered/points"/>
+    <remap from="/image_color" to="/camera/rgb/image_color"/>
+    <!-- <remap from="/image_color" to="/camera/rgb/image_mono"/> -->
+    <param name="publish_transform" value="true"/>
+
+  </node>
+
+</launch>
+
+<!-- rosrun tf static_transform_publisher 0.025 0.112 0.615 0 0 0 base_link pattern 10 -->
+
+<!-- rosservice call /calibrate_topic "tag_frame: 'pattern'
+target_frame: 'base_link'
+point_cloud_scale_x: 0
+point_cloud_scale_y: 0
+pattern: {pattern_width: 4, pattern_height: 11, pattern_distance: 0.035, neighbor_distance: 0.0,
+  valid_pattern_ratio_threshold: 0.0}"  -->
+
+<!-- transform: 
+translation: 
+  x: -0.11808065176
+  y: -0.158871341228
+  z: 0.93005715847
+rotation: 
+  x: -0.788540327521
+  y: 0.290080806607
+  z: -0.1819478093
+  w: 0.510834417531-->
+
+<!-- rosrun tf static_transform_publisher -0.11808065176 -0.158871341228 0.93005715847 -0.788540327521 0.290080806607 -0.1819478093 0.510834417531 camera_rgb_optical_frame base_link 10-->
+  
