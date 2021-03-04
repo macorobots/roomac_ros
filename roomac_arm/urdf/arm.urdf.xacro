@@ -17,7 +17,15 @@
         <color rgba="0 0 0 1"/>
     </material>
 
-    <link name="base_link">
+    <link name="base_link"/>
+    <joint name="robot_to_arm" type="fixed">
+        <axis xyz="0 0 0"/>
+        <parent link="base_link"/>
+        <child link="arm_base_link"/>
+        <origin xyz="-0.1135 -0.153521 0.9465"/>
+    </joint>
+
+    <link name="arm_base_link">
         <visual>
             <geometry>
                 <box size="0.15 0.02 0.05"/>
@@ -40,7 +48,7 @@
     <joint name="shoulder_pan_joint" type="revolute">
         <axis xyz="0 1 0"/>
         <limit lower="${0.43 - (330./2.)*pi/180.}" upper="0.43" effort="1000.0" velocity="0.5"/>
-        <parent link="base_link"/>
+        <parent link="arm_base_link"/>
         <child link="shoulder_pan_link"/>
         <origin xyz="0 0 0"/>
     </joint>

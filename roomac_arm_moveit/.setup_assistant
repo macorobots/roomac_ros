@@ -8,4 +8,4 @@ moveit_setup_assistant_config:
   CONFIG:
     author_name: Maciej Stepien
     author_email: mjistepien@gmail.com
-    generated_timestamp: 1602702472
+    generated_timestamp: 1606675340

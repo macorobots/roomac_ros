@@ -12,7 +12,7 @@
   <link name="camera_link" />
     
   <joint name="kinect_joint" type="fixed">
-		<origin rpy="0.0103379679904 0.424522933365 0.876123018686" xyz="-0.15252797763 -0.129919622053 0.930481065395"/>
+		<origin rpy="0.0103379679904 0.424522933365 ${0.876123018686-pi/2}" xyz="-0.15252797763 0.129919622053 0.930481065395"/>
 		<parent link="base_link"/>
 		<child link="camera_link"/>
 	</joint>
