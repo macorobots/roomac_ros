@@ -1,0 +1,9 @@
+<launch>
+
+<rosparam file="$(find roomac_description)/launch/controller.yaml" command="load"/>
+<node args="right_shoulder_pan_position_controller right_shoulder_lift_position_controller right_elbow_position_controller right_wrist_position_controller right_gripper_twist_position_controller left_shoulder_pan_position_controller left_shoulder_lift_position_controller left_elbow_position_controller left_wrist_position_controller left_gripper_twist_position_controller right_wheel_position_controller left_wheel_position_controller joint_state_controller " name="controller_spawner" ns="roomac" output="screen" pkg="controller_manager" respawn="false" type="spawner"/>
+<node name="robot_state_publisher" output="screen" pkg="robot_state_publisher" respawn="false" type="robot_state_publisher">
+  <remap from="/joint_states" to="/roomac/joint_states"/>
+</node>
+
+</launch>
