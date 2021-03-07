@@ -56,19 +56,19 @@
 
 <link name="right_caster_1">
   <inertial>
-    <origin rpy="0 0 0" xyz="0.35270689508123315 -0.10093900679315995 -0.2719583755549746"/>
+    <origin rpy="0 0 0" xyz="-0.020793104918766903 -0.0009180067931599534 -0.11995837555497461"/>
     <mass value="1.2807118618501256"/>
     <inertia ixx="0.001622" ixy="-2e-06" ixz="-0.000322" iyy="0.002002" iyz="-8e-06" izz="0.000685"/>
   </inertial>
   <visual>
-    <origin rpy="0 0 0" xyz="0.672 0.059979 -0.1795"/>
+    <origin rpy="0 0 0" xyz="0.2985 0.16 -0.0275"/>
     <geometry>
       <mesh filename="package://roomac_description/meshes/right_caster_1.stl" scale="0.001 0.001 0.001"/>
     </geometry>
     <material name="silver"/>
   </visual>
   <collision>
-    <origin rpy="0 0 0" xyz="0.672 0.059979 -0.1795"/>
+    <origin rpy="0 0 0" xyz="0.2985 0.16 -0.0275"/>
     <geometry>
       <mesh filename="package://roomac_description/meshes/right_caster_1.stl" scale="0.001 0.001 0.001"/>
     </geometry>
@@ -245,24 +245,25 @@
 
 <link name="left_caster_1">
   <inertial>
-    <origin rpy="0 0 0" xyz="0.35270689508120884 0.4928970067931112 -0.27195837555497454"/>
-    <mass value="1.2807118618501248"/>
-    <inertia ixx="0.001622" ixy="2e-06" ixz="-0.000322" iyy="0.002002" iyz="8e-06" izz="0.000685"/>
+    <origin rpy="0 0 0" xyz="-0.020793104918766903 -0.0009180067931599534 -0.11995837555497461"/>
+    <mass value="1.2807118618501256"/>
+    <inertia ixx="0.001622" ixy="-2e-06" ixz="-0.000322" iyy="0.002002" iyz="-8e-06" izz="0.000685"/>
   </inertial>
   <visual>
-    <origin rpy="0 0 0" xyz="0.672 0.331979 -0.1795"/>
+    <origin rpy="0 0 0" xyz="0.2985 -0.16 -0.0275"/>
     <geometry>
       <mesh filename="package://roomac_description/meshes/left_caster_1.stl" scale="0.001 0.001 0.001"/>
     </geometry>
     <material name="silver"/>
   </visual>
   <collision>
-    <origin rpy="0 0 0" xyz="0.672 0.331979 -0.1795"/>
+    <origin rpy="0 0 0" xyz="0.2985 -0.16 -0.0275"/>
     <geometry>
       <mesh filename="package://roomac_description/meshes/left_caster_1.stl" scale="0.001 0.001 0.001"/>
     </geometry>
   </collision>
 </link>
+
 
 <link name="shoulder_left_1">
   <inertial>
@@ -418,7 +419,7 @@
 </joint>
 
 <joint name="right_caster" type="fixed">
-  <origin rpy="0 0 0" xyz="-0.672 -0.059979 0.1795"/>
+  <origin rpy="0 0 0" xyz="-0.2985 -0.16 0.0275"/>
   <parent link="base_link"/>
   <child link="right_caster_1"/>
 </joint>
@@ -477,7 +478,7 @@
 </joint>
 
 <joint name="left_caster" type="fixed">
-  <origin rpy="0 0 0" xyz="-0.672 -0.331979 0.1795"/>
+  <origin rpy="0 0 0" xyz="-0.2985 0.16 0.0275"/>
   <parent link="base_link"/>
   <child link="left_caster_1"/>
 </joint>
