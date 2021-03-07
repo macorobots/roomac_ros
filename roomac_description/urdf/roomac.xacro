@@ -4,6 +4,14 @@
 <xacro:include filename="$(find roomac_description)/urdf/materials.xacro" />
 <xacro:include filename="$(find roomac_description)/urdf/roomac.trans" />
 <xacro:include filename="$(find roomac_description)/urdf/roomac.gazebo" />
+
+<link name="gripper_right_grip"/>
+<joint name="right_grip" type="fixed">
+  <origin rpy="0 0 0" xyz="0.0 0.0 -0.085"/>
+  <parent link="gripper_right_1"/>
+  <child link="gripper_right_grip"/>
+</joint>
+
 <link name="base_link">
   <inertial>
     <origin rpy="0 0 0" xyz="-0.13060699359614247 -1.269142483394603e-05 0.10737373059306837"/>
