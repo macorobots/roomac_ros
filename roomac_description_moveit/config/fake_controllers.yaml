@@ -1,0 +1,11 @@
+controller_list:
+  - name: fake_right_arm_controller
+    joints:
+      - right_shoulder_pan
+      - right_shoulder_lift
+      - right_elbow
+      - right_wrist
+      - right_gripper_twist
+  - name: fake_hand_controller
+    joints:
+      []

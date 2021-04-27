@@ -1,0 +1,11 @@
+moveit_setup_assistant_config:
+  URDF:
+    package: roomac_description
+    relative_path: urdf/roomac.xacro
+    xacro_args: "--inorder "
+  SRDF:
+    relative_path: config/roomac.srdf
+  CONFIG:
+    author_name: Maciej Stępień
+    author_email: maciek1284@outlook.com
+    generated_timestamp: 1615154781
