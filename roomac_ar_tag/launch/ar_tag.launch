@@ -1,4 +1,8 @@
 <launch>
+        <include file="$(find freenect_launch)/launch/freenect.launch">
+                <arg name="depth_registration" value="true" />
+        </include>
+
         <arg name="marker_size" default="4.4" />
         <arg name="max_new_marker_error" default="0.08" />
         <arg name="max_track_error" default="0.2" />
