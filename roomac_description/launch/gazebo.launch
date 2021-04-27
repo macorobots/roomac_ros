@@ -1,8 +1,8 @@
 <launch>
   <param command="$(find xacro)/xacro $(find roomac_description)/urdf/roomac.xacro" name="robot_description"/>
-  <node args="-param robot_description -urdf -model roomac" name="spawn_urdf" pkg="gazebo_ros" type="spawn_model"/>
+  <node args="-param robot_description -urdf -model roomac -z 0.2" name="spawn_urdf" pkg="gazebo_ros" type="spawn_model"/>
   <include file="$(find gazebo_ros)/launch/empty_world.launch">
-    <arg name="paused" value="true"/>
+    <arg name="paused" value="false"/>
     <arg name="use_sim_time" value="true"/>
     <arg name="gui" value="true"/>
     <arg name="headless" value="false"/>
