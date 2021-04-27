@@ -532,4 +532,11 @@
   <axis xyz="-0.0 1.0 0.0"/>
 </joint>
 
+<joint name="kinect_joint" type="fixed">
+		<origin rpy="0 ${(31.513/180.)*pi} 0" xyz="-0.108561 0.039543 0.479024"/>
+		<parent link="base_link"/>
+		<child link="camera_link"/>
+</joint>
+<link name="camera_link" />
+
 </robot>
