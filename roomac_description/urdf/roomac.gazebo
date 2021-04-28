@@ -58,7 +58,9 @@
 </gazebo>
 
 <gazebo>
-  <plugin filename="libgazebo_ros_control.so" name="control"/>
+  <plugin filename="libgazebo_ros_control.so" name="control">
+    <robotNamespace>/roomac</robotNamespace>
+  </plugin>
 </gazebo>
 
 <gazebo reference="base_link">
