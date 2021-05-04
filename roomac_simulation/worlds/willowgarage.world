@@ -1,0 +1,17 @@
+<?xml version="1.0" ?>
+<sdf version="1.5">
+  <world name="default">
+    <include>
+      <uri>model://ground_plane</uri>
+    </include>
+    <include>
+      <uri>model://sun</uri>
+    </include>
+    <include>
+      <uri>model://willowgarage</uri>
+      <!-- Has to be a little higher than ground to fix issue with displaying floor -->
+      <!-- This was also visible on simulated camera and caused problems in rtabmap -->
+      <pose>-30 -14 0.0001 0 0 0</pose>
+    </include>
+  </world>
+</sdf>

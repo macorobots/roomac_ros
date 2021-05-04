@@ -1,0 +1,13 @@
+<launch>
+  <include file="$(find roomac_simulation)/launch/simulation.launch">
+    <arg name="gazebo_gui" value="true"/>
+    <arg name="rviz_config_file" value="$(find roomac_simulation)/rviz/simulation_rtabmap.rviz"/>
+  </include>
+
+  <include file="$(find roomac_rtabmap)/launch/rtabmap.launch">
+    <arg name="rgb_image_topic" value="/camera/color/image_raw"/>
+    <arg name="depth_image_topic" value="/camera/depth/image_raw"/>
+    <arg name="rgb_camera_info_topic" value="/camera/color/camera_info"/>
+  </include>
+
+</launch>
