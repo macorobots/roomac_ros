@@ -1,3 +1,5 @@
 CMakeCache.txt
 CMakeFiles/
 .vscode/
+.devcontainer/*
+!.devcontainer/devcontainer_template.json

@@ -1,0 +1,21 @@
+{
+	"image": "roomac:latest",
+	// "dockerFile": "Dockerfile",
+	"runArgs": [
+		"--network=host",
+		"--cap-add=SYS_PTRACE",
+		"--security-opt=seccomp:unconfined",
+		"--security-opt=apparmor:unconfined",
+		"--volume=/tmp/.X11-unix:/tmp/.X11-unix",
+		"--runtime=nvidia",
+		"--privileged",
+		"--volume=/dev:/dev",
+		"--volume=/run/udev/control:/run/udev/control",
+		"--name=roomac_devcontainer",
+		"--env=DISPLAY=:1",
+		"--env=NVIDIA_VISIBLE_DEVICES=all",
+		"--env=NVIDIA_DRIVER_CAPABILITIES=all",
+	],
+	"workspaceMount": "src=PATH_TO_LOCAL_CATKIN_WS,dst=/home/roomac/catkin_ws/,type=bind",
+	"workspaceFolder": "/home/roomac/catkin_ws/src/roomac"
+}
