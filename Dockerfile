@@ -24,4 +24,6 @@ RUN rosdep update && \
     catkin config --init --extend /opt/ros/melodic && \
     catkin build
 
-RUN echo "source \"/opt/ros/$ROS_DISTRO/setup.bash\"\n source \"/home/$user/catkin_ws/devel/setup.bash\"" >> .bashrc
+WORKDIR /home/${user}
+
+RUN echo "source \"/opt/ros/$ROS_DISTRO/setup.bash\"\nsource \"/home/$user/catkin_ws/devel/setup.bash\"" >> /home/${user}/.bashrc
