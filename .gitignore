@@ -3,3 +3,4 @@ CMakeFiles/
 .vscode/
 .devcontainer/*
 !.devcontainer/devcontainer_template.json
+rosbags/
