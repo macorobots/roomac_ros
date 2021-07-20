@@ -1,0 +1,13 @@
+frame_id: "base_link"
+subscribe_depth: false
+subscribe_rgbd: true
+
+# The frame attached to odometry. If empty, rtabmap will subscribe to odom topic to get odometry. 
+# If set, odometry is got from tf (in this case, a covariance of 1 is used).
+odom_frame_id: "odom"
+
+# RTAB-Map's parameters
+RGBD/AngularUpdate: 0.01
+RGBD/LinearUpdate: 0.01
+RGBD/OptimizeFromGraphEnd: false
+Reg/Force3DoF: true

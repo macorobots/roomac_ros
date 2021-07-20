@@ -4,7 +4,6 @@
   <arg name="rgb_camera_info_topic" default="/camera/rgb/camera_info"/>
 
   <group ns="rtabmap">
-
     <node pkg="nodelet" type="nodelet" name="rgbd_sync" args="standalone rtabmap_ros/rgbd_sync" output="screen">
       <remap from="rgb/image"       to="$(arg rgb_image_topic)"/>
       <remap from="depth/image"     to="$(arg depth_image_topic)"/>
@@ -17,23 +16,8 @@
     </node>
 
     <node name="rtabmap" pkg="rtabmap_ros" type="rtabmap" output="screen" args="--delete_db_on_start">
-          <param name="frame_id" type="string" value="base_link"/>
-
-          <param name="subscribe_depth" type="bool" value="false"/>
-          <param name="subscribe_rgbd" type="bool" value="true"/>
-
-          <!-- The frame attached to odometry. If empty, rtabmap will subscribe to odom topic to get odometry. If set, odometry is got from tf (in this case, a covariance of 1 is used).  -->
-          <param name="odom_frame_id" type="string" value="odom"/>
-          <remap from="odom" to="/odom"/>
-
-          <remap from="rgbd_image" to="rgbd_image"/>
-
-
-          <!-- RTAB-Map's parameters -->
-          <param name="RGBD/AngularUpdate"        type="string" value="0.01"/>
-          <param name="RGBD/LinearUpdate"         type="string" value="0.01"/>
-          <param name="RGBD/OptimizeFromGraphEnd" type="string" value="false"/>
-          <param name="Reg/Force3DoF"             type="string" value="true"/>
+      <remap from="odom" to="/odom"/>
+      <rosparam file="$(find roomac_rtabmap)/config/rtabmap.yaml" command="load" />
     </node>
   </group>
 </launch>
