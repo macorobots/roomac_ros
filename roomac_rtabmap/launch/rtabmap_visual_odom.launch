@@ -15,9 +15,19 @@
       <param name="approx_sync"       value="true"/> 
     </node>
 
+    <node pkg="rtabmap_ros" type="rgbd_odometry" name="rgbd_odometry" output="screen">
+      <param name="subscribe_rgbd" type="bool"   value="true"/>
+      <param name="frame_id"       type="string" value="base_link"/>
+      <remap from="rgbd_image" to="rgbd_image"/>
+      <remap from="odom" to="odom_vo"/>
+      <rosparam file="$(find roomac_rtabmap)/config/rtabmap_visual_odom.yaml" command="load" />
+    </node>
+
     <node name="rtabmap" pkg="rtabmap_ros" type="rtabmap" output="screen" args="--delete_db_on_start">
-      <remap from="odom" to="/odom"/>
-      <rosparam file="$(find roomac_rtabmap)/config/rtabmap.yaml" command="load" />
+      <remap from="odom" to="odom_vo"/>
+      <param name="queue_size" type="int" value="10"/>
+
+      <rosparam file="$(find roomac_rtabmap)/config/rtabmap_visual_odom.yaml" command="load" />
     </node>
   </group>
 </launch>
