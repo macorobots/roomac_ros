@@ -12,11 +12,17 @@ def filterRosbag(inputRosbag, outputRosbag):
         "/odom",
     ]
 
+    save_odom_tf = True
+
     with rosbag.Bag(outputRosbag, "w") as outbag:
         for topic, msg, t in rosbag.Bag(inputRosbag).read_messages():
             if topic == "/tf":
                 if msg.transforms[0].header.frame_id != "map":
-                    outbag.write(topic, msg, t)
+                    if save_odom_tf:
+                        outbag.write(topic, msg, t)
+                    else: 
+                        pass
+
 
             elif topic in topics_to_save:
                 outbag.write(topic, msg, t)
