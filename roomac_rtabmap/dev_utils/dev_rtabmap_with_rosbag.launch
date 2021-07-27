@@ -1,17 +1,20 @@
 <launch>
   <arg name="rosbag" default="lap1_nobacking.bag_filtered"/>
+  <arg name="rosbag_play_rate" default="1"/>
 
   <param name="use_sim_time" type="bool" value="true" />
 
-  <node pkg="rosbag" type="play" name="player" output="screen" args="--clock /home/roomac/rosbags/$(arg rosbag)"/>
+  <node pkg="rosbag" type="play" name="player" output="screen" args="--clock -r $(arg rosbag_play_rate) /home/roomac/rosbags/$(arg rosbag)"/>
 
   <param name="robot_description" command="$(find xacro)/xacro $(find roomac_description)/urdf/roomac.xacro" />
   <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" />
 
-  <include file="$(find roomac_rtabmap)/launch/rtabmap.launch" />
+  <include file="$(find roomac_rtabmap)/launch/rtabmap_wheel_odom.launch" />
 
   <include file="$(find roomac_rtabmap)/launch/rviz_rtabmap.launch" />
 
   <include file="$(find rgbd_launch)/launch/kinect_frames.launch" />
+
+  <node name="odom_tf_to_topic" pkg="roomac_rtabmap" type="odom_tf_to_topic.py"/>
 
 </launch>
