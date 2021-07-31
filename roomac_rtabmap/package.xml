@@ -52,6 +52,8 @@
 
   <exec_depend>roomac_kinect</exec_depend>
   <exec_depend>rtabmap_ros</exec_depend>
+  <exec_depend>robot_localization</exec_depend>
+  <exec_depend>pointcloud_to_laserscan</exec_depend>
 
   <!-- The export tag contains other, unspecified, tags -->
   <export>
