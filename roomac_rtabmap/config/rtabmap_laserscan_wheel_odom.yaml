@@ -1,0 +1,46 @@
+frame_id: "base_link"
+subscribe_scan: true
+subscribe_rgbd: true
+
+# The frame attached to odometry. If empty, rtabmap will subscribe to odom topic to get odometry. 
+# If set, odometry is got from tf (in this case, a covariance of 1 is used).
+odom_frame_id: "odom"
+# visual_odometry: false
+odom_topic: "odom"
+
+Reg/Force3DoF: true
+
+Rtabmap/DetectionRate: 4
+
+queue_size: 10
+
+# RTAB-Map's parameters
+RGBD/ProximityBySpace: false
+RGBD/AngularUpdate: 0.01
+RGBD/LinearUpdate: 0.01
+RGBD/OptimizeFromGraphEnd: false
+# Vis/MinInliers: 12
+
+# Filter 30% bottom of the image
+# Maximum depth of the features is 4 meters
+Kp/RoiRatios: "0 0 0 0.3"
+Kp/MaxDepth: 4
+
+# Loop closure constraint, computed visually
+Vis/InlierDistance: 0.05
+Vis/MaxDepth: 4
+Vis/MinInliers: 3
+
+# Refining visual loop closure constraint using 2D icp on laser scans
+Reg/Strategy: 2
+Icp/CorrespondenceRatio: 0.5
+Icp/VoxelSize: 0
+
+# Disabled local loop closure detection based on time.
+# Optimize graph from the graph beginning, to have same referential
+#  when relocalizing to this map in localization mode.
+RGBD/ProximityByTime: false
+# RGBD/OptimizeFromGraphEnd: false
+
+# Extract more SURF features
+SURF/HessianThreshold: 60
