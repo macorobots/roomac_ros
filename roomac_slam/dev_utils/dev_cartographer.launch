@@ -15,6 +15,6 @@
 
   <include file="$(find rgbd_launch)/launch/kinect_frames.launch" />
 
-  <node name="odom_tf_to_topic" pkg="roomac_rtabmap" type="odom_tf_to_topic.py"/>
+  <node name="odom_tf_to_topic" pkg="roomac_slam" type="odom_tf_to_topic.py"/>
 
 </launch>
