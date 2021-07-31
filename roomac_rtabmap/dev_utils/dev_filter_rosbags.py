@@ -6,6 +6,7 @@ import rosbag
 
 def filterRosbag(inputRosbag, outputRosbag):
     topics_to_save = [
+        "/camera/depth_registered/camera_info",
         "/camera/depth_registered/image_raw",
         "/camera/rgb/camera_info",
         "/camera/rgb/image_rect_color",
