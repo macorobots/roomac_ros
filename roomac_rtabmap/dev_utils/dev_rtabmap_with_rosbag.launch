@@ -17,8 +17,5 @@
 
   <!-- <node name="odom_tf_to_topic" pkg="roomac_rtabmap" type="odom_tf_to_topic.py"/> -->
 
-  <node pkg="robot_localization" type="ekf_localization_node" name="ekf_se" clear_params="true">
-    <rosparam command="load" file="$(find roomac_slam)/config/fusion.yaml" />
-  </node>
-
+  <include file="$(find roomac_sensor_fusion)/launch/robot_localization.launch" />
 </launch>
