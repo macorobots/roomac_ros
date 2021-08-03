@@ -26,6 +26,7 @@
         -configuration_basename roomac_cartographer.lua"
     output="screen">
     <remap from="scan" to="kinect_scan" />
+    <remap from="odom" to="/odometry/filtered" />
   </node>
 
   <node name="cartographer_occupancy_grid_node" pkg="cartographer_ros"
