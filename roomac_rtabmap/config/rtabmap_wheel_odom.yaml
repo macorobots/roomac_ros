@@ -17,3 +17,8 @@ Reg/Force3DoF: true
 Optimizer/Slam2D: true
 
 Rtabmap/DetectionRate: 4
+
+# Ignore lower half of the image (floor), that caused bad loop closures
+Kp/RoiRatios: "0 0 0 0.3"
+# Only add closer, more certain points to the map. Map is a lot cleaner that way
+Grid/RangeMax: 1.5
