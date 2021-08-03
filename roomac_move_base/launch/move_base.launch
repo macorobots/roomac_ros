@@ -2,6 +2,7 @@
 
   <node pkg="move_base" type="move_base" name="move_base_node" output="screen" clear_params="true">
     <remap from="map" to="rtabmap/grid_map"/>
+    <remap from="odom" to="odometry/filtered"/>
 
     <!-- dwa local planner-->
     <param name="base_local_planner" value="dwa_local_planner/DWAPlannerROS" />
