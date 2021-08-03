@@ -539,4 +539,11 @@
 </joint>
 <link name="camera_link" />
 
+<joint name="imu_joint" type="fixed">
+		<origin rpy="0 0 0" xyz="0 0 0"/>
+		<parent link="base_link"/>
+		<child link="imu"/>
+</joint>
+<link name="imu" />
+
 </robot>
