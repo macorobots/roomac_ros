@@ -16,7 +16,7 @@
     </node>
 
     <node name="rtabmap" pkg="rtabmap_ros" type="rtabmap" output="screen">
-      <remap from="odom" to="/odom"/>
+      <remap from="odom" to="/odometry/filtered"/>
       <param name="queue_size" type="int" value="10"/>
       <param name="RGBD/SavedLocalizationIgnored" type="bool" value="true"/>
 
