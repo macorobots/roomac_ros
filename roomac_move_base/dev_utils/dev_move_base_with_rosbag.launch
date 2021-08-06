@@ -27,5 +27,5 @@
     <remap from="points" to="/camera/depth_registered/points"/>
   </node>
 
-  <include file="$(find roomac_move_base)/launch/move_base.launch" />
+  <include file="$(find roomac_move_base)/launch/move_base_fusion.launch" />
 </launch>
