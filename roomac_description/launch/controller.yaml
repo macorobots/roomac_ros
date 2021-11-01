@@ -3,45 +3,42 @@ roomac:
   joint_state_controller:
     type: joint_state_controller/JointStateController
     publish_rate: 50
-
-  # Position Controllers --------------------------------------
-  right_shoulder_pan_position_controller:
-    type: effort_controllers/JointPositionController
-    joint: right_shoulder_pan
-    pid: {p: 10.0, i: 0.01, d: 0.0}
-  right_shoulder_lift_position_controller:
-    type: effort_controllers/JointPositionController
-    joint: right_shoulder_lift
-    pid: {p: 10.0, i: 0.01, d: 0.0}
-  right_elbow_position_controller:
-    type: effort_controllers/JointPositionController
-    joint: right_elbow
-    pid: {p: 10.0, i: 0.01, d: 0.0}
-  right_wrist_position_controller:
-    type: effort_controllers/JointPositionController
-    joint: right_wrist
-    pid: {p: 10.0, i: 0.01, d: 0.0}
-  right_gripper_twist_position_controller:
-    type: effort_controllers/JointPositionController
-    joint: right_gripper_twist
-    pid: {p: 10.0, i: 0.01, d: 0.0}
-  left_shoulder_pan_position_controller:
-    type: effort_controllers/JointPositionController
-    joint: left_shoulder_pan
-    pid: {p: 10.0, i: 0.01, d: 0.0}
-  left_shoulder_lift_position_controller:
-    type: effort_controllers/JointPositionController
-    joint: left_shoulder_lift
-    pid: {p: 10.0, i: 0.01, d: 0.0}
-  left_elbow_position_controller:
-    type: effort_controllers/JointPositionController
-    joint: left_elbow
-    pid: {p: 10.0, i: 0.01, d: 0.0}
-  left_wrist_position_controller:
-    type: effort_controllers/JointPositionController
-    joint: left_wrist
-    pid: {p: 10.0, i: 0.01, d: 0.0}
-  left_gripper_twist_position_controller:
-    type: effort_controllers/JointPositionController
-    joint: left_gripper_twist
-    pid: {p: 10.0, i: 0.01, d: 0.0}
+  arm_position_controller:
+    type: position_controllers/JointTrajectoryController
+    joints:
+      - right_shoulder_pan
+      - right_shoulder_lift
+      - right_elbow
+      - right_wrist
+      - right_gripper_twist
+    gains:
+      right_shoulder_pan:
+        p: 10
+        d: 0
+        i: 0.01
+        i_clamp: 1
+      right_shoulder_lift:
+        p: 10
+        d: 0
+        i: 0.01
+        i_clamp: 1
+      right_elbow:
+        p: 10
+        d: 0
+        i: 0.01
+        i_clamp: 1
+      right_wrist:
+        p: 10
+        d: 0
+        i: 0.01
+        i_clamp: 1
+      right_gripper_twist:
+        p: 10
+        d: 0
+        i: 0.01
+        i_clamp: 1
+    constraints:
+      goal_time: 2.0
+    state_publish_rate: 25
+    action_monitor_rate: 10
+    allow_partial_joints_goal: True
