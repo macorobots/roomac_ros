@@ -1,11 +1,12 @@
 controller_list:
   - name: fake_right_arm_controller
+    type: $(arg execution_type)
     joints:
       - right_shoulder_pan
       - right_shoulder_lift
       - right_elbow
       - right_wrist
       - right_gripper_twist
-  - name: fake_hand_controller
-    joints:
-      []
+initial:  # Define initial robot poses.
+  - group: right_arm
+    pose: Home
