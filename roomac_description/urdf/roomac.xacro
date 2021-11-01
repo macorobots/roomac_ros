@@ -428,14 +428,14 @@
   <origin rpy="0 0 0" xyz="-0.0505 -0.042479 0.405"/>
   <parent link="base_up_1"/>
   <child link="shoulder_right_1"/>
-  <axis xyz="0.0 -1.0 -0.0"/>
+  <axis xyz="0.0 1.0 -0.0"/>
 </joint>
 
 <joint name="right_shoulder_lift" type="continuous">
   <origin rpy="0 0 0" xyz="-0.0265 -0.0995 0.0"/>
   <parent link="shoulder_right_1"/>
   <child link="shoulder_elbow_right_1"/>
-  <axis xyz="1.0 0.0 -0.0"/>
+  <axis xyz="-1.0 0.0 -0.0"/>
 </joint>
 
 <joint name="right_elbow" type="continuous">
