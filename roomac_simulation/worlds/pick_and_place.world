@@ -1,0 +1,124 @@
+<?xml version="1.0"?>
+<!-- Based on https://github.com/pal-robotics/pal_gazebo_worlds.git -->
+<sdf version="1.4">
+  <world name="default">
+    <physics type="ode">
+      <gravity>0 0 -9.81</gravity>
+      <ode>
+        <solver>
+          <type>quick</type>
+          <iters>20</iters>
+          <sor>1.0</sor>
+        </solver>
+        <constraints>
+          <cfm>0.0</cfm>
+          <erp>0.2</erp>
+          <contact_max_correcting_vel>100.0</contact_max_correcting_vel>
+          <contact_surface_layer>0.0</contact_surface_layer>
+        </constraints>
+      </ode>
+      <real_time_update_rate>1000</real_time_update_rate>
+      <max_step_size>0.001</max_step_size>
+    </physics>
+    <light type="directional" name="light1">
+      <cast_shadows>true</cast_shadows>
+      <pose>-2 0 4 0 0 0</pose>
+      <diffuse>1.0 1.0 1.0 1</diffuse>
+      <specular>0.1 0.1 0.1 1</specular>
+      <attenuation>
+        <range>20</range>
+        <constant>0.9</constant>
+        <linear>0.01</linear>
+        <quadratic>0.001</quadratic>
+      </attenuation>
+      <direction>0.2 0.0 -1.0</direction>
+    </light>
+    <!-- A ground plane -->
+    <include>
+      <uri>model://ground_plane</uri>
+    </include>
+    <!-- A table -->
+    <include>
+      <uri>model://table_0m8</uri>
+      <name>table1</name>
+      <pose>0.88 0 0 0 0 0</pose>
+    </include>
+    <!-- Cube with ArUco markers on the sides -->
+    <include>
+      <name>table_cube</name>
+      <uri>model://aruco_cube</uri>
+      <pose>0.53 -0.05 1.2 0 0 0</pose>
+    </include>
+
+    <gui fullscreen="0">
+      <camera name="user_camera">
+        <pose>1.152670 -0.041479 3.496780 0.000000 1.123640 3.132190</pose>
+        <view_controller>orbit</view_controller>
+      </camera>
+    </gui>
+
+    <include>
+      <name>robot_cube</name>
+      <uri>model://aruco_cube</uri>
+      <pose>0.1 -0.2 1.2 0 0 0</pose>
+      <link name='artag' />
+      <static>true</static>
+    </include>
+
+    <model name='kinect_up'>
+      <pose>0.4 0 2 0 1.57 0</pose>
+
+      <static>true</static>
+
+      <link name='link'>
+        <visual name='visual'>
+          <geometry>
+            <mesh>
+              <uri>model://kinect/meshes/kinect.dae</uri>
+            </mesh>
+          </geometry>
+        </visual>
+        <sensor name='camera_up' type='depth'>
+          <update_rate>20</update_rate>
+          <camera name='kinect_up'>
+            <horizontal_fov>1.0472</horizontal_fov>
+            <image>
+              <width>640</width>
+              <height>480</height>
+              <format>R8G8B8</format>
+            </image>
+            <clip>
+              <near>0.05</near>
+              <far>3</far>
+            </clip>
+          </camera>
+          <plugin name="camera_controller_up" filename="libgazebo_ros_openni_kinect.so">
+            <baseline>0.2</baseline>
+            <alwaysOn>true</alwaysOn>
+            <updateRate>1.0</updateRate>
+            <cameraName>camera_up_ir</cameraName>
+            <imageTopicName>/camera_up/color/image_raw</imageTopicName>
+            <cameraInfoTopicName>/camera_up/color/camera_info</cameraInfoTopicName>
+            <depthImageTopicName>/camera_up/depth/image_raw</depthImageTopicName>
+            <depthImageInfoTopicName>/camera_up/depth/camera_info</depthImageInfoTopicName>
+            <pointCloudTopicName>/camera_up/depth/points</pointCloudTopicName>
+            <frameName>camera_up</frameName>
+            <pointCloudCutoff>0.5</pointCloudCutoff>
+            <pointCloudCutoffMax>3.0</pointCloudCutoffMax>
+            <distortionK1>0.00000001</distortionK1>
+            <distortionK2>0.00000001</distortionK2>
+            <distortionK3>0.00000001</distortionK3>
+            <distortionT1>0.00000001</distortionT1>
+            <distortionT2>0.00000001</distortionT2>
+            <CxPrime>0</CxPrime>
+            <Cx>0</Cx>
+            <Cy>0</Cy>
+            <focalLength>0</focalLength>
+            <hackBaseline>0</hackBaseline>
+          </plugin>
+        </sensor>
+      </link>
+    </model>
+  </world>
+</sdf> 
+<!-- export GAZEBO_MODEL_PATH=$GAZEBO_MODEL_PATH:/home/roomac/catkin_ws/src/pal_gazebo_worlds/models/ -->
