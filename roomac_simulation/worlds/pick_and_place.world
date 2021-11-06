@@ -47,7 +47,7 @@
     <include>
       <name>table_cube</name>
       <uri>model://aruco_cube</uri>
-      <pose>0.53 -0.05 1.2 0 0 0</pose>
+      <pose>0.43 -0.02 1.2 0 0 0</pose>
     </include>
 
     <gui fullscreen="0">
@@ -57,13 +57,6 @@
       </camera>
     </gui>
 
-    <include>
-      <name>robot_cube</name>
-      <uri>model://aruco_cube</uri>
-      <pose>0.1 -0.2 1.2 0 0 0</pose>
-      <link name='artag' />
-      <static>true</static>
-    </include>
 
     <model name='kinect_up'>
       <pose>0.4 0 2 0 1.57 0</pose>
@@ -121,4 +114,4 @@
     </model>
   </world>
 </sdf> 
-<!-- export GAZEBO_MODEL_PATH=$GAZEBO_MODEL_PATH:/home/roomac/catkin_ws/src/pal_gazebo_worlds/models/ -->
+<!-- export GAZEBO_MODEL_PATH=$GAZEBO_MODEL_PATH:/home/roomac/catkin_ws/src/roomac/roomac_simulation/models/ -->

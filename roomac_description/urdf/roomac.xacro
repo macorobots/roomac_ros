@@ -546,4 +546,31 @@
 </joint>
 <link name="imu" />
 
+<link name="artag_link">
+    <inertial>
+        <origin rpy="0 0 0" xyz="0 0 0"/>
+        <mass value="0.1"/>
+        <inertia ixx="0" ixy="-0.0" ixz="0.0" iyy="0" iyz="0.0" izz="0"/>
+    </inertial>
+    <visual name="visual">
+        <origin rpy="0 0 1.57" xyz="0.0 0.0 0.0"/>
+        <geometry>
+            <mesh filename="package://roomac_description/materials/aruco_cube_5cm.dae" scale="1 1 0.001"/>
+        </geometry>
+        <material name="artag"/>
+    </visual>
+    <collision>
+        <origin rpy="0 0 0" xyz="0.0 0.0 0.0"/>
+        <geometry>
+            <mesh filename="package://roomac_description/materials/aruco_cube_5cm.dae" scale="1 1 0.001"/>
+        </geometry>
+    </collision>
+</link>
+
+  <joint name="artag_joint" type="fixed">
+    <origin rpy="0 0 0" xyz="-0.1 -0.17 1"/>
+    <parent link="base_link"/>
+    <child link="artag_link"/>
+</joint>
+
 </robot>
