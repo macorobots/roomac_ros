@@ -59,6 +59,7 @@
   <exec_depend>rviz</exec_depend>
   <exec_depend>controller_manager</exec_depend>
   <exec_depend>position_controllers</exec_depend>
+  <exec_depend>joint_trajectory_controller</exec_depend>
 
 
   <!-- The export tag contains other, unspecified, tags -->
