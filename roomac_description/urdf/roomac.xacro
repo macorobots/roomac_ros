@@ -553,7 +553,7 @@
         <inertia ixx="0" ixy="-0.0" ixz="0.0" iyy="0" iyz="0.0" izz="0"/>
     </inertial>
     <visual name="visual">
-        <origin rpy="0 0 1.57" xyz="0.0 0.0 0.0"/>
+        <origin rpy="0 0 0" xyz="0.0 0.0 0.0"/>
         <geometry>
             <mesh filename="package://roomac_description/materials/aruco_cube_5cm.dae" scale="1 1 0.001"/>
         </geometry>
@@ -572,5 +572,12 @@
     <parent link="base_link"/>
     <child link="artag_link"/>
 </joint>
+
+<joint name="artag_joint_2" type="fixed">
+    <origin rpy="0 0 ${pi/2}" xyz="0 0 0"/>
+    <parent link="artag_link"/>
+    <child link="artag_link_2"/>
+</joint>
+<link name="artag_link_2"/>
 
 </robot>
