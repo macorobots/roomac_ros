@@ -19,7 +19,6 @@ if __name__ == "__main__":
   move_group.set_planning_time(60)
   move_group.set_num_planning_attempts(10)
 
-  # Doesn't work
   move_group.set_start_state_to_current_state()
 
   # only position ik, really important without it fails to find plan
