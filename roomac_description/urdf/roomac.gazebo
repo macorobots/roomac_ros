@@ -53,7 +53,21 @@
   <material>${body_color}</material>
   <mu1>${standard_friction}</mu1>
   <mu2>${standard_friction}</mu2>
-  <selfCollide>true</selfCollide>
+  <selfCollide>false</selfCollide>
+</gazebo>
+
+<gazebo reference="finger1">
+  <material>${body_color}</material>
+  <mu1>${standard_friction}</mu1>
+  <mu2>${standard_friction}</mu2>
+  <selfCollide>false</selfCollide>
+</gazebo>
+
+<gazebo reference="finger2">
+  <material>${body_color}</material>
+  <mu1>${standard_friction}</mu1>
+  <mu2>${standard_friction}</mu2>
+  <selfCollide>false</selfCollide>
 </gazebo>
 
 <gazebo reference="base_up_1">
@@ -200,6 +214,7 @@
     <leftJoint>left_wheel</leftJoint>
     <!-- Name of right joint, defaults to `right_joint` -->
     <rightJoint>right_wheel</rightJoint>
+    <!-- TODO -->
     <!-- The distance from the center of one wheel to the other, in meters, defaults to 0.34 m -->
     <!-- <wheelSeparation>0.5380</wheelSeparation> -->
     <!-- Diameter of the wheels, in meters, defaults to 0.15 m -->

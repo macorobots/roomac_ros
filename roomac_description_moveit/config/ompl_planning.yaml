@@ -147,3 +147,30 @@ right_arm:
     - SPARStwo
   projection_evaluator: joints(right_shoulder_pan,right_shoulder_lift)
   longest_valid_segment_fraction: 0.005
+hand:
+  planner_configs:
+    - SBL
+    - EST
+    - LBKPIECE
+    - BKPIECE
+    - KPIECE
+    - RRT
+    - RRTConnect
+    - RRTstar
+    - TRRT
+    - PRM
+    - PRMstar
+    - FMT
+    - BFMT
+    - PDST
+    - STRIDE
+    - BiTRRT
+    - LBTRRT
+    - BiEST
+    - ProjEST
+    - LazyPRM
+    - LazyPRMstar
+    - SPARS
+    - SPARStwo
+  projection_evaluator: joints(finger1_joint,finger2_joint)
+  longest_valid_segment_fraction: 0.005
