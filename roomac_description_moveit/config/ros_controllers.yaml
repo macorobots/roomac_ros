@@ -66,6 +66,7 @@ roomac:
     constraints:
       goal_time: 2.0
     state_publish_rate: 25
+    allow_partial_joints_goal: True
 
 controller_list:
   - name: arm_position_controller
