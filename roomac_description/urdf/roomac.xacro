@@ -513,39 +513,49 @@
   <child link="right_caster_1"/>
 </joint>
 
-<joint name="right_shoulder_pan" type="continuous">
+<!-- Values for effort and velocity are from example (they are required)
+  not sure if correct, may need to change them -->
+<joint name="right_shoulder_pan" type="revolute">
   <origin rpy="0 0 0" xyz="-0.0505 -0.042479 0.405"/>
   <parent link="base_up_1"/>
   <child link="shoulder_right_1"/>
   <axis xyz="0.0 1.0 -0.0"/>
+  <limit effort="30" velocity="1.0" lower="-2.390" upper="0.489" />
 </joint>
 
-<joint name="right_shoulder_lift" type="continuous">
+<joint name="right_shoulder_lift" type="revolute">
   <origin rpy="0 0 0" xyz="-0.0265 -0.0995 0.0"/>
   <parent link="shoulder_right_1"/>
   <child link="shoulder_elbow_right_1"/>
   <axis xyz="-1.0 0.0 -0.0"/>
+  <!-- Calculated lower: -0.899, adjusted it due to colision with gear-->
+  <limit effort="30" velocity="1.0" lower="-0.800" upper="1.979" />
 </joint>
 
-<joint name="right_elbow" type="continuous">
+<joint name="right_elbow" type="revolute">
   <origin rpy="0 0 0" xyz="0.0425 0.0 -0.201075"/>
   <parent link="shoulder_elbow_right_1"/>
   <child link="elbow_wrist_right_1"/>
   <axis xyz="1.0 0.0 -0.0"/>
+  <!-- Calculated lower: -2.879 upper: 2.879, adjusted due to collisions-->
+  <!-- Safe values, might be some room for increase -->
+  <limit effort="30" velocity="1.0" lower="-2.1" upper="2.1" />
 </joint>
 
-<joint name="right_wrist" type="continuous">
+<joint name="right_wrist" type="revolute">
   <origin rpy="0 0 0" xyz="0.008637 0.0 -0.129818"/>
   <parent link="elbow_wrist_right_1"/>
   <child link="wrist_right_1"/>
   <axis xyz="-1.0 -0.0 0.0"/>
+  <limit effort="30" velocity="1.0" lower="-1.994" upper="1.146" />
 </joint>
 
-<joint name="right_gripper_twist" type="continuous">
-  <origin rpy="0 0 0" xyz="-0.025772 -7.3e-05 -0.097042"/>
+<joint name="right_gripper_twist" type="revolute">
+  <origin rpy="0 0 0" xyz="-0.025772 -7.3e-05 -0.057042"/>
   <parent link="wrist_right_1"/>
   <child link="gripper_right_1"/>
   <axis xyz="-0.0 0.0 -1.0"/>
+  <limit effort="30" velocity="1.0" lower="-1.570" upper="1.570" />
 </joint>
 
 <joint name="up_base" type="fixed">
