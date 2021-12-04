@@ -213,21 +213,21 @@
 
 <link name="finger1">
 	<collision>
-		<origin xyz="0 0 -0.05" rpy="0 0 0"/>
+		<origin xyz="0 0 -0.03" rpy="0 0 0"/>
 		<geometry>
-			<cylinder length="0.1" radius="0.01"/>
+      <box size="0.02 0.02 0.06" />
 		</geometry>
 	</collision>
 
 	<visual>
-		<origin xyz="0 0 -0.05" rpy="0 0 0"/>
+		<origin xyz="0 0 -0.03" rpy="0 0 0"/>
 		<geometry>
-			<cylinder length="0.1" radius="0.01"/>
+      <box size="0.02 0.02 0.06" />
 		</geometry>
 	</visual>
 
 	<inertial>
-		<origin xyz="0 0 -0.05" rpy="0 0 0"/>
+		<origin xyz="0 0 -0.03" rpy="0 0 0"/>
 		<mass value="0.2"/>
 		<inertia
 			ixx="0.02" ixy="0.0" ixz="0.0"
@@ -246,21 +246,21 @@
 
 <link name="finger2">
 	<collision>
-		<origin xyz="0 0 -0.05" rpy="0 0 0"/>
+		<origin xyz="0 0 -0.03" rpy="0 0 0"/>
 		<geometry>
-			<cylinder length="0.1" radius="0.01"/>
+      <box size="0.02 0.02 0.06" />
 		</geometry>
 	</collision>
 
 	<visual>
-		<origin xyz="0 0 -0.05" rpy="0 0 0"/>
+		<origin xyz="0 0 -0.03" rpy="0 0 0"/>
 		<geometry>
-			<cylinder length="0.1" radius="0.01"/>
+      <box size="0.02 0.02 0.06" />
 		</geometry>
 	</visual>
 
 	<inertial>
-		<origin xyz="0 0 -0.05" rpy="0 0 0"/>
+		<origin xyz="0 0 -0.03" rpy="0 0 0"/>
 		<mass value="0.2"/>
 		<inertia
 			ixx="0.02" ixy="0.0" ixz="0.0"
