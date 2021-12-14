@@ -10,6 +10,7 @@ import geometry_msgs.msg
 from trajectory_msgs.msg import JointTrajectory, JointTrajectoryPoint
 
 import tf
+from tf.transformations import quaternion_from_euler
 
 class Grasp:
   def __init__(self):
@@ -23,7 +24,7 @@ class Grasp:
     self.move_group.set_num_planning_attempts(10)
 
     # only position ik, really important without it fails to find plan
-    self.move_group.set_goal_orientation_tolerance(10.)
+    self.move_group.set_goal_orientation_tolerance(0.1)
 
     self.move_group.set_goal_position_tolerance(0.01)
 
@@ -36,10 +37,18 @@ class Grasp:
     self.move_group.set_start_state_to_current_state()
 
     pose_goal = geometry_msgs.msg.Pose()
-    pose_goal.orientation.w = 1.0
+    quat = quaternion_from_euler(-1.461, -1.445, 3.016)
+    pose_goal.orientation.x = quat[0]
+    pose_goal.orientation.y = quat[1]
+    pose_goal.orientation.z = quat[2]
+    pose_goal.orientation.w = quat[3]
+
     pose_goal.position = point
 
-    self.move_group.set_pose_target(pose_goal)
+    # self.move_group.set_pose_target(pose_goal)
+    
+    # Allow approximate solutions (True)
+    self.move_group.set_joint_value_target(pose_goal, "gripper_right_grip", True)
 
     plan = self.move_group.go(wait=True)
     self.move_group.stop()
@@ -113,7 +122,7 @@ if __name__ == "__main__":
 
   pt = geometry_msgs.msg.Point()
   pt.x = trans[0]
-  pt.y = trans[1]
+  pt.y = trans[1]+0.05
   pt.z = trans[2]-0.05
 
   grasp.grasp(pt)
