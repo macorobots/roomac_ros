@@ -3,6 +3,7 @@
 
 <xacro:property name="body_color" value="Gazebo/Silver" />
 <xacro:property name="standard_friction" value="1.0" />
+<xacro:property name="gripper_friction" value="100.0" />
 <xacro:property name="caster_friction" value="0.01" />
 <xacro:property name="wheel_friction" value="100.0" />
 
@@ -58,15 +59,15 @@
 
 <gazebo reference="finger1">
   <material>${body_color}</material>
-  <mu1>${standard_friction}</mu1>
-  <mu2>${standard_friction}</mu2>
+  <mu1>${gripper_friction}</mu1>
+  <mu2>${gripper_friction}</mu2>
   <selfCollide>false</selfCollide>
 </gazebo>
 
 <gazebo reference="finger2">
   <material>${body_color}</material>
-  <mu1>${standard_friction}</mu1>
-  <mu2>${standard_friction}</mu2>
+  <mu1>${gripper_friction}</mu1>
+  <mu2>${gripper_friction}</mu2>
   <selfCollide>false</selfCollide>
 </gazebo>
 
