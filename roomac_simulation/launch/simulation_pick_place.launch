@@ -8,7 +8,7 @@
 
     <arg name="cam_image_topic" default="/camera_up/depth/points" />
     <arg name="cam_info_topic" default="/camera_up/color/camera_info" />
-    <arg name="output_frame" default="/camera_up" />
+    <arg name="output_frame" default="/camera_up_link" />
 
     <node name="ar_track_alvar" pkg="ar_track_alvar" type="individualMarkers" respawn="false" output="screen">
         <param name="marker_size" type="double" value="$(arg marker_size)" />
