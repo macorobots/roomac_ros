@@ -1,0 +1,31 @@
+<launch>
+    <node name="tf_publisher" pkg="roomac_ar_tag" type="tf_publisher.py" output="screen"/>
+
+    <arg name="marker_size" default="4.4" />
+    <arg name="max_new_marker_error" default="0.08" />
+    <arg name="max_track_error" default="0.2" />
+
+    <arg name="cam_image_topic" default="/camera_up/depth_registered/points" />
+    <arg name="cam_info_topic" default="/camera_up/rgb/camera_info" />
+    <arg name="output_frame" default="/camera_up_link" />
+
+    <node name="ar_track_alvar" pkg="ar_track_alvar" type="individualMarkers" respawn="false" output="screen">
+        <param name="marker_size" type="double" value="$(arg marker_size)" />
+        <param name="max_new_marker_error" type="double" value="$(arg max_new_marker_error)" />
+        <param name="max_track_error" type="double" value="$(arg max_track_error)" />
+        <param name="output_frame" type="string" value="$(arg output_frame)" />
+
+        <remap from="camera_image" to="$(arg cam_image_topic)" />
+        <remap from="camera_info" to="$(arg cam_info_topic)" />
+    </node>
+
+    <include file="$(find freenect_launch)/launch/freenect.launch">
+      <arg name="depth_registration" value="true" />
+      <arg name="camera" value="camera_up" />
+    </include>
+
+    <arg name="rvizconfig" default="$(find roomac_autonomous_manipulation)/rviz/roomac_kinect_ar_tag.rviz" />
+    <node name="rviz" pkg="rviz" type="rviz" args="-d $(arg rvizconfig)" required="true" />
+    <!-- <node name="rviz" pkg="rviz" type="rviz" /> -->
+    
+</launch>

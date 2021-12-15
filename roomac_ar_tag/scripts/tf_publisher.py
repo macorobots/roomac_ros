@@ -13,10 +13,10 @@ if __name__ == '__main__':
     rate = rospy.Rate(10.0)
     while not rospy.is_shutdown():
         try:
-            (trans,rot) = listener.lookupTransform('ar_marker_0', 'camera_up', rospy.Time(0))
+            (trans,rot) = listener.lookupTransform('ar_marker_0', 'camera_up_link', rospy.Time(0))
         except (tf.LookupException, tf.ConnectivityException, tf.ExtrapolationException):
             continue
 
-        br.sendTransform(trans, rot, rospy.Time.now(), "camera_up", "artag_link_2")
+        br.sendTransform(trans, rot, rospy.Time.now(), "camera_up_link", "artag_link_2")
 
         rate.sleep()
