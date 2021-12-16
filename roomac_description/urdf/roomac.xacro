@@ -667,7 +667,8 @@
 </link>
 
   <joint name="artag_joint" type="fixed">
-    <origin rpy="0 0 0" xyz="-0.1 -0.17 1"/>
+    <!-- Real z position is 0.972, but I had to add 12mm (height of plywood) - this urdf is older - pre base rework -->
+    <origin rpy="0 0 0" xyz="-0.149 -0.125 0.984"/>
     <parent link="base_link"/>
     <child link="artag_link"/>
 </joint>
