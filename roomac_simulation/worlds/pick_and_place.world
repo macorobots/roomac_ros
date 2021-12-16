@@ -94,7 +94,7 @@
             <cameraInfoTopicName>/camera_up/color/camera_info</cameraInfoTopicName>
             <depthImageTopicName>/camera_up/depth/image_raw</depthImageTopicName>
             <depthImageInfoTopicName>/camera_up/depth/camera_info</depthImageInfoTopicName>
-            <pointCloudTopicName>/camera_up/depth/points</pointCloudTopicName>
+            <pointCloudTopicName>/camera_up/depth_registered/points</pointCloudTopicName>
             <frameName>camera_up_link</frameName>
             <pointCloudCutoff>0.5</pointCloudCutoff>
             <pointCloudCutoffMax>3.0</pointCloudCutoffMax>
