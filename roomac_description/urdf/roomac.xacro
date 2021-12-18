@@ -160,7 +160,7 @@
 </link>
 
 <link name="gripper_right_1">
-  <!-- <inertial>
+  <inertial>
     <origin rpy="0 0 0" xyz="0.0003095175801113986 0.0006959817920443867 -0.037223762933811466"/>
     <mass value="0.2826112434389509"/>
     <inertia ixx="0.000262" ixy="4e-06" ixz="7e-06" iyy="0.000181" iyz="-4e-06" izz="0.000107"/>
@@ -177,9 +177,9 @@
     <geometry>
       <mesh filename="package://roomac_description/meshes/gripper_right_1.stl" scale="0.001 0.001 0.001"/>
     </geometry>
-  </collision> -->
+  </collision>
 
-  <collision>
+  <!-- <collision>
 		<origin xyz="0 0 0" rpy="1.5708 0 0"/>
 		<geometry>
 			<cylinder length="0.1" radius="0.01"/>
@@ -200,10 +200,10 @@
 			ixx="0.05" ixy="0.0" ixz="0.0"
 			iyy="0.002" iyz="0.0"
 			izz="0.05"/>
-	</inertial>
+	</inertial> -->
 </link>
 
-<joint name="finger1_joint" type="prismatic">
+<!-- <joint name="finger1_joint" type="prismatic">
 	<parent link="gripper_right_1"/>
 	<child link="finger1"/>
 	<origin xyz="0 0.05 0" rpy="0 0 0"/>
@@ -267,7 +267,7 @@
 			iyy="0.02" iyz="0.0"
 			izz="0.001"/>
 	</inertial>
-</link>
+</link> -->
 
 <link name="base_up_1">
   <inertial>
