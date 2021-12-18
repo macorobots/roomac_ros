@@ -80,7 +80,13 @@
     <param name="planning_scene_monitor/publish_state_updates" value="$(arg publish_monitored_planning_scene)" />
     <param name="planning_scene_monitor/publish_transforms_updates" value="$(arg publish_monitored_planning_scene)" />
 
-    <remap from="/joint_states" to="/roomac/joint_states"/>
+    <!-- For simulation: -->
+    <!-- <remap from="/joint_states" to="/roomac/joint_states"/> -->
+
+    <!-- Can't change fake execution for now, as I don't have controller defined for real robot -->
+    <!-- Probably would be nice to define controller eventually -->
+    <remap from="/move_group/fake_controller_joint_states" to="/joint_states"/>
+
   </node>
 
 </launch>
