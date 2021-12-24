@@ -14,26 +14,26 @@ joint_limits:
     max_acceleration: 0
   right_elbow:
     has_velocity_limits: true
-    max_velocity: 0.7
+    max_velocity: 1.4
     has_acceleration_limits: true
-    max_acceleration: 0.1
+    max_acceleration: 0.2
   right_gripper_twist:
     has_velocity_limits: true
-    max_velocity: 0.7
+    max_velocity: 1.4
     has_acceleration_limits: true
-    max_acceleration: 0.1
+    max_acceleration: 0.2
   right_shoulder_lift:
     has_velocity_limits: true
-    max_velocity: 0.7
+    max_velocity: 1.4
     has_acceleration_limits: true
-    max_acceleration: 0.1
+    max_acceleration: 0.2
   right_shoulder_pan:
     has_velocity_limits: true
-    max_velocity: 0.7
+    max_velocity: 1.4
     has_acceleration_limits: true
-    max_acceleration: 0.1
+    max_acceleration: 0.2
   right_wrist:
     has_velocity_limits: true
-    max_velocity: 0.7
+    max_velocity: 1.4
     has_acceleration_limits: true
-    max_acceleration: 0.1
+    max_acceleration: 0.2
