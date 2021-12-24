@@ -1,0 +1,11 @@
+<launch>
+    <include file="$(find roomac_autonomous_manipulation)/launch/real_ar_object_detection.launch"/>
+
+    <include file="$(find roomac_description_moveit)/launch/demo.launch"/>
+
+    <node name="add_scene_objects_test" pkg="roomac_autonomous_manipulation" type="add_scene_objects_test.py" output="screen"/>
+    <!-- <node name="real_grasp_test" pkg="roomac_autonomous_manipulation" type="real_grasp_test.py" output="screen"/> -->
+
+    <node name="arm_controller" pkg="roomac_arm" type="arm_controller.py"/>
+    
+</launch>
