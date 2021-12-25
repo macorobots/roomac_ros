@@ -1,0 +1,24 @@
+<launch>
+  <!-- Position x,y,yaw from wheel odom -->
+  <node pkg="robot_localization" type="ekf_localization_node" name="wheel_odometry" clear_params="true">
+    <rosparam command="load" file="$(find roomac_sensor_fusion)/config/fusion_wheel_odom.yaml" />
+    <remap from="/odometry/filtered"   to="/odometry/filtered_wheel_odometry" />
+  </node>
+
+  <!-- Velocities vx, vyaw from wheel odom -->
+  <node pkg="robot_localization" type="ekf_localization_node" name="wheel_odometry_vel" clear_params="true">
+    <rosparam command="load" file="$(find roomac_sensor_fusion)/config/fusion_wheel_vel_odom.yaml" />
+    <remap from="/odometry/filtered"   to="/odometry/filtered_wheel_odometry_vel" />
+  </node>
+
+  <!-- vx vel from wheel odom and yaw orientation from imu -->
+  <node pkg="robot_localization" type="ekf_localization_node" name="fusion_default" clear_params="true">
+    <rosparam command="load" file="$(find roomac_sensor_fusion)/config/fusion.yaml" />
+  </node>
+
+  <!-- vx vel from wheel odom and vyaw velocity from imu -->
+  <node pkg="robot_localization" type="ekf_localization_node" name="imu_ang_vel" clear_params="true">
+    <rosparam command="load" file="$(find roomac_sensor_fusion)/config/fusion_imu_ang_vel.yaml" />
+    <remap from="/odometry/filtered"   to="/odometry/filtered_imu_ang_vel" />
+  </node>
+</launch>
