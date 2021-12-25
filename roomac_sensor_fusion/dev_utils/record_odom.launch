@@ -1,0 +1,4 @@
+<launch>
+  <node pkg="rosbag" type="record" name="record_odom" output="screen" 
+    args="-o /home/roomac/ /imu/orientation_raw /imu/angular_velocity_raw /wheel_odom/position_raw" />
+</launch>
