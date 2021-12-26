@@ -59,7 +59,7 @@
 
 
     <model name='kinect_up'>
-      <pose>0.4 0 2 0 1.57 0</pose>
+      <pose>0.4 -0.15 2 0 1.57 0</pose>
 
       <static>true</static>
 
@@ -94,8 +94,8 @@
             <cameraInfoTopicName>/camera_up/color/camera_info</cameraInfoTopicName>
             <depthImageTopicName>/camera_up/depth/image_raw</depthImageTopicName>
             <depthImageInfoTopicName>/camera_up/depth/camera_info</depthImageInfoTopicName>
-            <pointCloudTopicName>/camera_up/depth/points</pointCloudTopicName>
-            <frameName>camera_up</frameName>
+            <pointCloudTopicName>/camera_up/depth_registered/points</pointCloudTopicName>
+            <frameName>camera_up_link</frameName>
             <pointCloudCutoff>0.5</pointCloudCutoff>
             <pointCloudCutoffMax>3.0</pointCloudCutoffMax>
             <distortionK1>0.00000001</distortionK1>

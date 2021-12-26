@@ -37,6 +37,8 @@ roomac:
       - right_elbow
       - right_wrist
       - right_gripper_twist
+      - finger1_joint
+      - finger2_joint
     gains:
       right_shoulder_pan:
         p: 10
@@ -63,8 +65,18 @@ roomac:
         d: 0
         i: 0.01
         i_clamp: 1
+      finger1_joint:
+        p: 10
+        d: 0
+        i: 0.01
+        i_clamp: 1
+      finger2_joint:
+        p: 10
+        d: 0
+        i: 0.01
+        i_clamp: 1
     constraints:
-      goal_time: 2.0
+      goal_time: 10.0
     state_publish_rate: 25
     allow_partial_joints_goal: True
 

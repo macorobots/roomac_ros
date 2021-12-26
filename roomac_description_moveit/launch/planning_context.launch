@@ -5,8 +5,13 @@
   <!-- The name of the parameter under which the URDF is loaded -->
   <arg name="robot_description" default="robot_description"/>
 
+  <arg name="simulation_description" default="false"/>
+
   <!-- Load universal robot description format (URDF) -->
-  <param if="$(arg load_robot_description)" name="$(arg robot_description)" command="xacro --inorder  '$(find roomac_description)/urdf/roomac.xacro'"/>
+  <group if="$(arg load_robot_description)">
+    <param if="$(arg simulation_description)" name="$(arg robot_description)" command="xacro --inorder  '$(find roomac_description)/urdf/roomac_simulation_picking.xacro'"/>
+    <param unless="$(arg simulation_description)" name="$(arg robot_description)" command="xacro --inorder  '$(find roomac_description)/urdf/roomac.xacro'"/>
+  </group>
 
   <!-- The semantic description that corresponds to the URDF -->
   <param name="$(arg robot_description)_semantic" textfile="$(find roomac_description_moveit)/config/roomac.srdf" />

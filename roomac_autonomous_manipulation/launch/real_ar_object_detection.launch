@@ -1,13 +1,12 @@
 <launch>
-    <include file="$(find roomac_description_moveit)/launch/demo_gazebo.launch" />
     <node name="tf_publisher" pkg="roomac_ar_tag" type="tf_publisher.py" output="screen"/>
 
-    <arg name="marker_size" default="5" />
+    <arg name="marker_size" default="4.4" />
     <arg name="max_new_marker_error" default="0.08" />
     <arg name="max_track_error" default="0.2" />
 
     <arg name="cam_image_topic" default="/camera_up/depth_registered/points" />
-    <arg name="cam_info_topic" default="/camera_up/color/camera_info" />
+    <arg name="cam_info_topic" default="/camera_up/rgb/camera_info" />
     <arg name="output_frame" default="/camera_up_link" />
 
     <node name="ar_track_alvar" pkg="ar_track_alvar" type="individualMarkers" respawn="false" output="screen">
@@ -20,5 +19,13 @@
         <remap from="camera_info" to="$(arg cam_info_topic)" />
     </node>
 
-    <node name="add_robot_body_collision_to_scene" pkg="roomac_autonomous_manipulation" type="add_robot_body_collision_to_scene.py" output="screen"/>
+    <include file="$(find freenect_launch)/launch/freenect.launch">
+      <arg name="depth_registration" value="true" />
+      <arg name="camera" value="camera_up" />
+    </include>
+
+    <arg name="rvizconfig" default="$(find roomac_autonomous_manipulation)/rviz/roomac_kinect_ar_tag.rviz" />
+    <node name="rviz" pkg="rviz" type="rviz" args="-d $(arg rvizconfig)" required="true" />
+    <!-- <node name="rviz" pkg="rviz" type="rviz" /> -->
+    
 </launch>
