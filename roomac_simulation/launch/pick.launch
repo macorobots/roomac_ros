@@ -1,7 +1,0 @@
-<launch>
-
-  <node name="pick_place_node" pkg="roomac_simulation" type="pick_place_node" respawn="false" output="screen">
-    <rosparam command="load" file="$(find roomac_simulation)/config/pick_config.yaml"/>
-  </node>
-
-</launch>
