@@ -20,5 +20,5 @@
         <remap from="camera_info" to="$(arg cam_info_topic)" />
     </node>
 
-    <node name="add_scene_objects_test" pkg="roomac_autonomous_manipulation" type="add_scene_objects_test.py" output="screen"/>
+    <node name="add_robot_body_collision_to_scene" pkg="roomac_autonomous_manipulation" type="add_robot_body_collision_to_scene.py" output="screen"/>
 </launch>
