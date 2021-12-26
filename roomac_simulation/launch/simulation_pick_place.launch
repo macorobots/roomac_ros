@@ -1,6 +1,6 @@
 <launch>
     <include file="$(find roomac_description_moveit)/launch/demo_gazebo.launch" />
-    <node name="tf_publisher" pkg="roomac_ar_tag" type="tf_publisher.py" output="screen"/>
+    <include file="$(find roomac_ar_tag)/launch/filtration.launch" />
 
     <arg name="marker_size" default="5" />
     <arg name="max_new_marker_error" default="0.08" />
