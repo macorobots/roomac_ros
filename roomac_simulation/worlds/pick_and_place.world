@@ -91,7 +91,7 @@
             <updateRate>1.0</updateRate>
             <cameraName>camera_up_ir</cameraName>
             <imageTopicName>/camera_up/color/image_raw</imageTopicName>
-            <cameraInfoTopicName>/camera_up/color/camera_info</cameraInfoTopicName>
+            <cameraInfoTopicName>/camera_up/rgb/camera_info</cameraInfoTopicName>
             <depthImageTopicName>/camera_up/depth/image_raw</depthImageTopicName>
             <depthImageInfoTopicName>/camera_up/depth/camera_info</depthImageInfoTopicName>
             <pointCloudTopicName>/camera_up/depth_registered/points</pointCloudTopicName>
