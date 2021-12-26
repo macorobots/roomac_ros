@@ -6,5 +6,7 @@
 <xacro:include filename="$(find roomac_description)/urdf/roomac.gazebo" />
 <xacro:include filename="$(find roomac_description)/urdf/roomac_body.xacro" />
 <xacro:include filename="$(find roomac_description)/urdf/roomac_gripper_simulation.xacro" />
+<xacro:include filename="$(find roomac_description)/urdf/roomac_gripper_simulation.gazebo" />
+<xacro:include filename="$(find roomac_description)/urdf/roomac_gripper_simulation.trans" />
 
 </robot>
