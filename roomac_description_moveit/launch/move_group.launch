@@ -22,6 +22,9 @@
 
   <arg name="capabilities" default=""/>
   <arg name="disable_capabilities" default=""/>
+
+  <arg name="gazebo" default="false"/>
+
   <!-- load these non-default MoveGroup capabilities (space seperated) -->
   <!--
   <arg name="capabilities" value="
@@ -81,11 +84,12 @@
     <param name="planning_scene_monitor/publish_transforms_updates" value="$(arg publish_monitored_planning_scene)" />
 
     <!-- For simulation: -->
-    <!-- <remap from="/joint_states" to="/roomac/joint_states"/> -->
+    <remap if="$(arg gazebo)" from="/joint_states" to="/roomac/joint_states"/>
 
+    <!-- For real robot: -->
     <!-- Can't change fake execution for now, as I don't have controller defined for real robot -->
     <!-- Probably would be nice to define controller eventually -->
-    <remap from="/move_group/fake_controller_joint_states" to="/joint_states"/>
+    <remap unless="$(arg gazebo)" from="/move_group/fake_controller_joint_states" to="/joint_states"/>
 
   </node>
 
