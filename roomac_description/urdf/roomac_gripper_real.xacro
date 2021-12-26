@@ -1,0 +1,30 @@
+<?xml version="1.0" ?>
+<robot name="roomac" xmlns:xacro="http://www.ros.org/wiki/xacro">
+  <link name="gripper_right_grip"/>
+  <joint name="right_grip" type="fixed">
+    <origin rpy="0 0 0" xyz="0.0 0.0 -0.085"/>
+    <parent link="gripper_right_1"/>
+    <child link="gripper_right_grip"/>
+  </joint>
+
+  <link name="gripper_right_1">
+    <inertial>
+      <origin rpy="0 0 0" xyz="0.0003095175801113986 0.0006959817920443867 -0.037223762933811466"/>
+      <mass value="0.2826112434389509"/>
+      <inertia ixx="0.000262" ixy="4e-06" ixz="7e-06" iyy="0.000181" iyz="-4e-06" izz="0.000107"/>
+    </inertial>
+    <visual>
+      <origin rpy="0 0 0" xyz="0.111135 0.244052 -0.558565"/>
+      <geometry>
+        <mesh filename="package://roomac_description/meshes/gripper_right_1.stl" scale="0.001 0.001 0.001"/>
+      </geometry>
+      <material name="silver"/>
+    </visual>
+    <collision>
+      <origin rpy="0 0 0" xyz="0.111135 0.244052 -0.558565"/>
+      <geometry>
+        <mesh filename="package://roomac_description/meshes/gripper_right_1.stl" scale="0.001 0.001 0.001"/>
+      </geometry>
+    </collision>
+  </link>
+</robot>
