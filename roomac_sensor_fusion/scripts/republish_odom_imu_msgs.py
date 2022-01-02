@@ -72,6 +72,15 @@ class OdomRepublisher:
     dt = (currentTime - self.lastTime).to_sec()
     if dt > 0:
         vx = math.sqrt((currentPosition.x - self.lastPosition.x)**2 + (currentPosition.y - self.lastPosition.y)**2)/dt
+        
+        # Calculate direction of vx
+        # atan2 The returned value is between PI and -PI.
+        angle = math.atan2((currentPosition.y - self.lastPosition.y), (currentPosition.x - self.lastPosition.x))
+        angle_diff = abs(angle - self.lastPosition.theta)
+
+        if angle_diff > math.pi/2:
+            vx = -vx
+
         vth = (currentPosition.theta - self.lastPosition.theta)/dt
     else:
         vx = 0
