@@ -15,6 +15,8 @@ if __name__ == "__main__":
     odom_object_pub = rospy.Publisher("odom_artag_object", Odometry, queue_size=50)
 
     translation_covariance = 10
+    # It looks like rotation is main source of error in artag detection
+    # especially roll and pitch
     rotation_covariance = 30
 
     rate = rospy.Rate(30.0)
