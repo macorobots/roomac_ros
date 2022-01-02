@@ -15,7 +15,7 @@ if __name__ == "__main__":
     odom_object_pub = rospy.Publisher("odom_artag_object", Odometry, queue_size=50)
 
     translation_covariance = 10
-    rotation_covariance = 0.1
+    rotation_covariance = 30
 
     rate = rospy.Rate(30.0)
     while not rospy.is_shutdown():
