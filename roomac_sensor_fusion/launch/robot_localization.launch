@@ -2,4 +2,6 @@
   <node pkg="robot_localization" type="ekf_localization_node" name="ekf_se" clear_params="true">
     <rosparam command="load" file="$(find roomac_sensor_fusion)/config/fusion.yaml" />
   </node>
+
+  <node name="republish_odom_imu_msgs" pkg="roomac_sensor_fusion" type="republish_odom_imu_msgs.py"/>
 </launch>
