@@ -4,6 +4,8 @@
     </node>
 
     <node name="joy_node" pkg="joy" type="joy_node">
+      <!-- If connected with cable it can change to js3 -->
+      <param name="dev" type="string" value="/dev/input/js0" />
       <param name="autorepeat_rate" type="double" value="5.0" />
       <!-- Limit send messages to 5Hz-->
       <param name="coalesce_interval" type="double" value="0.2" /> 
