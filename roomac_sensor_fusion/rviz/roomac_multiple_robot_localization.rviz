@@ -6,7 +6,11 @@ Panels:
       Expanded:
         - /Global Options1
         - /Status1
-      Splitter Ratio: 0.5
+        - /red_wheel_x_vel_imu_orientation1/Shape1
+        - /green_wheel_x_vel_imu_ang_vel1/Shape1
+        - /blue_wheel_position1/Shape1
+        - /orange_wheel_vel1/Shape1
+      Splitter Ratio: 0.5864197611808777
     Tree Height: 762
   - Class: rviz/Selection
     Name: Selection
@@ -71,7 +75,7 @@ Visualization Manager:
         Value: false
       Enabled: true
       Keep: 1
-      Name: wheel_x_vel_imu_orientation
+      Name: red_wheel_x_vel_imu_orientation
       Position Tolerance: 0.0010000000474974513
       Shape:
         Alpha: 1
@@ -105,7 +109,7 @@ Visualization Manager:
         Value: false
       Enabled: true
       Keep: 1
-      Name: wheel_x_vel_imu_ang_vel
+      Name: green_wheel_x_vel_imu_ang_vel
       Position Tolerance: 0.0010000000474974513
       Shape:
         Alpha: 1
@@ -139,7 +143,7 @@ Visualization Manager:
         Value: false
       Enabled: true
       Keep: 1
-      Name: wheel_position
+      Name: blue_wheel_position
       Position Tolerance: 0.0010000000474974513
       Shape:
         Alpha: 1
@@ -173,7 +177,7 @@ Visualization Manager:
         Value: false
       Enabled: true
       Keep: 1
-      Name: wheel_vel
+      Name: orange_wheel_vel
       Position Tolerance: 0.0010000000474974513
       Shape:
         Alpha: 1
@@ -201,15 +205,7 @@ Visualization Manager:
           Value: true
         base_up_1:
           Value: true
-        camera_depth_frame:
-          Value: true
-        camera_depth_optical_frame:
-          Value: true
         camera_link:
-          Value: true
-        camera_rgb_frame:
-          Value: true
-        camera_rgb_optical_frame:
           Value: true
         gazebo_camera_link:
           Value: true
@@ -250,12 +246,6 @@ Visualization Manager:
               head_1:
                 {}
             camera_link:
-              camera_depth_frame:
-                camera_depth_optical_frame:
-                  {}
-              camera_rgb_frame:
-                camera_rgb_optical_frame:
-                  {}
               gazebo_camera_link:
                 {}
             imu:

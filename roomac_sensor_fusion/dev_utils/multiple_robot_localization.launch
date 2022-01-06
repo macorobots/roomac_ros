@@ -1,4 +1,6 @@
 <launch>
+  <node name="republish_odom_imu_msgs" pkg="roomac_sensor_fusion" type="republish_odom_imu_msgs.py"/>
+
   <!-- Position x,y,yaw from wheel odom -->
   <node pkg="robot_localization" type="ekf_localization_node" name="wheel_odometry" clear_params="true">
     <rosparam command="load" file="$(find roomac_sensor_fusion)/config/fusion_wheel_odom.yaml" />

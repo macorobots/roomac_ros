@@ -1,0 +1,15 @@
+<launch>
+  <arg name="rosbag" default="lap4.bag"/>
+  <arg name="rosbag_play_rate" default="1"/>
+
+  <param name="use_sim_time" type="bool" value="true" />
+
+  <node pkg="rosbag" type="play" name="player" output="screen" args="--clock -r $(arg rosbag_play_rate) /home/roomac/rosbags/$(arg rosbag)"/>
+
+  <param name="robot_description" command="$(find xacro)/xacro $(find roomac_description)/urdf/roomac.xacro" />
+  <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" />
+
+  <include file="$(find roomac_sensor_fusion)/dev_utils/rviz_multiple_robot_localization.launch" />
+
+  <include file="$(find roomac_sensor_fusion)/dev_utils/multiple_robot_localization.launch" />
+</launch>
