@@ -129,8 +129,8 @@ if __name__ == "__main__":
       rate.sleep()
 
   pt = geometry_msgs.msg.Point()
-  pt.x = trans[0]+0.04-0.01
-  pt.y = trans[1]-0.09+0.03
+  pt.x = trans[0]+0.04-0.02
+  pt.y = trans[1]-0.09+0.01
   pt.z = trans[2]+0.05+0.05
 
   grasp.grasp(pt)
