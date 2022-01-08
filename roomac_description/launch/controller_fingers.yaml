@@ -1,0 +1,56 @@
+roomac:
+  # Publish all joint states -----------------------------------
+  joint_state_controller:
+    type: joint_state_controller/JointStateController
+    publish_rate: 50
+  arm_position_controller:
+    type: position_controllers/JointTrajectoryController
+    joints:
+      - right_shoulder_pan
+      - right_shoulder_lift
+      - right_elbow
+      - right_wrist
+      - right_gripper_twist
+      - finger1_joint
+      - finger2_joint
+    gains:
+      right_shoulder_pan:
+        p: 10
+        d: 0
+        i: 0.01
+        i_clamp: 1
+      right_shoulder_lift:
+        p: 10
+        d: 0
+        i: 0.01
+        i_clamp: 1
+      right_elbow:
+        p: 10
+        d: 0
+        i: 0.01
+        i_clamp: 1
+      right_wrist:
+        p: 10
+        d: 0
+        i: 0.01
+        i_clamp: 1
+      right_gripper_twist:
+        p: 10
+        d: 0
+        i: 0.01
+        i_clamp: 1
+      finger1_joint:
+        p: 10
+        d: 0
+        i: 0.01
+        i_clamp: 1
+      finger2_joint:
+        p: 10
+        d: 0
+        i: 0.01
+        i_clamp: 1
+    constraints:
+      goal_time: 2.0
+    state_publish_rate: 25
+    action_monitor_rate: 10
+    allow_partial_joints_goal: True

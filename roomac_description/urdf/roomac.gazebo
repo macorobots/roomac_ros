@@ -200,6 +200,7 @@
     <leftJoint>left_wheel</leftJoint>
     <!-- Name of right joint, defaults to `right_joint` -->
     <rightJoint>right_wheel</rightJoint>
+    <!-- TODO -->
     <!-- The distance from the center of one wheel to the other, in meters, defaults to 0.34 m -->
     <!-- <wheelSeparation>0.5380</wheelSeparation> -->
     <!-- Diameter of the wheels, in meters, defaults to 0.15 m -->

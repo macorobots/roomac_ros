@@ -22,6 +22,9 @@
 
   <arg name="capabilities" default=""/>
   <arg name="disable_capabilities" default=""/>
+
+  <arg name="gazebo" default="false"/>
+
   <!-- load these non-default MoveGroup capabilities (space seperated) -->
   <!--
   <arg name="capabilities" value="
@@ -39,9 +42,12 @@
   -->
 
   <arg name="load_robot_description" default="true" />
+  <arg name="simulation_description" default="false" />
+
   <!-- load URDF, SRDF and joint_limits configuration -->
   <include file="$(find roomac_description_moveit)/launch/planning_context.launch">
     <arg name="load_robot_description" value="$(arg load_robot_description)" />
+    <arg name="simulation_description" value="$(arg simulation_description)" />
   </include>
 
   <!-- Planning Functionality -->
@@ -80,7 +86,14 @@
     <param name="planning_scene_monitor/publish_state_updates" value="$(arg publish_monitored_planning_scene)" />
     <param name="planning_scene_monitor/publish_transforms_updates" value="$(arg publish_monitored_planning_scene)" />
 
-    <remap from="/joint_states" to="/roomac/joint_states"/>
+    <!-- For simulation: -->
+    <remap if="$(arg gazebo)" from="/joint_states" to="/roomac/joint_states"/>
+
+    <!-- For real robot: -->
+    <!-- Can't change fake execution for now, as I don't have controller defined for real robot -->
+    <!-- Probably would be nice to define controller eventually -->
+    <remap unless="$(arg gazebo)" from="/move_group/fake_controller_joint_states" to="/joint_states"/>
+
   </node>
 
 </launch>

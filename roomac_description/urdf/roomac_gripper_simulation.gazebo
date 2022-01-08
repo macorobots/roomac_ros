@@ -1,0 +1,20 @@
+<?xml version="1.0" ?>
+<robot name="roomac" xmlns:xacro="http://www.ros.org/wiki/xacro" >
+
+<xacro:property name="gripper_friction" value="100.0" />
+
+<gazebo reference="finger1">
+  <material>${body_color}</material>
+  <mu1>${gripper_friction}</mu1>
+  <mu2>${gripper_friction}</mu2>
+  <selfCollide>false</selfCollide>
+</gazebo>
+
+<gazebo reference="finger2">
+  <material>${body_color}</material>
+  <mu1>${gripper_friction}</mu1>
+  <mu2>${gripper_friction}</mu2>
+  <selfCollide>false</selfCollide>
+</gazebo>
+
+</robot>
