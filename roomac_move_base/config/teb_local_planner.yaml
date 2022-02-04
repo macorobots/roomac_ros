@@ -42,7 +42,7 @@ xy_goal_tolerance: 0.1
 # (double, default: 0.2)
 # Allowed final euclidean distance to the goal position in meters 
 
-yaw_goal_tolerance: 0.2
+yaw_goal_tolerance: 0.05
 # (double, default: 0.2)
 # Allowed final orientation error in radians 
 
