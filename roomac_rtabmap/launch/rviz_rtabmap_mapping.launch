@@ -1,0 +1,4 @@
+<launch>
+  <arg name="rvizconfig" default="$(find roomac_rtabmap)/rviz/roomac_rtabmap_mapping.rviz" />
+  <node  name="rviz" pkg="rviz" type="rviz" args="-d $(arg rvizconfig)" required="true" />
+</launch>

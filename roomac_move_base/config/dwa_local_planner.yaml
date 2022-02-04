@@ -1,36 +1,59 @@
 #! Robot Configuration Parameters
 
+# Some parameters have different names in Kinetic and Melodic versions.
+# As I still use Kinetic for onboard laptop I need to keep both.
+# After creating Dockerfile with Melodic for laptop old names should be removed
+
 acc_lim_x : 0.3
 # (double, default: 2.5)
 # The x acceleration limit of the robot in meters/sec^2 
 
-acc_lim_th: 0.4
+acc_lim_theta: 0.8
 # (double, default: 3.2)
 # The rotational acceleration limit of the robot in radians/sec^2 
 
-max_vel_trans: 0.4
+acc_limit_trans: 0.3 # Kinetic
+acc_lim_trans: 0.3 # Melodic
+# (double, default: 0.1)
+# The absolute value of the maximum translational acceleration for the robot in m/s^2
+
+# Also tried 0.3, but robot was going off planned path and it had to stop and correct
+max_trans_vel: 0.2 # Kinetic
+max_vel_trans: 0.2 # Melodic
 # (double, default: 0.55)
 # The absolute value of the maximum translational velocity for the robot in m/s 
 
-min_vel_trans: 0.3
+min_trans_vel: 0.05 # Kinetic
+min_vel_trans: 0.05 # Melodic
 # (double, default: 0.1)
 # The absolute value of the minimum translational velocity for the robot in m/s 
 
-max_vel_x: 0.4
+max_vel_x: 0.2
 # (double, default: 0.55)
 # The maximum x velocity for the robot in m/s. 
 
-min_vel_x: 0.0
+min_vel_x: -0.05
 # (double, default: 0.0)
 # The minimum x velocity for the robot in m/s, negative for backwards motion. 
 
-max_rot_vel: 0.7
+max_rot_vel: 0.8 # Kinetic
+max_vel_theta: 0.8 # Melodic
 # (double, default: 1.0)
 # The absolute value of the maximum rotational velocity for the robot in rad/s 
 
-min_rot_vel: 0.4
+min_rot_vel: 0.3 # Kinetic
+min_vel_theta: 0.3 # Melodic
 # (double, default: 0.4)
 # The absolute value of the minimum rotational velocity for the robot in rad/s 
+
+rot_stopped_vel: 0.1 # Kinetic
+theta_stopped_vel: 0.1 # Melodic
+# (double, default: 0.1)
+# Below what maximum rotation velocity we consider the robot to be stopped in rotation
+
+trans_stopped_vel: 0.03
+# (double, default: 0.1)
+# Below what maximum velocity we consider the robot to be stopped in translation
 
 #?Y axis, not useful:
 acc_lim_y: 0
@@ -69,11 +92,15 @@ sim_granularity: 0.025
 # (double, default: 0.025)
 # The step size, in meters, to take between points on a given trajectory 
 
+angular_sim_granularity: 0.1
+# (double, default: 0.1)
+# The granularity with which to check for collisions for rotations in radians
+
 vx_samples: 20
 # (integer, default: 3)
 # The number of samples to use when exploring the x velocity space 
 
-vy_samples: 0
+vy_samples: 1 # minimum amount is 1
 # (integer, default: 10)
 # The number of samples to use when exploring the y velocity space 
 
@@ -105,6 +132,11 @@ occdist_scale: 0.01
 # (double, default: 0.01)
 # The weighting for how much the controller should attempt to avoid obstacles 
 
+twirling_scale: 0.0
+# (double, default: 0.0)
+# The weight for penalizing any changes in robot heading
+
+
 forward_point_distance: 0.325
 # (double, default: 0.325)
 # The distance from the center point of the robot to place an additional scoring point, in meters 
@@ -130,6 +162,11 @@ publish_cost_grid: false
 oscillation_reset_dist: 0.05
 # (double, default: 0.05)
 # How far the robot must travel in meters before oscillation flags are reset 
+
+oscillation_reset_angle: 0.2
+# (double, default: 0.2)
+# The angle the robot must turn before oscillation flags are reset, in radians
+
 
 #! Global Plan Parameters
 

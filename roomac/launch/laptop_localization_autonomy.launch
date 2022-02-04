@@ -1,6 +1,6 @@
 <launch>
-  <include file="$(find roomac_rtabmap)/launch/rtabmap_localization_wheel_odom.launch" />
+  <include file="$(find roomac_rtabmap)/launch/rtabmap_localization_fusion.launch" />
   <include file="$(find roomac_kinect)/launch/kinect.launch" />
-  <node name="odom_tf_to_topic" pkg="roomac_rtabmap" type="odom_tf_to_topic.py"/>
-  <include file="$(find roomac_move_base)/launch/move_base.launch" />
+  <include file="$(find roomac_sensor_fusion)/launch/robot_localization.launch"/>
+  <include file="$(find roomac_move_base)/launch/move_base_fusion.launch" />
 </launch>

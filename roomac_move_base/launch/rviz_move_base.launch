@@ -1,6 +1,6 @@
 <launch>
   <arg name="rvizconfig" default="$(find roomac_move_base)/rviz/rviz_move_base.rviz" />
-  <node  name="rviz" pkg="rviz" type="rviz" args="-d $(arg rvizconfig)" required="true" />
+  <node  name="rviz_move_base" pkg="rviz" type="rviz" args="-d $(arg rvizconfig)" required="true" />
   <!-- Construct and voxelize the point cloud (for fast visualization in rviz) -->
   <node pkg="nodelet" type="nodelet" name="points_xyzrgb" args="standalone rtabmap_ros/point_cloud_xyzrgb">
     <remap from="rgbd_image"      to="/rtabmap/rgbd_image/compressed"/>

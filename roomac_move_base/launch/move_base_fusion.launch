@@ -5,16 +5,21 @@
     <remap from="odom" to="odometry/filtered"/>
 
     <!-- dwa local planner-->
-    <param name="base_local_planner" value="dwa_local_planner/DWAPlannerROS" />
-    <rosparam file="$(find roomac_move_base)/config/dwa_local_planner.yaml" command="load" ns="DWAPlannerROS" />
+    <!-- DWA stopped working recently - only outputs DWA planner failed to produce path. -->
+    <!-- <param name="base_local_planner" value="dwa_local_planner/DWAPlannerROS" />
+    <rosparam file="$(find roomac_move_base)/config/dwa_local_planner.yaml" command="load" ns="DWAPlannerROS" /> -->
 
-    <!-- <param name="base_local_planner" value="teb_local_planner/TebLocalPlannerROS" />
-    <rosparam file="$(find roomac_move_base)/config/teb_local_planner.yaml" command="load" ns="TebLocalPlannerROS" /> -->
+    <param name="base_local_planner" value="teb_local_planner/TebLocalPlannerROS" />
+    <rosparam file="$(find roomac_move_base)/config/teb_local_planner.yaml" command="load" ns="TebLocalPlannerROS" />
 
     <param name="base_global_planner" value="global_planner/GlobalPlanner" />
     
     <!-- Load common configuration files -->
     <rosparam file="$(find roomac_move_base)/config/move_base_params.yaml" command="load" />
+
+    <!-- Footprint padding isn't loaded correctly, maybe only bug in kinetic, have to check it in melodic -->
+    <rosparam file="$(find roomac_move_base)/config/move_base_params.yaml" command="load" ns="local_costmap"/>
+    <rosparam file="$(find roomac_move_base)/config/move_base_params.yaml" command="load" ns="global_costmap"/>
 
     <!-- Load global navigation specific parameters -->
     <rosparam file="$(find roomac_move_base)/config/local_costmap_params.yaml" command="load" />

@@ -1,22 +1,22 @@
 #! Robot Configuration Parameters
 
-acc_lim_x: 0.1
+acc_lim_x: 0.3
 # (double, default: 0.5)
 # Maximum translational acceleration of the robot in meters/sec^2 
 
-acc_lim_theta: 0.1
+acc_lim_theta: 0.8
 # (double, default: 0.5)
 # Maximum angular acceleration of the robot in radians/sec^2 
 
-max_vel_x: 0.4
+max_vel_x: 0.2
 # (double, default: 0.4)
 # Maximum translational velocity of the robot in meters/sec 
 
-max_vel_x_backwards: 0.0
+max_vel_x_backwards: 0.05
 # (double, default: 0.2)
 # Maximum absolute translational velocity of the robot while driving backwards in meters/sec. See optimization parameter weight_kinematics_forward_drive 
 
-max_vel_theta: 0.7
+max_vel_theta: 0.8
 # (double, default: 0.3)
 # Maximum angular velocity of the robot in radians/sec 
 
@@ -38,11 +38,11 @@ is_footprint_dynamic: false
 
 #! Goal Tolerance Parameters
 
-xy_goal_tolerance: 0.2
+xy_goal_tolerance: 0.1
 # (double, default: 0.2)
 # Allowed final euclidean distance to the goal position in meters 
 
-yaw_goal_tolerance: 0.2
+yaw_goal_tolerance: 0.05
 # (double, default: 0.2)
 # Allowed final orientation error in radians 
 
@@ -68,11 +68,11 @@ global_plan_overwrite_orientation: true
 # (bool, default: true)
 # Overwrite orientation of local subgoals provided by the global planner (since they often provide only a 2D path) 
 
-global_plan_viapoint_sep: -0.1
+global_plan_viapoint_sep: 0.25
 # (double, default: -0.1 (disabled))
 # If positive, via-points are extrected from the global plan (path-following mode). The value determines the resolution of the reference path (min. separation between each two consecutive via-points along the global plan, if negative: disabled). Refer to parameter weight_viapoint for adjusting the intensity.
 
-max_global_plan_lookahead_dist: 3.0
+max_global_plan_lookahead_dist: 2.0
 # (double, default: 3.0)
 # Specify the maximum length (cumulative Euclidean distances) of the subset of the global plan taken into account for optimization. The actual length is than determined by the logical conjunction of the local costmap size and this maximum bound. Set to zero or negative in order to deactivate this limitation. 
 
@@ -166,15 +166,16 @@ no_outer_iterations: 4
 # (int, default: 4)
 # Each outerloop iteration automatically resizes the trajectory according to the desired temporal resolution dt_ref and invokes the internal optimizer (that performs no_inner_iterations). The total number of solver iterations in each planning cycle is therefore the product of both values. 
 
-penalty_epsilon: 0.1
+# Should be smaller than max_vel_x_backwards (warning from teb)
+penalty_epsilon: 0.04
 # (double, default: 0.1)
 # Add a small safety margin to penalty functions for hard-constraint approximations 
 
-weight_max_vel_x: 2.0
+weight_max_vel_x: 100.0
 # (double, default: 2.0)
 # Optimization weight for satisfying the maximum allowed translational velocity 
 
-weight_max_vel_theta: 1.0
+weight_max_vel_theta: 100.0
 # (double, default: 1.0)
 # Optimization weight for satisfying the maximum allowed angular velocity 
 
@@ -190,7 +191,7 @@ weight_kinematics_nh: 1000.0
 # (double, default: 1000.0)
 # Optimization weight for satisfying the non-holonomic kinematics (this parameter must be high since the kinematics equation constitutes an equality constraint, even a value of 1000 does not imply a bad matrix condition due to small 'raw' cost values in comparison to other costs). 
 
-weight_kinematics_forward_drive: 1000.0
+weight_kinematics_forward_drive: 10.0
 # (double, default: 1.0)
 # Optimization weight for forcing the robot to choose only forward directions (positive transl. velocities). A small weight (e.g. 1.0) still allows driving backwards. A value around 1000 almost prevents backward driving (but cannot be guaranteed). 
 
@@ -202,11 +203,11 @@ weight_optimaltime: 1.0
 # (double, default: 1.0)
 # Optimization weight for contracting the trajectory w.r.t transition/execution time 
 
-weight_obstacle: 50.0
+weight_obstacle: 100.0
 # (double, default: 50.0)
 # Optimization weight for keeping a minimum distance from obstacles 
 
-weight_viapoint: 1.0
+weight_viapoint: 100.0
 # (double, default: 1.0)
 # Optimization weight for minimzing the distance to via-points (resp. reference path). New in version 0.4 
 
