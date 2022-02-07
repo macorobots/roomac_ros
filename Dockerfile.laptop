@@ -32,4 +32,7 @@ RUN sudo apt-get update && \
 
 WORKDIR /home/${user}
 
-RUN echo "source /opt/ros/$ROS_DISTRO/setup.bash\nsource /home/$user/catkin_ws/devel/setup.bash  --extend\n" >> /home/${user}/.bashrc
+RUN echo "source /opt/ros/$ROS_DISTRO/setup.bash" >> /home/${user}/.bashrc && \
+    echo "source /home/$user/catkin_ws/devel/setup.bash  --extend" >> /home/${user}/.bashrc && \
+    echo "export ROS_MASTER_URI=http://10.42.0.1:11311" >> /home/${user}/.bashrc && \
+    echo "export ROS_IP=10.42.0.160" >> /home/${user}/.bashrc
