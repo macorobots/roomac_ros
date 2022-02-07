@@ -16,6 +16,8 @@
     </node>
 
     <node name="rtabmap" pkg="rtabmap_ros" type="rtabmap" output="screen">
+      <param name="database_path" type="string" value="~/roomac_data/rtabmap.db"/>
+
       <remap from="odom" to="/odometry/filtered"/>
       <param name="queue_size" type="int" value="10"/>
 
