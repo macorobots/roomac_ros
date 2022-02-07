@@ -17,7 +17,7 @@ RUN sudo apt-get update && \
     mkdir -p catkin_ws/src && \
     sudo chown -R ${user}:${user} catkin_ws
 
-COPY --chown=${user}:${user} . /home/$user/catkin_ws/src/roomac_ros
+COPY --chown=${user}:${user} ./ /home/$user/catkin_ws/src/roomac_ros
 
 WORKDIR /home/${user}/catkin_ws
 
@@ -30,4 +30,6 @@ RUN sudo apt-get update && \
 
 WORKDIR /home/${user}
 
-RUN echo "source \"/opt/ros/$ROS_DISTRO/setup.bash\"\nsource \"/home/$user/catkin_ws/devel/setup.bash\"\nexport GAZEBO_MODEL_PATH=\$GAZEBO_MODEL_PATH:/home/roomac/catkin_ws/src/roomac/roomac_simulation/models/" >> /home/${user}/.bashrc
+RUN echo "source /opt/ros/$ROS_DISTRO/setup.bash" >> /home/${user}/.bashrc && \
+    echo "source /home/$user/catkin_ws/devel/setup.bash" >> /home/${user}/.bashrc && \
+    echo "export GAZEBO_MODEL_PATH=\$GAZEBO_MODEL_PATH:/home/roomac/catkin_ws/src/roomac/roomac_simulation/models/" >> /home/${user}/.bashrc
