@@ -1,0 +1,11 @@
+lethal_cost: 253
+# (int, default: 253)
+# Lethal Cost
+
+neutral_cost: 66
+# (int, default: 50)
+# Neutral Cost 
+
+cost_factor: 0.55
+# (double, default: 3.)
+# Factor to multiply each cost from costmap by
