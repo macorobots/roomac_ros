@@ -68,6 +68,20 @@ Then after everything launches to pick object:
 rosrun roomac_autonomous_manipulation real_pick_object.py
 ```
 
+### Simulation mapping
+
+```
+roslaunch roomac_simulation simulation_mapping.launch
+```
+```
+roslaunch roomac_simulation teleop.launch
+```
+
+### Simulation localization
+
+```
+roslaunch roomac_simulation simulation_localization_autonomy.launch
+```
 
 ### Simulation picking
 ```
