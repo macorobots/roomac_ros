@@ -1,0 +1,14 @@
+services:
+  roomac:
+    image: roomac-laptop:latest
+    volumes:
+      - roomac_data:/home/roomac/roomac_data
+      - type: bind
+        source: /dev
+        target: /dev
+    network_mode: host
+    privileged: true
+
+volumes:
+  roomac_data:
+    external: true

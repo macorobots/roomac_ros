@@ -13,6 +13,7 @@
     <rosparam file="$(find roomac_move_base)/config/teb_local_planner.yaml" command="load" ns="TebLocalPlannerROS" />
 
     <param name="base_global_planner" value="global_planner/GlobalPlanner" />
+    <rosparam file="$(find roomac_move_base)/config/global_planner.yaml" command="load" ns="GlobalPlanner" />
     
     <!-- Load common configuration files -->
     <rosparam file="$(find roomac_move_base)/config/move_base_params.yaml" command="load" />

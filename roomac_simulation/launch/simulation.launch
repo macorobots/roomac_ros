@@ -4,7 +4,8 @@
 
   <include file="$(find roomac_description)/launch/gazebo.launch">
     <!-- <arg name="world_name" value="worlds/willowgarage.world"/> -->
-    <arg name="world_name" value="$(find roomac_simulation)/worlds/willowgarage.world"/>
+    <!-- <arg name="world_name" value="$(find roomac_simulation)/worlds/willowgarage.world"/> -->
+    <arg name="world_name" value="$(find aws_robomaker_small_house_world)/worlds/small_house.world"/>
     <arg name="gui" value="$(arg gazebo_gui)"/>
   </include>
   <include file="$(find roomac_description)/launch/controller.launch"/>
