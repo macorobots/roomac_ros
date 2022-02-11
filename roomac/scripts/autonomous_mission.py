@@ -6,6 +6,7 @@ import tf2_ros
 from tf.transformations import euler_from_quaternion, quaternion_from_euler
 from geometry_msgs.msg import Pose2D
 from std_srvs.srv import Trigger, TriggerResponse, TriggerRequest
+from std_srvs.srv import Empty
 
 import actionlib
 from move_base_msgs.msg import MoveBaseAction, MoveBaseGoal
@@ -40,6 +41,12 @@ class RobotController:
         )
         self.move_base_client.wait_for_server()
 
+        self.clear_octomap_srv = rospy.ServiceProxy("/clear_octomap", Empty)
+        self.pick_object_srv = rospy.ServiceProxy("pick_object", Trigger)
+        self.save_table_srv = rospy.Service(
+            "execute_mission", Trigger, self.execute_mission
+        )
+
     def load_positions(self):
         try:
             with open(self.position_file) as file:
@@ -72,7 +79,7 @@ class RobotController:
         with open(self.position_file, "w") as file:
             positions = yaml.dump(positions_yaml_dict, file)
 
-    def go_to_table(self, req: TriggerRequest) -> TriggerResponse:
+    def go_to_table(self, req):
         res = TriggerResponse()
         res.success = True
 
@@ -83,7 +90,7 @@ class RobotController:
         res.success = False
         return res
 
-    def go_to_home(self, req: TriggerRequest) -> TriggerResponse:
+    def go_to_home(self, req):
         res = TriggerResponse()
         res.success = True
 
@@ -94,7 +101,7 @@ class RobotController:
         res.success = False
         return res
 
-    def save_home_position(self, req: TriggerRequest) -> TriggerResponse:
+    def save_home_position(self, req):
         res = TriggerResponse()
         res.success = True
         try:
@@ -107,7 +114,7 @@ class RobotController:
         self.save_positions_to_file()
         return res
 
-    def save_table_position(self, req: TriggerRequest) -> TriggerResponse:
+    def save_table_position(self, req):
         res = TriggerResponse()
         res.success = True
         try:
@@ -120,7 +127,7 @@ class RobotController:
         self.save_positions_to_file()
         return res
 
-    def get_current_position(self) -> Pose2D:
+    def get_current_position(self):
         try:
             current_transform = self.tf_buffer.lookup_transform(
                 "map", "base_link", rospy.Time(0)
@@ -147,7 +154,7 @@ class RobotController:
 
         return current_position
 
-    def go_to_point(self, pose: Pose2D):
+    def go_to_point(self, pose):
         goal = MoveBaseGoal()
 
         goal.target_pose.header.frame_id = "map"
@@ -170,16 +177,36 @@ class RobotController:
         else:
             return self.move_base_client.get_result()
 
-    def grab_object(self):
-        pass
+    def execute_mission(self, req):
+        res = TriggerResponse()
+        res.success = True
 
-    def execute_mission(self):
         if not (self.positions["home_position"] and self.positions["table_position"]):
-            return
+            res.success = False
+            return res
 
+        rospy.loginfo("Driving to table")
         self.go_to_point(self.positions["table_position"])
-        self.grab_object()
+
+        rospy.loginfo("Waiting few seconds to allow artag positions to stabilize")
+        rospy.sleep(10.0)
+
+        rospy.loginfo("Waiting for clear_octomap service")
+        self.clear_octomap_srv.wait_for_service()
+
+        rospy.loginfo("Clearing octomap")
+        self.clear_octomap_srv.call()
+
+        rospy.loginfo("Waiting for pick_object service")
+        self.pick_object_srv.wait_for_service()
+
+        rospy.loginfo("Picking object")
+        self.pick_object_srv.call(TriggerRequest())
+
+        rospy.loginfo("Driving to home position")
         self.go_to_point(self.positions["home_position"])
+
+        return res
 
 
 if __name__ == "__main__":
