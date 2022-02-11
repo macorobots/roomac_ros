@@ -92,6 +92,11 @@ Then after everything launches to pick object:
 rosrun roomac_autonomous_manipulation simulation_pick_object.py
 ```
 
+### Simulation combined picking and autonomous navigation
+```
+roslaunch roomac_simulation simulation_nav_pick.launch
+```
+
 ## Kinect in Docker
 To use Kinect in docker, additionally there is a need to create udev rules on host machine. Create `/etc/udev/rules.d/51-kinect.rules` with:
 ```
