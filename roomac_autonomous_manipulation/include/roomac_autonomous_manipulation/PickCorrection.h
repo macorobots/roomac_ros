@@ -17,6 +17,9 @@
 #include <pcl/filters/extract_indices.h>
 #include <pcl/segmentation/extract_clusters.h>
 
+#include <dynamic_reconfigure/server.h>
+#include <roomac_autonomous_manipulation/PickCorrectionConfig.h>
+
 #include <string>
 
 class PickCorrection
@@ -36,6 +39,8 @@ private:
 
   geometry_msgs::Point FindGripperPosition();
   Eigen::Vector4f CalculatePlane(geometry_msgs::Transform trans);
+
+  void ReconfigureCallback(roomac_autonomous_manipulation::PickCorrectionConfig &config, uint32_t level);
 
   int num_of_readings_for_average_;
   float z_offset_pointcloud_split_;
@@ -57,6 +62,8 @@ private:
 
   tf2_ros::Buffer tf_buffer_;
   tf2_ros::TransformListener tf_listener_;
+
+  dynamic_reconfigure::Server<roomac_autonomous_manipulation::PickCorrectionConfig> reconfigure_server_;
 };
 
 #endif

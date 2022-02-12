@@ -31,6 +31,22 @@ PickCorrection::PickCorrection() : tf_listener_(tf_buffer_)
   artag_frame_ = ph.param<std::string>("artag_frame", "ar_marker_2");
 
   offset_planning_gripper_point_ = ph.param<float>("offset_planning_gripper_point", 0.05);
+
+  dynamic_reconfigure::Server<roomac_autonomous_manipulation::PickCorrectionConfig>::CallbackType f;
+  f = boost::bind(&PickCorrection::ReconfigureCallback, this, _1, _2);
+  reconfigure_server_.setCallback(f);
+}
+
+void PickCorrection::ReconfigureCallback(roomac_autonomous_manipulation::PickCorrectionConfig &config, uint32_t level)
+{
+  num_of_readings_for_average_ = config.num_of_readings_for_average;
+  z_offset_pointcloud_split_ = config.z_offset_pointcloud_split;
+  cluster_tolerance_ = config.cluster_tolerance;
+  min_cluster_size_ = config.min_cluster_size;
+  max_cluster_size_ = config.max_cluster_size;
+  elbow_gripper_offset_ = config.elbow_gripper_offset;
+  publish_debug_ = config.publish_debug;
+  offset_planning_gripper_point_ = config.offset_planning_gripper_point;
 }
 
 bool PickCorrection::HandlePickCorrection(roomac_autonomous_manipulation::DetectGripperPosition::Request &req, roomac_autonomous_manipulation::DetectGripperPosition::Response &res)
@@ -219,9 +235,9 @@ pcl::PointCloud<pcl::PointXYZRGB>::Ptr PickCorrection::DetectClusters(const pcl:
     for (const auto &idx : it->indices)
     {
       pcl::PointXYZRGB pt = (*points_filtered)[idx];
-      pt.r = (j*10)%255;
-      pt.g = (j*100)%255;
-      pt.b = (j*1000)%255;
+      pt.r = (j * 10) % 255;
+      pt.g = (j * 100) % 255;
+      pt.b = (j * 1000) % 255;
       cloud_cluster->push_back(pt);
     }
     cloud_cluster->width = cloud_cluster->size();
