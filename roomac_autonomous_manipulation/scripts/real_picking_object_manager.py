@@ -131,8 +131,6 @@ class Grasp:
         res = TriggerResponse()
         res.success = True
 
-        rospy.logwarn(self.move_group.get_named_targets())
-
         self.move_group.set_named_target("Home")
 
         plan = False
