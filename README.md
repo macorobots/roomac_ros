@@ -83,7 +83,7 @@ roslaunch roomac laptop_nav_picking.launch
 
 On external laptop: 
 ```
-roslaunch roomac legion_nav_picking.launch
+roslaunch roomac external_laptop_nav_picking.launch
 ```
 
 Visualization:
