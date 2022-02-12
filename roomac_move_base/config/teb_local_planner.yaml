@@ -12,7 +12,7 @@ max_vel_x: 0.2
 # (double, default: 0.4)
 # Maximum translational velocity of the robot in meters/sec 
 
-max_vel_x_backwards: 0.05
+max_vel_x_backwards: 0.08
 # (double, default: 0.2)
 # Maximum absolute translational velocity of the robot while driving backwards in meters/sec. See optimization parameter weight_kinematics_forward_drive 
 
