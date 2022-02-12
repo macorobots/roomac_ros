@@ -7,7 +7,7 @@ import rospy
 import moveit_commander
 
 import geometry_msgs.msg
-from geometry_msgs.msg import PoseStamped
+from geometry_msgs.msg import PoseStamped, PointStamped
 from sensor_msgs.msg import JointState
 from trajectory_msgs.msg import JointTrajectory, JointTrajectoryPoint
 
@@ -17,7 +17,9 @@ from tf.transformations import quaternion_from_euler
 class Grasp:
   def __init__(self):
     moveit_commander.roscpp_initialize(sys.argv)
-    self.move_group =  moveit_commander.MoveGroupCommander("right_arm")
+    # when master is running remotely (e.g. on raspberry) communication is slower 
+    # and often timed out
+    self.move_group =  moveit_commander.MoveGroupCommander(name="right_arm", wait_for_servers=60.0)
     self.scene = moveit_commander.PlanningSceneInterface()
 
     # If there are problems with finding plan, although it didn't look to work properly
@@ -120,17 +122,28 @@ if __name__ == "__main__":
   rate = rospy.Rate(10.0)
   tf_ready = False
   trans = None
+
+  object_point = PointStamped()
+  object_point.header.stamp = rospy.Time(0)
+  object_point.header.frame_id = "ar_marker_2"
+  object_point.point.x = -0.04 - 0.02
+  object_point.point.y = -0.09 + 0.01
+  object_point.point.z = 0.05 + 0.05
+
   while not rospy.is_shutdown() and not tf_ready:
-      try:
-          (trans,rot) = listener.lookupTransform('base_link', 'ar_marker_2', rospy.Time(0))
-          tf_ready = True
-      except (tf.LookupException, tf.ConnectivityException, tf.ExtrapolationException):
-          continue
-      rate.sleep()
+    try:
+      # (trans,rot) = listener.lookupTransform('base_link', 'ar_marker_2', rospy.Time(0))
+      object_point_transformed = listener.transformPoint("base_link", object_point)
+      tf_ready = True
+    except (tf.LookupException, tf.ConnectivityException, tf.ExtrapolationException) as err:
+      rospy.logerr(err)
+    rate.sleep()
 
-  pt = geometry_msgs.msg.Point()
-  pt.x = trans[0]+0.04-0.02
-  pt.y = trans[1]-0.09+0.01
-  pt.z = trans[2]+0.05+0.05
+  # pt = geometry_msgs.msg.Point()
+  # pt.x = trans[0]-0.04-0.02
+  # pt.y = trans[1]-0.09+0.01
+  # pt.z = trans[2]+0.05+0.05
 
-  grasp.grasp(pt)
+  rospy.loginfo("Point transformed")
+  
+  grasp.grasp(object_point_transformed.point)

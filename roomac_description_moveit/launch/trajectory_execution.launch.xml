@@ -16,6 +16,8 @@
   <param name="trajectory_execution/allowed_start_tolerance" value="0.01"/> <!-- default 0.01 -->
   <param name="trajectory_execution/execution_duration_monitoring" value="false" />
 
+  <param name="trajectory_execution/controller_connection_timeout" value="60"/>
+
   <!-- Load the robot specific controller manager; this sets the moveit_controller_manager ROS parameter -->
   <arg name="moveit_controller_manager" default="roomac" />
   <include file="$(find roomac_description_moveit)/launch/$(arg moveit_controller_manager)_moveit_controller_manager.launch.xml">

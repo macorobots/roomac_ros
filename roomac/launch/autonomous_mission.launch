@@ -1,0 +1,5 @@
+<launch>
+  <node name="autonomous_mission" pkg="roomac" type="autonomous_mission.py" output="screen">
+    <rosparam command="load" file="$(find roomac)/config/autonomous_mission_config.yaml" />
+  </node>
+</launch>
