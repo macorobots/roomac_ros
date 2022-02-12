@@ -189,7 +189,7 @@ class RobotController:
         self.go_to_point(self.positions["table_position"])
 
         rospy.loginfo("Waiting few seconds to allow artag positions to stabilize")
-        rospy.sleep(10.0)
+        rospy.sleep(20.0)
 
         rospy.loginfo("Waiting for clear_octomap service")
         self.clear_octomap_srv.wait_for_service()
