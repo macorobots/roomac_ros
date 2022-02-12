@@ -10,6 +10,7 @@
 #include <geometry_msgs/Point.h>
 #include <geometry_msgs/Transform.h>
 #include <std_srvs/Trigger.h>
+#include <roomac_autonomous_manipulation/DetectGripperPosition.h>
 
 #include <pcl/search/kdtree.h>
 #include <pcl/filters/plane_clipper3D.h>
@@ -25,7 +26,7 @@ public:
   PickCorrection();
 
 private:
-  bool HandlePickCorrection(std_srvs::Trigger::Request &req, std_srvs::Trigger::Response &res);
+  bool HandlePickCorrection(roomac_autonomous_manipulation::DetectGripperPosition::Request &req, roomac_autonomous_manipulation::DetectGripperPosition::Response &res);
   pcl::PointCloud<pcl::PointXYZRGB>::Ptr PlaneClip(const pcl::PointCloud<pcl::PointXYZRGB>::Ptr &src_cloud, const Eigen::Vector4f &plane, bool negative);
   pcl::PointCloud<pcl::PointXYZRGB>::Ptr DetectClusters(const pcl::PointCloud<pcl::PointXYZRGB>::Ptr &src_cloud);
   geometry_msgs::Transform ArtagTransform();

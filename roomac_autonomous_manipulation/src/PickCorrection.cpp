@@ -33,7 +33,7 @@ PickCorrection::PickCorrection() : tf_listener_(tf_buffer_)
   offset_planning_gripper_point_ = ph.param<float>("offset_planning_gripper_point", 0.05);
 }
 
-bool PickCorrection::HandlePickCorrection(std_srvs::Trigger::Request &req, std_srvs::Trigger::Response &res)
+bool PickCorrection::HandlePickCorrection(roomac_autonomous_manipulation::DetectGripperPosition::Request &req, roomac_autonomous_manipulation::DetectGripperPosition::Response &res)
 {
   geometry_msgs::Point pt_average;
   for (int i = 0; i < num_of_readings_for_average_; ++i)
@@ -72,6 +72,7 @@ bool PickCorrection::HandlePickCorrection(std_srvs::Trigger::Request &req, std_s
   }
 
   res.success = true;
+  res.calculated_gripper_position = pt_average;
   return true;
 }
 
