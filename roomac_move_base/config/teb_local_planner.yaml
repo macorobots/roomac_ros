@@ -50,12 +50,12 @@ free_goal_vel: false
 # (bool, default: false)
 # Remove the goal velocity constraint such that the robot can arrive at the goal with maximum speed 
 
-trans_stopped_vel: 0.05 #TODO: confirm it
+trans_stopped_vel: 0.05
 # (double, default: 0.1)
 # Below what maximum velocity we consider the robot to be stopped in translation. 
 # Important - used only when stopping robot when goal is reached
 
-theta_stopped_vel: 0.1 #TODO: confirm it
+theta_stopped_vel: 0.1
 # (double, default: 0.1)
 # Below what maximum rotation velocity we consider the robot to be stopped in rotation. 
 # Important - used only when stopping robot when goal is reached
