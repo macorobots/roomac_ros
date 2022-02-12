@@ -1,0 +1,4 @@
+<launch>
+  <include file="$(find roomac)/launch/laptop_localization_autonomy.launch" />
+  <include file="$(find roomac)/launch/autonomous_mission.launch" />
+</launch>

@@ -1,0 +1,4 @@
+<launch>
+  <include file="$(find roomac_autonomous_manipulation)/launch/real_picking.launch" />
+  <node name="real_picking_object_manager" pkg="roomac_autonomous_manipulation" type="real_picking_object_manager.py" output="screen"/>
+</launch>
