@@ -68,6 +68,46 @@ Then after everything launches to pick object:
 rosrun roomac_autonomous_manipulation real_pick_object.py
 ```
 
+### Real combined picking and autonomous navigation
+On raspberry:
+```
+roslaunch roomac_base joy.launch
+roslaunch roomac_arm serial.launch
+```
+
+On laptop: 
+```
+rosrun rosserial_python serial_node.py
+roslaunch roomac laptop_nav_picking.launch
+```
+
+On external laptop: 
+```
+roslaunch roomac legion_nav_picking.launch
+```
+
+Visualization:
+```
+roslaunch roomac_move_base rviz_move_base.launch
+```
+
+Services navigation:
+```
+rosservice call /save_table_position
+rosservice call /save_home_position
+rosservice call /go_to_table
+rosservice call /go_to_home
+```
+Services picking:
+```
+rosservice call /pick_object
+rosservice call /set_home_arm
+```
+Services combined (go to table, pick object, go to home position):
+```
+rosservice call /execute_mission
+```
+
 ### Simulation mapping
 
 ```
