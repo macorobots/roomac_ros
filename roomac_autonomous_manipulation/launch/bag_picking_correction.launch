@@ -1,0 +1,14 @@
+<launch>
+  <arg name="rosbag" default="picking_correction.bag"/>
+  <arg name="rosbag_play_rate" default="0.1"/>
+
+  <param name="use_sim_time" type="bool" value="true" />
+
+  <node pkg="rosbag" type="play" name="player" output="screen" args="--clock -r $(arg rosbag_play_rate) -l /home/roomac/rosbags/$(arg rosbag)"/>
+
+  <include file="$(find rgbd_launch)/launch/kinect_frames.launch" />
+
+  <arg name="rvizconfig" default="$(find roomac_autonomous_manipulation)/rviz/picking_correction.rviz" />
+  <node name="rviz_picking_correction" pkg="rviz" type="rviz" args="-d $(arg rvizconfig)"/>
+
+</launch>

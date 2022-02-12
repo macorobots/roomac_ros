@@ -1,0 +1,7 @@
+<launch>
+
+  <node name="pick_correction_node" pkg="roomac_autonomous_manipulation" type="pick_correction_node">
+    <rosparam command="load" file="$(find roomac_autonomous_manipulation)/config/pick_correction_config.yaml" />
+  </node>
+
+</launch>
