@@ -23,7 +23,7 @@
 
 <!-- Gazebo -->
   <arg name="gazebo_gui" default="true"/>
-  <arg name="world_name" value="$(find aws_robomaker_small_house_world)/worlds/small_house.world"/>
+  <arg name="world_name" value="$(find roomac_simulation)/worlds/small_house.world"/>
 
   <include file="$(find gazebo_ros)/launch/empty_world.launch">
     <arg name="world_name" value="$(arg world_name)"/>
