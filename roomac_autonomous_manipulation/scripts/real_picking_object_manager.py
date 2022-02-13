@@ -7,7 +7,7 @@ import rospy
 import moveit_commander
 
 import geometry_msgs.msg
-from geometry_msgs.msg import PoseStamped, PointStamped
+from geometry_msgs.msg import PoseStamped, PointStamped, Quaternion
 from sensor_msgs.msg import JointState
 from trajectory_msgs.msg import JointTrajectory, JointTrajectoryPoint
 from std_srvs.srv import Trigger, TriggerResponse, TriggerRequest
@@ -16,7 +16,7 @@ import tf
 from tf.transformations import quaternion_from_euler
 
 
-class Grasp:
+class PickingObjectManager:
     def __init__(self):
         moveit_commander.roscpp_initialize(sys.argv)
         # when master is running remotely (e.g. on raspberry) communication is slower
@@ -52,34 +52,7 @@ class Grasp:
         self.set_home_arm_srv = rospy.Service(
             "set_home_arm", Trigger, self.return_to_home_position
         )
-        self.pick_object_srv = rospy.Service(
-            "pick_object", Trigger, self.pick_object
-        )
-
-    def go_to_point(self, point):
-        self.move_group.set_start_state_to_current_state()
-
-        pose_goal = geometry_msgs.msg.Pose()
-        quat = quaternion_from_euler(-1.461, -1.445, 3.016)
-        pose_goal.orientation.x = quat[0]
-        pose_goal.orientation.y = quat[1]
-        pose_goal.orientation.z = quat[2]
-        pose_goal.orientation.w = quat[3]
-
-        pose_goal.position = point
-
-        # self.move_group.set_pose_target(pose_goal)
-
-        # Allow approximate solutions (True)
-        self.move_group.set_joint_value_target(pose_goal, "gripper_right_grip", True)
-
-        plan = False
-        while not plan:
-            rospy.loginfo("Trying to find and execute plan")
-            plan = self.move_group.go(wait=True)
-
-        self.move_group.stop()
-        self.move_group.clear_pose_targets()
+        self.pick_object_srv = rospy.Service("pick_object", Trigger, self.pick_object)
 
     def move_gripper(self, position):
         gripper_msg = JointState()
@@ -98,7 +71,38 @@ class Grasp:
         # Almost maximum, if needed can go to 1.2
         self.move_gripper(1.0)
 
-    def grasp(self, point):
+    def find_and_execute_plan(self):
+        plan = False
+        while not plan:
+            rospy.loginfo("Trying to find and execute plan")
+            plan = self.move_group.go(wait=True)
+
+        self.move_group.stop()
+        self.move_group.clear_pose_targets()
+
+    def get_perpendicular_orientation(self):
+        orientation = Quaternion()
+        quat = quaternion_from_euler(-1.461, -1.445, 3.016)
+        orientation.orientation.x = quat[0]
+        orientation.orientation.y = quat[1]
+        orientation.orientation.z = quat[2]
+        orientation.orientation.w = quat[3]
+        return orientation
+
+    def go_to_point(self, point):
+        self.move_group.set_start_state_to_current_state()
+
+        pose_goal = geometry_msgs.msg.Pose()
+        pose_goal.orientation = self.get_perpendicular_orientation()
+        pose_goal.position = point
+
+        # self.move_group.set_pose_target(pose_goal)
+
+        # Allow approximate solutions (True)
+        self.move_group.set_joint_value_target(pose_goal, "gripper_right_grip", True)
+        self.find_and_execute_plan()
+
+    def add_object_to_scene(self, point):
         reference_frame = "base_link"
         object_id = "object"
 
@@ -115,17 +119,14 @@ class Grasp:
 
         self.scene.add_box(object_id, body_pose, body_size)
 
+    def calculate_pre_and_post_points(self, point):
         pre_point = copy.deepcopy(point)
         pre_point.y -= self.retraction
 
         post_point = copy.deepcopy(point)
         post_point.z += 0.2
 
-        self.open_gripper()
-        self.go_to_point(pre_point)
-        self.go_to_point(point)
-        self.close_gripper()
-        self.go_to_point(post_point)
+        return pre_point, post_point
 
     def return_to_home_position(self, req):
         res = TriggerResponse()
@@ -133,25 +134,11 @@ class Grasp:
 
         self.move_group.set_named_target("Home")
 
-        plan = False
-        while not plan:
-            rospy.loginfo("Trying to find and execute plan")
-            plan = self.move_group.go(wait=True)
-
-        self.move_group.stop()
-        self.move_group.clear_pose_targets()
+        self.find_and_execute_plan()
 
         return res
 
-    def pick_object(self, req):
-        res = TriggerResponse()
-        res.success = True
-        
-        listener = tf.TransformListener()
-
-        rate = rospy.Rate(10.0)
-        tf_ready = False
-
+    def get_object_point(self):
         object_point = PointStamped()
         object_point.header.stamp = rospy.Time(0)
         object_point.header.frame_id = "ar_marker_2"
@@ -159,12 +146,16 @@ class Grasp:
         object_point.point.y = -0.09 + 0.01
         object_point.point.z = 0.05 + 0.05
 
-        while not rospy.is_shutdown() and not tf_ready:
+        return object_point
+
+    def transform_point(self, point, target_frame):
+        listener = tf.TransformListener()
+        rate = rospy.Rate(10.0)
+
+        while not rospy.is_shutdown():
             try:
-                object_point_transformed = listener.transformPoint(
-                    "base_link", object_point
-                )
-                tf_ready = True
+                point_transformed = listener.transformPoint(target_frame, point)
+                return point_transformed
             except (
                 tf.LookupException,
                 tf.ConnectivityException,
@@ -173,9 +164,23 @@ class Grasp:
                 rospy.logerr(err)
             rate.sleep()
 
-        rospy.loginfo("Point transformed")
+    def pick_object(self, req):
+        res = TriggerResponse()
+        res.success = True
 
-        self.grasp(object_point_transformed.point)
+        object_point = self.get_object_point()
+        object_point_transformed = self.transform_point(object_point, "base_link")
+
+        self.add_object_to_scene(object_point_transformed.point)
+        pre_point, post_point = self.calculate_pre_and_post_points(
+            object_point_transformed.point
+        )
+
+        self.open_gripper()
+        self.go_to_point(pre_point)
+        self.go_to_point(object_point_transformed.point)
+        self.close_gripper()
+        self.go_to_point(post_point)
 
         return res
 
@@ -183,5 +188,5 @@ class Grasp:
 if __name__ == "__main__":
     moveit_commander.roscpp_initialize(sys.argv)
     rospy.init_node("picking_object_manager")
-    grasp = Grasp()
+    manager = PickingObjectManager()
     rospy.spin()
