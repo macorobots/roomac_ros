@@ -76,19 +76,19 @@ bool PickCorrection::HandlePickCorrection(roomac_autonomous_manipulation::Detect
 
   pt_average.x += offset_planning_gripper_point_;
 
+  geometry_msgs::PointStamped pt_average_stamped;
+  pt_average_stamped.point = pt_average;
+
+  pt_average_stamped.header.frame_id = camera_frame_;
+  pt_average_stamped.header.stamp = ros::Time::now();
+
   if (publish_debug_)
   {
-    geometry_msgs::PointStamped pt_average_stamped;
-    pt_average_stamped.point = pt_average;
-
-    pt_average_stamped.header.frame_id = camera_frame_;
-    pt_average_stamped.header.stamp = ros::Time::now();
-
     gripper_pt_pub_.publish(pt_average_stamped);
   }
 
   res.success = true;
-  res.calculated_gripper_position = pt_average;
+  res.calculated_gripper_position = pt_average_stamped;
   return true;
 }
 
