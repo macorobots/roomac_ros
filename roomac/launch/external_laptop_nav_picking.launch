@@ -1,4 +1,8 @@
 <launch>
   <include file="$(find roomac_autonomous_manipulation)/launch/real_picking.launch" />
   <node name="real_picking_object_manager" pkg="roomac_autonomous_manipulation" type="real_picking_object_manager.py" output="screen"/>
+  <include file="$(find roomac_autonomous_manipulation)/launch/picking_correction.launch" />
+  
+  <arg name="rvizconfig" default="$(find roomac_autonomous_manipulation)/rviz/picking_correction.rviz" />
+  <node name="rviz_picking_correction" pkg="rviz" type="rviz" args="-d $(arg rvizconfig)"/>
 </launch>

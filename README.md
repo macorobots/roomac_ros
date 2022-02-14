@@ -101,6 +101,7 @@ rosservice call /go_to_home
 Services picking:
 ```
 rosservice call /pick_object
+rosservice call /pick_object_with_correction
 rosservice call /set_home_arm
 ```
 Services combined (go to table, pick object, go to home position):

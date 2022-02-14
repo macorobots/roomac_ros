@@ -5,9 +5,8 @@ Panels:
     Property Tree Widget:
       Expanded:
         - /Global Options1
-        - /raw1
-        - /clipped1
         - /PointStamped1
+        - /PointStamped2
       Splitter Ratio: 0.5010225176811218
     Tree Height: 762
   - Class: rviz/Selection
@@ -28,7 +27,7 @@ Panels:
     Experimental: false
     Name: Time
     SyncMode: 0
-    SyncSource: ""
+    SyncSource: raw
 Preferences:
   PromptSaveOnExit: true
 Toolbars:
@@ -66,7 +65,7 @@ Visualization Manager:
       Color: 255; 255; 255
       Color Transformer: RGB8
       Decay Time: 0
-      Enabled: false
+      Enabled: true
       Invert Rainbow: false
       Max Color: 255; 255; 255
       Min Color: 0; 0; 0
@@ -81,7 +80,7 @@ Visualization Manager:
       Unreliable: false
       Use Fixed Frame: true
       Use rainbow: true
-      Value: false
+      Value: true
     - Class: rviz/TF
       Enabled: true
       Frame Timeout: 15
@@ -91,23 +90,23 @@ Visualization Manager:
           Value: true
         ar_marker_2:
           Value: true
+        artag_link:
+          Value: true
         artag_link_2:
           Value: true
         base_link:
           Value: true
         base_up_1:
           Value: true
-        camera_depth_frame:
-          Value: true
-        camera_depth_optical_frame:
-          Value: true
         camera_link:
           Value: true
-        camera_rgb_frame:
+        camera_up_depth_frame:
           Value: true
-        camera_rgb_optical_frame:
+        camera_up_depth_optical_frame:
           Value: true
         camera_up_link:
+          Value: true
+        camera_up_rgb_frame:
           Value: true
         camera_up_rgb_optical_frame:
           Value: true
@@ -117,13 +116,29 @@ Visualization Manager:
           Value: true
         elbow_wrist_right_1:
           Value: true
+        gazebo_camera_link:
+          Value: true
         gripper_left_1:
           Value: true
         gripper_right_1:
           Value: true
+        gripper_right_grip:
+          Value: true
+        head_1:
+          Value: true
+        imu:
+          Value: true
+        left_caster_1:
+          Value: true
         left_wheel_1:
           Value: true
+        left_wheel_hub_1:
+          Value: true
+        right_caster_1:
+          Value: true
         right_wheel_1:
+          Value: true
+        right_wheel_hub_1:
           Value: true
         shoulder_elbow_left_1:
           Value: true
@@ -143,11 +158,52 @@ Visualization Manager:
       Show Axes: true
       Show Names: true
       Tree:
-        camera_up_rgb_optical_frame:
-          ar_marker_0:
+        base_link:
+          artag_link:
+            artag_link_2:
+              camera_up_link:
+                camera_up_depth_frame:
+                  camera_up_depth_optical_frame:
+                    {}
+                camera_up_rgb_frame:
+                  camera_up_rgb_optical_frame:
+                    ar_marker_0:
+                      {}
+                    ar_marker_2:
+                      {}
+                detected_object:
+                  {}
+          base_up_1:
+            head_1:
+              {}
+            shoulder_left_1:
+              shoulder_elbow_left_1:
+                elbow_wrist_left_1:
+                  wrist_left_1:
+                    gripper_left_1:
+                      {}
+            shoulder_right_1:
+              shoulder_elbow_right_1:
+                elbow_wrist_right_1:
+                  wrist_right_1:
+                    gripper_right_1:
+                      gripper_right_grip:
+                        {}
+          camera_link:
+            gazebo_camera_link:
+              {}
+          imu:
             {}
-          ar_marker_2:
+          left_caster_1:
             {}
+          left_wheel_1:
+            left_wheel_hub_1:
+              {}
+          right_caster_1:
+            {}
+          right_wheel_1:
+            right_wheel_hub_1:
+              {}
       Update Interval: 0
       Value: true
     - Alpha: 1
@@ -162,7 +218,7 @@ Visualization Manager:
       Color: 255; 255; 255
       Color Transformer: RGB8
       Decay Time: 100
-      Enabled: false
+      Enabled: true
       Invert Rainbow: false
       Max Color: 255; 255; 255
       Min Color: 0; 0; 0
@@ -177,7 +233,7 @@ Visualization Manager:
       Unreliable: false
       Use Fixed Frame: true
       Use rainbow: true
-      Value: false
+      Value: true
     - Alpha: 1
       Autocompute Intensity Bounds: true
       Autocompute Value Bounds:
@@ -218,7 +274,7 @@ Visualization Manager:
       Color: 255; 255; 255
       Color Transformer: RGB8
       Decay Time: 0
-      Enabled: false
+      Enabled: true
       Invert Rainbow: false
       Max Color: 255; 255; 255
       Min Color: 0; 0; 0
@@ -233,7 +289,7 @@ Visualization Manager:
       Unreliable: false
       Use Fixed Frame: true
       Use rainbow: true
-      Value: false
+      Value: true
     - Alpha: 1
       Class: rviz/PointStamped
       Color: 204; 41; 204
@@ -242,6 +298,16 @@ Visualization Manager:
       Name: PointStamped
       Radius: 0.019999999552965164
       Topic: /gripper_pt
+      Unreliable: false
+      Value: true
+    - Alpha: 1
+      Class: rviz/PointStamped
+      Color: 0; 255; 0
+      Enabled: true
+      History Length: 3
+      Name: PointStamped
+      Radius: 0.019999999552965164
+      Topic: debug_points
       Unreliable: false
       Value: true
   Enabled: true
@@ -272,25 +338,25 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/Orbit
-      Distance: 3.393627643585205
+      Distance: 0.11710009723901749
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
         Swap Stereo Eyes: false
         Value: false
       Focal Point:
-        X: 0
-        Y: 0
-        Z: 0
+        X: 0.1582200676202774
+        Y: 0.172231063246727
+        Z: 0.3041435778141022
       Focal Shape Fixed Size: false
       Focal Shape Size: 0.05000000074505806
       Invert Z Axis: true
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 0.7447960376739502
+      Pitch: 1.4497954845428467
       Target Frame: <Fixed Frame>
       Value: Orbit (rviz)
-      Yaw: 1.5303975343704224
+      Yaw: 4.605398654937744
     Saved: ~
 Window Geometry:
   Displays:
