@@ -1,10 +1,10 @@
 num_of_readings_for_average: 5
 z_offset_pointcloud_split: -0.05
-cluster_tolerance: 0.02
+cluster_tolerance: 0.05
 min_cluster_size: 10
 max_cluster_size: 25000
 elbow_gripper_offset: 0.2
 publish_debug: true
 camera_frame: "camera_up_rgb_optical_frame"
 artag_frame: "ar_marker_2"
-offset_planning_gripper_point: 0.03
+offset_planning_gripper_point: -0.02

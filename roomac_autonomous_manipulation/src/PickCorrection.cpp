@@ -12,9 +12,9 @@ PickCorrection::PickCorrection() : tf_listener_(tf_buffer_)
   service_ = nh.advertiseService("pick_correction", &PickCorrection::HandlePickCorrection, this);
 
   cloud_pub_ = nh.advertise<sensor_msgs::PointCloud2>("clipped", 10, true);
-  clusters_pub_ = nh.advertise<sensor_msgs::PointCloud2>("clusters", 10);
-  cluster_analyzed_pub_ = nh.advertise<sensor_msgs::PointCloud2>("cluster_analyzed", 10);
-  gripper_pt_pub_ = nh.advertise<geometry_msgs::PointStamped>("gripper_pt", 10);
+  clusters_pub_ = nh.advertise<sensor_msgs::PointCloud2>("clusters", 10, true);
+  cluster_analyzed_pub_ = nh.advertise<sensor_msgs::PointCloud2>("cluster_analyzed", 10, true);
+  gripper_pt_pub_ = nh.advertise<geometry_msgs::PointStamped>("gripper_pt", 10, true);
 
   num_of_readings_for_average_ = ph.param<int>("num_of_readings_for_average", 5);
   z_offset_pointcloud_split_ = ph.param<float>("z_offset_pointcloud_split", -0.05);
@@ -122,7 +122,7 @@ geometry_msgs::Point PickCorrection::FindGripperPosition()
 
     pcl::PointCloud<pcl::PointXYZRGB>::Ptr clipped(new pcl::PointCloud<pcl::PointXYZRGB>);
 
-    clipped = PlaneClip(cloud, plane, true);
+    clipped = PlaneClip(cloud, plane, false);
 
     ROS_INFO("Publishing pointcloud");
     if (publish_debug_)
@@ -170,11 +170,16 @@ geometry_msgs::Point PickCorrection::AnalyzeCluster(const pcl::PointCloud<pcl::P
   if (publish_debug_)
     PublishPointcloud(clipped_gripper, cluster_analyzed_pub_);
 
-  float max_y = std::numeric_limits<float>::min();
   float min_y = std::numeric_limits<float>::max();
+  float max_y = std::numeric_limits<float>::min();
+  float max_x = std::numeric_limits<float>::min();
 
   int min_y_ind = -1;
   int max_y_ind = -1;
+  int max_x_ind = -1;
+
+  if (clipped_gripper->empty())
+    throw std::runtime_error("clipped_gripper pointcloud is empty");
 
   for (int i = 0; i < clipped_gripper->points.size(); ++i)
   {
@@ -189,13 +194,25 @@ geometry_msgs::Point PickCorrection::AnalyzeCluster(const pcl::PointCloud<pcl::P
       max_y_ind = i;
       max_y = clipped_gripper->points[i].y;
     }
+
+    if (clipped_gripper->points[i].x > max_x)
+    {
+      max_x_ind = i;
+      max_x = clipped_gripper->points[i].x;
+    }
   }
 
-  if (min_y_ind == -1 || max_y_ind == -1)
-    throw std::runtime_error("Couldn't find min or max point");
+  if (min_y_ind == -1)
+    throw std::runtime_error("Couldn't find min_y_ind");
+
+  if (max_y_ind == -1)
+    throw std::runtime_error("Couldn't find max_y_ind");
+
+  if (max_x_ind == -1)
+    throw std::runtime_error("Couldn't find max_x_ind");
 
   geometry_msgs::Point gripper_pt;
-  gripper_pt.x = (clipped_gripper->points[max_y_ind].x + clipped_gripper->points[min_y_ind].x) / 2.;
+  gripper_pt.x = clipped_gripper->points[max_x_ind].x;
   gripper_pt.y = (clipped_gripper->points[max_y_ind].y + clipped_gripper->points[min_y_ind].y) / 2.;
   gripper_pt.z = (clipped_gripper->points[max_y_ind].z + clipped_gripper->points[min_y_ind].z) / 2.;
 
