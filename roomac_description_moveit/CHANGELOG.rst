@@ -2,6 +2,12 @@
 Changelog for package roomac_description_moveit
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* Merge pull request `#17 <https://github.com/macstepien/roomac_ros/issues/17>`_ from macstepien/16-arm-too-close-to-table
+  Fix arm moving too close to table
+* Contributors: Maciej Stępień
+
 1.0.1 (2022-02-19)
 ------------------
 
