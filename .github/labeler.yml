@@ -1,40 +1,40 @@
 docker: 
-- docker/*
+- docker/**/*
 - Dockerfile*
 - .dockerignore
 
 ar_tag:
-- roomac_ar_tag/*
+- roomac_ar_tag/**/*
 
 arm:
-- roomac_arm/*
+- roomac_arm/**/*
 
 autonomous_manipulation:
-- roomac_autonomous_manipulation/*
+- roomac_autonomous_manipulation/**/*
 
 base:
-- roomac_base/*
+- roomac_base/**/*
 
 description:
-- roomac_description/*
+- roomac_description/**/*
 
 moveit:
-- roomac_description_moveit/*
+- roomac_description_moveit/**/*
 
 kinect:
-- roomac_kinect/*
+- roomac_kinect/**/*
 
 move_base:
-- roomac_move_base/*
+- roomac_move_base/**/*
 
 rtabmap:
-- roomac_rtabmap/*
+- roomac_rtabmap/**/*
 
 sensor_fusion:
-- roomac_sensor_fusion/*
+- roomac_sensor_fusion/**/*
 
 simulation:
-- roomac_simulation/*
+- roomac_simulation/**/*
 
 readme:
 - README.md
