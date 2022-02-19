@@ -1,7 +1,7 @@
 <launch>
 
   <node pkg="move_base" type="move_base" name="move_base_node" output="screen" clear_params="true">
-    <remap from="map" to="rtabmap/grid_map"/>
+    <remap from="map" to="rtabmap/octomap_grid"/>
     <remap from="odom" to="odometry/filtered"/>
 
     <!-- dwa local planner-->
