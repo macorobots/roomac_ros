@@ -58,7 +58,7 @@ Visualization Manager:
       Draw Behind: false
       Enabled: true
       Name: Map
-      Topic: /rtabmap/grid_map
+      Topic: /rtabmap/octomap_grid
       Unreliable: false
       Use Timestamp: false
       Value: true
