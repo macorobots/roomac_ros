@@ -3,8 +3,13 @@ sensors:
   - filtered_cloud_topic: filtered_cloud
     max_range: 5.0
     max_update_rate: 1.0
+
+    # Padding for cleaning octomap from defined obstacles
     padding_offset: 0.1
-    padding_scale: 1.0
+    
+    # 1.0 was a lot and part of the table were removed
+    padding_scale: 0.5
+
     point_cloud_topic: /camera_up/depth_registered/points
     point_subsample: 1
     sensor_plugin: occupancy_map_monitor/PointCloudOctomapUpdater
