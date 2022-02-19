@@ -13,7 +13,7 @@ WORKDIR /home/${user}
 # upgrade because melodic docker wasn't updated in quite long time
 RUN sudo apt-get update && \
     sudo apt-get upgrade -y && \
-    sudo apt-get install -y python-catkin-tools && \
+    sudo apt-get install -y python-catkin-tools python3-setuptools && \
     mkdir -p catkin_ws/src && \
     sudo chown -R ${user}:${user} catkin_ws
 
