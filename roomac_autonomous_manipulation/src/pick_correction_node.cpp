@@ -4,7 +4,7 @@
 
 int main(int argc, char **argv)
 {
-  ros::init(argc, argv, "sub_pcl");
+  ros::init(argc, argv, "picking_correction");
   ros::NodeHandle nh;
   PickCorrection pick;
   ros::spin();
