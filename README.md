@@ -101,8 +101,11 @@ rosservice call /go_to_home
 Services picking:
 ```
 rosservice call /pick_object
-rosservice call /pick_object_with_correction
 rosservice call /set_home_arm
+```
+If picking correction is enabled (see `external_laptop_nav_picking.launch`)
+```
+rosservice call /pick_object_with_correction
 ```
 Services combined (go to table, pick object, go to home position):
 ```
