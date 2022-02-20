@@ -1,4 +1,8 @@
 <launch>
+  <arg name="picking_correction_enabled" default="false" />
+
   <include file="$(find roomac_autonomous_manipulation)/launch/real_picking.launch" />
   <node name="real_picking_object_manager" pkg="roomac_autonomous_manipulation" type="real_picking_object_manager.py" output="screen"/>
+  
+  <include if="$(arg picking_correction_enabled)" file="$(find roomac_autonomous_manipulation)/launch/picking_correction.launch" />
 </launch>

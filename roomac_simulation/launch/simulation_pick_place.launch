@@ -1,7 +1,7 @@
 <launch>
-    <include file="$(find roomac_description_moveit)/launch/demo_gazebo.launch" />
+  <include file="$(find roomac_description_moveit)/launch/demo_gazebo.launch" />
 
-    <include file="$(find roomac_ar_tag)/launch/ar_tag.launch" />
+  <include file="$(find roomac_ar_tag)/launch/ar_tag.launch" />
 
-    <node name="add_robot_body_collision_to_scene" pkg="roomac_autonomous_manipulation" type="add_robot_body_collision_to_scene.py" output="screen"/>
+  <node name="add_robot_body_collision_to_scene" pkg="roomac_autonomous_manipulation" type="add_robot_body_collision_to_scene.py" output="screen"/>
 </launch>

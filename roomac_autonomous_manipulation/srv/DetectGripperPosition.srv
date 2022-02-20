@@ -1,0 +1,4 @@
+---
+bool success
+string message
+geometry_msgs/PointStamped calculated_gripper_position
