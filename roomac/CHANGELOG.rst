@@ -2,8 +2,8 @@
 Changelog for package roomac
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+1.1.0 (2022-02-20)
+------------------
 * Merge pull request `#19 <https://github.com/macstepien/roomac_ros/issues/19>`_ from macstepien/11-improve-picking
   Add picking correction node
 * Contributors: Maciej Stępień
