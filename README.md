@@ -61,11 +61,15 @@ rosrun rosserial_python serial_node.py
 
 On laptop: 
 ```
-roslaunch roomac_autonomous_manipulation real_picking.launch
+roslaunch roomac external_laptop_nav_picking.launch
 ```
 Then after everything launches to pick object:
 ```
-rosrun roomac_autonomous_manipulation real_pick_object.py
+rosservice call /pick_object
+```
+And to return to home position:
+```
+rosservice call /set_home_arm
 ```
 
 ### Real combined picking and autonomous navigation
