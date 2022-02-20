@@ -2,7 +2,7 @@
 
 #include <roomac_autonomous_manipulation/PickCorrection.h>
 
-int main(int argc, char **argv)
+int main(int argc, char** argv)
 {
   ros::init(argc, argv, "picking_correction");
   ros::NodeHandle nh;

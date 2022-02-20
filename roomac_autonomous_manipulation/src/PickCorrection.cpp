@@ -1,8 +1,15 @@
 #include <roomac_autonomous_manipulation/PickCorrection.h>
 
 #include <limits>
-#include <sensor_msgs/PointCloud2.h>
+
 #include <geometry_msgs/PointStamped.h>
+
+#include <sensor_msgs/PointCloud2.h>
+
+#include <pcl/filters/extract_indices.h>
+#include <pcl/filters/plane_clipper3D.h>
+#include <pcl/search/kdtree.h>
+#include <pcl/segmentation/extract_clusters.h>
 
 PickCorrection::PickCorrection() : tf_listener_(tf_buffer_)
 {
@@ -37,19 +44,8 @@ PickCorrection::PickCorrection() : tf_listener_(tf_buffer_)
   reconfigure_server_.setCallback(f);
 }
 
-void PickCorrection::ReconfigureCallback(roomac_autonomous_manipulation::PickCorrectionConfig &config, uint32_t level)
-{
-  num_of_readings_for_average_ = config.num_of_readings_for_average;
-  z_offset_pointcloud_split_ = config.z_offset_pointcloud_split;
-  cluster_tolerance_ = config.cluster_tolerance;
-  min_cluster_size_ = config.min_cluster_size;
-  max_cluster_size_ = config.max_cluster_size;
-  elbow_gripper_offset_ = config.elbow_gripper_offset;
-  publish_debug_ = config.publish_debug;
-  offset_planning_gripper_point_ = config.offset_planning_gripper_point;
-}
-
-bool PickCorrection::HandlePickCorrection(roomac_autonomous_manipulation::DetectGripperPosition::Request &req, roomac_autonomous_manipulation::DetectGripperPosition::Response &res)
+bool PickCorrection::HandlePickCorrection(roomac_autonomous_manipulation::DetectGripperPosition::Request& req,
+                                          roomac_autonomous_manipulation::DetectGripperPosition::Response& res)
 {
   geometry_msgs::Point pt_average;
   for (int i = 0; i < num_of_readings_for_average_; ++i)
@@ -61,7 +57,7 @@ bool PickCorrection::HandlePickCorrection(roomac_autonomous_manipulation::Detect
       pt_average.y += pt.y;
       pt_average.z += pt.z;
     }
-    catch (const std::runtime_error &e)
+    catch (const std::runtime_error& e)
     {
       res.success = false;
       res.message = e.what();
@@ -96,7 +92,8 @@ geometry_msgs::Point PickCorrection::FindGripperPosition()
 {
   ROS_INFO("Waiting for pointcloud message");
 
-  auto cloud_msg = ros::topic::waitForMessage<sensor_msgs::PointCloud2>("/camera_up/depth_registered/points", ros::Duration(10.));
+  auto cloud_msg =
+      ros::topic::waitForMessage<sensor_msgs::PointCloud2>("/camera_up/depth_registered/points", ros::Duration(10.));
   pcl::PointCloud<pcl::PointXYZRGB>::Ptr cloud(new pcl::PointCloud<pcl::PointXYZRGB>());
   pcl::fromROSMsg(*cloud_msg, *cloud);
 
@@ -109,7 +106,6 @@ geometry_msgs::Point PickCorrection::FindGripperPosition()
 
   try
   {
-
     ROS_INFO("Waiting for artag transform");
 
     geometry_msgs::Transform artag_pos = ArtagTransform();
@@ -135,13 +131,13 @@ geometry_msgs::Point PickCorrection::FindGripperPosition()
 
     return pt;
   }
-  catch (const std::runtime_error &e)
+  catch (const std::runtime_error& e)
   {
     throw e;
   }
 }
 
-geometry_msgs::Point PickCorrection::AnalyzeCluster(const pcl::PointCloud<pcl::PointXYZRGB>::Ptr &cluster)
+geometry_msgs::Point PickCorrection::AnalyzeCluster(const pcl::PointCloud<pcl::PointXYZRGB>::Ptr& cluster)
 {
   float min_x = std::numeric_limits<float>::max();
   int min_x_ind = -1;
@@ -219,7 +215,8 @@ geometry_msgs::Point PickCorrection::AnalyzeCluster(const pcl::PointCloud<pcl::P
   return gripper_pt;
 }
 
-pcl::PointCloud<pcl::PointXYZRGB>::Ptr PickCorrection::DetectClusters(const pcl::PointCloud<pcl::PointXYZRGB>::Ptr &src_cloud)
+pcl::PointCloud<pcl::PointXYZRGB>::Ptr
+PickCorrection::DetectClusters(const pcl::PointCloud<pcl::PointXYZRGB>::Ptr& src_cloud)
 {
   if (src_cloud->empty())
   {
@@ -249,7 +246,7 @@ pcl::PointCloud<pcl::PointXYZRGB>::Ptr PickCorrection::DetectClusters(const pcl:
   for (std::vector<pcl::PointIndices>::const_iterator it = cluster_indices.begin(); it != cluster_indices.end(); ++it)
   {
     pcl::PointCloud<pcl::PointXYZRGB>::Ptr cloud_cluster(new pcl::PointCloud<pcl::PointXYZRGB>);
-    for (const auto &idx : it->indices)
+    for (const auto& idx : it->indices)
     {
       pcl::PointXYZRGB pt = (*points_filtered)[idx];
       pt.r = (j * 10) % 255;
@@ -276,7 +273,8 @@ pcl::PointCloud<pcl::PointXYZRGB>::Ptr PickCorrection::DetectClusters(const pcl:
   return max_cloud_cluster;
 }
 
-pcl::PointCloud<pcl::PointXYZRGB>::Ptr PickCorrection::PlaneClip(const pcl::PointCloud<pcl::PointXYZRGB>::Ptr &src_cloud, const Eigen::Vector4f &plane, bool negative)
+pcl::PointCloud<pcl::PointXYZRGB>::Ptr PickCorrection::PlaneClip(
+    const pcl::PointCloud<pcl::PointXYZRGB>::Ptr& src_cloud, const Eigen::Vector4f& plane, bool negative)
 {
   pcl::PlaneClipper3D<pcl::PointXYZRGB> clipper(plane);
   pcl::PointIndices::Ptr indices(new pcl::PointIndices);
@@ -300,10 +298,9 @@ geometry_msgs::Transform PickCorrection::ArtagTransform()
 
   try
   {
-    transformStamped = tf_buffer_.lookupTransform(camera_frame_, artag_frame_,
-                                                  ros::Time(0));
+    transformStamped = tf_buffer_.lookupTransform(camera_frame_, artag_frame_, ros::Time(0));
   }
-  catch (tf2::TransformException &e)
+  catch (tf2::TransformException& e)
   {
     throw std::runtime_error(e.what());
   }
@@ -338,11 +335,23 @@ Eigen::Vector4f PickCorrection::CalculatePlane(geometry_msgs::Transform trans)
   return plane;
 }
 
-void PickCorrection::PublishPointcloud(const pcl::PointCloud<pcl::PointXYZRGB>::Ptr &cloud, ros::Publisher &pub)
+void PickCorrection::PublishPointcloud(const pcl::PointCloud<pcl::PointXYZRGB>::Ptr& cloud, ros::Publisher& pub)
 {
   sensor_msgs::PointCloud2 cloud_msg;
   pcl::toROSMsg(*cloud, cloud_msg);
   cloud_msg.header.frame_id = camera_frame_;
   cloud_msg.header.stamp = ros::Time::now();
   pub.publish(cloud_msg);
+}
+
+void PickCorrection::ReconfigureCallback(roomac_autonomous_manipulation::PickCorrectionConfig& config, uint32_t level)
+{
+  num_of_readings_for_average_ = config.num_of_readings_for_average;
+  z_offset_pointcloud_split_ = config.z_offset_pointcloud_split;
+  cluster_tolerance_ = config.cluster_tolerance;
+  min_cluster_size_ = config.min_cluster_size;
+  max_cluster_size_ = config.max_cluster_size;
+  elbow_gripper_offset_ = config.elbow_gripper_offset;
+  publish_debug_ = config.publish_debug;
+  offset_planning_gripper_point_ = config.offset_planning_gripper_point;
 }

@@ -1,46 +1,91 @@
 #ifndef PICK_CORRECTION_H
 #define PICK_CORRECTION_H
 
+#include <string>
+
 #include <ros/ros.h>
-#include <pcl_ros/point_cloud.h>
-#include <pcl/point_types.h>
 
 #include <tf2_ros/transform_listener.h>
 
 #include <geometry_msgs/Point.h>
 #include <geometry_msgs/Transform.h>
-#include <std_srvs/Trigger.h>
-#include <roomac_autonomous_manipulation/DetectGripperPosition.h>
 
-#include <pcl/search/kdtree.h>
-#include <pcl/filters/plane_clipper3D.h>
-#include <pcl/filters/extract_indices.h>
-#include <pcl/segmentation/extract_clusters.h>
+#include <pcl_ros/point_cloud.h>
+
+#include <pcl/point_types.h>
 
 #include <dynamic_reconfigure/server.h>
-#include <roomac_autonomous_manipulation/PickCorrectionConfig.h>
 
-#include <string>
+#include <roomac_autonomous_manipulation/PickCorrectionConfig.h>
+#include <roomac_autonomous_manipulation/DetectGripperPosition.h>
 
 class PickCorrection
 {
-
 public:
   PickCorrection();
 
 private:
-  bool HandlePickCorrection(roomac_autonomous_manipulation::DetectGripperPosition::Request &req, roomac_autonomous_manipulation::DetectGripperPosition::Response &res);
-  pcl::PointCloud<pcl::PointXYZRGB>::Ptr PlaneClip(const pcl::PointCloud<pcl::PointXYZRGB>::Ptr &src_cloud, const Eigen::Vector4f &plane, bool negative);
-  pcl::PointCloud<pcl::PointXYZRGB>::Ptr DetectClusters(const pcl::PointCloud<pcl::PointXYZRGB>::Ptr &src_cloud);
+  /**
+   * @brief Handles service call, calculates gripper position as an avarage of few detections
+   */
+  bool HandlePickCorrection(roomac_autonomous_manipulation::DetectGripperPosition::Request& req,
+                            roomac_autonomous_manipulation::DetectGripperPosition::Response& res);
+  /**
+   * @brief Gets most recent pointcloud and detects gripper position
+   *
+   * @return Gripper position
+   * @exception std::runtime_error when pointcloud is empty or there is an error during gripper detection
+   */
+  geometry_msgs::Point FindGripperPosition();
+
+  /**
+   * @brief Gets most recent pointcloud and detects gripper position
+   *
+   * @param cluster preprocessed pointcloud containing only gripper points
+   * @return Gripper position
+   * @exception std::runtime_error when pointcloud is empty or there is an error during gripper detection
+   */
+  geometry_msgs::Point AnalyzeCluster(const pcl::PointCloud<pcl::PointXYZRGB>::Ptr& cluster);
+
+  /**
+   * @brief Performs euclidean clustering on pointcloud and returns largest
+   *
+   * @param src_cloud cloud to perform clustering on
+   * @return Largest pointcloud (with most points)
+   * @exception std::runtime_error when pointcloud is empty
+   */
+  pcl::PointCloud<pcl::PointXYZRGB>::Ptr DetectClusters(const pcl::PointCloud<pcl::PointXYZRGB>::Ptr& src_cloud);
+
+  /**
+   * @brief Cuts pointlcoud with a given plane and returns one part
+   *
+   * @param src_cloud cloud to cut
+   * @param plane used for cutting
+   * @param negative which part to return
+   * @return one pointcloud after cutting
+   */
+  pcl::PointCloud<pcl::PointXYZRGB>::Ptr PlaneClip(const pcl::PointCloud<pcl::PointXYZRGB>::Ptr& src_cloud,
+                                                   const Eigen::Vector4f& plane, bool negative);
+
+  /**
+   * @brief Reads current transform from camera_frame_ to artag_frame_
+   *
+   * @return transform from camera_frame_ to artag_frame_
+   * @exception std::runtime_error when error during looking up transform
+   */
   geometry_msgs::Transform ArtagTransform();
 
-  void PublishPointcloud(const pcl::PointCloud<pcl::PointXYZRGB>::Ptr &cloud, ros::Publisher &pub);
-  geometry_msgs::Point AnalyzeCluster(const pcl::PointCloud<pcl::PointXYZRGB>::Ptr &cluster);
-
-  geometry_msgs::Point FindGripperPosition();
+  /**
+   * @brief Calculates plane coefficients based on transform. Used to get artag plane, which is used to cut pointcloud
+   *
+   * @param trans transform
+   * @return plane
+   */
   Eigen::Vector4f CalculatePlane(geometry_msgs::Transform trans);
 
-  void ReconfigureCallback(roomac_autonomous_manipulation::PickCorrectionConfig &config, uint32_t level);
+  void PublishPointcloud(const pcl::PointCloud<pcl::PointXYZRGB>::Ptr& cloud, ros::Publisher& pub);
+
+  void ReconfigureCallback(roomac_autonomous_manipulation::PickCorrectionConfig& config, uint32_t level);
 
   int num_of_readings_for_average_;
   float z_offset_pointcloud_split_;
