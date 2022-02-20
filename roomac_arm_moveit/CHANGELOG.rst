@@ -2,6 +2,9 @@
 Changelog for package roomac_arm_moveit
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+
 1.0.2 (2022-02-19)
 ------------------
 

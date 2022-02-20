@@ -2,6 +2,12 @@
 Changelog for package roomac_autonomous_manipulation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* Merge pull request `#19 <https://github.com/macstepien/roomac_ros/issues/19>`_ from macstepien/11-improve-picking
+  Add picking correction node
+* Contributors: Maciej Stępień
+
 1.0.2 (2022-02-19)
 ------------------
 

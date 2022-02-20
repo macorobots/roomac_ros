@@ -2,6 +2,9 @@
 Changelog for package roomac_description_moveit
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+
 1.0.2 (2022-02-19)
 ------------------
 * Merge pull request `#17 <https://github.com/macstepien/roomac_ros/issues/17>`_ from macstepien/16-arm-too-close-to-table
