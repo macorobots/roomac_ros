@@ -152,6 +152,31 @@ id: ''"
 roslaunch roomac_simulation simulation_nav_pick.launch
 ```
 
+### Arm precision testing
+
+#### Real
+On raspberry:
+```
+rosrun rosserial_python serial_node.py
+```
+
+On laptop: 
+```
+roslaunch roomac external_laptop_test_arm_precision.launch
+```
+
+Services:
+```
+rosservice call /go_to_test_point
+rosservice call /set_home_arm
+```
+
+#### Simulation
+
+```
+roslaunch roomac_simulation simulation_test_arm_precision.launch
+```
+
 ## Kinect in Docker
 To use Kinect in docker, additionally there is a need to create udev rules on host machine. Create `/etc/udev/rules.d/51-kinect.rules` with:
 ```

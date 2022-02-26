@@ -1,0 +1,17 @@
+<?xml version="1.0" ?>
+<robot name="roomac" xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+  <link name="gripper_right_precision_test_tip"/>
+  <joint name="gripper_right_precision_test_tip_joint" type="fixed">
+    <origin rpy="0 0 0" xyz="0.005894 0.0 -0.109041"/>
+    <parent link="gripper_right_1"/>
+    <child link="gripper_right_precision_test_tip"/>
+  </joint>
+
+  <link name="body_precision_test_tip"/>
+  <joint name="body_precision_test_tip_joint" type="fixed">
+    <origin rpy="0 0 0" xyz="0.01115 0.0 0.9474945"/>
+    <parent link="base_link"/>
+    <child link="body_precision_test_tip"/>
+  </joint>
+</robot>
