@@ -137,7 +137,14 @@ roslaunch roomac_simulation simulation_pick_place.launch
 ```
 Then after everything launches to pick object:
 ```
-rosrun roomac_autonomous_manipulation simulation_pick_object.py
+rosservice call /pick_object
+```
+Cancelling:
+```
+rostopic pub /move_group/cancel actionlib_msgs/GoalID "stamp:
+  secs: 0
+  nsecs: 0
+id: ''" 
 ```
 
 ### Simulation combined picking and autonomous navigation
