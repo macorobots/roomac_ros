@@ -4,3 +4,4 @@ CMakeFiles/
 .devcontainer/*
 !.devcontainer/devcontainer_template.json
 rosbags/
+*.pyc
