@@ -61,11 +61,15 @@ rosrun rosserial_python serial_node.py
 
 On laptop: 
 ```
-roslaunch roomac_autonomous_manipulation real_picking.launch
+roslaunch roomac external_laptop_nav_picking.launch
 ```
 Then after everything launches to pick object:
 ```
-rosrun roomac_autonomous_manipulation real_pick_object.py
+rosservice call /pick_object
+```
+And to return to home position:
+```
+rosservice call /set_home_arm
 ```
 
 ### Real combined picking and autonomous navigation
@@ -133,12 +137,44 @@ roslaunch roomac_simulation simulation_pick_place.launch
 ```
 Then after everything launches to pick object:
 ```
-rosrun roomac_autonomous_manipulation simulation_pick_object.py
+rosservice call /pick_object
+```
+Cancelling:
+```
+rostopic pub /move_group/cancel actionlib_msgs/GoalID "stamp:
+  secs: 0
+  nsecs: 0
+id: ''" 
 ```
 
 ### Simulation combined picking and autonomous navigation
 ```
 roslaunch roomac_simulation simulation_nav_pick.launch
+```
+
+### Arm precision testing
+
+#### Real
+On raspberry:
+```
+rosrun rosserial_python serial_node.py
+```
+
+On laptop: 
+```
+roslaunch roomac external_laptop_test_arm_precision.launch
+```
+
+Services:
+```
+rosservice call /go_to_test_point
+rosservice call /set_home_arm
+```
+
+#### Simulation
+
+```
+roslaunch roomac_simulation simulation_test_arm_precision.launch
 ```
 
 ## Kinect in Docker
