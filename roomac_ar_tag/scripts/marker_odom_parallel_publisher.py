@@ -25,7 +25,7 @@ if __name__ == "__main__":
     rate = rospy.Rate(30.0)
     while not rospy.is_shutdown():
         try:
-            (trans, rot) = listener.lookupTransform(
+            (trans_marker_0, rot_marker_0) = listener.lookupTransform(
                 "camera_up_link", "ar_marker_0", rospy.Time(0)
             )
         except (
@@ -35,16 +35,16 @@ if __name__ == "__main__":
         ):
             continue
 
-        rpy_robot = euler_from_quaternion(rot)
+        rpy_marker_0 = euler_from_quaternion(rot_marker_0)
         # Addin small value (0.001) is neccessary to prevent errors:
         # TF_NAN_INPUT TF_DENORMALIZED_QUATERNION from robot localization
-        rot_robot_only_yaw = quaternion_from_euler(
-            math.pi / 2 + 0.001, rpy_robot[1], -math.pi / 2 + 0.001
+        rot_marker_0_only_yaw = quaternion_from_euler(
+            math.pi / 2 + 0.001, rpy_marker_0[1], -math.pi / 2 + 0.001
         )
 
         br.sendTransform(
-            trans,
-            rot_robot_only_yaw,
+            trans_marker_0,
+            rot_marker_0_only_yaw,
             rospy.Time.now(),
             "ar_marker_0_only_yaw",
             "camera_up_link",
