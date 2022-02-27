@@ -2,8 +2,8 @@
 Changelog for package roomac_description
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+1.1.1 (2022-02-27)
+------------------
 * Merge pull request `#20 <https://github.com/macstepien/roomac_ros/issues/20>`_ from macstepien/arm-precision-testing
   Arm precision testing
 * Contributors: Maciej Stępień
