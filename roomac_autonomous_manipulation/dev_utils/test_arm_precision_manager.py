@@ -46,7 +46,7 @@ class TestArmPrecisionManager(PickingObjectManager):
 
         return object_point
 
-    def get_perpendicular_orientation(self):
+    def get_test_point_orientation(self):
         orientation = Quaternion()
         quat = quaternion_from_euler(-math.pi / 2, -math.pi / 2, math.pi + math.pi / 4)
         orientation.x = quat[0]
@@ -73,7 +73,7 @@ class TestArmPrecisionManager(PickingObjectManager):
         self.move_group.set_start_state_to_current_state()
 
         pose_goal = geometry_msgs.msg.Pose()
-        pose_goal.orientation = self.get_perpendicular_orientation()
+        pose_goal.orientation = self.get_test_point_orientation()
         pose_goal.position = point
 
         # self.move_group.set_pose_target(pose_goal)
