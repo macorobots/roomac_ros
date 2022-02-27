@@ -2,6 +2,9 @@
 Changelog for package roomac_rtabmap
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+
 1.1.1 (2022-02-27)
 ------------------
 

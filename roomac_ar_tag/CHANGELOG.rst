@@ -2,6 +2,12 @@
 Changelog for package roomac_ar_tag
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* Merge pull request `#21 <https://github.com/macstepien/roomac_ros/issues/21>`_ from macstepien/object-detection-parallel-kinect
+  Parallel mounted upper kinect
+* Contributors: Maciej Stępień
+
 1.1.1 (2022-02-27)
 ------------------
 
