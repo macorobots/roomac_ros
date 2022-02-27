@@ -6,7 +6,9 @@
   <node name="add_robot_body_collision_to_scene" pkg="roomac_autonomous_manipulation" type="add_robot_body_collision_to_scene.py" output="screen"/>
 
 <!-- ARtag -->
-  <include file="$(find roomac_ar_tag)/launch/ar_tag.launch" />
+  <include file="$(find roomac_ar_tag)/launch/ar_tag.launch">
+    <arg name="upper_kinect_mounted_parellel" value="true"/>
+  </include>
 
 <!-- Rtabmap -->
   <include file="$(find roomac_rtabmap)/launch/rtabmap_localization_fusion.launch">

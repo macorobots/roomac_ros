@@ -41,8 +41,10 @@ class RealPickingObjectManager(PickingObjectManager):
         object_point = PointStamped()
         object_point.header.stamp = rospy.Time(0)
         object_point.header.frame_id = "ar_marker_2"
-        object_point.point.x = -0.04
-        object_point.point.y = -0.09
+        # object is positioned away from ar tag + componsetion for
+        # difference between real manipulator and model
+        object_point.point.x = -0.04 - 0.025
+        object_point.point.y = -0.09 - 0.008 + 0.02
         object_point.point.z = 0.1
 
         return object_point

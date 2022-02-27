@@ -1,4 +1,7 @@
 <launch>
-  <include file="$(find roomac_autonomous_manipulation)/launch/real_picking.launch" />
+  <include file="$(find roomac_autonomous_manipulation)/launch/real_picking.launch">
+    <arg name="upper_kinect_mounted_parellel" value="true"/>
+  </include>
+
   <node name="test_arm_precision_manager" pkg="roomac_autonomous_manipulation" type="test_arm_precision_manager.py" output="screen"/>
 </launch>
