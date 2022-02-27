@@ -2,8 +2,8 @@
 Changelog for package roomac_autonomous_manipulation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+1.2.0 (2022-02-27)
+------------------
 * Merge pull request `#21 <https://github.com/macstepien/roomac_ros/issues/21>`_ from macstepien/object-detection-parallel-kinect
   Parallel mounted upper kinect
 * Contributors: Maciej Stępień
