@@ -1,4 +1,6 @@
 <launch>
+  <arg name="upper_kinect_mounted_parellel" default="true" />
+
   <node pkg="robot_localization" type="ekf_localization_node" name="filtration_camera_object" clear_params="true">
     <rosparam command="load" file="$(find roomac_ar_tag)/config/fusion_camera_object.yaml" />
   </node>
@@ -7,6 +9,9 @@
     <rosparam command="load" file="$(find roomac_ar_tag)/config/fusion_camera_robot.yaml" />
   </node>
 
-  <node name="marker_odom_publisher" pkg="roomac_ar_tag" type="marker_odom_publisher.py" output="screen"/>
+  <node if="$(arg upper_kinect_mounted_parellel)" name="marker_odom_parallel_publisher" pkg="roomac_ar_tag" 
+    type="marker_odom_parallel_publisher.py" output="screen"/>
+  <node unless="$(arg upper_kinect_mounted_parellel)" name="marker_odom_publisher" pkg="roomac_ar_tag" 
+    type="marker_odom_publisher.py" output="screen"/>
 
 </launch>
