@@ -192,6 +192,23 @@ class PickingObjectManager(object):
                 rospy.logerr(err)
             rate.sleep()
 
+    def print_error(self, goal_point):
+        tip_point = PointStamped()
+        tip_point.header.stamp = rospy.Time(0)
+        tip_point.header.frame_id = "gripper_right_grip"
+        tip_point.point.x = 0.0
+        tip_point.point.y = 0.0
+        tip_point.point.z = 0.0
+
+        gripper_point_transformed = self.transform_point(tip_point, "base_link")
+
+        diff = Point()
+        diff.x = gripper_point_transformed.point.x - goal_point.x
+        diff.y = gripper_point_transformed.point.y - goal_point.y
+        diff.z = gripper_point_transformed.point.z - goal_point.z
+
+        rospy.logwarn("Planner error: " + str(diff))
+
     def pick_object(self, req):
         res = TriggerResponse()
         res.success = True
@@ -207,6 +224,7 @@ class PickingObjectManager(object):
         self.open_gripper()
         self.go_to_point(pre_point)
         self.go_to_point(object_point_transformed.point)
+        self.print_error(object_point_transformed.point)
         self.close_gripper()
         self.scene.remove_world_object("object")
         self.go_to_point(post_point)
