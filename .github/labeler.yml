@@ -35,6 +35,3 @@ sensor_fusion:
 
 simulation:
 - roomac_simulation/**/*
-
-readme:
-- README.md
