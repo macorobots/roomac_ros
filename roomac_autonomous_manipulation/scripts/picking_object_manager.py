@@ -174,14 +174,7 @@ class PickingObjectManager(object):
         return res
 
     def get_object_point(self):
-        object_point = PointStamped()
-        object_point.header.stamp = rospy.Time(0)
-        object_point.header.frame_id = "ar_marker_2"
-        object_point.point.x = -0.04
-        object_point.point.y = -0.09
-        object_point.point.z = 0.1
-
-        return object_point
+        raise NotImplementedError()
 
     def transform_point(self, point, target_frame):
         listener = tf.TransformListener()
