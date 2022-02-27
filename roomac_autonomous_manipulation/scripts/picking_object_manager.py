@@ -208,9 +208,8 @@ class PickingObjectManager(object):
         self.go_to_point(pre_point)
         self.go_to_point(object_point_transformed.point)
         self.close_gripper()
-        self.go_to_point(post_point)
-
         self.scene.remove_world_object("object")
+        self.go_to_point(post_point)
 
         return res
 
