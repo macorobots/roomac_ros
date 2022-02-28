@@ -2,6 +2,12 @@
 Changelog for package roomac_autonomous_manipulation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* Merge pull request `#24 <https://github.com/macstepien/roomac_ros/issues/24>`_ from macstepien/package-cleanup
+  Packages cleanup
+* Contributors: Maciej Stępień
+
 1.2.1 (2022-02-28)
 ------------------
 

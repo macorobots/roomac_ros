@@ -2,6 +2,9 @@
 Changelog for package roomac
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+
 1.2.1 (2022-02-28)
 ------------------
 * Merge pull request `#23 <https://github.com/macstepien/roomac_ros/issues/23>`_ from macstepien/artag-odom-publisher-refactor
