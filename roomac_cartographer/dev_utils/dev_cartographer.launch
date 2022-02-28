@@ -9,13 +9,13 @@
   <param name="robot_description" command="$(find xacro)/xacro $(find roomac_description)/urdf/roomac.xacro" />
   <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" />
 
-  <include file="$(find roomac_slam)/launch/cartographer.launch" />
+  <include file="$(find roomac_cartographer)/launch/cartographer.launch" />
 
-  <include file="$(find roomac_slam)/launch/rviz_cartographer.launch" />
+  <include file="$(find roomac_cartographer)/launch/rviz_cartographer.launch" />
 
   <include file="$(find rgbd_launch)/launch/kinect_frames.launch" />
 
-  <!-- <node name="odom_tf_to_topic" pkg="roomac_slam" type="odom_tf_to_topic.py"/> -->
+  <!-- <node name="odom_tf_to_topic" pkg="roomac_cartographer" type="odom_tf_to_topic.py"/> -->
 
   <include file="$(find roomac_sensor_fusion)/launch/robot_localization.launch" />
 

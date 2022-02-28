@@ -10,7 +10,7 @@
   <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" />
 
 
-  <include file="$(find roomac_slam)/dev_utils/rviz_robot_localization.launch" />
+  <include file="$(find roomac_cartographer)/dev_utils/rviz_robot_localization.launch" />
 
   <include file="$(find rgbd_launch)/launch/kinect_frames.launch" />
 

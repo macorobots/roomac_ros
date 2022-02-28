@@ -47,7 +47,7 @@
 
   <node name="cartographer_node" pkg="cartographer_ros"
     type="cartographer_node" args="
-        -configuration_directory $(find roomac_slam)/config
+        -configuration_directory $(find roomac_cartographer)/config
         -configuration_basename roomac_cartographer.lua"
     output="screen">
     <remap from="scan" to="kinect_scan" />

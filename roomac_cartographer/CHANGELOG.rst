@@ -1,5 +1,5 @@
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-Changelog for package roomac_slam
+Changelog for package roomac_cartographer
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 1.2.1 (2022-02-28)
