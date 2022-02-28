@@ -2,6 +2,12 @@
 Changelog for package roomac
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* Merge pull request `#23 <https://github.com/macstepien/roomac_ros/issues/23>`_ from macstepien/artag-odom-publisher-refactor
+  Artag odom publisher refactor
+* Contributors: Maciej Stępień
+
 1.2.0 (2022-02-27)
 ------------------
 * Merge pull request `#21 <https://github.com/macstepien/roomac_ros/issues/21>`_ from macstepien/object-detection-parallel-kinect
