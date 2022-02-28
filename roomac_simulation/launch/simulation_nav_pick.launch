@@ -42,7 +42,7 @@
   <node name="spawn_gazebo_model" pkg="gazebo_ros" type="spawn_model" args="-urdf -param robot_description -model robot -x 0.3 -y 0 -z 0.2"
     respawn="false" output="screen" />
 
-  <include file="$(find roomac_description_moveit)/launch/ros_controllers.launch"/>
+  <include file="$(find roomac_moveit)/launch/ros_controllers.launch"/>
 
 <!-- MoveIt -->
   <remap from="arm_position_controller/follow_joint_trajectory" to="/roomac/arm_position_controller/follow_joint_trajectory" />
@@ -58,7 +58,7 @@
     <remap from="/joint_states" to="/roomac/joint_states"/>
   </node>
 
-  <include file="$(find roomac_description_moveit)/launch/move_group.launch">
+  <include file="$(find roomac_moveit)/launch/move_group.launch">
     <arg name="allow_trajectory_execution" value="true"/>
     <arg name="fake_execution" value="false"/>
     <arg name="info" value="true"/>
@@ -69,8 +69,8 @@
   </include>
 
 <!-- RViz -->
-  <include file="$(find roomac_description_moveit)/launch/moveit_rviz.launch">
-    <arg name="rviz_config" value="$(find roomac_description_moveit)/launch/moveit.rviz"/>
+  <include file="$(find roomac_moveit)/launch/moveit_rviz.launch">
+    <arg name="rviz_config" value="$(find roomac_moveit)/launch/moveit.rviz"/>
     <arg name="debug" value="false"/>
   </include>
 

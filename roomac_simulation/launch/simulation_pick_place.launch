@@ -1,5 +1,5 @@
 <launch>
-  <include file="$(find roomac_description_moveit)/launch/demo_gazebo.launch" />
+  <include file="$(find roomac_moveit)/launch/demo_gazebo.launch" />
 
   <!-- Difference in kinect frames (real vs simulation), so parallel isn't working correctly.
   There is no need for it though, in simulation detection accuracy is very good -->

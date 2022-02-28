@@ -1,4 +1,0 @@
-<launch>
-  <arg name="rvizconfig" default="$(find roomac_slam)/rviz/roomac_cartographer.rviz" />
-  <node  name="rviz" pkg="rviz" type="rviz" args="-d $(arg rvizconfig)" required="true" />
-</launch>
