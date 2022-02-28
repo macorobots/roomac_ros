@@ -19,6 +19,6 @@
   <node name="spawn_gazebo_model" pkg="gazebo_ros" type="spawn_model" args="-urdf -param robot_description -model robot -x 0.3 -y 0 -z 0.2"
     respawn="false" output="screen" />
 
-  <include file="$(find roomac_description_moveit)/launch/ros_controllers.launch"/>
+  <include file="$(find roomac_moveit)/launch/ros_controllers.launch"/>
 
 </launch>

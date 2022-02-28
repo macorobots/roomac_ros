@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.1.3)
-project(roomac_description_moveit)
+project(roomac_moveit)
 
 find_package(catkin REQUIRED)
 

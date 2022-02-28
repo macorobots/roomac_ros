@@ -14,17 +14,17 @@
   </group>
 
   <!-- The semantic description that corresponds to the URDF -->
-  <param name="$(arg robot_description)_semantic" textfile="$(find roomac_description_moveit)/config/roomac.srdf" />
+  <param name="$(arg robot_description)_semantic" textfile="$(find roomac_moveit)/config/roomac.srdf" />
 
   <!-- Load updated joint limits (override information from URDF) -->
   <group ns="$(arg robot_description)_planning">
-    <rosparam command="load" file="$(find roomac_description_moveit)/config/joint_limits.yaml"/>
-    <rosparam command="load" file="$(find roomac_description_moveit)/config/cartesian_limits.yaml"/>
+    <rosparam command="load" file="$(find roomac_moveit)/config/joint_limits.yaml"/>
+    <rosparam command="load" file="$(find roomac_moveit)/config/cartesian_limits.yaml"/>
   </group>
 
   <!-- Load default settings for kinematics; these settings are overridden by settings in a node's namespace -->
   <group ns="$(arg robot_description)_kinematics">
-    <rosparam command="load" file="$(find roomac_description_moveit)/config/kinematics.yaml"/>
+    <rosparam command="load" file="$(find roomac_moveit)/config/kinematics.yaml"/>
 
   </group>
 
