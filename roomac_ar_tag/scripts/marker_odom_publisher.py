@@ -1,84 +1,133 @@
 #!/usr/bin/env python
 import rospy
+
 import tf
-from tf import transformations as t
+
 from nav_msgs.msg import Odometry
-from geometry_msgs.msg import Point, Pose, Quaternion, Twist, Vector3, Pose2D
+from geometry_msgs.msg import Point, Pose, Quaternion
+
+
+class ARTagOdomPublisher(object):
+    def __init__(self):
+        self.translation_covariance = rospy.get_param("~translation_covariance", 10)
+
+        # It looks like rotation is main source of error in artag detection
+        # especially roll and pitch
+        self.rotation_covariance = rospy.get_param("~rotation_covariance", 30)
+
+        self.covariance_matrix = [0.0] * 36
+        self.covariance_matrix[0] = self.translation_covariance
+        self.covariance_matrix[7] = self.translation_covariance
+        self.covariance_matrix[14] = self.translation_covariance
+        self.covariance_matrix[21] = self.rotation_covariance
+        self.covariance_matrix[28] = self.rotation_covariance
+        self.covariance_matrix[35] = self.rotation_covariance
+
+        self.rate = rospy.Rate(rospy.get_param("~rate", 30.0))
+
+        self.camera_link = rospy.get_param("~camera_link", "camera_up_link")
+        self.ar_marker_robot_link = rospy.get_param(
+            "~ar_marker_robot_link", "ar_marker_0"
+        )
+        self.ar_marker_object_link = rospy.get_param(
+            "~ar_marker_object_link", "ar_marker_2"
+        )
+        self.robot_link = rospy.get_param("~robot_link", "artag_link_2")
+        self.object_link = rospy.get_param("~object_link", "detected_object")
+
+        self.tf_listener = tf.TransformListener()
+
+        self.odom_robot_pub = rospy.Publisher(
+            "odom_artag_robot", Odometry, queue_size=50
+        )
+        self.odom_object_pub = rospy.Publisher(
+            "odom_artag_object", Odometry, queue_size=50
+        )
+
+    def calculate_odom_msg(
+        self, ar_marker_link, camera_link, target_link, reversed=False
+    ):
+        """Calculates odometry message
+
+        Args:
+            ar_marker_link (string): ar marker link name
+            camera_link (string): camer link name
+            target_link (string): link name that will be used in odom msgs
+            reversed (bool, optional): If True transform to camera_link
+            will be published (useful for ar marker mounted on robot).
+            Otherwise transform will be from camera. Defaults to False.
+
+        Raises:
+            RuntimeError: error when transform can't be read
+
+        Returns:
+            Odometry: odometry msg
+        """
+        if reversed:
+            source_frame = camera_link
+            target_frame = ar_marker_link
+            header_parent_link = target_link
+            header_child_link = camera_link
+        else:
+            source_frame = ar_marker_link
+            target_frame = camera_link
+            header_parent_link = camera_link
+            header_child_link = target_link
+
+        try:
+            (trans, rot) = self.tf_listener.lookupTransform(
+                target_frame, source_frame, rospy.Time(0)
+            )
+        except (
+            tf.LookupException,
+            tf.ConnectivityException,
+            tf.ExtrapolationException,
+        ):
+            raise RuntimeError("Couldn't get transform")
+
+        pt = Point(trans[0], trans[1], trans[2])
+        quat = Quaternion(rot[0], rot[1], rot[2], rot[3])
+
+        odom_msg = Odometry()
+        odom_msg.header.stamp = rospy.Time.now()
+        odom_msg.header.frame_id = header_parent_link
+        odom_msg.child_frame_id = header_child_link
+        odom_msg.pose.pose = Pose(pt, quat)
+
+        odom_msg.pose.covariance = self.covariance_matrix
+
+        return odom_msg
+
+    def run(self):
+        """Runs in the loop with a given rate, publishing
+        odometry messages
+        """
+        while not rospy.is_shutdown():
+            try:
+                odom_robot_msg = self.calculate_odom_msg(
+                    self.ar_marker_robot_link,
+                    self.camera_link,
+                    self.robot_link,
+                    reversed=True,
+                )
+
+                odom_object_msg = self.calculate_odom_msg(
+                    self.ar_marker_object_link,
+                    self.camera_link,
+                    self.object_link,
+                    reversed=False,
+                )
+            except RuntimeError as e:
+                rospy.logwarn("[Marker odom publisher] " + str(e))
+                continue
+
+            self.odom_robot_pub.publish(odom_robot_msg)
+            self.odom_object_pub.publish(odom_object_msg)
+
+            self.rate.sleep()
 
 
 if __name__ == "__main__":
     rospy.init_node("artag_tf_republisher")
-
-    listener = tf.TransformListener()
-
-    odom_robot_pub = rospy.Publisher("odom_artag_robot", Odometry, queue_size=50)
-    odom_object_pub = rospy.Publisher("odom_artag_object", Odometry, queue_size=50)
-
-    translation_covariance = 10
-    # It looks like rotation is main source of error in artag detection
-    # especially roll and pitch
-    rotation_covariance = 30
-
-    rate = rospy.Rate(30.0)
-    while not rospy.is_shutdown():
-        try:
-            (trans_robot, rot_robot) = listener.lookupTransform(
-                "ar_marker_0", "camera_up_link", rospy.Time(0)
-            )
-        except (
-            tf.LookupException,
-            tf.ConnectivityException,
-            tf.ExtrapolationException,
-        ):
-            continue
-        
-        pt_robot = Point(trans_robot[0], trans_robot[1], trans_robot[2])
-        quat_robot = Quaternion(rot_robot[0], rot_robot[1], rot_robot[2], rot_robot[3])
-
-        odom_robot_msg = Odometry()
-        odom_robot_msg.header.stamp = rospy.Time.now()
-        odom_robot_msg.header.frame_id = "artag_link_2"
-        odom_robot_msg.child_frame_id = "camera_up_link"
-        odom_robot_msg.pose.pose = Pose(pt_robot, quat_robot)
-
-        odom_robot_msg.pose.covariance[0] = translation_covariance
-        odom_robot_msg.pose.covariance[7] = translation_covariance
-        odom_robot_msg.pose.covariance[14] = translation_covariance
-        odom_robot_msg.pose.covariance[21] = rotation_covariance
-        odom_robot_msg.pose.covariance[28] = rotation_covariance
-        odom_robot_msg.pose.covariance[35] = rotation_covariance
-
-        try:
-            (trans_object, rot_object) = listener.lookupTransform(
-                "camera_up_link", "ar_marker_2", rospy.Time(0)
-            )
-        except (
-            tf.LookupException,
-            tf.ConnectivityException,
-            tf.ExtrapolationException,
-        ):
-            continue
-        
-        pt_object = Point(trans_object[0], trans_object[1], trans_object[2])
-        quat_object = Quaternion(
-            rot_object[0], rot_object[1], rot_object[2], rot_object[3]
-        )
-
-        odom_object_msg = Odometry()
-        odom_object_msg.header.stamp = rospy.Time.now()
-        odom_object_msg.header.frame_id = "camera_up_link"
-        odom_object_msg.child_frame_id = "detected_object"
-        odom_object_msg.pose.pose = Pose(pt_object, quat_object)
-
-        odom_object_msg.pose.covariance[0] = translation_covariance
-        odom_object_msg.pose.covariance[7] = translation_covariance
-        odom_object_msg.pose.covariance[14] = translation_covariance
-        odom_object_msg.pose.covariance[21] = rotation_covariance
-        odom_object_msg.pose.covariance[28] = rotation_covariance
-        odom_object_msg.pose.covariance[35] = rotation_covariance
-        
-
-        odom_robot_pub.publish(odom_robot_msg)
-        odom_object_pub.publish(odom_object_msg)
-
-        rate.sleep()
+    odom_publisher = ARTagOdomPublisher()
+    odom_publisher.run()
