@@ -22,7 +22,7 @@ class RobotController:
         self.positions = {"home_position": None, "table_position": None}
 
         self.position_file = rospy.get_param(
-            "positions_file", "/home/roomac/roomac_data/positions.yaml"
+            "~positions_file", "/home/roomac/roomac_data/positions.yaml"
         )
         self.load_positions()
 
