@@ -1,0 +1,9 @@
+translation_covariance: 10
+rotation_covariance: 30
+rate: 30.0
+
+camera_link: "camera_up_link"
+ar_marker_robot_link: "ar_marker_0"
+ar_marker_object_link: "ar_marker_2"
+robot_link: "artag_link_2"
+object_link: "detected_object"
