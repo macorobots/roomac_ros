@@ -6,7 +6,7 @@ import rospy
 import tf
 from tf.transformations import euler_from_quaternion, quaternion_from_euler
 
-from marker_odom_publisher import ARTagOdomPublisher
+from artag_odom_publisher import ARTagOdomPublisher
 
 
 class ARTagParallerlOdomPublisher(ARTagOdomPublisher):
@@ -90,6 +90,6 @@ class ARTagParallerlOdomPublisher(ARTagOdomPublisher):
 
 
 if __name__ == "__main__":
-    rospy.init_node("artag_tf_republisher")
+    rospy.init_node("artag_odom_publisher")
     odom_publisher = ARTagParallerlOdomPublisher()
     odom_publisher.run()

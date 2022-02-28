@@ -9,14 +9,14 @@
     <rosparam command="load" file="$(find roomac_ar_tag)/config/fusion_camera_robot.yaml" />
   </node>
 
-  <node if="$(arg upper_kinect_mounted_parellel)" name="marker_odom_parallel_publisher" pkg="roomac_ar_tag" 
-    type="marker_odom_parallel_publisher.py" output="screen">
-    <rosparam command="load" file="$(find roomac_ar_tag)/config/marker_odom_publisher_config.yaml" />
+  <node if="$(arg upper_kinect_mounted_parellel)" name="artag_odom_parallel_publisher" pkg="roomac_ar_tag" 
+    type="artag_odom_parallel_publisher.py" output="screen">
+    <rosparam command="load" file="$(find roomac_ar_tag)/config/artag_odom_publisher_config.yaml" />
   </node>
 
-  <node unless="$(arg upper_kinect_mounted_parellel)" name="marker_odom_publisher" pkg="roomac_ar_tag" 
-    type="marker_odom_publisher.py" output="screen">
-    <rosparam command="load" file="$(find roomac_ar_tag)/config/marker_odom_publisher_config.yaml" />
+  <node unless="$(arg upper_kinect_mounted_parellel)" name="artag_odom_publisher" pkg="roomac_ar_tag" 
+    type="artag_odom_publisher.py" output="screen">
+    <rosparam command="load" file="$(find roomac_ar_tag)/config/artag_odom_publisher_config.yaml" />
   </node>
 
 </launch>

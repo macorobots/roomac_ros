@@ -128,6 +128,6 @@ class ARTagOdomPublisher(object):
 
 
 if __name__ == "__main__":
-    rospy.init_node("artag_tf_republisher")
+    rospy.init_node("artag_odom_publisher")
     odom_publisher = ARTagOdomPublisher()
     odom_publisher.run()
