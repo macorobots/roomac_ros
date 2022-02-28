@@ -14,6 +14,7 @@ class ARTagParallerlOdomPublisher(ARTagOdomPublisher):
         super(ARTagParallerlOdomPublisher, self).__init__()
 
         self.ar_marker_only_yaw_robot_link = self.ar_marker_robot_link + "_only_yaw"
+        self.ar_marker_only_yaw_object_link = self.ar_marker_object_link + "_only_yaw"
         self.tf_broadcaster = tf.TransformBroadcaster()
 
     def send_only_yaw_transform(self, camera_link, ar_marker_link, target_link):
@@ -66,6 +67,12 @@ class ARTagParallerlOdomPublisher(ARTagOdomPublisher):
                     self.ar_marker_only_yaw_robot_link,
                 )
 
+                self.send_only_yaw_transform(
+                    self.camera_link,
+                    self.ar_marker_object_link,
+                    self.ar_marker_only_yaw_object_link,
+                )
+
                 odom_robot_msg = self.calculate_odom_msg(
                     self.ar_marker_only_yaw_robot_link,
                     self.camera_link,
@@ -74,7 +81,7 @@ class ARTagParallerlOdomPublisher(ARTagOdomPublisher):
                 )
 
                 odom_object_msg = self.calculate_odom_msg(
-                    self.ar_marker_object_link,
+                    self.ar_marker_only_yaw_object_link,
                     self.camera_link,
                     self.object_link,
                     reversed=False,
