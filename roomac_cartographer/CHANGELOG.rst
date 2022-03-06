@@ -1,9 +1,12 @@
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-Changelog for package roomac_description
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Changelog for package roomac_cartographer
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 1.2.2 (2022-02-28)
 ------------------
+* Merge pull request `#24 <https://github.com/macstepien/roomac_ros/issues/24>`_ from macstepien/package-cleanup
+  Packages cleanup
+* Contributors: Maciej Stępień
 
 1.2.1 (2022-02-28)
 ------------------
@@ -13,9 +16,6 @@ Changelog for package roomac_description
 
 1.1.1 (2022-02-27)
 ------------------
-* Merge pull request `#20 <https://github.com/macstepien/roomac_ros/issues/20>`_ from macstepien/arm-precision-testing
-  Arm precision testing
-* Contributors: Maciej Stępień
 
 1.1.0 (2022-02-20)
 ------------------

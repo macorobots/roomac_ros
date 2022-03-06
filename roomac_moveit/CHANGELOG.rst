@@ -1,6 +1,6 @@
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-Changelog for package roomac_sensor_fusion
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Changelog for package roomac_moveit
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 1.2.2 (2022-02-28)
 ------------------
@@ -22,6 +22,9 @@ Changelog for package roomac_sensor_fusion
 
 1.0.2 (2022-02-19)
 ------------------
+* Merge pull request `#17 <https://github.com/macstepien/roomac_ros/issues/17>`_ from macstepien/16-arm-too-close-to-table
+  Fix arm moving too close to table
+* Contributors: Maciej Stępień
 
 1.0.1 (2022-02-19)
 ------------------
