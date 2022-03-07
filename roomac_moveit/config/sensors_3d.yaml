@@ -1,15 +1,31 @@
 # The name of this file shouldn't be changed, or else the Setup Assistant won't detect it
 sensors:
-  - filtered_cloud_topic: filtered_cloud
-    max_range: 5.0
-    max_update_rate: 1.0
+  # Cloud based detection - it is really slow and had impact on slowing down picking execution
+  # Updates aren't visible in realtime, they are very slow
+  # - filtered_cloud_topic: filtered_cloud
+  #   max_range: 5.0
+  #   max_update_rate: 10.0
 
-    # Padding for cleaning octomap from defined obstacles
+  #   # Padding for cleaning octomap from defined obstacles
+  #   padding_offset: 0.1
+
+  #   # 1.0 was a lot and part of the table were removed
+  #   padding_scale: 0.4
+
+  #   point_cloud_topic: /camera_up/depth_registered/points
+  #   point_subsample: 1
+  #   sensor_plugin: occupancy_map_monitor/PointCloudOctomapUpdater
+
+  # Depth image based detection - works much faster, can see octomaps updates almost in the realtime
+  - sensor_plugin: occupancy_map_monitor/DepthImageOctomapUpdater
+    image_topic: /camera_up/depth_registered/image_raw
+    queue_size: 5
+    near_clipping_plane_distance: 0.3
+    far_clipping_plane_distance: 1.8
+    # In some situations, points can appear below the robot links.
+    # This happens because of padding. shadow_threshold removes those points whose distance is greater than shadow_threshold.
+    # Not sure if it execalty works that way, lower values e.g. 0.05 caused less removed voxels under the arm
+    shadow_threshold: 0.1
+    padding_scale: 0.4
     padding_offset: 0.1
-    
-    # 1.0 was a lot and part of the table were removed
-    padding_scale: 0.5
-
-    point_cloud_topic: /camera_up/depth_registered/points
-    point_subsample: 1
-    sensor_plugin: occupancy_map_monitor/PointCloudOctomapUpdater
+    filtered_cloud_topic: filtered_cloud
