@@ -2,6 +2,11 @@
 Changelog for package roomac_description
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* Merge branch 'master' into 22-object-parallel-kinect
+* Contributors: Maciej Stepien
+
 1.2.2 (2022-02-28)
 ------------------
 

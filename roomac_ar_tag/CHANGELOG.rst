@@ -2,6 +2,13 @@
 Changelog for package roomac_ar_tag
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* Merge pull request `#25 <https://github.com/macstepien/roomac_ros/issues/25>`_ from macstepien/22-object-parallel-kinect
+  Object parallel kinect
+* Merge branch 'master' into 22-object-parallel-kinect
+* Contributors: Maciej Stepien, Maciej Stępień
+
 1.2.2 (2022-02-28)
 ------------------
 

@@ -2,6 +2,11 @@
 Changelog for package roomac_simulation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* Merge branch 'master' into 22-object-parallel-kinect
+* Contributors: Maciej Stepien
+
 1.2.2 (2022-02-28)
 ------------------
 * Merge pull request `#24 <https://github.com/macstepien/roomac_ros/issues/24>`_ from macstepien/package-cleanup
