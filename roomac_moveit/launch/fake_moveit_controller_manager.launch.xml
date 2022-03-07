@@ -1,7 +1,13 @@
 <launch>
 
   <!-- execute the trajectory in 'interpolate' mode or jump to goal position in 'last point' mode -->
-  <arg name="execution_type" default="interpolate" />
+  <!-- interpolate: perform smooth interpolation between via points - the default for visualization
+  via points: traverse via points, w/o interpolation in between - useful for visual debugging
+  last point: warp directly to the last point of the trajectory - fastest method for off-line benchmarking -->
+  <arg name="execution_type" value="interpolate" />
+  <!-- <arg name="execution_type" value="via points" /> -->
+  <!-- this not good, only last point, DONT USE IT <arg name="execution_type" value="last point" /> -->
+
 
   <!-- Set the param that trajectory_execution_manager needs to find the controller plugin -->
   <param name="moveit_controller_manager" value="moveit_fake_controller_manager/MoveItFakeControllerManager"/>
