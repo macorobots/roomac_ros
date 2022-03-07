@@ -1,39 +1,55 @@
 # joint_limits.yaml allows the dynamics properties specified in the URDF to be overwritten or augmented as needed
 # Specific joint properties can be changed with the keys [max_position, min_position, max_velocity, max_acceleration]
 # Joint limits can be turned off with [has_velocity_limits, has_acceleration_limits]
+
+# Position limits should be loaded from urdf, I added them here when checking chomp, but they doesn't seem to be necessary.
 joint_limits:
   finger1_joint:
     has_velocity_limits: true
     max_velocity: 100
     has_acceleration_limits: false
     max_acceleration: 0
+    # min_position: -0.05
+    # max_position: 0.0
   finger2_joint:
     has_velocity_limits: true
     max_velocity: 100
     has_acceleration_limits: false
     max_acceleration: 0
+    # min_position: 0.0
+    # max_position: 0.05
   right_elbow:
     has_velocity_limits: true
-    max_velocity: 1.4
+    max_velocity: 2.0
     has_acceleration_limits: true
-    max_acceleration: 0.2
+    max_acceleration: 0.3
+    # min_position: -2.1
+    # max_position: 2.1
   right_gripper_twist:
     has_velocity_limits: true
-    max_velocity: 1.4
+    max_velocity: 2.0
     has_acceleration_limits: true
-    max_acceleration: 0.2
+    max_acceleration: 0.3
+    # min_position: -1.570
+    # max_position: 1.570
   right_shoulder_lift:
     has_velocity_limits: true
-    max_velocity: 1.4
+    max_velocity: 2.0
     has_acceleration_limits: true
-    max_acceleration: 0.2
+    max_acceleration: 0.3
+    # min_position: -0.800
+    # max_position: 1.979
   right_shoulder_pan:
     has_velocity_limits: true
-    max_velocity: 1.4
+    max_velocity: 2.0
     has_acceleration_limits: true
-    max_acceleration: 0.2
+    max_acceleration: 0.3
+    # min_position: -2.390
+    # max_position: 0.489
   right_wrist:
     has_velocity_limits: true
-    max_velocity: 1.4
+    max_velocity: 2.0
     has_acceleration_limits: true
-    max_acceleration: 0.2
+    max_acceleration: 0.3
+    # min_position: -1.994
+    # max_position: 1.146
