@@ -31,11 +31,13 @@ planner_configs:
   RRTConnect:
     type: geometric::RRTConnect
     range: 0.0  # Max motion added to tree. ==> maxDistance_ default: 0.0, if 0.0, set on setup()
+    optimization_objective: MaximizeMinClearanceObjective
   RRTstar:
     type: geometric::RRTstar
     range: 0.0  # Max motion added to tree. ==> maxDistance_ default: 0.0, if 0.0, set on setup()
     goal_bias: 0.05  # When close to goal select goal, with this probability? default: 0.05
     delay_collision_checking: 1  # Stop collision checking as soon as C-free parent found. default 1
+    optimization_objective: MaximizeMinClearanceObjective
   TRRT:
     type: geometric::TRRT
     range: 0.0  # Max motion added to tree. ==> maxDistance_ default: 0.0, if 0.0, set on setup()
@@ -122,55 +124,55 @@ planner_configs:
     max_failures: 5000  # maximum consecutive failure limit. default: 5000
 right_arm:
   planner_configs:
-    - SBL
-    - EST
-    - LBKPIECE
-    - BKPIECE
-    - KPIECE
-    - RRT
+    # - SBL
+    # - EST
+    # - LBKPIECE
+    # - BKPIECE
+    # - KPIECE
+    # - RRT
     - RRTConnect
-    - RRTstar
-    - TRRT
-    - PRM
-    - PRMstar
-    - FMT
-    - BFMT
-    - PDST
-    - STRIDE
-    - BiTRRT
-    - LBTRRT
-    - BiEST
-    - ProjEST
-    - LazyPRM
-    - LazyPRMstar
-    - SPARS
-    - SPARStwo
+    # - RRTstar
+    # - TRRT
+    # - PRM
+    # - PRMstar
+    # - FMT
+    # - BFMT
+    # - PDST
+    # - STRIDE
+    # - BiTRRT
+    # - LBTRRT
+    # - BiEST
+    # - ProjEST
+    # - LazyPRM
+    # - LazyPRMstar
+    # - SPARS
+    # - SPARStwo
   projection_evaluator: joints(right_shoulder_pan,right_shoulder_lift)
-  longest_valid_segment_fraction: 0.005
+  longest_valid_segment_fraction: 0.01
 hand:
   planner_configs:
-    - SBL
-    - EST
-    - LBKPIECE
-    - BKPIECE
-    - KPIECE
-    - RRT
+    # - SBL
+    # - EST
+    # - LBKPIECE
+    # - BKPIECE
+    # - KPIECE
+    # - RRT
     - RRTConnect
-    - RRTstar
-    - TRRT
-    - PRM
-    - PRMstar
-    - FMT
-    - BFMT
-    - PDST
-    - STRIDE
-    - BiTRRT
-    - LBTRRT
-    - BiEST
-    - ProjEST
-    - LazyPRM
-    - LazyPRMstar
-    - SPARS
-    - SPARStwo
+    # - RRTstar
+    # - TRRT
+    # - PRM
+    # - PRMstar
+    # - FMT
+    # - BFMT
+    # - PDST
+    # - STRIDE
+    # - BiTRRT
+    # - LBTRRT
+    # - BiEST
+    # - ProjEST
+    # - LazyPRM
+    # - LazyPRMstar
+    # - SPARS
+    # - SPARStwo
   projection_evaluator: joints(finger1_joint,finger2_joint)
-  longest_valid_segment_fraction: 0.005
+  longest_valid_segment_fraction: 0.01
