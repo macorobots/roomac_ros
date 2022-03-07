@@ -177,6 +177,18 @@ rosservice call /set_home_arm
 roslaunch roomac_simulation simulation_test_arm_precision.launch
 ```
 
+### Testing arm
+
+On raspberry: 
+```
+roslaunch roomac_arm arm_controller_hardware.launch
+```
+
+On laptop:
+```
+roslaunch roomac_arm arm_controller_gui.launch
+```
+
 ## Kinect in Docker
 To use Kinect in docker, additionally there is a need to create udev rules on host machine. Create `/etc/udev/rules.d/51-kinect.rules` with:
 ```
