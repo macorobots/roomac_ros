@@ -118,7 +118,7 @@ class ARTagOdomPublisher(object):
                     reversed=False,
                 )
             except RuntimeError as e:
-                rospy.logwarn("[Marker odom publisher] " + str(e))
+                rospy.logwarn_throttle(5, "[Marker odom publisher] " + str(e))
                 continue
 
             self.odom_robot_pub.publish(odom_robot_msg)
