@@ -533,14 +533,14 @@
     <visual name="visual">
         <origin rpy="0 0 0" xyz="0.0 0.0 0.0"/>
         <geometry>
-            <mesh filename="package://roomac_description/materials/aruco_cube_5cm.dae" scale="1 1 0.001"/>
+            <mesh filename="package://roomac_description/materials/aruco_cube_5cm.dae" scale="1.2 1.2 0.001"/>
         </geometry>
         <material name="artag"/>
     </visual>
     <collision>
         <origin rpy="0 0 0" xyz="0.0 0.0 0.0"/>
         <geometry>
-            <mesh filename="package://roomac_description/materials/aruco_cube_5cm.dae" scale="1 1 0.001"/>
+            <mesh filename="package://roomac_description/materials/aruco_cube_5cm.dae" scale="1.2 1.2 0.001"/>
         </geometry>
     </collision>
 </link>
