@@ -10,8 +10,23 @@ from std_srvs.srv import Empty
 
 import actionlib
 from move_base_msgs.msg import MoveBaseAction, MoveBaseGoal
+from actionlib_msgs.msg import GoalStatus
+
+from roomac_msgs.msg import (
+    PickAndBringAction,
+    PickAndBringFeedback,
+    PickAndBringResult,
+)
 
 import yaml
+
+from enum import Enum
+
+
+class GoalState(Enum):
+    IN_PROGRESS = 1
+    SUCCEEDED = 2
+    FAILED = 3
 
 
 class RobotController:
@@ -46,6 +61,108 @@ class RobotController:
         self.save_table_srv = rospy.Service(
             "execute_mission", Trigger, self.execute_mission
         )
+
+        self.feedback = PickAndBringFeedback()
+        self.result = PickAndBringResult()
+        self.pick_and_bring_action = actionlib.SimpleActionServer(
+            "pick_and_bring",
+            PickAndBringAction,
+            execute_cb=self.execute_cb,
+            auto_start=False,
+        )
+        self.pick_and_bring_action.start()
+
+    def execute_cb(self, goal):
+
+        if not (self.positions["home_position"] and self.positions["table_position"]):
+            self.result.success = False
+            self.pick_and_bring_action.set_succeeded(self.result)
+            return
+
+        procedures = [
+            (
+                self.go_to_point,
+                self.positions["table_position"],
+                self.move_base_finished_execution,
+                PickAndBringFeedback.DRIVING_TO_TABLE,
+                self.move_base_abort,
+            ),
+            (
+                self.pick_object,
+                None,
+                lambda: GoalState.SUCCEEDED,
+                PickAndBringFeedback.PICKING_UP_OBJECT,
+                lambda: True,
+            ),
+            (
+                self.go_to_point,
+                self.positions["home_position"],
+                self.move_base_finished_execution,
+                PickAndBringFeedback.DRIVING_TO_HOME_POSITION,
+                self.move_base_abort,
+            ),
+        ]
+
+        for x in procedures:
+            self.feedback.status = x[3]
+            self.pick_and_bring_action.publish_feedback(self.feedback)
+
+            if x[1]:
+                x[0](x[1])
+            else:
+                x[0]()
+
+            goal_state = GoalState.IN_PROGRESS
+
+            while goal_state != GoalState.SUCCEEDED:
+
+                if self.pick_and_bring_action.is_preempt_requested():
+                    rospy.loginfo("pick_and_bring: Preempted")
+                    self.pick_and_bring_action.set_preempted()
+                    x[4]()
+                    return
+
+                goal_state = x[2]()
+
+                if goal_state == GoalState.FAILED:
+                    self.result.success = False
+                    self.pick_and_bring_action.set_succeeded(self.result)
+                    return
+
+                rospy.Rate(10).sleep()
+
+        self.result.success = True
+        self.pick_and_bring_action.set_succeeded(self.result)
+
+    def pick_object(self):
+        rospy.sleep(20.0)
+        self.clear_octomap_srv.wait_for_service()
+        self.clear_octomap_srv.call()
+        self.pick_object_srv.wait_for_service()
+        self.pick_object_srv.call(TriggerRequest())
+
+    def move_base_finished_execution(self):
+        goal_state = None
+
+        state = self.move_base_client.get_state()
+        if (
+            state == GoalStatus.PREEMPTED
+            or state == GoalStatus.ABORTED
+            or state == GoalStatus.REJECTED
+            or state == GoalStatus.RECALLED
+            or state == GoalStatus.LOST
+        ):
+            goal_state = GoalState.FAILED
+        elif state == GoalStatus.SUCCEEDED:
+            goal_state = GoalState.SUCCEEDED
+
+        else:
+            goal_state = GoalState.IN_PROGRESS
+
+        return goal_state
+
+    def move_base_abort(self):
+        self.move_base_client.cancel_all_goals()
 
     def load_positions(self):
         try:
@@ -171,11 +288,12 @@ class RobotController:
         goal.target_pose.pose.orientation.w = quat[3]
 
         self.move_base_client.send_goal(goal)
-        wait = self.move_base_client.wait_for_result()
-        if not wait:
-            rospy.logerr("Action server not available!")
-        else:
-            return self.move_base_client.get_result()
+        # wait = self.move_base_client.wait_for_result()
+
+        # if not wait:
+        #     rospy.logerr("Action server not available!")
+        # else:
+        #     return self.move_base_client.get_result()
 
     def execute_mission(self, req):
         res = TriggerResponse()
