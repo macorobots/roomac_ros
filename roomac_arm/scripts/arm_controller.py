@@ -57,6 +57,11 @@ class AnalogServo(Servo):
             self.name + "_speed", Float32, queue_size=5, latch=True
         )
 
+    def publishSpeed(self, speed):
+        speedMsg = Float32()
+        speedMsg.data = speed
+        self.speedsPub.publish(speedMsg)
+
 
 class DigitalServo(Servo):
     def __init__(
@@ -113,26 +118,59 @@ class ArmController:
         "gripper",
     ]
 
-    zeroPositions = [850, 320, 512, 1770, 1500, 650]
+    zeroPositions = [850, 320, 512, 1509, 1500, 650]
 
     analogLowerSignalBound = 500
     analogUpperSignalBound = 2500
     digitalLowerSignalBound = 0
     digitalUpperSignalBound = 1024
 
-    digitalScaleFactor = 1024 / ((330.0 / 2.0) * math.pi / 180.0)
-    analogScaleFactor = 2000 / (180.0 * math.pi / 180.0)
-    analogSpeed = 2  # Change in ms in signal per analogUpdateDelay
+    wristSignalZeroPosition = 1509
+    wristSignal90Degrees = 697
+    analogScaleFactorWrist = (wristSignalZeroPosition - wristSignal90Degrees) / (
+        90.0 * math.pi / 180.0
+    )
+
+    digitalScaleFactor = (digitalUpperSignalBound - digitalLowerSignalBound) / (
+        (330.0 / 2.0) * math.pi / 180.0
+    )
+
+    analogLowerSignalBoundWrist = 600
+    analogUpperSignalBoundWrist = 2400
+    analogScaleFactor = (analogUpperSignalBound - analogLowerSignalBound) / (
+        180.0 * math.pi / 180.0
+    )
+    analogSpeed = 10  # Change in ms in signal per analogUpdateDelay
     scalingFactors = [
         digitalScaleFactor,
         digitalScaleFactor,
         digitalScaleFactor / 2.0,  # no gear reduction
-        analogScaleFactor,
+        analogScaleFactorWrist,
         analogScaleFactor,
         analogScaleFactor,
     ]
 
+    lowerSignalBounds = [
+        digitalLowerSignalBound,
+        digitalLowerSignalBound,
+        digitalLowerSignalBound,
+        analogLowerSignalBoundWrist,
+        analogLowerSignalBound,
+        analogLowerSignalBound,
+    ]
+
+    upperSignalBounds = [
+        digitalUpperSignalBound,
+        digitalUpperSignalBound,
+        digitalUpperSignalBound,
+        analogUpperSignalBoundWrist,
+        analogUpperSignalBound,
+        analogUpperSignalBound,
+    ]
+
     servos = {}
+
+    wristSpeed = 4.0
 
     def __init__(self):
         self.jointsSub = rospy.Subscriber(
@@ -145,20 +183,22 @@ class ArmController:
                 self.servos[jointName] = DigitalServo(
                     self.topicNames[id],
                     self.zeroPositions[id],
-                    self.digitalLowerSignalBound,
-                    self.digitalUpperSignalBound,
+                    self.lowerSignalBounds[id],
+                    self.upperSignalBounds[id],
                     self.scalingFactors[id],
                 )
             elif jointName in self.analogJointNames:
                 self.servos[jointName] = AnalogServo(
                     self.topicNames[id],
                     self.zeroPositions[id],
-                    self.analogLowerSignalBound,
-                    self.analogUpperSignalBound,
+                    self.lowerSignalBounds[id],
+                    self.upperSignalBounds[id],
                     self.scalingFactors[id],
                 )
 
             self.servos[jointName].setAngle(0.0)
+
+        self.servos["right_wrist"].publishSpeed(self.wristSpeed)
 
     def calculateMovementTime(self, maxDigitalAngleDiff, maxAnalogAngleDiff):
 

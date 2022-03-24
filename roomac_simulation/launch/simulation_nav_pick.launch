@@ -2,7 +2,7 @@
 <!-- Roomac scripts -->
   <include file="$(find roomac)/launch/autonomous_mission.launch" />
 
-  <node name="real_picking_object_manager" pkg="roomac_autonomous_manipulation" type="real_picking_object_manager.py" output="screen"/>
+  <node name="simulation_picking_object_manager" pkg="roomac_autonomous_manipulation" type="simulation_picking_object_manager.py" output="screen"/>
   <node name="add_robot_body_collision_to_scene" pkg="roomac_autonomous_manipulation" type="add_robot_body_collision_to_scene.py" output="screen"/>
 
 <!-- ARtag -->
@@ -29,7 +29,7 @@
   <arg name="gazebo_gui" default="true"/>
   <arg name="world_name" value="$(find roomac_simulation)/worlds/small_house.world"/>
 
-  <include file="$(find gazebo_ros)/launch/empty_world.launch">
+  <include file="$(find roomac_simulation)/launch/empty_world.launch">
     <arg name="world_name" value="$(arg world_name)"/>
     <arg name="paused" value="false"/>
     <arg name="use_sim_time" value="true"/>
@@ -45,8 +45,6 @@
   <include file="$(find roomac_moveit)/launch/ros_controllers.launch"/>
 
 <!-- MoveIt -->
-  <remap from="arm_position_controller/follow_joint_trajectory" to="/roomac/arm_position_controller/follow_joint_trajectory" />
-
   <arg name="urdf_path" default="$(find roomac_description)/urdf/roomac_simulation_picking.xacro"/>
 
   <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher">
@@ -76,4 +74,6 @@
 
   <node args="-d $(find roomac_move_base)/rviz/rviz_move_base.rviz" name="rviz" pkg="rviz" type="rviz"/>
 
+<!-- ROS Mobile -->
+  <include file="$(find roomac)/launch/ros_mobile.launch"/>
 </launch>

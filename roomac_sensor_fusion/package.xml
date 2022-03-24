@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <package format="2">
   <name>roomac_sensor_fusion</name>
-  <version>1.2.3</version>
+  <version>1.3.2</version>
   <description>The roomac_sensor_fusion package</description>
 
   <!-- One maintainer tag required, multiple allowed, one person per tag -->

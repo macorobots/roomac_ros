@@ -2,6 +2,18 @@
 Changelog for package roomac_description
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+1.3.2 (2022-03-24)
+------------------
+
+1.3.1 (2022-03-24)
+------------------
+* Merge pull request `#27 <https://github.com/macstepien/roomac_ros/issues/27>`_ from macstepien/moveit-improvements
+  Object picking improvements
+* Contributors: Maciej Stępień
+
+1.3.0 (2022-03-24)
+------------------
+
 1.2.3 (2022-03-07)
 ------------------
 * Merge branch 'master' into 22-object-parallel-kinect

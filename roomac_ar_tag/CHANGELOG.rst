@@ -2,6 +2,15 @@
 Changelog for package roomac_ar_tag
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+1.3.2 (2022-03-24)
+------------------
+
+1.3.1 (2022-03-24)
+------------------
+
+1.3.0 (2022-03-24)
+------------------
+
 1.2.3 (2022-03-07)
 ------------------
 * Merge pull request `#25 <https://github.com/macstepien/roomac_ros/issues/25>`_ from macstepien/22-object-parallel-kinect
