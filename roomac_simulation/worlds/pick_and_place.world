@@ -92,8 +92,9 @@
             <cameraName>camera_up_ir</cameraName>
             <imageTopicName>/camera_up/color/image_raw</imageTopicName>
             <cameraInfoTopicName>/camera_up/rgb/camera_info</cameraInfoTopicName>
-            <depthImageTopicName>/camera_up/depth/image_raw</depthImageTopicName>
-            <depthImageInfoTopicName>/camera_up/depth/camera_info</depthImageInfoTopicName>
+            <!-- TOOD: fix it, for some reason info is not published -->
+            <depthImageInfoTopicName>/camera_up/depth_registered/camera_info</depthImageInfoTopicName>
+            <depthImageTopicName>/camera_up/depth_registered/image_raw</depthImageTopicName>
             <pointCloudTopicName>/camera_up/depth_registered/points</pointCloudTopicName>
             <frameName>camera_up_link</frameName>
             <pointCloudCutoff>0.5</pointCloudCutoff>

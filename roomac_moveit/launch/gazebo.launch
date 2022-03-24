@@ -10,6 +10,7 @@
     <arg name="world_name" default="$(find roomac_simulation)/worlds/pick_and_place.world"/>
     <arg name="paused" value="$(arg paused)"/>
     <arg name="gui" value="$(arg gazebo_gui)"/>
+    <arg name="use_sim_time" value="true"/>
   </include>
 
   <!-- send robot urdf to param server -->

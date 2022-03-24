@@ -1,4 +1,6 @@
 <launch>
+  <arg name="pipeline" default="ompl" />
+
 
   <!-- By default, we do not start a database (it can be large) -->
   <arg name="db" default="false" />
@@ -63,6 +65,7 @@
     <arg name="load_robot_description" value="$(arg load_robot_description)"/>
     <arg name="gazebo" value="true"/>
     <arg name="simulation_description" value="true" />
+    <arg name="pipeline" value="$(arg pipeline)"/>
   </include>
 
   <!-- Run Rviz and load the default config to see the state of the move_group node -->

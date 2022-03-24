@@ -1,3 +1,4 @@
+rate: 10 # (Hz, used for interpolation controller)
 controller_list:
   - name: fake_right_arm_controller
     type: $(arg execution_type)
@@ -12,6 +13,6 @@ controller_list:
     joints:
       - finger1_joint
       - finger2_joint
-initial:  # Define initial robot poses.
+initial: # Define initial robot poses.
   - group: right_arm
     pose: Home

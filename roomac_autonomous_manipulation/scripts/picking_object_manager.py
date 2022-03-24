@@ -28,6 +28,7 @@ class PickingObjectManager(object):
         moveit_commander.roscpp_initialize(sys.argv)
         # when master is running remotely (e.g. on raspberry) communication is slower
         # and often timed out
+        self.robot = moveit_commander.RobotCommander()
         self.move_group = moveit_commander.MoveGroupCommander(
             name="right_arm", wait_for_servers=60.0
         )
@@ -116,13 +117,15 @@ class PickingObjectManager(object):
         # Remove leftover objects from a previous run
         self.scene.remove_world_object(object_id)
 
-        body_size = [0.005, 0.005, 0.1]
+        # Real height is 0.125, but it collides with cardboard box then
+        # and plan to pick it up isn't too good
+        body_size = [0.015, 0.02, 0.06]
 
         body_pose = PoseStamped()
         body_pose.header.frame_id = reference_frame
         body_pose.pose.position.x = point.x
         body_pose.pose.position.y = point.y
-        body_pose.pose.position.z = point.z
+        body_pose.pose.position.z = point.z - body_size[2] / 2.0 + 0.02
 
         self.scene.add_box(object_id, body_pose, body_size)
 
@@ -221,13 +224,22 @@ class PickingObjectManager(object):
             object_point_transformed.point
         )
 
-        self.open_gripper()
         self.go_to_point(pre_point)
+        self.open_gripper()
+
         self.go_to_point(object_point_transformed.point)
         self.print_error(object_point_transformed.point)
+
+        grasping_group = "hand"
+        touch_links = self.robot.get_link_names(group=grasping_group)
+        self.scene.attach_box("gripper_right_grip", "object", touch_links=touch_links)
+
         self.close_gripper()
-        self.scene.remove_world_object("object")
         self.go_to_point(post_point)
+
+        # TODO: Probably shouldn't remove object after picking
+        self.scene.remove_attached_object("gripper_right_grip", name="object")
+        self.scene.remove_world_object("object")
 
         return res
 
