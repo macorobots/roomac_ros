@@ -22,6 +22,24 @@ from moveit_msgs.srv import GetPlanningScene
 import tf
 from tf.transformations import quaternion_from_euler
 
+from moveit_msgs.msg import MoveGroupAction, MoveGroupActionFeedback
+from actionlib_msgs.msg import GoalID
+import actionlib
+from roomac_msgs.msg import (
+    PickObjectAction,
+    PickObjectFeedback,
+    PickObjectResult,
+)
+from actionlib_msgs.msg import GoalStatus
+
+from enum import Enum
+
+
+class GoalState(Enum):
+    IN_PROGRESS = 1
+    SUCCEEDED = 2
+    FAILED = 3
+
 
 class PickingObjectManager(object):
     def __init__(self):
@@ -33,6 +51,18 @@ class PickingObjectManager(object):
             name="right_arm", wait_for_servers=60.0
         )
         self.scene = moveit_commander.PlanningSceneInterface()
+
+        # Doesn't work, only LOST is published, maybe it tracks goals published by itself, not external
+        # self.moveit_client = actionlib.SimpleActionClient("move_group", MoveGroupAction)
+        # self.moveit_client.wait_for_server()
+
+        self.moveit_feedback_sub = rospy.Subscriber(
+            "/move_group/feedback", MoveGroupActionFeedback, self.moveit_feedback_cb
+        )
+
+        self.moveit_cancel_pub = rospy.Publisher(
+            "/move_group/cancel", GoalID, queue_size=10
+        )
 
         # If there are problems with finding plan, although it didn't look to work properly
         # (actual number of attempts was different)
@@ -70,6 +100,159 @@ class PickingObjectManager(object):
             "/debug_points", PointStamped, queue_size=5, latch=True
         )
 
+        self.feedback = PickObjectFeedback()
+        self.result = PickObjectResult()
+        self.pick_object_action = actionlib.SimpleActionServer(
+            "pick_object",
+            PickObjectAction,
+            execute_cb=self.execute_cb,
+            auto_start=False,
+        )
+        self.pick_object_action.start()
+
+        self.moveit_feedback_state = None
+
+    def moveit_feedback_cb(self, msg):
+        self.moveit_feedback_state = msg.status.status
+
+    def execute_cb(self, goal):
+
+        object_point = self.get_object_point()
+        object_point_transformed = self.transform_point(object_point, "base_link")
+
+        self.add_object_to_scene(object_point_transformed.point)
+        pre_point, post_point = self.calculate_pre_and_post_points(
+            object_point_transformed.point
+        )
+
+        procedures = [
+            (
+                self.go_to_point,
+                pre_point,
+                self.moveit_finished_execution,
+                PickObjectFeedback.GOING_TO_PRE_GRIPPING_POSITION,
+                self.moveit_abort,
+            ),
+            (
+                self.open_gripper,
+                None,
+                lambda: GoalState.SUCCEEDED,
+                PickObjectFeedback.PRE_GRIPPING_POSITION,
+                lambda: True,
+            ),
+            (
+                self.go_to_point,
+                object_point_transformed.point,
+                self.moveit_finished_execution,
+                PickObjectFeedback.GOING_GRIPPING_POSITION,
+                self.moveit_abort,
+            ),
+            (
+                self.print_error,
+                object_point_transformed.point,
+                lambda: GoalState.SUCCEEDED,
+                PickObjectFeedback.GRIPPING_POSITION,
+                lambda: True,
+            ),
+            (
+                self.attach_object,
+                None,
+                lambda: GoalState.SUCCEEDED,
+                PickObjectFeedback.GRIPPING_POSITION,
+                lambda: True,
+            ),
+            (
+                self.close_gripper,
+                None,
+                lambda: GoalState.SUCCEEDED,
+                PickObjectFeedback.CLOSING_GRIPPER,
+                lambda: True,
+            ),
+            (
+                self.go_to_point,
+                post_point,
+                self.moveit_finished_execution,
+                PickObjectFeedback.GOING_TO_POST_GRIPPING_POSITION,
+                self.moveit_abort,
+            ),
+        ]
+
+        for x in procedures:
+            self.feedback.status = x[3]
+            self.pick_object_action.publish_feedback(self.feedback)
+
+            if x[1]:
+                x[0](x[1])
+            else:
+                x[0]()
+
+            goal_state = GoalState.IN_PROGRESS
+
+            while goal_state != GoalState.SUCCEEDED:
+
+                if self.pick_object_action.is_preempt_requested():
+                    rospy.loginfo("pick_and_bring: Preempted")
+                    self.pick_object_action.set_preempted()
+                    x[4]()
+                    return
+
+                goal_state = x[2]()
+
+                if goal_state == GoalState.FAILED:
+                    rospy.loginfo("goal failed")
+                    self.result.success = False
+                    self.pick_object_action.set_succeeded(self.result)
+                    return
+
+                rospy.Rate(10).sleep()
+
+        # TODO: Probably shouldn't remove object after picking
+        self.scene.remove_attached_object("gripper_right_grip", name="object")
+        self.scene.remove_world_object("object")
+
+        self.result.success = True
+        self.pick_object_action.set_succeeded(self.result)
+
+    def moveit_finished_execution(self):
+        goal_state = None
+
+        if not self.moveit_feedback_state:
+            return GoalState.IN_PROGRESS
+
+        state = self.moveit_feedback_state
+
+        rospy.loginfo(state)
+        if (
+            state == GoalStatus.PREEMPTED
+            or state == GoalStatus.ABORTED
+            or state == GoalStatus.REJECTED
+            or state == GoalStatus.RECALLED
+            or state == GoalStatus.LOST
+        ):
+            goal_state = GoalState.FAILED
+        elif state == GoalStatus.SUCCEEDED:
+            goal_state = GoalState.SUCCEEDED
+
+        else:
+            goal_state = GoalState.IN_PROGRESS
+
+        return goal_state
+
+    def moveit_abort(self):
+        # not woorking
+        # self.moveit_client.cancel_all_goals()
+
+        # not working
+        # self.move_group.stop()
+        # self.move_group.clear_pose_targets()
+
+        self.moveit_cancel_pub.publish(GoalID())
+
+    def attach_object(self):
+        grasping_group = "hand"
+        touch_links = self.robot.get_link_names(group=grasping_group)
+        self.scene.attach_box("gripper_right_grip", "object", touch_links=touch_links)
+
     def move_gripper(self, position):
         raise NotImplementedError()
 
@@ -79,14 +262,17 @@ class PickingObjectManager(object):
     def open_gripper(self):
         raise NotImplementedError()
 
-    def find_and_execute_plan(self):
+    def find_and_execute_plan(self, wait=True):
         plan = False
         while not plan:
             rospy.loginfo("Trying to find and execute plan")
-            plan = self.move_group.go(wait=True)
+            plan = self.move_group.go(wait=wait)
 
-        self.move_group.stop()
-        self.move_group.clear_pose_targets()
+        self.moveit_feedback_state = None
+
+        if wait:
+            self.move_group.stop()
+            self.move_group.clear_pose_targets()
 
     def get_perpendicular_orientation(self):
         orientation = Quaternion()
@@ -108,7 +294,7 @@ class PickingObjectManager(object):
 
         # Allow approximate solutions (True)
         self.move_group.set_joint_value_target(pose_goal, "gripper_right_grip", True)
-        self.find_and_execute_plan()
+        self.find_and_execute_plan(wait=False)
 
     def add_object_to_scene(self, point):
         reference_frame = "base_link"
