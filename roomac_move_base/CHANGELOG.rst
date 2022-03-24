@@ -2,6 +2,9 @@
 Changelog for package roomac_move_base
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+
 1.3.0 (2022-03-24)
 ------------------
 
