@@ -2,6 +2,9 @@
 Changelog for package roomac_cartographer
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+
 1.3.1 (2022-03-24)
 ------------------
 
