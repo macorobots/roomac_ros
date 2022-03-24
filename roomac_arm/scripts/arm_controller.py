@@ -56,8 +56,11 @@ class AnalogServo(Servo):
         self.speedsPub = rospy.Publisher(
             self.name + "_speed", Float32, queue_size=5, latch=True
         )
-        # TODO: add publishing speed, for wrist it should be 4.0, for wrist_twist default
-        # rostopic pub /wrist_speed std_msgs/Float32 "data: 4.0"
+
+    def publishSpeed(self, speed):
+        speedMsg = Float32()
+        speedMsg.data = speed
+        self.speedsPub.publish(speedMsg)
 
 
 class DigitalServo(Servo):
@@ -122,8 +125,6 @@ class ArmController:
     digitalLowerSignalBound = 0
     digitalUpperSignalBound = 1024
 
-    analogLowerSignalBoundWrist = 600
-    analogUpperSignalBoundWrist = 2400
     wristSignalZeroPosition = 1509
     wristSignal90Degrees = 697
     analogScaleFactorWrist = (wristSignalZeroPosition - wristSignal90Degrees) / (
@@ -133,6 +134,9 @@ class ArmController:
     digitalScaleFactor = (digitalUpperSignalBound - digitalLowerSignalBound) / (
         (330.0 / 2.0) * math.pi / 180.0
     )
+
+    analogLowerSignalBoundWrist = 600
+    analogUpperSignalBoundWrist = 2400
     analogScaleFactor = (analogUpperSignalBound - analogLowerSignalBound) / (
         180.0 * math.pi / 180.0
     )
@@ -166,6 +170,8 @@ class ArmController:
 
     servos = {}
 
+    wristSpeed = 4.0
+
     def __init__(self):
         self.jointsSub = rospy.Subscriber(
             "/joint_states", JointState, self.jointsStateCb, queue_size=1
@@ -191,6 +197,8 @@ class ArmController:
                 )
 
             self.servos[jointName].setAngle(0.0)
+
+        self.servos["right_wrist"].publishSpeed(self.wristSpeed)
 
     def calculateMovementTime(self, maxDigitalAngleDiff, maxAnalogAngleDiff):
 
