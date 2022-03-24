@@ -75,7 +75,5 @@
   <node args="-d $(find roomac_move_base)/rviz/rviz_move_base.rviz" name="rviz" pkg="rviz" type="rviz"/>
 
 <!-- ROS Mobile -->
-  <node name="pose_publisher" pkg="roomac" type="pose_publisher.py" output="screen"/>
-  <node name="ros_mobile_bridge" pkg="roomac" type="ros_mobile_bridge.py" output="screen"/>
-
+  <include file="$(find roomac)/launch/ros_mobile.launch"/>
 </launch>

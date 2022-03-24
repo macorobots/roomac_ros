@@ -2,4 +2,5 @@
   <include file="$(find roomac_rtabmap)/launch/rtabmap_fusion.launch" />
   <include file="$(find roomac_kinect)/launch/kinect.launch" />
   <include file="$(find roomac_sensor_fusion)/launch/robot_localization.launch"/>
+  <include file="$(find roomac)/launch/ros_mobile.launch"/>
 </launch>
