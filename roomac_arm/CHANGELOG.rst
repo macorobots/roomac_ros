@@ -2,8 +2,8 @@
 Changelog for package roomac_arm
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+1.3.0 (2022-03-24)
+------------------
 * Merge pull request `#28 <https://github.com/macstepien/roomac_ros/issues/28>`_ from macstepien/new-servos
   New servos changes
 * Contributors: Maciej Stępień
