@@ -2,6 +2,9 @@
 Changelog for package roomac_kinect
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+
 1.2.3 (2022-03-07)
 ------------------
 * Merge branch 'master' into 22-object-parallel-kinect

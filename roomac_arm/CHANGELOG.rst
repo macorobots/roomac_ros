@@ -2,6 +2,12 @@
 Changelog for package roomac_arm
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* Merge pull request `#28 <https://github.com/macstepien/roomac_ros/issues/28>`_ from macstepien/new-servos
+  New servos changes
+* Contributors: Maciej Stępień
+
 1.2.3 (2022-03-07)
 ------------------
 * Merge branch 'master' into 22-object-parallel-kinect
