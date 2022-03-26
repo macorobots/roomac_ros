@@ -2,8 +2,8 @@
 Changelog for package roomac_move_base
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+1.3.3 (2022-03-26)
+------------------
 * Merge pull request `#30 <https://github.com/macstepien/roomac_ros/issues/30>`_ from macstepien/teb-tuning
   Teb tuning
 * Contributors: Maciej Stępień
