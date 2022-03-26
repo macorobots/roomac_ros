@@ -2,6 +2,9 @@
 Changelog for package roomac_simulation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+
 1.3.2 (2022-03-24)
 ------------------
 * Merge pull request `#29 <https://github.com/macstepien/roomac_ros/issues/29>`_ from macstepien/ros-mobile
