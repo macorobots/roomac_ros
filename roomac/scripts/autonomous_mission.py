@@ -16,9 +16,12 @@ from roomac_msgs.msg import (
     PickAndBringAction,
     PickAndBringFeedback,
     PickAndBringResult,
+    PickAction,
+    PickActionGoal,
 )
 
 import yaml
+import math
 
 from enum import Enum
 
@@ -56,7 +59,14 @@ class RobotController:
         )
         self.move_base_client.wait_for_server()
 
+        self.pick_object_client = actionlib.SimpleActionClient(
+            "pick_object", PickAction
+        )
+        self.pick_object_client.wait_for_server()
+
         self.clear_octomap_srv = rospy.ServiceProxy("/clear_octomap", Empty)
+        self.clear_octomap_srv.wait_for_service()
+
         self.pick_object_srv = rospy.ServiceProxy("pick_object", Trigger)
         self.save_table_srv = rospy.Service(
             "execute_mission", Trigger, self.execute_mission
@@ -88,11 +98,18 @@ class RobotController:
                 self.move_base_abort,
             ),
             (
+                lambda: None,
+                None,
+                self.check_if_artag_position_is_stable,
+                PickAndBringFeedback.PICKING_UP_OBJECT,
+                lambda: None,
+            ),
+            (
                 self.pick_object,
                 None,
-                lambda: GoalState.SUCCEEDED,
+                self.pick_object_finished_execution,
                 PickAndBringFeedback.PICKING_UP_OBJECT,
-                lambda: True,
+                self.pick_object_abort,
             ),
             (
                 self.go_to_point,
@@ -134,12 +151,51 @@ class RobotController:
         self.result.success = True
         self.pick_and_bring_action.set_succeeded(self.result)
 
+    def check_if_artag_position_is_stable(self):
+        artag_pose = self.get_position("camera_up_link", "ar_marker_0_only_yaw")
+        artag_pose_filtered = self.get_position("camera_up_link", "artag_link_2")
+
+        trans_diff = math.sqrt(
+            (artag_pose.x - artag_pose_filtered.x) ** 2
+            + (artag_pose.y - artag_pose_filtered.y) ** 2
+        )
+
+        rot_diff = math.fabs(artag_pose.theta - artag_pose_filtered.theta)
+
+        rot_threshold = 5.0 / 180.0 * math.pi
+        trans_threshold = 0.04
+
+        if trans_diff < trans_threshold and rot_diff < rot_threshold:
+            return GoalState.SUCCEEDED
+        else:
+            return GoalState.IN_PROGRESS
+
     def pick_object(self):
-        rospy.sleep(20.0)
-        self.clear_octomap_srv.wait_for_service()
         self.clear_octomap_srv.call()
-        self.pick_object_srv.wait_for_service()
-        self.pick_object_srv.call(TriggerRequest())
+        self.pick_object_client.send_goal(PickActionGoal())
+
+    def pick_object_finished_execution(self):
+        goal_state = None
+
+        state = self.pick_object_client.get_state()
+        if (
+            state == GoalStatus.PREEMPTED
+            or state == GoalStatus.ABORTED
+            or state == GoalStatus.REJECTED
+            or state == GoalStatus.RECALLED
+            or state == GoalStatus.LOST
+        ):
+            goal_state = GoalState.FAILED
+        elif state == GoalStatus.SUCCEEDED:
+            goal_state = GoalState.SUCCEEDED
+
+        else:
+            goal_state = GoalState.IN_PROGRESS
+
+        return goal_state
+
+    def pick_object_abort(self):
+        self.pick_object_client.cancel_all_goals()
 
     def move_base_finished_execution(self):
         goal_state = None
@@ -244,10 +300,10 @@ class RobotController:
         self.save_positions_to_file()
         return res
 
-    def get_current_position(self):
+    def get_position(self, target_frame, source_frame):
         try:
             current_transform = self.tf_buffer.lookup_transform(
-                "map", "base_link", rospy.Time(0)
+                target_frame, source_frame, rospy.Time(0)
             )
         except (
             tf2_ros.LookupException,
@@ -270,6 +326,9 @@ class RobotController:
         current_position.theta = eulerAngles[2]
 
         return current_position
+
+    def get_current_position(self):
+        return self.get_position("map", "base_link")
 
     def go_to_point(self, pose):
         goal = MoveBaseGoal()
