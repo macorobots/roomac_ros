@@ -10,7 +10,7 @@
 footprint: [[0.15, 0.2875], [-0.355, 0.2875], [-0.355, -0.2875], [0.15, -0.2875]]
 footprint_padding: 0.05
 
-controller_frequency: 20.0
+controller_frequency: 10.0
 # (double, default: 20.0)
 # The rate in Hz at which to run the control loop and send velocity commands to the base. 
 

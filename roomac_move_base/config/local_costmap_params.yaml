@@ -48,7 +48,8 @@ local_costmap:
     voxel_decay:              15    # seconds if linear, e^n if exponential
     decay_model:              0     # 0=linear, 1=exponential, -1=persistent
     voxel_size:               0.05  # meters
-    track_unknown_space:      true  # default space is known
+    track_unknown_space:      true  # default space is unknown
+    observation_persistence:  0.0   # seconds
     max_obstacle_height:      2.0   # meters
     unknown_threshold:        15    # voxel height
     mark_threshold:           0     # voxel height
@@ -56,7 +57,7 @@ local_costmap:
     combination_method:       1     # 1=max, 0=override
     obstacle_range:           3.0   # meters
     origin_z:                 0.0   # meters
-    publish_voxel_map:        true # default off
+    publish_voxel_map:        true  # default off
     transform_tolerance:      0.2   # seconds
     mapping_mode:             false # default off, saves map not for navigation
     map_save_duration:        60    # default 60s, how often to autosave
@@ -66,24 +67,26 @@ local_costmap:
       topic: camera/depth_registered/points
       marking: true
       clearing: false
-      min_obstacle_height: -0.1     # default 0, meters
+      min_obstacle_height: -0.1    # default 0, meters
       max_obstacle_height: 2.0     # default 3, meters
       expected_update_rate: 0.0    # default 0, if not updating at this rate at least, remove from buffer
       observation_persistence: 0.0 # default 0, use all measurements taken during now-value, 0=latest
       inf_is_valid: false          # default false, for laser scans
-      voxel_filter: true          # default off, apply voxel filter to sensor, recommend on
       clear_after_reading: true    # default false, clear the buffer after the layer gets readings from it
+      voxel_filter: true           # default off, apply voxel filter to sensor, recommend on 
+      voxel_min_points: 4          # default 0, minimum points per voxel for voxel filter
     rgbd1_clear:
+      enabled: true                #default true, can be toggled on/off with associated service call
       data_type: PointCloud2
       topic: camera/depth_registered/points
       marking: false
       clearing: true
-      max_z: 7.0                  # default 0, meters
-      min_z: 0.1                  # default 10, meters
+      max_z: 7.0                     # default 10, meters
+      min_z: 0.1                     # default 0, meters
       vertical_fov_angle: 0.7958701  # default 0.7, radians
       horizontal_fov_angle: 1.021018 # default 1.04, radians
-      decay_acceleration: 5.0     # default 0, 1/s^2. If laser scanner MUST be 0
-      model_type: 0                # default 0, model type for frustum. 0=depth camera, 1=3d lidar like VLP16 or similar
+      decay_acceleration: 5.0        # default 0, 1/s^2. If laser scanner MUST be 0
+      model_type: 0                  # default 0 (depth camera). Use 1 for 3D Lidar
 
 # Kinect FOV
 # Horizontal FOV: 58,5 = 1.021018
