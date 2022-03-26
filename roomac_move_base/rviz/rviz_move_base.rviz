@@ -5,7 +5,6 @@ Panels:
     Property Tree Widget:
       Expanded:
         - /Global Options1
-        - /TF1/Frames1
       Splitter Ratio: 0.5
     Tree Height: 760
   - Class: rviz/Selection
@@ -21,7 +20,7 @@ Panels:
     Expanded:
       - /Current View1
     Name: Views
-    Splitter Ratio: 0.5
+    Splitter Ratio: 0.5018587112426758
   - Class: rviz/Time
     Experimental: false
     Name: Time
@@ -68,50 +67,72 @@ Visualization Manager:
       Frames:
         All Enabled: false
         artag_link:
-          Value: true
+          Value: false
         artag_link_2:
-          Value: true
+          Value: false
         base_link:
           Value: true
         base_up_1:
-          Value: true
+          Value: false
+        body_precision_test_tip:
+          Value: false
         camera_depth_frame:
           Value: false
         camera_depth_optical_frame:
           Value: false
         camera_link:
-          Value: true
+          Value: false
         camera_rgb_frame:
           Value: false
         camera_rgb_optical_frame:
           Value: false
+        elbow_wrist_left_1:
+          Value: false
+        elbow_wrist_right_1:
+          Value: false
         gazebo_camera_link:
-          Value: true
+          Value: false
+        gripper_left_1:
+          Value: false
         gripper_right_1:
-          Value: true
+          Value: false
         gripper_right_grip:
-          Value: true
+          Value: false
+        gripper_right_precision_test_tip:
+          Value: false
         head_1:
-          Value: true
+          Value: false
         imu:
-          Value: true
+          Value: false
         left_caster_1:
-          Value: true
+          Value: false
         left_wheel_1:
-          Value: true
+          Value: false
         left_wheel_hub_1:
-          Value: true
+          Value: false
         map:
           Value: true
         odom:
           Value: true
         right_caster_1:
-          Value: true
+          Value: false
         right_wheel_1:
-          Value: true
+          Value: false
         right_wheel_hub_1:
-          Value: true
-      Marker Scale: 1
+          Value: false
+        shoulder_elbow_left_1:
+          Value: false
+        shoulder_elbow_right_1:
+          Value: false
+        shoulder_left_1:
+          Value: false
+        shoulder_right_1:
+          Value: false
+        wrist_left_1:
+          Value: false
+        wrist_right_1:
+          Value: false
+      Marker Scale: 0.4000000059604645
       Name: TF
       Show Arrows: true
       Show Axes: true
@@ -126,6 +147,23 @@ Visualization Manager:
               base_up_1:
                 head_1:
                   {}
+                shoulder_left_1:
+                  shoulder_elbow_left_1:
+                    elbow_wrist_left_1:
+                      wrist_left_1:
+                        gripper_left_1:
+                          {}
+                shoulder_right_1:
+                  shoulder_elbow_right_1:
+                    elbow_wrist_right_1:
+                      wrist_right_1:
+                        gripper_right_1:
+                          gripper_right_grip:
+                            {}
+                          gripper_right_precision_test_tip:
+                            {}
+              body_precision_test_tip:
+                {}
               camera_link:
                 camera_depth_frame:
                   camera_depth_optical_frame:
@@ -139,8 +177,14 @@ Visualization Manager:
                 {}
               left_caster_1:
                 {}
+              left_wheel_1:
+                left_wheel_hub_1:
+                  {}
               right_caster_1:
                 {}
+              right_wheel_1:
+                right_wheel_hub_1:
+                  {}
       Update Interval: 0
       Value: true
     - Alpha: 1
@@ -343,7 +387,7 @@ Visualization Manager:
       Unreliable: false
       Value: true
     - Alpha: 1
-      Arrow Length: 0.30000001192092896
+      Arrow Length: 0.10000000149011612
       Axes Length: 0.30000001192092896
       Axes Radius: 0.009999999776482582
       Class: rviz/PoseArray
@@ -358,6 +402,150 @@ Visualization Manager:
       Topic: /move_base_node/TebLocalPlannerROS/teb_poses
       Unreliable: false
       Value: true
+    - Alpha: 1
+      Class: rviz/RobotModel
+      Collision Enabled: false
+      Enabled: true
+      Links:
+        All Links Enabled: true
+        Expand Joint Details: false
+        Expand Link Details: false
+        Expand Tree: false
+        Link Tree Style: Links in Alphabetic Order
+        artag_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        artag_link_2:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+        base_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        base_up_1:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        body_precision_test_tip:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+        camera_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+        elbow_wrist_left_1:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        elbow_wrist_right_1:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        gazebo_camera_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+        gripper_left_1:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        gripper_right_1:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        gripper_right_grip:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+        gripper_right_precision_test_tip:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+        head_1:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        imu:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+        left_caster_1:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        left_wheel_1:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        left_wheel_hub_1:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        right_caster_1:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        right_wheel_1:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        right_wheel_hub_1:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        shoulder_elbow_left_1:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        shoulder_elbow_right_1:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        shoulder_left_1:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        shoulder_right_1:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        wrist_left_1:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        wrist_right_1:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+      Name: RobotModel
+      Robot Description: robot_description
+      TF Prefix: ""
+      Update Interval: 0
+      Value: true
+      Visual Enabled: true
   Enabled: true
   Global Options:
     Background Color: 48; 48; 48
@@ -386,25 +574,25 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/Orbit
-      Distance: 7.420533657073975
+      Distance: 4.08228063583374
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
         Swap Stereo Eyes: false
         Value: false
       Focal Point:
-        X: -0.24991098046302795
-        Y: -0.2650115191936493
-        Z: -1.2818845510482788
+        X: -1.2962751388549805
+        Y: -0.18188226222991943
+        Z: 1.5026792287826538
       Focal Shape Fixed Size: true
       Focal Shape Size: 0.05000000074505806
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 1.4747964143753052
-      Target Frame: base_link
+      Pitch: 0.7247971296310425
+      Target Frame: map
       Value: Orbit (rviz)
-      Yaw: 3.578625202178955
+      Yaw: 3.0886356830596924
     Saved: ~
 Window Geometry:
   Displays:
