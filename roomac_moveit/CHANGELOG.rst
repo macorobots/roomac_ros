@@ -2,8 +2,8 @@
 Changelog for package roomac_moveit
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+1.3.4 (2022-03-28)
+------------------
 * Merge pull request `#31 <https://github.com/macstepien/roomac_ros/issues/31>`_ from macstepien/picking-water-bottle
   Picking water bottle
 * Contributors: Maciej Stępień
