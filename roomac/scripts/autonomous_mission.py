@@ -67,8 +67,11 @@ class RobotController:
         self.clear_octomap_srv = rospy.ServiceProxy("/clear_octomap", Empty)
         self.clear_octomap_srv.wait_for_service()
 
+        self.add_table_to_scene_srv = rospy.ServiceProxy("/add_table_to_scene", Trigger)
+        self.add_table_to_scene_srv.wait_for_service()
+
         self.pick_object_srv = rospy.ServiceProxy("pick_object", Trigger)
-        self.save_table_srv = rospy.Service(
+        self.execute_mission_srv = rospy.Service(
             "execute_mission", Trigger, self.execute_mission
         )
 
@@ -171,7 +174,12 @@ class RobotController:
             return GoalState.IN_PROGRESS
 
     def pick_object(self):
+        # checking if artag is stable isn't working perfectly yet
+        # so some delay is necessary before object position will be stable
+        # and correct
+        rospy.sleep(5.0)
         self.clear_octomap_srv.call()
+        self.add_table_to_scene_srv.call(TriggerRequest())
         self.pick_object_client.send_goal(PickActionGoal())
 
     def pick_object_finished_execution(self):
@@ -310,7 +318,9 @@ class RobotController:
             tf2_ros.ConnectivityException,
             tf2_ros.ExtrapolationException,
         ):
-            raise RuntimeError("Couldn't get base_link-> transform")
+            raise RuntimeError(
+                "Couldn't get " + target_frame + "->" + source_frame + " transform"
+            )
 
         current_position = Pose2D()
         current_position.x = current_transform.transform.translation.x
