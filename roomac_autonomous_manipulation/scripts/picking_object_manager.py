@@ -221,7 +221,6 @@ class PickingObjectManager(object):
 
         state = self.moveit_feedback_state
 
-        rospy.loginfo(state)
         if (
             state == GoalStatus.PREEMPTED
             or state == GoalStatus.ABORTED
@@ -348,7 +347,7 @@ class PickingObjectManager(object):
         pre_point.y -= self.retraction
 
         post_point = copy.deepcopy(point)
-        post_point.z += 0.2
+        post_point.z += 0.08
 
         return pre_point, post_point
 
