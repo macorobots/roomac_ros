@@ -27,5 +27,5 @@ sensors:
     # Not sure if it execalty works that way, lower values e.g. 0.05 caused less removed voxels under the arm
     shadow_threshold: 0.1
     padding_scale: 0.4
-    padding_offset: 0.1
+    padding_offset: 0.2
     filtered_cloud_topic: filtered_cloud
