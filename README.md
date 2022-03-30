@@ -65,7 +65,18 @@ roslaunch roomac external_laptop_nav_picking.launch
 ```
 Then after everything launches to pick object:
 ```
-rosservice call /pick_object
+rostopic pub /pick_object/goal roomac_msgs/PickObjectActionGoal "header:
+  seq: 0
+  stamp:
+    secs: 0
+    nsecs: 0
+  frame_id: ''
+goal_id:
+  stamp:
+    secs: 0
+    nsecs: 0
+  id: ''
+goal: {}" 
 ```
 And to return to home position:
 ```
@@ -104,12 +115,19 @@ rosservice call /go_to_home
 ```
 Services picking:
 ```
-rosservice call /pick_object
+rostopic pub /pick_object/goal roomac_msgs/PickObjectActionGoal "header:
+  seq: 0
+  stamp:
+    secs: 0
+    nsecs: 0
+  frame_id: ''
+goal_id:
+  stamp:
+    secs: 0
+    nsecs: 0
+  id: ''
+goal: {}" 
 rosservice call /set_home_arm
-```
-If picking correction is enabled (see `external_laptop_nav_picking.launch`)
-```
-rosservice call /pick_object_with_correction
 ```
 Services combined (go to table, pick object, go to home position):
 ```
@@ -137,11 +155,22 @@ roslaunch roomac_simulation simulation_pick_place.launch
 ```
 Then after everything launches to pick object:
 ```
-rosservice call /pick_object
+rostopic pub /pick_object/goal roomac_msgs/PickObjectActionGoal "header:
+  seq: 0
+  stamp:
+    secs: 0
+    nsecs: 0
+  frame_id: ''
+goal_id:
+  stamp:
+    secs: 0
+    nsecs: 0
+  id: ''
+goal: {}" 
 ```
 Cancelling:
 ```
-rostopic pub /move_group/cancel actionlib_msgs/GoalID "stamp:
+rostopic pub /pick_object/cancel actionlib_msgs/GoalID "stamp:
   secs: 0
   nsecs: 0
 id: ''" 

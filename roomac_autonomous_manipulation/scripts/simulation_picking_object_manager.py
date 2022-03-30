@@ -15,6 +15,13 @@ class SimulationPickingObjectManager(PickingObjectManager):
         # super().__init__()
         super(SimulationPickingObjectManager, self).__init__()
 
+        self.controller_command_pub = rospy.Publisher(
+            "/roomac/arm_position_controller/command",
+            JointTrajectory,
+            queue_size=10,
+            latch=True,
+        )
+
     def move_gripper(self, position1, position2):
         msg = JointTrajectory()
 
