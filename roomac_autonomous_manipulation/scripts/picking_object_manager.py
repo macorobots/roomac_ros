@@ -115,6 +115,10 @@ class PickingObjectManager(object):
 
         self.moveit_feedback_state = None
 
+        # Instead of retries it would be probably better to change planning attempts in moveit
+        # as they are main reason
+        self.procedure_retry_threshold = 5
+
     def moveit_feedback_cb(self, msg):
         self.moveit_feedback_state = msg.status.status
 
@@ -189,30 +193,36 @@ class PickingObjectManager(object):
         ]
 
         for procedure in procedure_list:
-            self.feedback.status = procedure.get_feedback()
-            self.pick_object_action.publish_feedback(self.feedback)
+            procedure_retry_count = 0
+            while procedure_retry_count < self.procedure_retry_threshold:
+                self.feedback.status = procedure.get_feedback()
+                self.pick_object_action.publish_feedback(self.feedback)
 
-            procedure.start_procedure()
+                procedure.start_procedure()
 
-            goal_state = GoalState.IN_PROGRESS
+                goal_state = GoalState.IN_PROGRESS
 
-            while goal_state != GoalState.SUCCEEDED:
+                while goal_state == GoalState.IN_PROGRESS:
 
-                if self.pick_object_action.is_preempt_requested():
-                    rospy.loginfo("pick_and_bring: Preempted")
-                    self.pick_object_action.set_preempted()
-                    procedure.preempted_action()
-                    return
+                    if self.pick_object_action.is_preempt_requested():
+                        rospy.loginfo("pick_and_bring: Preempted")
+                        self.pick_object_action.set_preempted()
+                        procedure.preempted_action()
+                        return
 
-                goal_state = procedure.get_procedure_state()
+                    goal_state = procedure.get_procedure_state()
+                    rospy.Rate(10).sleep()
 
-                if goal_state == GoalState.FAILED:
-                    rospy.loginfo("goal failed")
-                    self.result.success = False
-                    self.pick_object_action.set_succeeded(self.result)
-                    return
+                if goal_state == GoalState.SUCCEEDED:
+                    break
 
-                rospy.Rate(10).sleep()
+                procedure_retry_count += 1
+
+            if goal_state == GoalState.FAILED:
+                rospy.loginfo("Goal failed")
+                self.result.success = False
+                self.pick_object_action.set_succeeded(self.result)
+                return
 
         rospy.loginfo("Picking action succeeded")
 
