@@ -48,7 +48,6 @@ class ActionProcedureStep:
         self.feedback_state = feedback_state
 
     def start_procedure(self):
-        # TODO: check for no arguments
         self.start_procedure_function(*self.start_procedure_function_arguments)
 
     def get_procedure_state(self):
@@ -130,7 +129,7 @@ class PickingObjectManager(object):
             # Go to pre point
             ActionProcedureStep(
                 start_procedure_function=self.go_to_point,
-                start_procedure_function_arguments=pre_point,
+                start_procedure_function_arguments=(pre_point,),
                 get_procedure_state_function=self.moveit_finished_execution,
                 preempted_action_function=self.moveit_abort,
                 feedback_state=PickObjectFeedback.GOING_TO_PRE_GRIPPING_POSITION,
@@ -138,7 +137,7 @@ class PickingObjectManager(object):
             # Open gripper
             ActionProcedureStep(
                 start_procedure_function=self.open_gripper,
-                start_procedure_function_arguments=None,
+                start_procedure_function_arguments=(),
                 get_procedure_state_function=lambda: GoalState.SUCCEEDED,
                 preempted_action_function=lambda: True,
                 feedback_state=PickObjectFeedback.PRE_GRIPPING_POSITION,
@@ -146,7 +145,7 @@ class PickingObjectManager(object):
             # Go to object point
             ActionProcedureStep(
                 start_procedure_function=self.go_to_point,
-                start_procedure_function_arguments=object_point_transformed.point,
+                start_procedure_function_arguments=(object_point_transformed.point,),
                 get_procedure_state_function=self.moveit_finished_execution,
                 preempted_action_function=self.moveit_abort,
                 feedback_state=PickObjectFeedback.GOING_GRIPPING_POSITION,
@@ -154,7 +153,7 @@ class PickingObjectManager(object):
             # Calculate error
             ActionProcedureStep(
                 start_procedure_function=self.print_error,
-                start_procedure_function_arguments=object_point_transformed.point,
+                start_procedure_function_arguments=(object_point_transformed.point,),
                 get_procedure_state_function=lambda: GoalState.SUCCEEDED,
                 preempted_action_function=lambda: True,
                 feedback_state=PickObjectFeedback.GRIPPING_POSITION,
@@ -162,7 +161,7 @@ class PickingObjectManager(object):
             # Close gripper
             ActionProcedureStep(
                 start_procedure_function=self.close_gripper,
-                start_procedure_function_arguments=None,
+                start_procedure_function_arguments=(),
                 get_procedure_state_function=lambda: GoalState.SUCCEEDED,
                 preempted_action_function=lambda: True,
                 feedback_state=PickObjectFeedback.CLOSING_GRIPPER,
@@ -170,7 +169,7 @@ class PickingObjectManager(object):
             # Attach object
             ActionProcedureStep(
                 start_procedure_function=self.attach_object,
-                start_procedure_function_arguments=None,
+                start_procedure_function_arguments=(),
                 get_procedure_state_function=lambda: GoalState.SUCCEEDED,
                 preempted_action_function=lambda: True,
                 feedback_state=PickObjectFeedback.GRIPPING_POSITION,
@@ -178,7 +177,7 @@ class PickingObjectManager(object):
             # Go to post point
             ActionProcedureStep(
                 start_procedure_function=self.go_to_point,
-                start_procedure_function_arguments=post_point,
+                start_procedure_function_arguments=(post_point,),
                 get_procedure_state_function=self.moveit_finished_execution,
                 preempted_action_function=self.moveit_abort,
                 feedback_state=PickObjectFeedback.GOING_TO_POST_GRIPPING_POSITION,
@@ -214,6 +213,8 @@ class PickingObjectManager(object):
         # TODO: Probably shouldn't remove object after picking
         self.scene.remove_attached_object("gripper_right_grip", name="object")
         self.scene.remove_world_object("object")
+
+        rospy.loginfo("Picking action succeeded")
 
         self.result.success = True
         self.pick_object_action.set_succeeded(self.result)
