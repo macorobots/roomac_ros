@@ -99,6 +99,9 @@ class PickingObjectManager(object):
         self.set_home_arm_srv = rospy.Service(
             "set_home_arm", Trigger, self.return_to_home_position
         )
+        self.remove_object_from_scene_srv = rospy.Service(
+            "remove_object_from_scene", Trigger, self.remove_object_from_scene_cb
+        )
 
         self.feedback = PickObjectFeedback()
         self.result = PickObjectResult()
@@ -116,6 +119,7 @@ class PickingObjectManager(object):
         self.moveit_feedback_state = msg.status.status
 
     def execute_cb(self, goal):
+        self.remove_object_from_scene()
 
         object_point = self.get_object_point()
         object_point_transformed = self.transform_point(object_point, "base_link")
@@ -210,14 +214,22 @@ class PickingObjectManager(object):
 
                 rospy.Rate(10).sleep()
 
-        # TODO: Probably shouldn't remove object after picking
-        self.scene.remove_attached_object("gripper_right_grip", name="object")
-        self.scene.remove_world_object("object")
-
         rospy.loginfo("Picking action succeeded")
 
         self.result.success = True
         self.pick_object_action.set_succeeded(self.result)
+
+    def remove_object_from_scene(self):
+        self.scene.remove_attached_object("gripper_right_grip", name="object")
+        self.scene.remove_world_object("object")
+
+    def remove_object_from_scene_cb(self, req):
+        res = TriggerResponse()
+        res.success = True
+
+        self.remove_object_from_scene()
+
+        return res
 
     def moveit_finished_execution(self):
         goal_state = None
