@@ -43,21 +43,21 @@ class RealPickingObjectManager(PickingObjectManager):
         elif object_type == "cardbox_object":
             self.closed_gripper_value = 0.1
 
-    def move_gripper(self, position):
+    def move_gripper(self, position, delay=1.0):
         gripper_msg = JointState()
         gripper_msg.name = ["right_gripper"]
         gripper_msg.position = [position]
         self.gripper_command.publish(gripper_msg)
 
-        rospy.Rate(1.0).sleep()
+        rospy.sleep(delay)
 
-    def close_gripper(self):
+    def close_gripper(self, delay=1.0):
         rospy.loginfo("Sending close gripper command")
-        self.move_gripper(self.closed_gripper_value)
+        self.move_gripper(self.closed_gripper_value, delay)
 
-    def open_gripper(self):
+    def open_gripper(self, delay=1.0):
         rospy.loginfo("Sending open gripper command")
-        self.move_gripper(self.opened_gripper_value)
+        self.move_gripper(self.opened_gripper_value, delay)
 
     def get_object_point(self):
         object_point_stamped = PointStamped()

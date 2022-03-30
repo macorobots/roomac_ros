@@ -22,7 +22,7 @@ class SimulationPickingObjectManager(PickingObjectManager):
             latch=True,
         )
 
-    def move_gripper(self, position1, position2):
+    def move_gripper(self, position1, position2, delay=1.0):
         msg = JointTrajectory()
 
         pt = JointTrajectoryPoint()
@@ -44,15 +44,15 @@ class SimulationPickingObjectManager(PickingObjectManager):
 
         self.controller_command_pub.publish(msg)
 
-        rospy.Rate(1.0).sleep()
+        rospy.sleep(delay)
 
-    def close_gripper(self):
+    def close_gripper(self, delay=1.0):
         rospy.loginfo("Sending close gripper command")
-        self.move_gripper(-0.02, 0.02)
+        self.move_gripper(-0.02, 0.02, delay)
 
-    def open_gripper(self):
+    def open_gripper(self, delay=1.0):
         rospy.loginfo("Sending open gripper command")
-        self.move_gripper(0.0, 0.0)
+        self.move_gripper(0.0, 0.0, delay)
 
     def get_object_point(self):
         object_point = PointStamped()

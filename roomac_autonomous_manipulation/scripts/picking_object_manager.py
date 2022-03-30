@@ -134,6 +134,14 @@ class PickingObjectManager(object):
         )
 
         procedure_list = [
+            # Open gripper
+            ActionProcedureStep(
+                start_procedure_function=self.open_gripper,
+                start_procedure_function_arguments=(0.0,),
+                get_procedure_state_function=lambda: GoalState.SUCCEEDED,
+                preempted_action_function=lambda: True,
+                feedback_state=PickObjectFeedback.PRE_GRIPPING_POSITION,
+            ),
             # Go to pre point
             ActionProcedureStep(
                 start_procedure_function=self.go_to_point,
@@ -141,14 +149,6 @@ class PickingObjectManager(object):
                 get_procedure_state_function=self.moveit_finished_execution,
                 preempted_action_function=self.moveit_abort,
                 feedback_state=PickObjectFeedback.GOING_TO_PRE_GRIPPING_POSITION,
-            ),
-            # Open gripper
-            ActionProcedureStep(
-                start_procedure_function=self.open_gripper,
-                start_procedure_function_arguments=(),
-                get_procedure_state_function=lambda: GoalState.SUCCEEDED,
-                preempted_action_function=lambda: True,
-                feedback_state=PickObjectFeedback.PRE_GRIPPING_POSITION,
             ),
             # Go to object point
             ActionProcedureStep(
@@ -280,13 +280,10 @@ class PickingObjectManager(object):
         touch_links = self.robot.get_link_names(group=grasping_group)
         self.scene.attach_box("gripper_right_grip", "object", touch_links=touch_links)
 
-    def move_gripper(self, position):
+    def close_gripper(self, delay=1.0):
         raise NotImplementedError()
 
-    def close_gripper(self):
-        raise NotImplementedError()
-
-    def open_gripper(self):
+    def open_gripper(self, delay=1.0):
         raise NotImplementedError()
 
     def find_and_execute_plan(self, wait=True):
