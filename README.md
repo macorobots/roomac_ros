@@ -131,7 +131,18 @@ rosservice call /set_home_arm
 ```
 Services combined (go to table, pick object, go to home position):
 ```
-rosservice call /execute_mission
+rostopic pub /pick_and_bring/goal roomac_msgs/PickAndBringActionGoal "header:
+  seq: 0
+  stamp:
+    secs: 0
+    nsecs: 0
+  frame_id: ''
+goal_id:
+  stamp:
+    secs: 0
+    nsecs: 0
+  id: ''
+goal: {}" 
 ```
 
 ### Simulation mapping

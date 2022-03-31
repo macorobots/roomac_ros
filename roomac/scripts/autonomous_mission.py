@@ -71,9 +71,6 @@ class RobotController:
         self.add_table_to_scene_srv.wait_for_service()
 
         self.pick_object_srv = rospy.ServiceProxy("pick_object", Trigger)
-        self.execute_mission_srv = rospy.Service(
-            "execute_mission", Trigger, self.execute_mission
-        )
 
         self.feedback = PickAndBringFeedback()
         self.result = PickAndBringResult()
@@ -363,37 +360,6 @@ class RobotController:
         #     rospy.logerr("Action server not available!")
         # else:
         #     return self.move_base_client.get_result()
-
-    def execute_mission(self, req):
-        res = TriggerResponse()
-        res.success = True
-
-        if not (self.positions["home_position"] and self.positions["table_position"]):
-            res.success = False
-            return res
-
-        rospy.loginfo("Driving to table")
-        self.go_to_point(self.positions["table_position"])
-
-        rospy.loginfo("Waiting few seconds to allow artag positions to stabilize")
-        rospy.sleep(20.0)
-
-        rospy.loginfo("Waiting for clear_octomap service")
-        self.clear_octomap_srv.wait_for_service()
-
-        rospy.loginfo("Clearing octomap")
-        self.clear_octomap_srv.call()
-
-        rospy.loginfo("Waiting for pick_object service")
-        self.pick_object_srv.wait_for_service()
-
-        rospy.loginfo("Picking object")
-        self.pick_object_srv.call(TriggerRequest())
-
-        rospy.loginfo("Driving to home position")
-        self.go_to_point(self.positions["home_position"])
-
-        return res
 
 
 if __name__ == "__main__":
