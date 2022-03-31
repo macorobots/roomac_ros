@@ -30,11 +30,11 @@ from roomac_msgs.msg import (
 from dynamic_reconfigure.server import Server
 from roomac.cfg import AutonomousMissionSettingsConfig
 
-
-class GoalState(Enum):
-    IN_PROGRESS = 1
-    SUCCEEDED = 2
-    FAILED = 3
+from roomac_utils.action_procedure_executor import (
+    ActionProcedureStep,
+    SimpleActionExecutor,
+    GoalState,
+)
 
 
 class RobotController:
@@ -72,8 +72,10 @@ class RobotController:
             "save_table_position", Trigger, self.save_table_position
         )
 
-        self.go_to_table_srv = rospy.Service("go_to_table", Trigger, self.go_to_table)
-        self.go_to_home_srv = rospy.Service("go_to_home", Trigger, self.go_to_home)
+        self.go_to_table_srv = rospy.Service(
+            "go_to_table", Trigger, self.go_to_table_cb
+        )
+        self.go_to_home_srv = rospy.Service("go_to_home", Trigger, self.go_to_home_cb)
 
         self.move_base_client = actionlib.SimpleActionClient(
             "move_base", MoveBaseAction
@@ -92,90 +94,60 @@ class RobotController:
         self.add_table_to_scene_srv.wait_for_service()
         rospy.loginfo("All services and servers are available")
 
-        self.feedback = PickAndBringFeedback()
-        self.result = PickAndBringResult()
-        self.pick_and_bring_action = actionlib.SimpleActionServer(
-            "pick_and_bring",
-            PickAndBringAction,
-            execute_cb=self.execute_cb,
-            auto_start=False,
-        )
-        self.pick_and_bring_action.start()
-
-    def execute_cb(self, goal):
-        rospy.loginfo("Received goal, starting execution")
-
-        if not (self.positions["home_position"] and self.positions["table_position"]):
-            self.result.success = False
-            self.pick_and_bring_action.set_succeeded(self.result)
-            rospy.logerr("home_position and/or table_position wasn't defined")
-            return
-
-        procedures = [
-            (
-                self.go_to_point,
-                self.positions["table_position"],
-                self.move_base_finished_execution,
-                PickAndBringFeedback.DRIVING_TO_TABLE,
-                self.move_base_abort,
+        procedure_list = [
+            ActionProcedureStep(
+                start_procedure_function=lambda: None,
+                get_procedure_state_function=self.check_home_and_table_positions,
+                preempted_action_function=lambda: None,
+                feedback_state=PickAndBringFeedback.DRIVING_TO_TABLE,
             ),
-            (
-                lambda: None,
-                None,
-                self.check_if_artag_position_is_stable,
-                PickAndBringFeedback.PICKING_UP_OBJECT,
-                lambda: None,
+            ActionProcedureStep(
+                start_procedure_function=self.go_to_table,
+                get_procedure_state_function=self.move_base_finished_execution,
+                preempted_action_function=self.move_base_abort,
+                feedback_state=PickAndBringFeedback.DRIVING_TO_TABLE,
             ),
-            (
-                self.pick_object,
-                None,
-                self.pick_object_finished_execution,
-                PickAndBringFeedback.PICKING_UP_OBJECT,
-                self.pick_object_abort,
+            ActionProcedureStep(
+                start_procedure_function=lambda: None,
+                get_procedure_state_function=self.check_if_artag_position_is_stable,
+                preempted_action_function=lambda: None,
+                feedback_state=PickAndBringFeedback.PICKING_UP_OBJECT,
             ),
-            (
-                self.go_to_point,
-                self.positions["home_position"],
-                self.move_base_finished_execution,
-                PickAndBringFeedback.DRIVING_TO_HOME_POSITION,
-                self.move_base_abort,
+            ActionProcedureStep(
+                start_procedure_function=self.pick_object,
+                get_procedure_state_function=self.pick_object_finished_execution,
+                preempted_action_function=self.pick_object_abort,
+                feedback_state=PickAndBringFeedback.PICKING_UP_OBJECT,
+            ),
+            ActionProcedureStep(
+                start_procedure_function=self.go_to_home,
+                get_procedure_state_function=self.move_base_finished_execution,
+                preempted_action_function=self.move_base_abort,
+                feedback_state=PickAndBringFeedback.DRIVING_TO_HOME_POSITION,
             ),
         ]
 
-        for x in procedures:
-            self.feedback.status = x[3]
-            self.pick_and_bring_action.publish_feedback(self.feedback)
+        self.pick_action_executor = SimpleActionExecutor(
+            "pick_and_bring",
+            PickAndBringAction,
+            PickAndBringFeedback,
+            PickAndBringResult,
+            10.0,
+            procedure_list,
+        )
 
-            if x[1]:
-                x[0](x[1])
-            else:
-                x[0]()
+    def go_to_table(self):
+        self.go_to_point(self.positions["table_position"])
 
-            goal_state = GoalState.IN_PROGRESS
+    def go_to_home(self):
+        self.go_to_point(self.positions["home_position"])
 
-            while goal_state != GoalState.SUCCEEDED:
-
-                if self.pick_and_bring_action.is_preempt_requested():
-                    rospy.loginfo("pick_and_bring: Preempted")
-                    self.pick_and_bring_action.set_preempted()
-                    x[4]()
-                    return
-
-                goal_state = x[2]()
-
-                if goal_state == GoalState.FAILED:
-                    self.result.success = False
-                    self.pick_and_bring_action.set_succeeded(self.result)
-                    rospy.logerr(
-                        "pick_and_bring: Goal failed during "
-                        + str(self.feedback.status)
-                    )
-                    return
-
-                rospy.Rate(10).sleep()
-
-        self.result.success = True
-        self.pick_and_bring_action.set_succeeded(self.result)
+    def check_home_and_table_positions(self):
+        if self.positions["home_position"] and self.positions["table_position"]:
+            return GoalState.SUCCEEDED
+        else:
+            rospy.logerr("home_position and/or table_position wasn't defined")
+            return GoalState.FAILED
 
     def check_if_artag_position_is_stable(self):
         try:
@@ -292,7 +264,7 @@ class RobotController:
         with open(self.position_file, "w") as file:
             positions = yaml.dump(positions_yaml_dict, file)
 
-    def go_to_table(self, req):
+    def go_to_table_cb(self, req):
         res = TriggerResponse()
         res.success = True
 
@@ -303,7 +275,7 @@ class RobotController:
         res.success = False
         return res
 
-    def go_to_home(self, req):
+    def go_to_home_cb(self, req):
         res = TriggerResponse()
         res.success = True
 

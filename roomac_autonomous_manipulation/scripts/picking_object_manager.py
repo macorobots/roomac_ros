@@ -1,7 +1,5 @@
 #!/usr/bin/env python
 
-from enum import Enum
-
 import sys
 import copy
 
@@ -17,7 +15,6 @@ from tf.transformations import quaternion_from_euler
 
 from moveit_msgs.msg import MoveGroupActionFeedback
 from actionlib_msgs.msg import GoalID, GoalStatus
-import actionlib
 
 from roomac_msgs.msg import (
     PickObjectAction,
@@ -29,38 +26,11 @@ from dynamic_reconfigure.server import Server
 from roomac_autonomous_manipulation.cfg import PickManagerSettingsConfig
 
 
-class GoalState(Enum):
-    IN_PROGRESS = 1
-    SUCCEEDED = 2
-    FAILED = 3
-
-
-class ActionProcedureStep:
-    def __init__(
-        self,
-        start_procedure_function,
-        start_procedure_function_arguments,
-        get_procedure_state_function,
-        preempted_action_function,
-        feedback_state,
-    ):
-        self.start_procedure_function = start_procedure_function
-        self.start_procedure_function_arguments = start_procedure_function_arguments
-        self.get_procedure_state_function = get_procedure_state_function
-        self.preempted_action_function = preempted_action_function
-        self.feedback_state = feedback_state
-
-    def start_procedure(self):
-        self.start_procedure_function(*self.start_procedure_function_arguments)
-
-    def get_procedure_state(self):
-        return self.get_procedure_state_function()
-
-    def preempted_action(self):
-        self.preempted_action_function()
-
-    def get_feedback(self):
-        return self.feedback_state
+from roomac_utils.action_procedure_executor import (
+    ActionProcedureStep,
+    SimpleActionExecutor,
+    GoalState,
+)
 
 
 class PickingObjectManager(object):
@@ -159,24 +129,94 @@ class PickingObjectManager(object):
             "remove_object_from_scene", Trigger, self.remove_object_from_scene_cb
         )
 
-        # Pick action
-
-        self.feedback = PickObjectFeedback()
-        self.result = PickObjectResult()
-        self.pick_object_action = actionlib.SimpleActionServer(
-            "pick_object",
-            PickObjectAction,
-            execute_cb=self.execute_cb,
-            auto_start=False,
-        )
-        self.pick_object_action.start()
-
         self.moveit_feedback_state = None
 
-    def moveit_feedback_cb(self, msg):
-        self.moveit_feedback_state = msg.status.status
+        self.current_object_point = None
+        self.current_pre_object_point = None
+        self.current_post_object_point = None
 
-    def execute_cb(self, goal):
+        procedure_list = [
+            # Prepare picking
+            ActionProcedureStep(
+                start_procedure_function=self.prepare_picking,
+                get_procedure_state_function=lambda: GoalState.SUCCEEDED,
+                preempted_action_function=lambda: None,
+                feedback_state=PickObjectFeedback.PRE_GRIPPING_POSITION,
+            ),
+            # Open gripper
+            ActionProcedureStep(
+                start_procedure_function=self.open_gripper_with_delay,
+                get_procedure_state_function=lambda: GoalState.SUCCEEDED,
+                preempted_action_function=lambda: None,
+                feedback_state=PickObjectFeedback.PRE_GRIPPING_POSITION,
+            ),
+            # Go to pre point
+            ActionProcedureStep(
+                start_procedure_function=self.go_to_current_pre_object_point,
+                get_procedure_state_function=self.moveit_finished_execution,
+                preempted_action_function=self.moveit_abort,
+                feedback_state=PickObjectFeedback.GOING_TO_PRE_GRIPPING_POSITION,
+            ),
+            # Go to object point
+            ActionProcedureStep(
+                start_procedure_function=self.go_to_current_object_point,
+                get_procedure_state_function=self.moveit_finished_execution,
+                preempted_action_function=self.moveit_abort,
+                feedback_state=PickObjectFeedback.GOING_GRIPPING_POSITION,
+            ),
+            # Calculate error
+            ActionProcedureStep(
+                start_procedure_function=self.print_current_error,
+                get_procedure_state_function=lambda: GoalState.SUCCEEDED,
+                preempted_action_function=lambda: None,
+                feedback_state=PickObjectFeedback.GRIPPING_POSITION,
+            ),
+            # Close gripper
+            ActionProcedureStep(
+                start_procedure_function=self.close_gripper_with_delay,
+                get_procedure_state_function=lambda: GoalState.SUCCEEDED,
+                preempted_action_function=lambda: None,
+                feedback_state=PickObjectFeedback.CLOSING_GRIPPER,
+            ),
+            # Attach object
+            ActionProcedureStep(
+                start_procedure_function=self.attach_object,
+                get_procedure_state_function=lambda: GoalState.SUCCEEDED,
+                preempted_action_function=lambda: None,
+                feedback_state=PickObjectFeedback.GRIPPING_POSITION,
+            ),
+            # Go to post point
+            ActionProcedureStep(
+                start_procedure_function=self.go_to_current_post_object_point,
+                get_procedure_state_function=self.moveit_finished_execution,
+                preempted_action_function=self.moveit_abort,
+                feedback_state=PickObjectFeedback.GOING_TO_POST_GRIPPING_POSITION,
+            ),
+        ]
+
+        self.pick_action_executor = SimpleActionExecutor(
+            "pick_object",
+            PickObjectAction,
+            PickObjectFeedback,
+            PickObjectResult,
+            10.0,
+            procedure_list,
+            self.procedure_retry_threshold,
+        )
+
+    def go_to_current_object_point(self):
+        self.go_to_point(self.current_object_point)
+
+    def go_to_current_pre_object_point(self):
+        self.go_to_point(self.current_pre_object_point)
+
+    def go_to_current_post_object_point(self):
+        self.go_to_point(self.current_post_object_point)
+
+    def print_current_error(self):
+        self.print_error(self.current_object_point)
+
+    def prepare_picking(self):
         self.remove_object_from_scene()
 
         object_point = self.get_object_point()
@@ -189,101 +229,12 @@ class PickingObjectManager(object):
             object_point_transformed.point
         )
 
-        procedure_list = [
-            # Open gripper
-            ActionProcedureStep(
-                start_procedure_function=self.open_gripper,
-                start_procedure_function_arguments=(self.open_gripper_wait_time,),
-                get_procedure_state_function=lambda: GoalState.SUCCEEDED,
-                preempted_action_function=lambda: True,
-                feedback_state=PickObjectFeedback.PRE_GRIPPING_POSITION,
-            ),
-            # Go to pre point
-            ActionProcedureStep(
-                start_procedure_function=self.go_to_point,
-                start_procedure_function_arguments=(pre_point,),
-                get_procedure_state_function=self.moveit_finished_execution,
-                preempted_action_function=self.moveit_abort,
-                feedback_state=PickObjectFeedback.GOING_TO_PRE_GRIPPING_POSITION,
-            ),
-            # Go to object point
-            ActionProcedureStep(
-                start_procedure_function=self.go_to_point,
-                start_procedure_function_arguments=(object_point_transformed.point,),
-                get_procedure_state_function=self.moveit_finished_execution,
-                preempted_action_function=self.moveit_abort,
-                feedback_state=PickObjectFeedback.GOING_GRIPPING_POSITION,
-            ),
-            # Calculate error
-            ActionProcedureStep(
-                start_procedure_function=self.print_error,
-                start_procedure_function_arguments=(object_point_transformed.point,),
-                get_procedure_state_function=lambda: GoalState.SUCCEEDED,
-                preempted_action_function=lambda: True,
-                feedback_state=PickObjectFeedback.GRIPPING_POSITION,
-            ),
-            # Close gripper
-            ActionProcedureStep(
-                start_procedure_function=self.close_gripper,
-                start_procedure_function_arguments=(self.close_gripper_wait_time,),
-                get_procedure_state_function=lambda: GoalState.SUCCEEDED,
-                preempted_action_function=lambda: True,
-                feedback_state=PickObjectFeedback.CLOSING_GRIPPER,
-            ),
-            # Attach object
-            ActionProcedureStep(
-                start_procedure_function=self.attach_object,
-                start_procedure_function_arguments=(),
-                get_procedure_state_function=lambda: GoalState.SUCCEEDED,
-                preempted_action_function=lambda: True,
-                feedback_state=PickObjectFeedback.GRIPPING_POSITION,
-            ),
-            # Go to post point
-            ActionProcedureStep(
-                start_procedure_function=self.go_to_point,
-                start_procedure_function_arguments=(post_point,),
-                get_procedure_state_function=self.moveit_finished_execution,
-                preempted_action_function=self.moveit_abort,
-                feedback_state=PickObjectFeedback.GOING_TO_POST_GRIPPING_POSITION,
-            ),
-        ]
+        self.current_object_point = object_point_transformed.point
+        self.current_pre_object_point = pre_point
+        self.current_post_object_point = post_point
 
-        for procedure in procedure_list:
-            procedure_retry_count = 0
-            while procedure_retry_count < self.procedure_retry_threshold:
-                self.feedback.status = procedure.get_feedback()
-                self.pick_object_action.publish_feedback(self.feedback)
-
-                procedure.start_procedure()
-
-                goal_state = GoalState.IN_PROGRESS
-
-                while goal_state == GoalState.IN_PROGRESS:
-
-                    if self.pick_object_action.is_preempt_requested():
-                        rospy.loginfo("pick_and_bring: Preempted")
-                        self.pick_object_action.set_preempted()
-                        procedure.preempted_action()
-                        return
-
-                    goal_state = procedure.get_procedure_state()
-                    rospy.Rate(10).sleep()
-
-                if goal_state == GoalState.SUCCEEDED:
-                    break
-
-                procedure_retry_count += 1
-
-            if goal_state == GoalState.FAILED:
-                rospy.loginfo("Goal failed")
-                self.result.success = False
-                self.pick_object_action.set_succeeded(self.result)
-                return
-
-        rospy.loginfo("Picking action succeeded")
-
-        self.result.success = True
-        self.pick_object_action.set_succeeded(self.result)
+    def moveit_feedback_cb(self, msg):
+        self.moveit_feedback_state = msg.status.status
 
     def remove_object_from_scene(self):
         self.scene.remove_attached_object(self.gripper_frame, name=self.object_name)
@@ -343,6 +294,12 @@ class PickingObjectManager(object):
 
     def open_gripper(self, delay=1.0):
         raise NotImplementedError()
+
+    def close_gripper_with_delay(self):
+        self.close_gripper(self.close_gripper_wait_time)
+
+    def open_gripper_with_delay(self):
+        self.open_gripper(self.open_gripper_wait_time)
 
     def find_and_execute_plan(self, wait=True):
         plan = False
