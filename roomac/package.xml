@@ -51,7 +51,7 @@
   <buildtool_depend>catkin</buildtool_depend>
   <exec_depend>roomac_arm</exec_depend>
   <exec_depend>roomac_base</exec_depend>
-
+  <depend>dynamic_reconfigure</depend>
 
   <!-- The export tag contains other, unspecified, tags -->
   <export>

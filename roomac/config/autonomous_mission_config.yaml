@@ -1,1 +1,4 @@
 positions_file: /home/roomac/roomac_data/positions.yaml
+wait_time_before_picking_action: 5.0
+artag_stable_position_threshold: 0.04
+artag_stable_orientation_threshold: 5.0

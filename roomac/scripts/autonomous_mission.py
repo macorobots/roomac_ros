@@ -1,16 +1,23 @@
 #!/usr/bin/env python
 
+from enum import Enum
+
+import yaml
+import math
+
 import rospy
 
 import tf2_ros
 from tf.transformations import euler_from_quaternion, quaternion_from_euler
+
 from geometry_msgs.msg import Pose2D
 from std_srvs.srv import Trigger, TriggerResponse, TriggerRequest
 from std_srvs.srv import Empty
 
 import actionlib
-from move_base_msgs.msg import MoveBaseAction, MoveBaseGoal
 from actionlib_msgs.msg import GoalStatus
+
+from move_base_msgs.msg import MoveBaseAction, MoveBaseGoal
 
 from roomac_msgs.msg import (
     PickAndBringAction,
@@ -20,10 +27,8 @@ from roomac_msgs.msg import (
     PickActionGoal,
 )
 
-import yaml
-import math
-
-from enum import Enum
+from dynamic_reconfigure.server import Server
+from roomac.cfg import AutonomousMissionSettingsConfig
 
 
 class GoalState(Enum):
@@ -34,6 +39,22 @@ class GoalState(Enum):
 
 class RobotController:
     def __init__(self):
+        self.wait_time_before_picking_action = rospy.get_param(
+            "~wait_time_before_picking_action", 5.0
+        )
+        self.artag_stable_position_threshold = rospy.get_param(
+            "~artag_stable_position_threshold", 0.04
+        )
+        self.artag_stable_orientation_threshold = (
+            rospy.get_param("~artag_stable_orientation_threshold", 5.0)
+            / 180.0
+            * math.pi
+        )
+
+        self.dynamic_reconfigure_srv = Server(
+            AutonomousMissionSettingsConfig, self.dynamic_reconfigure_cb
+        )
+
         self.tf_buffer = tf2_ros.Buffer()
         self.listener = tf2_ros.TransformListener(self.tf_buffer)
 
@@ -57,20 +78,19 @@ class RobotController:
         self.move_base_client = actionlib.SimpleActionClient(
             "move_base", MoveBaseAction
         )
-        self.move_base_client.wait_for_server()
-
         self.pick_object_client = actionlib.SimpleActionClient(
             "pick_object", PickAction
         )
-        self.pick_object_client.wait_for_server()
 
         self.clear_octomap_srv = rospy.ServiceProxy("/clear_octomap", Empty)
-        self.clear_octomap_srv.wait_for_service()
-
         self.add_table_to_scene_srv = rospy.ServiceProxy("/add_table_to_scene", Trigger)
-        self.add_table_to_scene_srv.wait_for_service()
 
-        self.pick_object_srv = rospy.ServiceProxy("pick_object", Trigger)
+        rospy.loginfo("Waiting for all services and servers to become available")
+        self.move_base_client.wait_for_server()
+        self.pick_object_client.wait_for_server()
+        self.clear_octomap_srv.wait_for_service()
+        self.add_table_to_scene_srv.wait_for_service()
+        rospy.loginfo("All services and servers are available")
 
         self.feedback = PickAndBringFeedback()
         self.result = PickAndBringResult()
@@ -83,10 +103,12 @@ class RobotController:
         self.pick_and_bring_action.start()
 
     def execute_cb(self, goal):
+        rospy.loginfo("Received goal, starting execution")
 
         if not (self.positions["home_position"] and self.positions["table_position"]):
             self.result.success = False
             self.pick_and_bring_action.set_succeeded(self.result)
+            rospy.logerr("home_position and/or table_position wasn't defined")
             return
 
         procedures = [
@@ -144,6 +166,10 @@ class RobotController:
                 if goal_state == GoalState.FAILED:
                     self.result.success = False
                     self.pick_and_bring_action.set_succeeded(self.result)
+                    rospy.logerr(
+                        "pick_and_bring: Goal failed during "
+                        + str(self.feedback.status)
+                    )
                     return
 
                 rospy.Rate(10).sleep()
@@ -152,8 +178,12 @@ class RobotController:
         self.pick_and_bring_action.set_succeeded(self.result)
 
     def check_if_artag_position_is_stable(self):
-        artag_pose = self.get_position("camera_up_link", "ar_marker_0_only_yaw")
-        artag_pose_filtered = self.get_position("camera_up_link", "artag_link_2")
+        try:
+            artag_pose = self.get_position("camera_up_link", "ar_marker_0")
+            artag_pose_filtered = self.get_position("camera_up_link", "artag_link_2")
+        except RuntimeError as e:
+            rospy.logerr("Exception: " + str(e))
+            return GoalState.IN_PROGRESS
 
         trans_diff = math.sqrt(
             (artag_pose.x - artag_pose_filtered.x) ** 2
@@ -162,10 +192,10 @@ class RobotController:
 
         rot_diff = math.fabs(artag_pose.theta - artag_pose_filtered.theta)
 
-        rot_threshold = 5.0 / 180.0 * math.pi
-        trans_threshold = 0.04
-
-        if trans_diff < trans_threshold and rot_diff < rot_threshold:
+        if (
+            trans_diff < self.artag_stable_position_threshold
+            and rot_diff < self.artag_stable_orientation_threshold
+        ):
             return GoalState.SUCCEEDED
         else:
             return GoalState.IN_PROGRESS
@@ -174,7 +204,12 @@ class RobotController:
         # checking if artag is stable isn't working perfectly yet
         # so some delay is necessary before object position will be stable
         # and correct
-        rospy.sleep(5.0)
+        rospy.loginfo(
+            "Waiting "
+            + str(self.wait_time_before_picking_action)
+            + " seconds before picking up object"
+        )
+        rospy.sleep(self.wait_time_before_picking_action)
         self.clear_octomap_srv.call()
         self.add_table_to_scene_srv.call(TriggerRequest())
         self.pick_object_client.send_goal(PickActionGoal())
@@ -360,6 +395,14 @@ class RobotController:
         #     rospy.logerr("Action server not available!")
         # else:
         #     return self.move_base_client.get_result()
+
+    def dynamic_reconfigure_cb(self, config, level):
+        self.wait_time_before_picking_action = config.wait_time_before_picking_action
+        self.artag_stable_position_threshold = config.artag_stable_position_threshold
+        self.artag_stable_orientation_threshold = (
+            config.artag_stable_orientation_threshold / 180.0 * math.pi
+        )
+        return config
 
 
 if __name__ == "__main__":
