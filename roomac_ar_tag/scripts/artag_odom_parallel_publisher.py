@@ -3,8 +3,10 @@ import math
 
 import rospy
 
-import tf
+import tf2_ros
 from tf.transformations import euler_from_quaternion, quaternion_from_euler
+
+from geometry_msgs.msg import TransformStamped
 
 from artag_odom_publisher import ARTagOdomPublisher
 
@@ -15,11 +17,12 @@ class ARTagParallerlOdomPublisher(ARTagOdomPublisher):
 
         self.ar_marker_only_yaw_robot_link = self.ar_marker_robot_link + "_only_yaw"
         self.ar_marker_only_yaw_object_link = self.ar_marker_object_link + "_only_yaw"
-        self.tf_broadcaster = tf.TransformBroadcaster()
+        self.tf_broadcaster = tf2_ros.TransformBroadcaster()
 
     def send_only_yaw_transform(self, camera_link, ar_marker_link, target_link):
-        """Reads current transform, assumes that marker plane is parallel to
-        kinect and drops pitch and roll angles. Broadcasts new tf
+        """Reads current transform (wait up to 5 seconds for it), assumes that
+        marker plane is parallel to kinect and drops pitch and roll angles.
+        Broadcasts new tf
 
         Args:
             camera_link (string): camera link name
@@ -30,15 +33,22 @@ class ARTagParallerlOdomPublisher(ARTagOdomPublisher):
             RuntimeError: error when transform can't be read
         """
         try:
-            (trans, rot_quat) = self.tf_listener.lookupTransform(
-                camera_link, ar_marker_link, rospy.Time(0)
+            trans = self.tf_buffer.lookup_transform(
+                camera_link, ar_marker_link, rospy.Time.now(), rospy.Duration(5.0)
             )
         except (
-            tf.LookupException,
-            tf.ConnectivityException,
-            tf.ExtrapolationException,
+            tf2_ros.LookupException,
+            tf2_ros.ConnectivityException,
+            tf2_ros.ExtrapolationException,
         ):
             raise RuntimeError("Couldn't get transform")
+
+        rot_quat = [
+            trans.transform.rotation.x,
+            trans.transform.rotation.y,
+            trans.transform.rotation.z,
+            trans.transform.rotation.w,
+        ]
 
         rot_rpy = euler_from_quaternion(rot_quat)
         # Addin small value (0.001) is neccessary to prevent errors:
@@ -47,13 +57,17 @@ class ARTagParallerlOdomPublisher(ARTagOdomPublisher):
             math.pi / 2 + 0.001, rot_rpy[1], -math.pi / 2 + 0.001
         )
 
-        self.tf_broadcaster.sendTransform(
-            trans,
-            rot_only_yaw,
-            rospy.Time.now(),
-            target_link,
-            camera_link,
-        )
+        parallel_transform = TransformStamped()
+        parallel_transform.header.stamp = rospy.Time.now()
+        parallel_transform.header.frame_id = camera_link
+        parallel_transform.child_frame_id = target_link
+        parallel_transform.transform.translation = trans.transform.translation
+        parallel_transform.transform.rotation.x = rot_only_yaw[0]
+        parallel_transform.transform.rotation.y = rot_only_yaw[1]
+        parallel_transform.transform.rotation.z = rot_only_yaw[2]
+        parallel_transform.transform.rotation.w = rot_only_yaw[3]
+
+        self.tf_broadcaster.sendTransform(parallel_transform)
 
     def run(self):
         """Runs in the loop with a given rate, publishing

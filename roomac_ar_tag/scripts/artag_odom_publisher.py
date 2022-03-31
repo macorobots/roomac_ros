@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 import rospy
 
-import tf
+import tf2_ros
 
 from nav_msgs.msg import Odometry
 from geometry_msgs.msg import Point, Pose, Quaternion
@@ -35,7 +35,8 @@ class ARTagOdomPublisher(object):
         self.robot_link = rospy.get_param("~robot_link", "artag_link_2")
         self.object_link = rospy.get_param("~object_link", "detected_object")
 
-        self.tf_listener = tf.TransformListener()
+        self.tf_buffer = tf2_ros.Buffer()
+        self.tf_listener = tf2_ros.TransformListener(self.tf_buffer)
 
         self.odom_robot_pub = rospy.Publisher(
             "odom_artag_robot", Odometry, queue_size=50
@@ -47,7 +48,7 @@ class ARTagOdomPublisher(object):
     def calculate_odom_msg(
         self, ar_marker_link, camera_link, target_link, reversed=False
     ):
-        """Calculates odometry message
+        """Calculates odometry message, waits up to 5 second to read tf
 
         Args:
             ar_marker_link (string): ar marker link name
@@ -75,18 +76,22 @@ class ARTagOdomPublisher(object):
             header_child_link = target_link
 
         try:
-            (trans, rot) = self.tf_listener.lookupTransform(
-                target_frame, source_frame, rospy.Time(0)
+            trans = self.tf_buffer.lookup_transform(
+                target_frame, source_frame, rospy.Time.now(), rospy.Duration(5.0)
             )
         except (
-            tf.LookupException,
-            tf.ConnectivityException,
-            tf.ExtrapolationException,
+            tf2_ros.LookupException,
+            tf2_ros.ConnectivityException,
+            tf2_ros.ExtrapolationException,
         ):
             raise RuntimeError("Couldn't get transform")
 
-        pt = Point(trans[0], trans[1], trans[2])
-        quat = Quaternion(rot[0], rot[1], rot[2], rot[3])
+        pt = Point(
+            trans.transform.translation.x,
+            trans.transform.translation.y,
+            trans.transform.translation.z,
+        )
+        quat = trans.transform.rotation
 
         odom_msg = Odometry()
         odom_msg.header.stamp = rospy.Time.now()
