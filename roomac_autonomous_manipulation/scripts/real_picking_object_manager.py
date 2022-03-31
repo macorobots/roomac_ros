@@ -16,11 +16,25 @@ class RealPickingObjectManager(PickingObjectManager):
         # super().__init__()
         super(RealPickingObjectManager, self).__init__()
 
+        # Parameters
+        object_type = rospy.get_param("~object_type", "bottle")
+        self.gripper_joint_name = rospy.get_param(
+            "~gripper_joint_name", "right_gripper"
+        )
+        self.detected_object_frame = rospy.get_param(
+            "~detected_object_frame", "detected_object"
+        )
+        self.opened_gripper_value = rospy.get_param("~opened_gripper_value", 1.0)
+        self.bottle_closed_gripper_value = rospy.get_param(
+            "~bottle_closed_gripper_value", 0.4
+        )
+        self.cardbox_object_closed_gripper_value = rospy.get_param(
+            "~cardbox_object_closed_gripper_value", 0.1
+        )
+
         self.gripper_command = rospy.Publisher(
             "/joint_states", JointState, queue_size=5
         )
-
-        object_type = "bottle"
         self.object_point = Point()
 
         # object is positioned away from ar tag + componsetion for
@@ -35,17 +49,15 @@ class RealPickingObjectManager(PickingObjectManager):
             self.object_point.point.y = -0.09 - 0.008 + 0.02
             self.object_point.point.z = 0.1
 
-        # Almost maximum, if needed can go to 1.2
-        self.opened_gripper_value = 1.0
         self.closed_gripper_value = 0.1
         if object_type == "bottle":
-            self.closed_gripper_value = 0.4
+            self.closed_gripper_value = self.bottle_closed_gripper_value
         elif object_type == "cardbox_object":
-            self.closed_gripper_value = 0.1
+            self.closed_gripper_value = self.cardbox_object_closed_gripper_value
 
     def move_gripper(self, position, delay=1.0):
         gripper_msg = JointState()
-        gripper_msg.name = ["right_gripper"]
+        gripper_msg.name = [self.gripper_joint_name]
         gripper_msg.position = [position]
         self.gripper_command.publish(gripper_msg)
 
@@ -62,8 +74,13 @@ class RealPickingObjectManager(PickingObjectManager):
     def get_object_point(self):
         object_point_stamped = PointStamped()
         object_point_stamped.header.stamp = rospy.Time(0)
-        object_point_stamped.header.frame_id = "detected_object"
+        object_point_stamped.header.frame_id = self.detected_object_frame
         object_point_stamped.point = self.object_point
+
+        object_point_stamped.point.x += self.object_position_correction_x
+        object_point_stamped.point.y += self.object_position_correction_y
+        object_point_stamped.point.z += self.object_position_correction_z
+
         return object_point_stamped
 
 
