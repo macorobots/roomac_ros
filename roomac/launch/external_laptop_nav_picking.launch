@@ -9,7 +9,5 @@
   
   <include if="$(arg picking_correction_enabled)" file="$(find roomac_autonomous_manipulation)/launch/picking_correction.launch" />
 
-  <!-- Needs a lttile delay to work properly every time -->
-  <node name="add_table_body_collision_to_scene" pkg="roomac_autonomous_manipulation" 
-    type="add_table_body_collision_to_scene.py" output="screen" launch-prefix="bash -c 'sleep 10; $0 $@' "/>
+  <node name="add_table_body_collision_to_scene" pkg="roomac_autonomous_manipulation" type="add_table_body_collision_to_scene.py" output="screen"/>
 </launch>
