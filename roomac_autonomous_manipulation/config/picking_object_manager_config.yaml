@@ -8,7 +8,7 @@ post_goal_retraction_z: 0.08
 open_gripper_wait_time: 0.0
 close_gripper_wait_time: 1.0
 
-wait_time_move_group_servers: 60.0
+wait_time_move_group_servers: 120.0
 
 move_group_planning_time: 60.0
 move_group_planning_attempts: 10

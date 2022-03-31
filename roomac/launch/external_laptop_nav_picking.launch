@@ -5,7 +5,9 @@
     <arg name="upper_kinect_mounted_parellel" value="true"/>
   </include>
 
-  <node name="real_picking_object_manager" pkg="roomac_autonomous_manipulation" type="real_picking_object_manager.py" output="screen"/>
+  <include file="$(find roomac_autonomous_manipulation)/launch/picking_object_manager.launch">
+    <arg name="simulation" value="false"/>
+  </include>
   
   <include if="$(arg picking_correction_enabled)" file="$(find roomac_autonomous_manipulation)/launch/picking_correction.launch" />
 
