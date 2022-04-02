@@ -10,10 +10,8 @@ project(roomac_autonomous_manipulation)
 find_package(catkin REQUIRED
   roscpp
   tf2_ros
-  message_generation
-  std_msgs
-  geometry_msgs
   dynamic_reconfigure
+  roomac_msgs
 )
 find_package(PCL REQUIRED)
 
@@ -58,10 +56,9 @@ find_package(PCL REQUIRED)
 # )
 
 ## Generate services in the 'srv' folder
-add_service_files(
-  FILES
-  DetectGripperPosition.srv
-)
+# add_service_files(
+#   FILES
+# )
 
 ## Generate actions in the 'action' folder
 # add_action_files(
@@ -71,11 +68,9 @@ add_service_files(
 # )
 
 ## Generate added messages and services with any dependencies listed here
-generate_messages(
-  DEPENDENCIES
-  std_msgs
-  geometry_msgs
-)
+# generate_messages(
+#   DEPENDENCIES
+# )
 
 ################################################
 ## Declare ROS dynamic reconfigure parameters ##
