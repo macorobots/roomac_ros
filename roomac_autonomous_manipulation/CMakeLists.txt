@@ -141,7 +141,8 @@ link_directories(${PCL_LIBRARY_DIRS})
 ## With catkin_make all packages are built within a single CMake context
 ## The recommended prefix ensures that target names across packages don't collide
 # add_executable(${PROJECT_NAME}_node src/roomac_autonomous_manipulation_node.cpp)
-add_executable(pick_correction_node src/pick_correction_node.cpp src/PickCorrection.cpp)
+add_executable(pick_correction_node src/pick_correction/pick_correction_node.cpp 
+  src/pick_correction/PickCorrection.cpp)
 
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the

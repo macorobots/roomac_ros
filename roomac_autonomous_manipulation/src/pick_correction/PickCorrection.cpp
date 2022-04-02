@@ -1,4 +1,4 @@
-#include <roomac_autonomous_manipulation/PickCorrection.h>
+#include <roomac_autonomous_manipulation/pick_correction/PickCorrection.h>
 
 #include <limits>
 
