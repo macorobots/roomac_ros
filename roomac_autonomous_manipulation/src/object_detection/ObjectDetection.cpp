@@ -12,6 +12,7 @@
 #include <pcl/features/moment_of_inertia_estimation.h>
 #include <pcl/filters/passthrough.h>
 #include <pcl/segmentation/sac_segmentation.h>
+#include <pcl/common/common.h>
 
 ObjectDetection::ObjectDetection()
 {
@@ -68,7 +69,10 @@ bool ObjectDetection::HandleObjectDetection(roomac_msgs::DetectObjectAndTable::R
 
   if (publish_debug_)
   {
-    object_pt_pub_.publish(object_and_table.object.mass_center);
+    geometry_msgs::PointStamped object_pt_stamped;
+    object_pt_stamped.header = object_and_table.header;
+    object_pt_stamped.point = object_and_table.object.mass_center;
+    object_pt_pub_.publish(object_pt_stamped);
   }
 
   res.success = true;
@@ -142,6 +146,8 @@ roomac_msgs::ObjectAndTable ObjectDetection::FindObjectAndTable()
     msg.object.min_point_bounding_box = min_point_object;
     msg.object.max_point_bounding_box = max_point_object;
 
+    ROS_INFO("Finished detecting objects");
+
     return msg;
   }
   catch (const std::runtime_error& e)
@@ -203,7 +209,7 @@ ObjectDetection::TablePlaneDetection(const pcl::PointCloud<pcl::PointXYZRGB>::Pt
                                                << std::endl);
 
   pcl::PointCloud<pcl::PointXYZRGB>::Ptr filtered(new pcl::PointCloud<pcl::PointXYZRGB>);
-  pcl::PointCloud<pcl::PointXYZRGB>::Ptr table(new pcl::PointCloud<pcl::PointXYZRGB>);
+  pcl::PointCloud<pcl::PointXYZRGB>::Ptr table_plane(new pcl::PointCloud<pcl::PointXYZRGB>);
 
   pcl::ExtractIndices<pcl::PointXYZRGB> extract;
   extract.setInputCloud(src_cloud);
@@ -212,13 +218,16 @@ ObjectDetection::TablePlaneDetection(const pcl::PointCloud<pcl::PointXYZRGB>::Pt
   extract.filter(*filtered);
 
   extract.setNegative(false);
-  extract.filter(*table);
+  extract.filter(*table_plane);
 
-  ROS_INFO_STREAM("Table cloud size: " << table->size());
+  ROS_INFO_STREAM("Table plane cloud size: " << table_plane->size());
+  pcl::PointCloud<pcl::PointXYZRGB>::Ptr only_table(new pcl::PointCloud<pcl::PointXYZRGB>);
+  only_table = DetectLargestCluster(table_plane);
+  ROS_INFO_STREAM("Only table cloud size: " << only_table->size());
 
   geometry_msgs::Point min_point_table, max_point_table;
-  std::tie(min_point_table, max_point_table) = CalculateBoundingBox(table);
-  geometry_msgs::Point table_mass_center = CalculateMassCenter(table);
+  std::tie(min_point_table, max_point_table) = CalculateBoundingBox(only_table);
+  geometry_msgs::Point table_mass_center = CalculateMassCenter(only_table);
 
   ROS_INFO_STREAM("Min point table: " << min_point_table << "Max point table: " << max_point_table
                                       << "Mass center table: " << table_mass_center);
@@ -267,13 +276,16 @@ ObjectDetection::CalculateBoundingBox(const pcl::PointCloud<pcl::PointXYZRGB>::P
     throw std::runtime_error("Empty pointcloud sent for calculating bounding box");
   }
 
-  pcl::PointXYZRGB min_point_AABB;
-  pcl::PointXYZRGB max_point_AABB;
-  pcl::MomentOfInertiaEstimation<pcl::PointXYZRGB> feature_extractor;
-  feature_extractor.setInputCloud(src_cloud);
-  feature_extractor.compute();
+  // pcl::PointXYZRGB min_point_AABB;
+  // pcl::PointXYZRGB max_point_AABB;
+  // pcl::MomentOfInertiaEstimation<pcl::PointXYZRGB> feature_extractor;
+  // feature_extractor.setInputCloud(src_cloud);
+  // feature_extractor.compute();
 
-  feature_extractor.getAABB(min_point_AABB, max_point_AABB);
+  // feature_extractor.getAABB(min_point_AABB, max_point_AABB);
+
+  pcl::PointXYZRGB min_point_AABB, max_point_AABB;
+  pcl::getMinMax3D(*src_cloud, min_point_AABB, max_point_AABB);
 
   geometry_msgs::Point min_point_pt, max_point_pt;
   min_point_pt.x = min_point_AABB.x;
@@ -310,6 +322,71 @@ geometry_msgs::Point ObjectDetection::CalculateMassCenter(const pcl::PointCloud<
 }
 
 pcl::PointCloud<pcl::PointXYZRGB>::Ptr
+ObjectDetection::DetectLargestCluster(const pcl::PointCloud<pcl::PointXYZRGB>::Ptr& src_cloud)
+{
+  if (src_cloud->empty())
+  {
+    throw std::runtime_error("Empty pointcloud sent for clustering");
+  }
+
+  pcl::PointCloud<pcl::PointXYZRGB>::Ptr points_filtered(new pcl::PointCloud<pcl::PointXYZRGB>);
+  std::vector<int> indices;
+  pcl::removeNaNFromPointCloud(*src_cloud, *points_filtered, indices);
+
+  std::vector<pcl::PointIndices> cluster_indices = DetectClusterIndeces(points_filtered);
+
+  pcl::PointCloud<pcl::PointXYZRGB>::Ptr max_cloud_cluster(new pcl::PointCloud<pcl::PointXYZRGB>);
+  int max_size = 0;
+
+  int j = 1;
+  for (std::vector<pcl::PointIndices>::const_iterator it = cluster_indices.begin(); it != cluster_indices.end(); ++it)
+  {
+    pcl::PointCloud<pcl::PointXYZRGB>::Ptr cloud_cluster(new pcl::PointCloud<pcl::PointXYZRGB>);
+    for (const auto& idx : it->indices)
+    {
+      pcl::PointXYZRGB pt = (*points_filtered)[idx];
+      cloud_cluster->push_back(pt);
+    }
+    cloud_cluster->width = cloud_cluster->size();
+    cloud_cluster->height = 1;
+    cloud_cluster->is_dense = true;
+
+    j++;
+
+    if (cloud_cluster->size() > max_size)
+    {
+      copyPointCloud(*cloud_cluster, *max_cloud_cluster);
+      max_size = cloud_cluster->size();
+    }
+  }
+
+  return max_cloud_cluster;
+}
+
+std::vector<pcl::PointIndices>
+ObjectDetection::DetectClusterIndeces(const pcl::PointCloud<pcl::PointXYZRGB>::Ptr& src_cloud)
+{
+  if (src_cloud->empty())
+  {
+    throw std::runtime_error("Empty pointcloud sent for clustering");
+  }
+
+  pcl::search::KdTree<pcl::PointXYZRGB>::Ptr tree(new pcl::search::KdTree<pcl::PointXYZRGB>);
+  tree->setInputCloud(src_cloud);
+
+  std::vector<pcl::PointIndices> cluster_indices;
+  pcl::EuclideanClusterExtraction<pcl::PointXYZRGB> ec;
+  ec.setClusterTolerance(cluster_tolerance_);
+  ec.setMinClusterSize(min_cluster_size_);
+  ec.setMaxClusterSize(max_cluster_size_);
+  ec.setSearchMethod(tree);
+  ec.setInputCloud(src_cloud);
+  ec.extract(cluster_indices);
+
+  return cluster_indices;
+}
+
+pcl::PointCloud<pcl::PointXYZRGB>::Ptr
 ObjectDetection::DetectObjectCluster(const pcl::PointCloud<pcl::PointXYZRGB>::Ptr& src_cloud)
 {
   if (src_cloud->empty())
@@ -321,17 +398,7 @@ ObjectDetection::DetectObjectCluster(const pcl::PointCloud<pcl::PointXYZRGB>::Pt
   std::vector<int> indices;
   pcl::removeNaNFromPointCloud(*src_cloud, *points_filtered, indices);
 
-  pcl::search::KdTree<pcl::PointXYZRGB>::Ptr tree(new pcl::search::KdTree<pcl::PointXYZRGB>);
-  tree->setInputCloud(points_filtered);
-
-  std::vector<pcl::PointIndices> cluster_indices;
-  pcl::EuclideanClusterExtraction<pcl::PointXYZRGB> ec;
-  ec.setClusterTolerance(cluster_tolerance_);
-  ec.setMinClusterSize(min_cluster_size_);
-  ec.setMaxClusterSize(max_cluster_size_);
-  ec.setSearchMethod(tree);
-  ec.setInputCloud(points_filtered);
-  ec.extract(cluster_indices);
+  std::vector<pcl::PointIndices> cluster_indices = DetectClusterIndeces(points_filtered);
 
   pcl::PointCloud<pcl::PointXYZRGB>::Ptr object_cloud_cluster(new pcl::PointCloud<pcl::PointXYZRGB>);
   float min_x = std::numeric_limits<float>::max();
@@ -361,7 +428,7 @@ ObjectDetection::DetectObjectCluster(const pcl::PointCloud<pcl::PointXYZRGB>::Pt
 
     geometry_msgs::Point center = CalculateMassCenter(cloud_cluster);
 
-    if (center.x > min_x)
+    if (center.x < min_x)
     {
       copyPointCloud(*cloud_cluster, *object_cloud_cluster);
       min_x = center.x;

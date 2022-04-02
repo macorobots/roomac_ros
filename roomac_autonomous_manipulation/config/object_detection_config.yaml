@@ -11,7 +11,7 @@ num_of_readings_for_average: 5
 # Euclidean clustering parameters
 cluster_tolerance: 0.05
 min_cluster_size: 10
-max_cluster_size: 25000
+max_cluster_size: 150000
 
 # as in sensor_manager.launch.xml
 max_range: 1.8
