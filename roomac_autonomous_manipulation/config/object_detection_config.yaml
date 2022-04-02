@@ -1,0 +1,18 @@
+publish_debug: true
+
+# Real???? (todo: confirm)
+# camera_frame: "camera_up_rgb_optical_frame"
+# Simulation
+camera_frame: "camera_up_link"
+
+# Number of gripper position estimates that will be avaraged to get final one
+num_of_readings_for_average: 5
+
+# Euclidean clustering parameters
+cluster_tolerance: 0.05
+min_cluster_size: 10
+max_cluster_size: 25000
+
+# as in sensor_manager.launch.xml
+max_range: 1.8
+table_detection_distance_threshold: 0.02

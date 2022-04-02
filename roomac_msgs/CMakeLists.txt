@@ -14,6 +14,13 @@ add_action_files(DIRECTORY action FILES PickAndBring.action PickObject.action)
 add_service_files(
   FILES
   DetectGripperPosition.srv
+  DetectObjectAndTable.srv
+)
+
+add_message_files(
+  FILES
+  ObjectAndTable.msg
+  ObjectWithBoundingBox.msg
 )
 
 generate_messages(

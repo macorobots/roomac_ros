@@ -1,0 +1,8 @@
+<launch>
+  <node name="object_detection_node" pkg="roomac_autonomous_manipulation" type="object_detection_node" output="screen">
+    <rosparam command="load" file="$(find roomac_autonomous_manipulation)/config/object_detection_config.yaml" />
+  </node>
+
+  <arg name="rvizconfig" default="$(find roomac_autonomous_manipulation)/rviz/object_detection.rviz" />
+  <node name="rviz_picking_correction" pkg="rviz" type="rviz" args="-d $(arg rvizconfig)"/>
+</launch>
