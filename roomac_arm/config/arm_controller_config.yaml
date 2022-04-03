@@ -1,0 +1,26 @@
+change_threshold: 0.01
+max_speed: 0.005 # rad/s
+
+max_movement_time: 1000
+# max value is 255, and it is rounded to it if excceding (in 10ms)
+
+analog_update_delay: 0.7
+# real value 0.7 (in units of 10ms as playtime in digitalServo)
+
+zero_positions: [850, 320, 512, 1509, 1500, 650]
+
+analog_lower_signal_bound: 500
+analog_upper_signal_bound: 2500
+
+analog_lower_signal_bound_wrist: 600
+analog_upper_signal_bound_wrist: 2400
+
+digital_lower_signal_bound: 0
+digital_upper_signal_bound: 1024
+
+wrist_signal_zero_position: 1509
+wrist_signal_90_degrees: 697
+
+analog_speed: 10 # Change in ms in signal per analogUpdateDelay
+
+wrist_speed: 4.0

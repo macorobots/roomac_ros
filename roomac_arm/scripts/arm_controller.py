@@ -97,91 +97,107 @@ class DigitalServo(Servo):
 
 
 class ArmController:
-    change_threshold = 0.01
-    max_speed = 0.005  # rad/s
-
-    max_movement_time = 1000
-    # max value is 255, and it is rounded to it if excceding (in 10ms)
-
-    analog_update_delay = 0.7
-    # real value 0.7 (in units of 10ms as playtime in digitalServo)
-
-    joint_names = [
-        "right_shoulder_pan",
-        "right_shoulder_lift",
-        "right_elbow",
-        "right_wrist",
-        "right_gripper_twist",
-        "right_gripper",
-    ]
-
-    digital_joint_names = [joint_names[0], joint_names[1], joint_names[2]]
-    analog_joint_names = [joint_names[3], joint_names[4], joint_names[5]]
-
-    topic_names = [
-        "shoulder_pan",
-        "shoulder_lift",
-        "elbow",
-        "wrist",
-        "wrist_twist",
-        "gripper",
-    ]
-
-    zero_positions = [850, 320, 512, 1509, 1500, 650]
-
-    analog_lower_signal_bound = 500
-    analog_upper_signal_bound = 2500
-    digital_lower_signal_bound = 0
-    digital_upper_signal_bound = 1024
-
-    wrist_signal_zero_position = 1509
-    wrist_signal_90_degrees = 697
-    analog_scale_factor_wrist = (
-        wrist_signal_zero_position - wrist_signal_90_degrees
-    ) / (90.0 * math.pi / 180.0)
-
-    digital_scale_factor = (digital_upper_signal_bound - digital_lower_signal_bound) / (
-        (330.0 / 2.0) * math.pi / 180.0
-    )
-
-    analog_lower_signal_bound_wrist = 600
-    analog_upper_signal_bound_wrist = 2400
-    analog_scale_factor = (analog_upper_signal_bound - analog_lower_signal_bound) / (
-        180.0 * math.pi / 180.0
-    )
-    analog_speed = 10  # Change in ms in signal per analogUpdateDelay
-    scaling_factors = [
-        digital_scale_factor,
-        digital_scale_factor,
-        digital_scale_factor / 2.0,  # no gear reduction
-        analog_scale_factor_wrist,
-        analog_scale_factor,
-        analog_scale_factor,
-    ]
-
-    lower_signal_bounds = [
-        digital_lower_signal_bound,
-        digital_lower_signal_bound,
-        digital_lower_signal_bound,
-        analog_lower_signal_bound_wrist,
-        analog_lower_signal_bound,
-        analog_lower_signal_bound,
-    ]
-
-    upperSignalBounds = [
-        digital_upper_signal_bound,
-        digital_upper_signal_bound,
-        digital_upper_signal_bound,
-        analog_upper_signal_bound_wrist,
-        analog_upper_signal_bound,
-        analog_upper_signal_bound,
-    ]
-
-    servos = {}
-
-    wrist_speed = 4.0
-
     def __init__(self):
+        self.zero_positions = rospy.get_param(
+            "~zero_positions", [850, 320, 512, 1509, 1500, 650]
+        )
+        self.max_movement_time = rospy.get_param("~max_movement_time", 1000)
+        self.analog_lower_signal_bound = rospy.get_param(
+            "~analog_lower_signal_bound", 500
+        )
+        self.analog_upper_signal_bound = rospy.get_param(
+            "~analog_upper_signal_bound", 2500
+        )
+        self.analog_lower_signal_bound_wrist = rospy.get_param(
+            "~analog_lower_signal_bound_wrist", 600
+        )
+        self.analog_upper_signal_bound_wrist = rospy.get_param(
+            "~analog_upper_signal_bound_wrist", 2400
+        )
+        self.digital_lower_signal_bound = rospy.get_param(
+            "~digital_lower_signal_bound", 0
+        )
+        self.digital_upper_signal_bound = rospy.get_param(
+            "~digital_upper_signal_bound", 1024
+        )
+        self.wrist_signal_zero_position = rospy.get_param(
+            "~wrist_signal_zero_position", 1509
+        )
+        self.wrist_signal_90_degrees = rospy.get_param("~wrist_signal_90_degrees", 697)
+        self.analog_speed = rospy.get_param("~analog_speed", 10)
+        self.wrist_speed = rospy.get_param("~wrist_speed", 4.0)
+        self.analog_update_delay = rospy.get_param("~analog_update_delay", 0.7)
+        self.change_threshold = rospy.get_param("~change_threshold", 0.01)
+        self.max_speed = rospy.get_param("~max_speed", 0.005)
+
+        self.joint_names = [
+            "right_shoulder_pan",
+            "right_shoulder_lift",
+            "right_elbow",
+            "right_wrist",
+            "right_gripper_twist",
+            "right_gripper",
+        ]
+
+        self.digital_joint_names = [
+            self.joint_names[0],
+            self.joint_names[1],
+            self.joint_names[2],
+        ]
+        self.analog_joint_names = [
+            self.joint_names[3],
+            self.joint_names[4],
+            self.joint_names[5],
+        ]
+
+        self.topic_names = [
+            "shoulder_pan",
+            "shoulder_lift",
+            "elbow",
+            "wrist",
+            "wrist_twist",
+            "gripper",
+        ]
+
+        self.analog_scale_factor_wrist = (
+            self.wrist_signal_zero_position - self.wrist_signal_90_degrees
+        ) / (90.0 * math.pi / 180.0)
+        self.digital_scale_factor = (
+            self.digital_upper_signal_bound - self.digital_lower_signal_bound
+        ) / ((330.0 / 2.0) * math.pi / 180.0)
+        self.analog_scale_factor = (
+            self.analog_upper_signal_bound - self.analog_lower_signal_bound
+        ) / (180.0 * math.pi / 180.0)
+
+        self.scaling_factors = [
+            self.digital_scale_factor,
+            self.digital_scale_factor,
+            self.digital_scale_factor / 2.0,  # no gear reduction
+            self.analog_scale_factor_wrist,
+            self.analog_scale_factor,
+            self.analog_scale_factor,
+        ]
+
+        self.lower_signal_bounds = [
+            self.digital_lower_signal_bound,
+            self.digital_lower_signal_bound,
+            self.digital_lower_signal_bound,
+            self.analog_lower_signal_bound_wrist,
+            self.analog_lower_signal_bound,
+            self.analog_lower_signal_bound,
+        ]
+
+        self.upperSignalBounds = [
+            self.digital_upper_signal_bound,
+            self.digital_upper_signal_bound,
+            self.digital_upper_signal_bound,
+            self.analog_upper_signal_bound_wrist,
+            self.analog_upper_signal_bound,
+            self.analog_upper_signal_bound,
+        ]
+
+        self.servos = {}
+
         self.jointsSub = rospy.Subscriber(
             "/joint_states", JointState, self.joints_state_cb, queue_size=1
         )
