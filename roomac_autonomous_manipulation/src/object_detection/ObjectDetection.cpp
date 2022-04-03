@@ -13,6 +13,7 @@
 #include <pcl/filters/passthrough.h>
 #include <pcl/segmentation/sac_segmentation.h>
 #include <pcl/common/common.h>
+#include <pcl/filters/voxel_grid.h>
 
 ObjectDetection::ObjectDetection()
 {
@@ -36,6 +37,7 @@ ObjectDetection::ObjectDetection()
 
   max_range_ = ph.param<float>("max_range", 2.0);
   table_detection_distance_threshold_ = ph.param<float>("table_detection_distance_threshold", 0.01);
+  table_voxels_leaf_size_ = ph.param<float>("table_voxels_leaf_size", 0.01);
 
   publish_debug_ = ph.param<bool>("publish_debug", true);
 
@@ -221,8 +223,17 @@ ObjectDetection::TablePlaneDetection(const pcl::PointCloud<pcl::PointXYZRGB>::Pt
   extract.filter(*table_plane);
 
   ROS_INFO_STREAM("Table plane cloud size: " << table_plane->size());
+
+  // voxel filter to reduce number of points - otherwise, on default resolution clustering is really slow
+  pcl::PointCloud<pcl::PointXYZRGB>::Ptr table_plane_filtered(new pcl::PointCloud<pcl::PointXYZRGB>);
+  table_plane_filtered = VoxelFilter(table_plane, table_voxels_leaf_size_);
+
+  // indices from plane filtering also include other points on this plane, especially one from robot,
+  // which makes it inaccurate to detect bounding box, so first clusterization has to be done to find
+  // largest cluster - table alone
   pcl::PointCloud<pcl::PointXYZRGB>::Ptr only_table(new pcl::PointCloud<pcl::PointXYZRGB>);
-  only_table = DetectLargestCluster(table_plane);
+  only_table = DetectLargestCluster(table_plane_filtered);
+
   ROS_INFO_STREAM("Only table cloud size: " << only_table->size());
 
   geometry_msgs::Point min_point_table, max_point_table;
@@ -233,6 +244,19 @@ ObjectDetection::TablePlaneDetection(const pcl::PointCloud<pcl::PointXYZRGB>::Pt
                                       << "Mass center table: " << table_mass_center);
 
   return std::make_tuple(filtered, table_mass_center, min_point_table, max_point_table);
+}
+
+pcl::PointCloud<pcl::PointXYZRGB>::Ptr
+ObjectDetection::VoxelFilter(const pcl::PointCloud<pcl::PointXYZRGB>::Ptr& src_cloud, float leaf_size)
+{
+  pcl::PointCloud<pcl::PointXYZRGB>::Ptr filtered_cloud(new pcl::PointCloud<pcl::PointXYZRGB>);
+
+  pcl::VoxelGrid<pcl::PointXYZRGB> voxel_filter;
+  voxel_filter.setInputCloud(src_cloud);
+  voxel_filter.setLeafSize(leaf_size, leaf_size, leaf_size);
+  voxel_filter.filter(*filtered_cloud);
+
+  return filtered_cloud;
 }
 
 pcl::PointCloud<pcl::PointXYZRGB>::Ptr
@@ -275,14 +299,6 @@ ObjectDetection::CalculateBoundingBox(const pcl::PointCloud<pcl::PointXYZRGB>::P
   {
     throw std::runtime_error("Empty pointcloud sent for calculating bounding box");
   }
-
-  // pcl::PointXYZRGB min_point_AABB;
-  // pcl::PointXYZRGB max_point_AABB;
-  // pcl::MomentOfInertiaEstimation<pcl::PointXYZRGB> feature_extractor;
-  // feature_extractor.setInputCloud(src_cloud);
-  // feature_extractor.compute();
-
-  // feature_extractor.getAABB(min_point_AABB, max_point_AABB);
 
   pcl::PointXYZRGB min_point_AABB, max_point_AABB;
   pcl::getMinMax3D(*src_cloud, min_point_AABB, max_point_AABB);
@@ -456,4 +472,5 @@ void ObjectDetection::ReconfigureCallback(roomac_autonomous_manipulation::Object
   publish_debug_ = config.publish_debug;
   max_range_ = config.max_range;
   table_detection_distance_threshold_ = config.table_detection_distance_threshold;
+  table_voxels_leaf_size_ = config.table_voxels_leaf_size;
 }

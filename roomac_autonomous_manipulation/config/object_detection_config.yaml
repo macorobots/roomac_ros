@@ -16,3 +16,4 @@ max_cluster_size: 150000
 # as in sensor_manager.launch.xml
 max_range: 1.8
 table_detection_distance_threshold: 0.02
+table_voxels_leaf_size: 0.04

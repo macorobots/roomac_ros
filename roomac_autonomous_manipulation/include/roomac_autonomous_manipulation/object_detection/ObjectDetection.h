@@ -49,6 +49,9 @@ private:
 
   geometry_msgs::Point CalculateMassCenter(const pcl::PointCloud<pcl::PointXYZRGB>::Ptr& src_cloud);
 
+  pcl::PointCloud<pcl::PointXYZRGB>::Ptr VoxelFilter(const pcl::PointCloud<pcl::PointXYZRGB>::Ptr& src_cloud,
+                                                     float leaf_size);
+
   std::vector<pcl::PointIndices> DetectClusterIndeces(const pcl::PointCloud<pcl::PointXYZRGB>::Ptr& src_cloud);
   pcl::PointCloud<pcl::PointXYZRGB>::Ptr DetectObjectCluster(const pcl::PointCloud<pcl::PointXYZRGB>::Ptr& src_cloud);
   pcl::PointCloud<pcl::PointXYZRGB>::Ptr DetectLargestCluster(const pcl::PointCloud<pcl::PointXYZRGB>::Ptr& src_cloud);
@@ -65,6 +68,7 @@ private:
 
   float max_range_;
   float table_detection_distance_threshold_;
+  float table_voxels_leaf_size_;
 
   std::string camera_frame_;
 
