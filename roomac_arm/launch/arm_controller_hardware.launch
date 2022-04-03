@@ -2,7 +2,7 @@
 
   <param name="robot_description" command="$(find xacro)/xacro $(find roomac_description)/urdf/roomac.xacro" />
 
-  <node name="arm_controller" pkg="roomac_arm" type="arm_controller.py"/>
+  <include file="$(find roomac_arm)/launch/arm_controller.launch"/>
 
   <node name="serial_node_arm" pkg="rosserial_python" type="serial_node.py" output="screen">
     <param name="port" type="string" value="/dev/ttyUSB0" />

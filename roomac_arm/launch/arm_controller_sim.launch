@@ -4,7 +4,7 @@
 
   <param name="robot_description" command="$(find xacro)/xacro $(find roomac_arm)/urdf/arm.urdf.xacro" />
 
-  <node name="arm_controller" pkg="roomac_arm" type="arm_controller.py"/>
+  <include file="$(find roomac_arm)/launch/arm_controller.launch"/>
 
   <node if="$(arg gui)" name="joint_state_publisher" pkg="joint_state_publisher_gui" type="joint_state_publisher_gui" />
   <node unless="$(arg gui)" name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher" />
