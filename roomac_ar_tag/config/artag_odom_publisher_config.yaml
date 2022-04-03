@@ -2,6 +2,8 @@ translation_covariance: 10
 rotation_covariance: 30
 rate: 30.0
 
+object_artag_enabled: $(arg object_artag_enabled)
+
 camera_link: "camera_up_link"
 ar_marker_robot_link: "ar_marker_0"
 ar_marker_object_link: "ar_marker_2"

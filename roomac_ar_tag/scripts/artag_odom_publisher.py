@@ -35,6 +35,8 @@ class ARTagOdomPublisher(object):
         self.robot_link = rospy.get_param("~robot_link", "artag_link_2")
         self.object_link = rospy.get_param("~object_link", "detected_object")
 
+        self.object_artag_enabled = rospy.get_param("~object_artag_enabled", True)
+
         self.tf_listener = tf.TransformListener()
 
         self.odom_robot_pub = rospy.Publisher(
@@ -110,19 +112,20 @@ class ARTagOdomPublisher(object):
                     self.robot_link,
                     reversed=True,
                 )
+                self.odom_robot_pub.publish(odom_robot_msg)
 
-                odom_object_msg = self.calculate_odom_msg(
-                    self.ar_marker_object_link,
-                    self.camera_link,
-                    self.object_link,
-                    reversed=False,
-                )
+                if self.object_artag_enabled:
+                    odom_object_msg = self.calculate_odom_msg(
+                        self.ar_marker_object_link,
+                        self.camera_link,
+                        self.object_link,
+                        reversed=False,
+                    )
+                    self.odom_object_pub.publish(odom_object_msg)
+
             except RuntimeError as e:
                 rospy.logwarn_throttle(5, "[Marker odom publisher] " + str(e))
                 continue
-
-            self.odom_robot_pub.publish(odom_robot_msg)
-            self.odom_object_pub.publish(odom_object_msg)
 
             self.rate.sleep()
 
