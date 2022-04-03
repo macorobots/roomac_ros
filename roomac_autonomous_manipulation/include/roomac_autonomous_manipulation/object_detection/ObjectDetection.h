@@ -52,19 +52,30 @@ private:
   pcl::PointCloud<pcl::PointXYZRGB>::Ptr VoxelFilter(const pcl::PointCloud<pcl::PointXYZRGB>::Ptr& src_cloud,
                                                      float leaf_size);
 
-  std::vector<pcl::PointIndices> DetectClusterIndeces(const pcl::PointCloud<pcl::PointXYZRGB>::Ptr& src_cloud);
-  pcl::PointCloud<pcl::PointXYZRGB>::Ptr DetectObjectCluster(const pcl::PointCloud<pcl::PointXYZRGB>::Ptr& src_cloud);
-  pcl::PointCloud<pcl::PointXYZRGB>::Ptr DetectLargestCluster(const pcl::PointCloud<pcl::PointXYZRGB>::Ptr& src_cloud);
+  std::vector<pcl::PointIndices> DetectClusterIndeces(const pcl::PointCloud<pcl::PointXYZRGB>::Ptr& src_cloud,
+                                                      float cluster_tolerance, int min_cluster_size,
+                                                      int max_cluster_size);
+  pcl::PointCloud<pcl::PointXYZRGB>::Ptr DetectObjectCluster(const pcl::PointCloud<pcl::PointXYZRGB>::Ptr& src_cloud,
+                                                             float cluster_tolerance, int min_cluster_size,
+                                                             int max_cluster_size);
+  pcl::PointCloud<pcl::PointXYZRGB>::Ptr DetectLargestCluster(const pcl::PointCloud<pcl::PointXYZRGB>::Ptr& src_cloud,
+                                                              float cluster_tolerance, int min_cluster_size,
+                                                              int max_cluster_size);
 
   void PublishPointcloud(const pcl::PointCloud<pcl::PointXYZRGB>::Ptr& cloud, ros::Publisher& pub);
 
   void ReconfigureCallback(roomac_autonomous_manipulation::ObjectDetectionConfig& config, uint32_t level);
 
   int num_of_readings_for_average_;
-  float cluster_tolerance_;
-  int min_cluster_size_;
-  int max_cluster_size_;
   bool publish_debug_;
+
+  float object_cluster_tolerance_;
+  int object_min_cluster_size_;
+  int object_max_cluster_size_;
+
+  float table_cluster_tolerance_;
+  int table_min_cluster_size_;
+  int table_max_cluster_size_;
 
   float max_range_;
   float table_detection_distance_threshold_;

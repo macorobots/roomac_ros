@@ -31,9 +31,13 @@ ObjectDetection::ObjectDetection()
 
   num_of_readings_for_average_ = ph.param<int>("num_of_readings_for_average", 5);
 
-  cluster_tolerance_ = ph.param<float>("cluster_tolerance", 0.02);
-  min_cluster_size_ = ph.param<int>("min_cluster_size", 10);
-  max_cluster_size_ = ph.param<int>("max_cluster_size", 25000);
+  object_cluster_tolerance_ = ph.param<float>("object_cluster_tolerance", 0.02);
+  object_min_cluster_size_ = ph.param<int>("object_min_cluster_size", 10);
+  object_max_cluster_size_ = ph.param<int>("object_max_cluster_size", 25000);
+
+  table_cluster_tolerance_ = ph.param<float>("table_cluster_tolerance", 0.02);
+  table_min_cluster_size_ = ph.param<int>("table_min_cluster_size", 10);
+  table_max_cluster_size_ = ph.param<int>("table_max_cluster_size", 100000);
 
   max_range_ = ph.param<float>("max_range", 2.0);
   table_detection_distance_threshold_ = ph.param<float>("table_detection_distance_threshold", 0.01);
@@ -127,7 +131,8 @@ roomac_msgs::ObjectAndTable ObjectDetection::FindObjectAndTable()
 
     ROS_INFO("Detecting clusters");
     pcl::PointCloud<pcl::PointXYZRGB>::Ptr object_cluster(new pcl::PointCloud<pcl::PointXYZRGB>);
-    object_cluster = DetectObjectCluster(objects_on_table);
+    object_cluster = DetectObjectCluster(objects_on_table, object_cluster_tolerance_, object_min_cluster_size_,
+                                         object_max_cluster_size_);
 
     if (publish_debug_)
     {
@@ -232,7 +237,8 @@ ObjectDetection::TablePlaneDetection(const pcl::PointCloud<pcl::PointXYZRGB>::Pt
   // which makes it inaccurate to detect bounding box, so first clusterization has to be done to find
   // largest cluster - table alone
   pcl::PointCloud<pcl::PointXYZRGB>::Ptr only_table(new pcl::PointCloud<pcl::PointXYZRGB>);
-  only_table = DetectLargestCluster(table_plane_filtered);
+  only_table = DetectLargestCluster(table_plane_filtered, table_cluster_tolerance_, table_min_cluster_size_,
+                                    table_max_cluster_size_);
 
   ROS_INFO_STREAM("Only table cloud size: " << only_table->size());
 
@@ -338,7 +344,8 @@ geometry_msgs::Point ObjectDetection::CalculateMassCenter(const pcl::PointCloud<
 }
 
 pcl::PointCloud<pcl::PointXYZRGB>::Ptr
-ObjectDetection::DetectLargestCluster(const pcl::PointCloud<pcl::PointXYZRGB>::Ptr& src_cloud)
+ObjectDetection::DetectLargestCluster(const pcl::PointCloud<pcl::PointXYZRGB>::Ptr& src_cloud, float cluster_tolerance,
+                                      int min_cluster_size, int max_cluster_size)
 {
   if (src_cloud->empty())
   {
@@ -349,7 +356,8 @@ ObjectDetection::DetectLargestCluster(const pcl::PointCloud<pcl::PointXYZRGB>::P
   std::vector<int> indices;
   pcl::removeNaNFromPointCloud(*src_cloud, *points_filtered, indices);
 
-  std::vector<pcl::PointIndices> cluster_indices = DetectClusterIndeces(points_filtered);
+  std::vector<pcl::PointIndices> cluster_indices =
+      DetectClusterIndeces(points_filtered, cluster_tolerance, min_cluster_size, max_cluster_size);
 
   pcl::PointCloud<pcl::PointXYZRGB>::Ptr max_cloud_cluster(new pcl::PointCloud<pcl::PointXYZRGB>);
   int max_size = 0;
@@ -380,7 +388,8 @@ ObjectDetection::DetectLargestCluster(const pcl::PointCloud<pcl::PointXYZRGB>::P
 }
 
 std::vector<pcl::PointIndices>
-ObjectDetection::DetectClusterIndeces(const pcl::PointCloud<pcl::PointXYZRGB>::Ptr& src_cloud)
+ObjectDetection::DetectClusterIndeces(const pcl::PointCloud<pcl::PointXYZRGB>::Ptr& src_cloud, float cluster_tolerance,
+                                      int min_cluster_size, int max_cluster_size)
 {
   if (src_cloud->empty())
   {
@@ -392,9 +401,9 @@ ObjectDetection::DetectClusterIndeces(const pcl::PointCloud<pcl::PointXYZRGB>::P
 
   std::vector<pcl::PointIndices> cluster_indices;
   pcl::EuclideanClusterExtraction<pcl::PointXYZRGB> ec;
-  ec.setClusterTolerance(cluster_tolerance_);
-  ec.setMinClusterSize(min_cluster_size_);
-  ec.setMaxClusterSize(max_cluster_size_);
+  ec.setClusterTolerance(cluster_tolerance);
+  ec.setMinClusterSize(min_cluster_size);
+  ec.setMaxClusterSize(max_cluster_size);
   ec.setSearchMethod(tree);
   ec.setInputCloud(src_cloud);
   ec.extract(cluster_indices);
@@ -403,7 +412,8 @@ ObjectDetection::DetectClusterIndeces(const pcl::PointCloud<pcl::PointXYZRGB>::P
 }
 
 pcl::PointCloud<pcl::PointXYZRGB>::Ptr
-ObjectDetection::DetectObjectCluster(const pcl::PointCloud<pcl::PointXYZRGB>::Ptr& src_cloud)
+ObjectDetection::DetectObjectCluster(const pcl::PointCloud<pcl::PointXYZRGB>::Ptr& src_cloud, float cluster_tolerance,
+                                     int min_cluster_size, int max_cluster_size)
 {
   if (src_cloud->empty())
   {
@@ -414,7 +424,8 @@ ObjectDetection::DetectObjectCluster(const pcl::PointCloud<pcl::PointXYZRGB>::Pt
   std::vector<int> indices;
   pcl::removeNaNFromPointCloud(*src_cloud, *points_filtered, indices);
 
-  std::vector<pcl::PointIndices> cluster_indices = DetectClusterIndeces(points_filtered);
+  std::vector<pcl::PointIndices> cluster_indices =
+      DetectClusterIndeces(points_filtered, cluster_tolerance, min_cluster_size, max_cluster_size);
 
   pcl::PointCloud<pcl::PointXYZRGB>::Ptr object_cloud_cluster(new pcl::PointCloud<pcl::PointXYZRGB>);
   float min_x = std::numeric_limits<float>::max();
@@ -466,9 +477,12 @@ void ObjectDetection::PublishPointcloud(const pcl::PointCloud<pcl::PointXYZRGB>:
 void ObjectDetection::ReconfigureCallback(roomac_autonomous_manipulation::ObjectDetectionConfig& config, uint32_t level)
 {
   num_of_readings_for_average_ = config.num_of_readings_for_average;
-  cluster_tolerance_ = config.cluster_tolerance;
-  min_cluster_size_ = config.min_cluster_size;
-  max_cluster_size_ = config.max_cluster_size;
+  object_cluster_tolerance_ = config.object_cluster_tolerance;
+  object_min_cluster_size_ = config.object_min_cluster_size;
+  object_max_cluster_size_ = config.object_max_cluster_size;
+  table_cluster_tolerance_ = config.table_cluster_tolerance;
+  table_min_cluster_size_ = config.table_min_cluster_size;
+  table_max_cluster_size_ = config.table_max_cluster_size;
   publish_debug_ = config.publish_debug;
   max_range_ = config.max_range;
   table_detection_distance_threshold_ = config.table_detection_distance_threshold;
