@@ -7,6 +7,7 @@ camera_frame: "camera_up_link"
 
 # Number of gripper position estimates that will be avaraged to get final one
 num_of_readings_for_average: 5
+max_num_of_failed_readings: 5
 
 # Euclidean clustering parameters
 object_cluster_tolerance: 0.05

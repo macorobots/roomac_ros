@@ -30,6 +30,7 @@ ObjectDetection::ObjectDetection()
   object_pt_pub_ = nh.advertise<geometry_msgs::PointStamped>("object_pt", 10, true);
 
   num_of_readings_for_average_ = ph.param<int>("num_of_readings_for_average", 5);
+  max_num_of_failed_readings_ = ph.param<int>("max_num_of_failed_readings", 5);
 
   object_cluster_tolerance_ = ph.param<float>("object_cluster_tolerance", 0.02);
   object_min_cluster_size_ = ph.param<int>("object_min_cluster_size", 10);
@@ -55,34 +56,42 @@ ObjectDetection::ObjectDetection()
 bool ObjectDetection::HandleObjectDetection(roomac_msgs::DetectObjectAndTable::Request& req,
                                             roomac_msgs::DetectObjectAndTable::Response& res)
 {
-  // for (int i = 0; i < num_of_readings_for_average_; ++i)
-  roomac_msgs::ObjectAndTable object_and_table;
-
-  try
+  std::vector<roomac_msgs::ObjectAndTable> object_and_table_readings;
+  int failed_readings_count = 0;
+  for (int i = 0; i < num_of_readings_for_average_; ++i)
   {
-    object_and_table = FindObjectAndTable();
+    try
+    {
+      roomac_msgs::ObjectAndTable object_and_table = FindObjectAndTable();
+      object_and_table_readings.push_back(object_and_table);
+    }
+    catch (const std::runtime_error& e)
+    {
+      ++failed_readings_count;
+      if (failed_readings_count > max_num_of_failed_readings_)
+      {
+        res.success = false;
+        res.message = e.what();
+        return true;
+      }
+    }
   }
-  catch (const std::runtime_error& e)
-  {
-    res.success = false;
-    res.message = e.what();
 
-    return true;
-  }
+  roomac_msgs::ObjectAndTable object_and_table_average = CalculateAverage(object_and_table_readings);
 
-  object_and_table.header.frame_id = camera_frame_;
-  object_and_table.header.stamp = ros::Time::now();
+  object_and_table_average.header.frame_id = camera_frame_;
+  object_and_table_average.header.stamp = ros::Time::now();
 
   if (publish_debug_)
   {
     geometry_msgs::PointStamped object_pt_stamped;
-    object_pt_stamped.header = object_and_table.header;
-    object_pt_stamped.point = object_and_table.object.mass_center;
+    object_pt_stamped.header = object_and_table_average.header;
+    object_pt_stamped.point = object_and_table_average.object.mass_center;
     object_pt_pub_.publish(object_pt_stamped);
   }
 
   res.success = true;
-  res.object_and_table = object_and_table;
+  res.object_and_table = object_and_table_average;
   return true;
 }
 
@@ -463,6 +472,64 @@ ObjectDetection::DetectObjectCluster(const pcl::PointCloud<pcl::PointXYZRGB>::Pt
   }
 
   return object_cloud_cluster;
+}
+
+geometry_msgs::Point ObjectDetection::CalculateAverage(const std::vector<geometry_msgs::Point>& point_readings)
+{
+  geometry_msgs::Point average;
+  for (const auto& x : point_readings)
+  {
+    average.x += x.x;
+    average.y += x.y;
+    average.z += x.z;
+  }
+
+  average.x /= point_readings.size();
+  average.y /= point_readings.size();
+  average.z /= point_readings.size();
+
+  return average;
+}
+
+roomac_msgs::ObjectWithBoundingBox
+ObjectDetection::CalculateAverage(const std::vector<roomac_msgs::ObjectWithBoundingBox>& object_readings)
+{
+  roomac_msgs::ObjectWithBoundingBox average;
+
+  std::vector<geometry_msgs::Point> mass_center_readings, max_point_readings, min_point_readings;
+
+  for (const auto& x : object_readings)
+  {
+    mass_center_readings.push_back(x.mass_center);
+    max_point_readings.push_back(x.max_point_bounding_box);
+    min_point_readings.push_back(x.min_point_bounding_box);
+  }
+
+  average.mass_center = CalculateAverage(mass_center_readings);
+  average.max_point_bounding_box = CalculateAverage(max_point_readings);
+  average.min_point_bounding_box = CalculateAverage(min_point_readings);
+
+  return average;
+}
+
+roomac_msgs::ObjectAndTable
+ObjectDetection::CalculateAverage(const std::vector<roomac_msgs::ObjectAndTable>& object_and_table_readings)
+{
+  roomac_msgs::ObjectAndTable average;
+
+  std::vector<roomac_msgs::ObjectWithBoundingBox> table_readings;
+  std::vector<roomac_msgs::ObjectWithBoundingBox> object_readings;
+
+  for (const auto& x : object_and_table_readings)
+  {
+    table_readings.push_back(x.table);
+    object_readings.push_back(x.object);
+  }
+
+  average.table = CalculateAverage(table_readings);
+  average.object = CalculateAverage(object_readings);
+
+  return average;
 }
 
 void ObjectDetection::PublishPointcloud(const pcl::PointCloud<pcl::PointXYZRGB>::Ptr& cloud, ros::Publisher& pub)

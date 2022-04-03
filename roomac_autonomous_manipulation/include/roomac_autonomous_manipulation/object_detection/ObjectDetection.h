@@ -44,6 +44,12 @@ private:
                                                               geometry_msgs::Point min_point_table,
                                                               geometry_msgs::Point max_point_table);
 
+  geometry_msgs::Point CalculateAverage(const std::vector<geometry_msgs::Point>& point_readings);
+  roomac_msgs::ObjectWithBoundingBox
+  CalculateAverage(const std::vector<roomac_msgs::ObjectWithBoundingBox>& object_readings);
+  roomac_msgs::ObjectAndTable
+  CalculateAverage(const std::vector<roomac_msgs::ObjectAndTable>& object_and_table_readings);
+
   std::tuple<geometry_msgs::Point, geometry_msgs::Point>
   CalculateBoundingBox(const pcl::PointCloud<pcl::PointXYZRGB>::Ptr& src_cloud);
 
@@ -67,6 +73,7 @@ private:
   void ReconfigureCallback(roomac_autonomous_manipulation::ObjectDetectionConfig& config, uint32_t level);
 
   int num_of_readings_for_average_;
+  int max_num_of_failed_readings_;
   bool publish_debug_;
 
   float object_cluster_tolerance_;
