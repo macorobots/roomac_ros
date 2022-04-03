@@ -260,17 +260,17 @@ class ArmController:
                 rospy.logerr(joint_name + " not initialized")
                 continue
 
-            positionDiff = self.servos[joint_name].calculate_position_diff(
+            position_diff = self.servos[joint_name].calculate_position_diff(
                 state.position[id]
             )
 
             if joint_name in self.digital_joint_names:
-                if positionDiff > max_digital_angle_diff:
-                    max_digital_angle_diff = positionDiff
+                if position_diff > max_digital_angle_diff:
+                    max_digital_angle_diff = position_diff
 
             elif joint_name in self.analog_joint_names:
-                if positionDiff > max_analog_angle_diff:
-                    max_analog_angle_diff = positionDiff
+                if position_diff > max_analog_angle_diff:
+                    max_analog_angle_diff = position_diff
 
         if (
             max_digital_angle_diff < self.change_threshold
