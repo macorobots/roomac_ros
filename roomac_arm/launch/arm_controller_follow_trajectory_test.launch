@@ -1,0 +1,12 @@
+<launch>
+  <node name="arm_controller_joint_trajectory" pkg="roomac_arm" type="arm_controller_joint_trajectory.py" output="screen">
+    <rosparam command="load" file="$(find roomac_arm)/config/arm_controller_config.yaml" />
+  </node>
+
+  <param name="robot_description" command="$(find xacro)/xacro $(find roomac_description)/urdf/roomac.xacro" />
+  <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" />
+
+  <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher">
+    <rosparam param="source_list">["/joint_states_controller"]</rosparam>
+  </node>
+</launch>

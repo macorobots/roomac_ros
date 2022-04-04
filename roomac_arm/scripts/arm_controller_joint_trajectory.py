@@ -240,6 +240,10 @@ class ArmController:
         self.feedback = FollowJointTrajectoryActionFeedback()
         self.result = FollowJointTrajectoryActionResult()
 
+        self.joint_state_pub = rospy.Publisher(
+            "joint_states_controller", JointState, queue_size=10
+        )
+
     def execute_cb(self, goal):
         rospy.loginfo("Goal received")
         i = 0
@@ -257,6 +261,12 @@ class ArmController:
                 goal.trajectory.joint_names, trajectory_point.positions
             )
             rospy.sleep(rospy.Duration(movement_time / 100))
+
+            joint_state_msg = JointState()
+            joint_state_msg.header.stamp = rospy.Time.now()
+            joint_state_msg.name = goal.trajectory.joint_names
+            joint_state_msg.position = trajectory_point.positions
+            self.joint_state_pub.publish(joint_state_msg)
 
             # TODO feedback
             # self.feedback.feedback.actual = trajectory_point
