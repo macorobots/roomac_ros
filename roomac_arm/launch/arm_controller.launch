@@ -1,5 +1,5 @@
 <launch>
-  <node name="arm_controller" pkg="roomac_arm" type="arm_controller.py" output="screen">
+  <node name="arm_joint_state_controller" pkg="roomac_arm" type="arm_joint_state_controller.py" output="screen">
     <rosparam command="load" file="$(find roomac_arm)/config/arm_controller_config.yaml" />
   </node>
 </launch>
