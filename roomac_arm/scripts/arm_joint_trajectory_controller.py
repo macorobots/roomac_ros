@@ -44,14 +44,20 @@ class ArmJointTrajectoryController(ArmController):
         rospy.loginfo(
             "Number of points in trajectory " + str(len(goal.trajectory.points))
         )
+
+        last_time = 0
         for trajectory_point in goal.trajectory.points:
             rospy.loginfo("Executing point " + str(i))
             i += 1
 
             movement_time = self.go_to_point(
-                goal.trajectory.joint_names, trajectory_point.positions
+                goal.trajectory.joint_names,
+                trajectory_point.positions,
+                (trajectory_point.time_from_start - last_time).to_sec(),
             )
-            rospy.sleep(rospy.Duration(movement_time / 100))
+            rospy.sleep(rospy.Duration(movement_time))
+
+            last_time = trajectory_point.time_from_start
 
             joint_state_msg = JointState()
             joint_state_msg.header.stamp = rospy.Time.now()

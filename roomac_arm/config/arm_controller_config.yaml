@@ -1,11 +1,7 @@
-min_change_threshold: 0.01
-max_speed: 0.005 # rad/s
+min_change_threshold: 0.01 # [rad]
+max_speed: 0.005 # [rad/s]
 
-max_movement_time: 1000
-# max value is 255, and it is rounded to it if excceding (in 10ms)
-
-analog_update_delay: 0.7
-# real value 0.7 (in units of 10ms as playtime in digitalServo)
+analog_update_delay: 0.007 # [s]
 
 zero_angle_signal: [850, 320, 512, 1509, 1500, 650]
 
@@ -21,5 +17,5 @@ digital_upper_signal_bound: 1024
 wrist_signal_zero_position: 1509
 wrist_signal_90_degrees: 697
 
-analog_speed: 2.0 # Change in ms in signal per analog_update_delay
-wrist_speed: 4.0
+analog_speed: 2.0 # Change in signal per analog_update_delay
+wrist_speed: 4.0 # Change in signal per analog_update_delay

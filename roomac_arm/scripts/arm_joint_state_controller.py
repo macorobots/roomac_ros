@@ -14,7 +14,7 @@ class ArmJointTrajectoryController(ArmController):
 
     def joints_state_cb(self, state):
         movement_time = self.go_to_point(state.name, state.position)
-        rospy.sleep(rospy.Duration(movement_time / 100))
+        rospy.sleep(rospy.Duration(movement_time))
 
 
 if __name__ == "__main__":
