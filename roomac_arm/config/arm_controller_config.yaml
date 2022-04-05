@@ -1,4 +1,4 @@
-change_threshold: 0.01
+min_change_threshold: 0.01
 max_speed: 0.005 # rad/s
 
 max_movement_time: 1000
@@ -7,7 +7,7 @@ max_movement_time: 1000
 analog_update_delay: 0.7
 # real value 0.7 (in units of 10ms as playtime in digitalServo)
 
-zero_positions: [850, 320, 512, 1509, 1500, 650]
+zero_angle_signal: [850, 320, 512, 1509, 1500, 650]
 
 analog_lower_signal_bound: 500
 analog_upper_signal_bound: 2500

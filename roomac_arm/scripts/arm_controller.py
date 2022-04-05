@@ -7,8 +7,8 @@ from servo_controller import AnalogServo, DigitalServo
 
 class ArmController:
     def __init__(self):
-        self.zero_positions = rospy.get_param(
-            "~zero_positions", [850, 320, 512, 1509, 1500, 650]
+        self.zero_angle_signal = rospy.get_param(
+            "~zero_angle_signal", [850, 320, 512, 1509, 1500, 650]
         )
         self.max_movement_time = rospy.get_param("~max_movement_time", 1000)
         self.analog_lower_signal_bound = rospy.get_param(
@@ -36,7 +36,7 @@ class ArmController:
         self.analog_speed = rospy.get_param("~analog_speed", 10)
         self.wrist_speed = rospy.get_param("~wrist_speed", 4.0)
         self.analog_update_delay = rospy.get_param("~analog_update_delay", 0.7)
-        self.change_threshold = rospy.get_param("~change_threshold", 0.01)
+        self.min_change_threshold = rospy.get_param("~min_change_threshold", 0.01)
         self.max_speed = rospy.get_param("~max_speed", 0.005)
 
         self.joint_names = [
@@ -73,7 +73,7 @@ class ArmController:
 
         self.servos["right_shoulder_pan"] = DigitalServo(
             "shoulder_pan",
-            self.zero_positions[0],
+            self.zero_angle_signal[0],
             self.digital_lower_signal_bound,
             self.digital_upper_signal_bound,
             self.digital_scale_factor,
@@ -81,7 +81,7 @@ class ArmController:
         )
         self.servos["right_shoulder_lift"] = DigitalServo(
             "shoulder_lift",
-            self.zero_positions[1],
+            self.zero_angle_signal[1],
             self.digital_lower_signal_bound,
             self.digital_upper_signal_bound,
             self.digital_scale_factor,
@@ -89,7 +89,7 @@ class ArmController:
         )
         self.servos["right_elbow"] = DigitalServo(
             "elbow",
-            self.zero_positions[2],
+            self.zero_angle_signal[2],
             self.digital_lower_signal_bound,
             self.digital_upper_signal_bound,
             self.digital_scale_factor / 2.0,  # no gear reduction
@@ -98,7 +98,7 @@ class ArmController:
 
         self.servos["right_wrist"] = AnalogServo(
             "wrist",
-            self.zero_positions[3],
+            self.zero_angle_signal[3],
             self.analog_lower_signal_bound_wrist,
             self.analog_upper_signal_bound_wrist,
             self.analog_scale_factor_wrist,
@@ -107,7 +107,7 @@ class ArmController:
         )
         self.servos["right_gripper_twist"] = AnalogServo(
             "wrist_twist",
-            self.zero_positions[4],
+            self.zero_angle_signal[4],
             self.analog_lower_signal_bound,
             self.analog_upper_signal_bound,
             self.analog_scale_factor,
@@ -116,7 +116,7 @@ class ArmController:
         )
         self.servos["right_gripper"] = AnalogServo(
             "gripper",
-            self.zero_positions[5],
+            self.zero_angle_signal[5],
             self.analog_lower_signal_bound,
             self.analog_upper_signal_bound,
             self.analog_scale_factor,
@@ -129,7 +129,7 @@ class ArmController:
 
         self.servos["right_wrist"].publish_speed(self.wrist_speed)
 
-    def go_to_point(self, joint_names, positions):
+    def go_to_point(self, joint_names, angles):
         max_angle_diff = 0
         movement_times = []
 
@@ -143,18 +143,16 @@ class ArmController:
                 rospy.logerr(joint_name + " not initialized")
                 continue
 
-            position_diff = self.servos[joint_name].calculate_position_diff(
-                positions[id]
-            )
+            angle_diff = self.servos[joint_name].calculate_angle_diff(angles[id])
 
-            if position_diff > max_angle_diff:
-                max_angle_diff = position_diff
+            if angle_diff > max_angle_diff:
+                max_angle_diff = angle_diff
 
             movement_times.append(
-                self.servos[joint_name].calculate_movement_time(positions[id])
+                self.servos[joint_name].calculate_movement_time(angles[id])
             )
 
-        if max_angle_diff < self.change_threshold:
+        if max_angle_diff < self.min_change_threshold:
             return
 
         movement_time = self.calculate_movement_time(movement_times)
@@ -169,7 +167,7 @@ class ArmController:
             if not joint_name in self.servos:
                 continue
 
-            self.servos[joint_name].set_angle(positions[id])
+            self.servos[joint_name].set_angle(angles[id])
 
         return movement_time
 
