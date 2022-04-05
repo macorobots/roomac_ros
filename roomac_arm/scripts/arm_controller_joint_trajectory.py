@@ -34,6 +34,9 @@ class Servo:
     def calculate_position_diff(self, new_position):
         return abs(new_position - self.last_position)
 
+    def calculate_movement_time(self, new_position):
+        raise NotImplementedError()
+
     def publish_position(self, position):
         position_msg = UInt16()
         position_msg.data = position
@@ -56,7 +59,14 @@ class Servo:
 
 class AnalogServo(Servo):
     def __init__(
-        self, name, zero_position, lower_signal_bound, upper_signal_bound, scale_factor
+        self,
+        name,
+        zero_position,
+        lower_signal_bound,
+        upper_signal_bound,
+        scale_factor,
+        speed,
+        analog_update_delay,
     ):
         Servo.__init__(
             self,
@@ -69,16 +79,34 @@ class AnalogServo(Servo):
         self.speeds_pub = rospy.Publisher(
             self.name + "_speed", Float32, queue_size=5, latch=True
         )
+        self.speed = speed
+        self.analog_update_delay = analog_update_delay
 
     def publish_speed(self, speed):
+        self.speed = speed
         speed_msg = Float32()
         speed_msg.data = speed
         self.speeds_pub.publish(speed_msg)
 
+    def calculate_movement_time(self, new_position):
+        angle_diff = self.calculate_position_diff(new_position)
+
+        movement_time = (
+            (angle_diff * self.scale_factor) / self.speed
+        ) * self.analog_update_delay
+
+        return movement_time
+
 
 class DigitalServo(Servo):
     def __init__(
-        self, name, zero_position, lower_signal_bound, upper_signal_bound, scale_factor
+        self,
+        name,
+        zero_position,
+        lower_signal_bound,
+        upper_signal_bound,
+        scale_factor,
+        max_speed,
     ):
         Servo.__init__(
             self,
@@ -93,6 +121,7 @@ class DigitalServo(Servo):
             self.name + "_playtime", UInt8, queue_size=5, latch=True
         )
         self.publish_playtime(255)
+        self.max_speed = max_speed
 
     def bound_playtime(self, value):
         return max(0, min(255, value))
@@ -102,6 +131,13 @@ class DigitalServo(Servo):
         playtime_msg = UInt8()
         playtime_msg.data = playtime
         self.speeds_pub.publish(playtime_msg)
+
+    def calculate_movement_time(self, new_position):
+        angle_diff = self.calculate_position_diff(new_position)
+
+        movement_time = (angle_diff / (2 * math.pi)) / self.max_speed
+
+        return movement_time
 
 
 class ArmController:
@@ -158,15 +194,6 @@ class ArmController:
             self.joint_names[5],
         ]
 
-        self.topic_names = [
-            "shoulder_pan",
-            "shoulder_lift",
-            "elbow",
-            "wrist",
-            "wrist_twist",
-            "gripper",
-        ]
-
         self.analog_scale_factor_wrist = (
             self.wrist_signal_zero_position - self.wrist_signal_90_degrees
         ) / (90.0 * math.pi / 180.0)
@@ -177,55 +204,63 @@ class ArmController:
             self.analog_upper_signal_bound - self.analog_lower_signal_bound
         ) / (180.0 * math.pi / 180.0)
 
-        self.scaling_factors = [
-            self.digital_scale_factor,
-            self.digital_scale_factor,
-            self.digital_scale_factor / 2.0,  # no gear reduction
-            self.analog_scale_factor_wrist,
-            self.analog_scale_factor,
-            self.analog_scale_factor,
-        ]
-
-        self.lower_signal_bounds = [
-            self.digital_lower_signal_bound,
-            self.digital_lower_signal_bound,
-            self.digital_lower_signal_bound,
-            self.analog_lower_signal_bound_wrist,
-            self.analog_lower_signal_bound,
-            self.analog_lower_signal_bound,
-        ]
-
-        self.upperSignalBounds = [
-            self.digital_upper_signal_bound,
-            self.digital_upper_signal_bound,
-            self.digital_upper_signal_bound,
-            self.analog_upper_signal_bound_wrist,
-            self.analog_upper_signal_bound,
-            self.analog_upper_signal_bound,
-        ]
-
         self.servos = {}
 
-        for id in range(len(self.joint_names)):
-            joint_name = self.joint_names[id]
-            if joint_name in self.digital_joint_names:
-                self.servos[joint_name] = DigitalServo(
-                    self.topic_names[id],
-                    self.zero_positions[id],
-                    self.lower_signal_bounds[id],
-                    self.upperSignalBounds[id],
-                    self.scaling_factors[id],
-                )
-            elif joint_name in self.analog_joint_names:
-                self.servos[joint_name] = AnalogServo(
-                    self.topic_names[id],
-                    self.zero_positions[id],
-                    self.lower_signal_bounds[id],
-                    self.upperSignalBounds[id],
-                    self.scaling_factors[id],
-                )
+        self.servos["right_shoulder_pan"] = DigitalServo(
+            "shoulder_pan",
+            self.zero_positions[0],
+            self.digital_lower_signal_bound,
+            self.digital_upper_signal_bound,
+            self.digital_scale_factor,
+            self.max_speed,
+        )
+        self.servos["right_shoulder_lift"] = DigitalServo(
+            "shoulder_lift",
+            self.zero_positions[1],
+            self.digital_lower_signal_bound,
+            self.digital_upper_signal_bound,
+            self.digital_scale_factor,
+            self.max_speed,
+        )
+        self.servos["right_elbow"] = DigitalServo(
+            "elbow",
+            self.zero_positions[2],
+            self.digital_lower_signal_bound,
+            self.digital_upper_signal_bound,
+            self.digital_scale_factor / 2.0,  # no gear reduction
+            self.max_speed,
+        )
 
-            self.servos[joint_name].set_angle(0.0)
+        self.servos["right_wrist"] = AnalogServo(
+            "wrist",
+            self.zero_positions[3],
+            self.analog_lower_signal_bound_wrist,
+            self.analog_upper_signal_bound_wrist,
+            self.analog_scale_factor_wrist,
+            self.wrist_speed,
+            self.analog_update_delay,
+        )
+        self.servos["right_gripper_twist"] = AnalogServo(
+            "wrist_twist",
+            self.zero_positions[4],
+            self.analog_lower_signal_bound,
+            self.analog_upper_signal_bound,
+            self.analog_scale_factor,
+            self.analog_speed,
+            self.analog_update_delay,
+        )
+        self.servos["right_gripper"] = AnalogServo(
+            "gripper",
+            self.zero_positions[5],
+            self.analog_lower_signal_bound,
+            self.analog_upper_signal_bound,
+            self.analog_scale_factor,
+            self.analog_speed,
+            self.analog_update_delay,
+        )
+
+        for x in self.servos:
+            x.set_angle(0.0)
 
         self.servos["right_wrist"].publish_speed(self.wrist_speed)
 
@@ -301,17 +336,17 @@ class ArmController:
                 rospy.logerr(joint_name + " not initialized")
                 continue
 
-            positionDiff = self.servos[joint_name].calculate_position_diff(
+            position_diff = self.servos[joint_name].calculate_position_diff(
                 positions[id]
             )
 
             if joint_name in self.digital_joint_names:
-                if positionDiff > max_digital_angle_diff:
-                    max_digital_angle_diff = positionDiff
+                if position_diff > max_digital_angle_diff:
+                    max_digital_angle_diff = position_diff
 
             elif joint_name in self.analog_joint_names:
-                if positionDiff > max_analog_angle_diff:
-                    max_analog_angle_diff = positionDiff
+                if position_diff > max_analog_angle_diff:
+                    max_analog_angle_diff = position_diff
 
         if (
             max_digital_angle_diff < self.change_threshold
@@ -348,14 +383,14 @@ class ArmController:
         ) * self.analog_update_delay
 
         if digital_movement_time > analog_movement_time:
-            movementTime = digital_movement_time
+            movement_time = digital_movement_time
         else:
-            movementTime = analog_movement_time
+            movement_time = analog_movement_time
 
-        if movementTime > self.max_movement_time:
-            movementTime = self.max_movement_time
+        if movement_time > self.max_movement_time:
+            movement_time = self.max_movement_time
 
-        return movementTime
+        return movement_time
 
 
 if __name__ == "__main__":
