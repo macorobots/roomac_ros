@@ -323,8 +323,8 @@ class ArmController:
         self.action_server.set_succeeded(self.result)
 
     def go_to_point(self, joint_names, positions):
-        max_digital_angle_diff = 0
-        max_analog_angle_diff = 0
+        max_angle_diff = 0
+        movement_times = []
 
         for id in range(len(joint_names)):
             joint_name = joint_names[id]
@@ -340,23 +340,17 @@ class ArmController:
                 positions[id]
             )
 
-            if joint_name in self.digital_joint_names:
-                if position_diff > max_digital_angle_diff:
-                    max_digital_angle_diff = position_diff
+            if position_diff > max_angle_diff:
+                max_angle_diff = position_diff
 
-            elif joint_name in self.analog_joint_names:
-                if position_diff > max_analog_angle_diff:
-                    max_analog_angle_diff = position_diff
+            movement_times.append(
+                self.servos[joint_name].calculate_movement_time(positions[id])
+            )
 
-        if (
-            max_digital_angle_diff < self.change_threshold
-            and max_analog_angle_diff < self.change_threshold
-        ):
+        if max_angle_diff < self.change_threshold:
             return
 
-        movement_time = self.calculate_movement_time(
-            max_digital_angle_diff, max_analog_angle_diff
-        )
+        movement_time = self.calculate_movement_time(movement_times)
 
         for joint_name in self.digital_joint_names:
             self.servos[joint_name].publish_playtime(movement_time)
@@ -372,20 +366,9 @@ class ArmController:
 
         return movement_time
 
-    def calculate_movement_time(self, max_digital_angle_diff, max_analog_angle_diff):
+    def calculate_movement_time(self, movement_times):
 
-        digital_movement_time = min(
-            (max_digital_angle_diff / math.pi) * self.max_movement_time, 255
-        )
-
-        analog_movement_time = (
-            (max_analog_angle_diff * self.analog_scale_factor) / self.analog_speed
-        ) * self.analog_update_delay
-
-        if digital_movement_time > analog_movement_time:
-            movement_time = digital_movement_time
-        else:
-            movement_time = analog_movement_time
+        movement_time = max(movement_times)
 
         if movement_time > self.max_movement_time:
             movement_time = self.max_movement_time
