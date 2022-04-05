@@ -79,6 +79,8 @@ class AnalogServo(Servo):
         self.speed = speed
         self.analog_update_delay = analog_update_delay
 
+        self.set_speed(self.speed)
+
     def publish_speed(self, speed):
         speed_msg = Float32()
         speed_msg.data = speed

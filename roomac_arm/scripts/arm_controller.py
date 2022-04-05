@@ -127,8 +127,6 @@ class ArmController:
         for x in self.servos:
             x.set_angle(0.0)
 
-        self.servos["right_wrist"].publish_speed(self.wrist_speed)
-
     def go_to_point(self, joint_names, angles):
         max_angle_diff = 0
         movement_times = []
