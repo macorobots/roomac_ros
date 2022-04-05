@@ -236,14 +236,14 @@ class ArmController:
         ) * self.analog_update_delay
 
         if digital_movement_time > analog_movement_time:
-            movementTime = digital_movement_time
+            movement_time = digital_movement_time
         else:
-            movementTime = analog_movement_time
+            movement_time = analog_movement_time
 
-        if movementTime > self.max_movement_time:
-            movementTime = self.max_movement_time
+        if movement_time > self.max_movement_time:
+            movement_time = self.max_movement_time
 
-        return movementTime
+        return movement_time
 
     def joints_state_cb(self, state):
 
