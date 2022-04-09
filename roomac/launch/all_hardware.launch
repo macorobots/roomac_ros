@@ -1,5 +1,5 @@
 <launch>
-  <include file="$(find roomac_arm)/launch/arm_controller_hardware.launch" />
+  <include file="$(find roomac_arm)/launch/demo_arm_hardware.launch" />
   <include file="$(find roomac_base)/launch/base_controller_hardware.launch" />
   <node name="joy_controller_simple" pkg="roomac" type="joy_controller_simple.py"/>
 
