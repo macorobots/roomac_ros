@@ -3,6 +3,7 @@
   <!-- This file makes it easy to include the settings for trajectory execution  -->
 
   <arg name="execution_type" default="interpolate" />
+  <arg name="gazebo" default="false"/>
 
   <!-- Flag indicating whether MoveIt! is allowed to load/unload  or switch controllers -->
   <arg name="moveit_manage_controllers" default="true"/>
@@ -22,6 +23,7 @@
   <arg name="moveit_controller_manager" default="roomac" />
   <include file="$(find roomac_moveit)/launch/$(arg moveit_controller_manager)_moveit_controller_manager.launch.xml">
     <!-- <arg name="execution_type" value="$(arg execution_type)" /> -->
+    <arg name="gazebo" value="$(arg gazebo)"/>
   </include>
 
 </launch>

@@ -1,0 +1,11 @@
+<launch>
+  <node name="arm_joint_trajectory_controller" pkg="roomac_arm" type="arm_joint_trajectory_controller.py" 
+    output="screen" ns="arm_position_controller">
+    <rosparam command="load" file="$(find roomac_arm)/config/arm_controller_config.yaml" />
+  </node>
+
+  <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher">
+    <rosparam param="source_list">["/arm_position_controller/joint_states_controller"]</rosparam>
+    <param name="rate" type="double" value="10.0" />
+  </node>
+</launch>

@@ -1,5 +1,5 @@
 <launch>
-
+  <arg name="gazebo" default="false" />
   <!-- execute the trajectory in 'interpolate' mode or jump to goal position in 'last point' mode -->
   <!-- interpolate: perform smooth interpolation between via points - the default for visualization
   via points: traverse via points, w/o interpolation in between - useful for visual debugging
