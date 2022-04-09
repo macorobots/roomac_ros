@@ -20,22 +20,22 @@ class ArmJointTrajectoryController(ArmController):
         # super().__init__()
         super(ArmController, self).__init__()
 
-        self.action_server = actionlib.SimpleActionServer(
+        self._action_server = actionlib.SimpleActionServer(
             "follow_joint_trajectory",
             FollowJointTrajectoryAction,
-            execute_cb=self.execute_cb,
+            execute_cb=self._execute_cb,
             auto_start=False,
         )
-        self.action_server.start()
+        self._action_server.start()
 
-        self.feedback = FollowJointTrajectoryActionFeedback()
-        self.result = FollowJointTrajectoryActionResult()
+        self._feedback = FollowJointTrajectoryActionFeedback()
+        self._result = FollowJointTrajectoryActionResult()
 
-        self.joint_state_pub = rospy.Publisher(
+        self._joint_state_pub = rospy.Publisher(
             "joint_states_controller", JointState, queue_size=10
         )
 
-    def execute_cb(self, goal):
+    def _execute_cb(self, goal):
         rospy.loginfo("Goal received")
         i = 0
 
@@ -63,26 +63,26 @@ class ArmJointTrajectoryController(ArmController):
             joint_state_msg.header.stamp = rospy.Time.now()
             joint_state_msg.name = goal.trajectory.joint_names
             joint_state_msg.position = trajectory_point.positions
-            self.joint_state_pub.publish(joint_state_msg)
+            self._joint_state_pub.publish(joint_state_msg)
 
             # TODO feedback
-            # self.feedback.feedback.actual = trajectory_point
-            # self.feedback.feedback.joint_names = goal.trajectory.joint_names
-            # self.action_server.publish_feedback(self.feedback)
+            # self._feedback.feedback.actual = trajectory_point
+            # self._feedback.feedback.joint_names = goal.trajectory.joint_names
+            # self._action_server.publish_feedback(self._feedback)
 
-            if self.action_server.is_preempt_requested():
+            if self._action_server.is_preempt_requested():
                 rospy.logwarn("follow_joint_trajectory Preempted")
-                self.action_server.set_preempted()
+                self._action_server.set_preempted()
                 return
 
         rospy.loginfo("Finished goal execution")
 
         # TODO result
-        # self.result.result.error_code = (
+        # self._result.result.error_code = (
         #     FollowJointTrajectoryActionResult().result.SUCCESSFUL
         # )
 
-        self.action_server.set_succeeded(self.result)
+        self._action_server.set_succeeded(self._result)
 
 
 if __name__ == "__main__":
