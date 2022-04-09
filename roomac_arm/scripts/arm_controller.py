@@ -1,10 +1,13 @@
 #!/usr/bin/env python
 
-import rospy
 import math
-from servo_controller import AnalogServo, DigitalServo
-
 import itertools
+import numpy as np
+
+import rospy
+from sensor_msgs.msg import JointState
+
+from servo_controller import AnalogServo, DigitalServo
 
 
 class ArmController(object):
@@ -33,6 +36,11 @@ class ArmController(object):
         analog_update_delay = rospy.get_param("~analog_update_delay", 0.7)
         self._min_change_threshold = rospy.get_param("~min_change_threshold", 0.01)
         max_speed = rospy.get_param("~max_speed", 0.005)
+
+        self._interpolate_movement = rospy.get_param("~interpolate_movement", True)
+        self._interpolation_frequency = rospy.get_param(
+            "~interpolation_frequency", 10.0
+        )
 
         analog_scale_factor_wrist = (
             wrist_signal_zero_position - wrist_signal_90_degrees
@@ -110,6 +118,11 @@ class ArmController(object):
         for x in self._servos:
             self._servos[x].set_angle(0.0)
 
+        self._publish_joint_states = rospy.get_param("~publish_joint_states", True)
+        self._joint_state_pub = rospy.Publisher(
+            "joint_states_controller", JointState, queue_size=10
+        )
+
     def go_to_point(self, joint_names, angles, duration=0.0):
         joint_names, angles = self._get_valid_joints(joint_names, angles)
 
@@ -121,12 +134,53 @@ class ArmController(object):
         )
         movement_duration = max(duration, min_movement_duration)
 
+        if self._interpolate_movement:
+            # in interpolation movement_duration is rounded to be multiple of interpolaction frequency
+            movement_duration = self._execute_motion_with_interpolation(
+                joint_names, angles, movement_duration
+            )
+        else:
+            self._execute_motion(joint_names, angles, movement_duration)
+
+        return movement_duration
+
+    def _execute_motion_with_interpolation(
+        self, joint_names, angles, movement_duration
+    ):
+        num_of_steps = int(math.ceil(movement_duration * self._interpolation_frequency))
+
+        angle_diffs = []
+        for joint_name, angle in itertools.izip(joint_names, angles):
+            angle_diffs.append(self._servos[joint_name].calculate_angle_diff(angle))
+
+        angle_steps = [x / num_of_steps for x in angle_diffs]
+
+        current_angles = [
+            self._servos[joint_name].current_angle() for joint_name in joint_names
+        ]
+        for i in range(num_of_steps):
+            current_angles = np.add(current_angles, angle_steps)
+            self._execute_motion(
+                joint_names, current_angles, (1.0 / self._interpolation_frequency)
+            )
+
+        interpolated_movement_duration = num_of_steps * (
+            1.0 / self._interpolation_frequency
+        )
+        return interpolated_movement_duration
+
+    def _execute_motion(self, joint_names, angles, movement_duration):
         for joint_name, angle in itertools.izip(joint_names, angles):
             self._servos[joint_name].execute_motion(angle, movement_duration)
 
-        rospy.sleep(rospy.Duration(movement_duration))
+        if self._publish_joint_states:
+            joint_state_msg = JointState()
+            joint_state_msg.header.stamp = rospy.Time.now()
+            joint_state_msg.name = joint_names
+            joint_state_msg.position = angles
+            self._joint_state_pub.publish(joint_state_msg)
 
-        return movement_duration
+        rospy.sleep(rospy.Duration(movement_duration))
 
     def _get_valid_joints(self, joint_names, angles):
         valid_joint_names = []
@@ -152,7 +206,9 @@ class ArmController(object):
         # Python3
         # for joint_name, angle in zip(joint_names, angles):
         for joint_name, angle in itertools.izip(joint_names, angles):
-            angle_diffs.append(self._servos[joint_name].calculate_angle_diff(angle))
+            angle_diffs.append(
+                abs(self._servos[joint_name].calculate_angle_diff(angle))
+            )
 
         max_angle_diff = max(angle_diffs)
 

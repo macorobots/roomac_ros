@@ -21,3 +21,6 @@ analog_speed: 2.0 # Change in signal per analog_update_delay
 wrist_speed: 4.0 # Change in signal per analog_update_delay
 
 publish_joint_states: true
+
+interpolate_movement: true
+interpolation_frequency: 10.0

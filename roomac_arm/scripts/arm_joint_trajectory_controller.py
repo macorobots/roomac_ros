@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 
 import rospy
-from sensor_msgs.msg import JointState
 import actionlib
 
 from control_msgs.msg import (
@@ -19,11 +18,6 @@ class ArmJointTrajectoryController(ArmController):
         # python3
         # super().__init__()
         super(ArmJointTrajectoryController, self).__init__()
-
-        self._publish_joint_states = rospy.get_param("~publish_joint_states", True)
-        self._joint_state_pub = rospy.Publisher(
-            "joint_states_controller", JointState, queue_size=10
-        )
 
         self._action_server = actionlib.SimpleActionServer(
             "follow_joint_trajectory",
@@ -65,13 +59,6 @@ class ArmJointTrajectoryController(ArmController):
             rospy.loginfo("Movement time used for execution: " + str(movement_time))
 
             last_time = trajectory_point.time_from_start
-
-            if self._publish_joint_states:
-                joint_state_msg = JointState()
-                joint_state_msg.header.stamp = rospy.Time.now()
-                joint_state_msg.name = goal.trajectory.joint_names
-                joint_state_msg.position = trajectory_point.positions
-                self._joint_state_pub.publish(joint_state_msg)
 
             # TODO feedback
             # self._feedback.feedback.actual = trajectory_point

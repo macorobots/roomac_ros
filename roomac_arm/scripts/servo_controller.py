@@ -44,10 +44,13 @@ class Servo(object):
         return not (self._current_angle is None)
 
     def calculate_angle_diff(self, new_angle):
-        return abs(new_angle - self._current_angle)
+        return new_angle - self._current_angle
 
     def calculate_min_movement_duration(self, new_angle):
-        return self.calculate_angle_diff(new_angle) / self._max_speed
+        return abs(self.calculate_angle_diff(new_angle)) / self._max_speed
+
+    def current_angle(self):
+        return self._current_angle
 
     def _transform_angle_to_signal(self, angle):
         return angle * self._angle_to_signal_scale_factor + self._zero_angle_signal
@@ -100,7 +103,8 @@ class AnalogServo(Servo):
 
     def _calculate_analog_speed(self, new_angle, movement_duration):
         return (
-            self.calculate_angle_diff(new_angle) * self._angle_to_signal_scale_factor
+            abs(self.calculate_angle_diff(new_angle))
+            * self._angle_to_signal_scale_factor
         ) * (self._analog_update_delay / movement_duration)
 
     def _set_movement_time(self, new_angle, movement_duration):
