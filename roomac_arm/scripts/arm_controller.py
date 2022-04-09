@@ -110,7 +110,7 @@ class ArmController(object):
         for x in self._servos:
             self._servos[x].set_angle(0.0)
 
-    def go_to_point(self, joint_names, angles, duration):
+    def go_to_point(self, joint_names, angles, duration=0.0):
         joint_names, angles = self._get_valid_joints(joint_names, angles)
 
         if not self._angle_change_above_min_threshold(joint_names, angles):
@@ -120,22 +120,6 @@ class ArmController(object):
             joint_names, angles
         )
         movement_duration = max(duration, min_movement_duration)
-
-        for joint_name, angle in itertools.izip(joint_names, angles):
-            self._servos[joint_name].execute_motion(angle, movement_duration)
-
-        return movement_duration
-
-    def go_to_point(self, joint_names, angles):
-        joint_names, angles = self._get_valid_joints(joint_names, angles)
-
-        if not self._angle_change_above_min_threshold(joint_names, angles):
-            return
-
-        min_movement_duration = self._calculate_min_movement_duration(
-            joint_names, angles
-        )
-        movement_duration = min_movement_duration
 
         for joint_name, angle in itertools.izip(joint_names, angles):
             self._servos[joint_name].execute_motion(angle, movement_duration)
@@ -170,7 +154,7 @@ class ArmController(object):
 
         max_angle_diff = max(angle_diffs)
 
-        if max_angle_diff < self.self._min_change_threshold:
+        if max_angle_diff < self._min_change_threshold:
             return False
         else:
             return True

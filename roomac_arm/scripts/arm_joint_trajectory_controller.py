@@ -45,7 +45,7 @@ class ArmJointTrajectoryController(ArmController):
             "Number of points in trajectory " + str(len(goal.trajectory.points))
         )
 
-        last_time = 0
+        last_time = rospy.Duration(0.0)
         for trajectory_point in goal.trajectory.points:
             rospy.loginfo("Executing point " + str(i))
             i += 1
