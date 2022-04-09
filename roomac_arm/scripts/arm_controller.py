@@ -7,7 +7,7 @@ from servo_controller import AnalogServo, DigitalServo
 import itertools
 
 
-class ArmController:
+class ArmController(object):
     def __init__(self):
         zero_angle_signal = rospy.get_param(
             "~zero_angle_signal", [850, 320, 512, 1509, 1500, 650]
@@ -108,7 +108,7 @@ class ArmController:
         )
 
         for x in self._servos:
-            x.set_angle(0.0)
+            self._servos[x].set_angle(0.0)
 
     def go_to_point(self, joint_names, angles, duration):
         joint_names, angles = self._get_valid_joints(joint_names, angles)

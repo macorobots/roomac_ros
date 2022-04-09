@@ -5,7 +5,7 @@ from std_msgs.msg import UInt16, UInt8, Float32
 import math
 
 
-class Servo:
+class Servo(object):
     def __init__(
         self,
         name,
@@ -76,8 +76,7 @@ class AnalogServo(Servo):
         analog_speed,
         analog_update_delay,
     ):
-        Servo.__init__(
-            self,
+        super(AnalogServo, self).__init__(
             name,
             zero_angle_signal,
             lower_signal_bound,
@@ -120,8 +119,7 @@ class DigitalServo(Servo):
         max_speed,
         playtime,
     ):
-        Servo.__init__(
-            self,
+        super(DigitalServo, self).__init__(
             name,
             zero_angle_signal,
             lower_signal_bound,

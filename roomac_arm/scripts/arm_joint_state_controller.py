@@ -8,6 +8,10 @@ from arm_controller import ArmController
 
 class ArmJointTrajectoryController(ArmController):
     def __init__(self):
+        # python3
+        # super().__init__()
+        super(ArmJointTrajectoryController, self).__init__()
+
         self._joints_sub = rospy.Subscriber(
             "/joint_states", JointState, self._joints_state_cb, queue_size=1
         )

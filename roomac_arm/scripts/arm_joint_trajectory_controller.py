@@ -18,7 +18,7 @@ class ArmJointTrajectoryController(ArmController):
     def __init__(self):
         # python3
         # super().__init__()
-        super(ArmController, self).__init__()
+        super(ArmJointTrajectoryController, self).__init__()
 
         self._action_server = actionlib.SimpleActionServer(
             "follow_joint_trajectory",
