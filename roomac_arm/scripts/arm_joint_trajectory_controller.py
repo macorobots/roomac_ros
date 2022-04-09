@@ -50,11 +50,19 @@ class ArmJointTrajectoryController(ArmController):
             rospy.loginfo("Executing point " + str(i))
             i += 1
 
+            movement_time_from_msg = (
+                trajectory_point.time_from_start - last_time
+            ).to_sec()
+
             movement_time = self.go_to_point(
                 goal.trajectory.joint_names,
                 trajectory_point.positions,
-                (trajectory_point.time_from_start - last_time).to_sec(),
+                movement_time_from_msg,
             )
+
+            rospy.loginfo("Movement time from msg: " + str(movement_time_from_msg))
+            rospy.loginfo("Movement time used for execution: " + str(movement_time))
+
             rospy.sleep(rospy.Duration(movement_time))
 
             last_time = trajectory_point.time_from_start
