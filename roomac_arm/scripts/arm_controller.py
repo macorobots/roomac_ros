@@ -7,6 +7,9 @@ import numpy as np
 import rospy
 from sensor_msgs.msg import JointState
 
+from dynamic_reconfigure.server import Server
+from roomac_arm.cfg import ArmControllerConfig
+
 from servo_controller import AnalogServo, DigitalServo
 
 
@@ -123,6 +126,10 @@ class ArmController(object):
             "joint_states_controller", JointState, queue_size=10
         )
 
+        self._dynamic_reconfigure_srv = Server(
+            ArmControllerConfig, self._dynamic_reconfigure_cb
+        )
+
     def go_to_point(self, joint_names, angles, duration=0.0):
         joint_names, angles = self._get_valid_joints(joint_names, angles)
 
@@ -156,7 +163,7 @@ class ArmController(object):
         angle_steps = [x / num_of_steps for x in angle_diffs]
 
         current_angles = [
-            self._servos[joint_name].current_angle() for joint_name in joint_names
+            self._servos[joint_name].get_current_angle() for joint_name in joint_names
         ]
         for i in range(num_of_steps):
             current_angles = np.add(current_angles, angle_steps)
@@ -227,3 +234,15 @@ class ArmController(object):
                 min_movement_duration = min_duration
 
         return min_movement_duration
+
+    def _dynamic_reconfigure_cb(self, config, level):
+
+        self._min_change_threshold = config.min_change_threshold
+
+        for x in self._servos:
+            self._servos[x].set_max_speed(config.max_speed)
+
+        self._interpolate_movement = config.interpolate_movement
+        self._interpolation_frequency = config.interpolation_frequency
+
+        return config

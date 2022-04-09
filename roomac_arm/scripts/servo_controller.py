@@ -49,8 +49,11 @@ class Servo(object):
     def calculate_min_movement_duration(self, new_angle):
         return abs(self.calculate_angle_diff(new_angle)) / self._max_speed
 
-    def current_angle(self):
+    def get_current_angle(self):
         return self._current_angle
+
+    def set_max_speed(self, max_speed):
+        self._max_speed = max_speed
 
     def _transform_angle_to_signal(self, angle):
         return angle * self._angle_to_signal_scale_factor + self._zero_angle_signal
