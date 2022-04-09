@@ -20,6 +20,11 @@ class ArmJointTrajectoryController(ArmController):
         # super().__init__()
         super(ArmJointTrajectoryController, self).__init__()
 
+        self._publish_joint_states = rospy.get_param("~publish_joint_states", True)
+        self._joint_state_pub = rospy.Publisher(
+            "joint_states_controller", JointState, queue_size=10
+        )
+
         self._action_server = actionlib.SimpleActionServer(
             "follow_joint_trajectory",
             FollowJointTrajectoryAction,
@@ -30,10 +35,6 @@ class ArmJointTrajectoryController(ArmController):
 
         self._feedback = FollowJointTrajectoryActionFeedback()
         self._result = FollowJointTrajectoryActionResult()
-
-        self._joint_state_pub = rospy.Publisher(
-            "joint_states_controller", JointState, queue_size=10
-        )
 
     def _execute_cb(self, goal):
         rospy.loginfo("Goal received")
@@ -67,11 +68,12 @@ class ArmJointTrajectoryController(ArmController):
 
             last_time = trajectory_point.time_from_start
 
-            joint_state_msg = JointState()
-            joint_state_msg.header.stamp = rospy.Time.now()
-            joint_state_msg.name = goal.trajectory.joint_names
-            joint_state_msg.position = trajectory_point.positions
-            self._joint_state_pub.publish(joint_state_msg)
+            if self._publish_joint_states:
+                joint_state_msg = JointState()
+                joint_state_msg.header.stamp = rospy.Time.now()
+                joint_state_msg.name = goal.trajectory.joint_names
+                joint_state_msg.position = trajectory_point.positions
+                self._joint_state_pub.publish(joint_state_msg)
 
             # TODO feedback
             # self._feedback.feedback.actual = trajectory_point
