@@ -40,6 +40,11 @@ class Servo:
         self._angle_to_signal_scale_factor = angle_to_signal_scale_factor
 
     def calculate_angle(self):
+        if not self.signal:
+            raise RuntimeError(
+                "Servo " + self.name + " not initialized (signal wasn't yet received)"
+            )
+
         return (
             self.signal - self._zero_angle_signal
         ) / self._angle_to_signal_scale_factor
@@ -87,7 +92,12 @@ class ArmStub:
             Servo("shoulder_lift", zero_angle_signal[1], digital_scale_factor, True)
         )
         self._servos.append(
-            Servo("elbow", zero_angle_signal[2], digital_scale_factor, True)
+            Servo(
+                "elbow",
+                zero_angle_signal[2],
+                digital_scale_factor / 2.0,  # no gear reduction
+                True,
+            )
         )
         self._servos.append(
             Servo("wrist", zero_angle_signal[3], analog_scale_factor_wrist, False)
@@ -100,7 +110,7 @@ class ArmStub:
         )
 
         self._joint_state_pub = rospy.Publisher(
-            "/joint_states_arm_stub", JointState, queue_size=10
+            "joint_states_arm_stub", JointState, queue_size=10
         )
 
         self._joint_name_remap = {
@@ -139,8 +149,8 @@ class ArmStub:
                 rospy.loginfo("--------")
 
                 self._joint_state_pub.publish(joint_state_msg)
-            except Exception as e:
-                rospy.logerr(e)
+            except RuntimeError as e:
+                rospy.logerr_throttle(1.0, e)
 
             rate.sleep()
 
