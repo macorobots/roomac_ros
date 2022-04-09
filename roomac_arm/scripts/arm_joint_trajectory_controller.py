@@ -5,9 +5,8 @@ import actionlib
 
 from control_msgs.msg import (
     FollowJointTrajectoryAction,
-    FollowJointTrajectoryActionGoal,
-    FollowJointTrajectoryActionFeedback,
-    FollowJointTrajectoryActionResult,
+    FollowJointTrajectoryResult,
+    FollowJointTrajectoryFeedback,
 )
 
 from arm_controller import ArmController
@@ -27,8 +26,8 @@ class ArmJointTrajectoryController(ArmController):
         )
         self._action_server.start()
 
-        self._feedback = FollowJointTrajectoryActionFeedback()
-        self._result = FollowJointTrajectoryActionResult()
+        self._result = FollowJointTrajectoryResult()
+        self._feedback = FollowJointTrajectoryFeedback()
 
     def _execute_cb(self, goal):
         rospy.loginfo("Goal received")
@@ -60,10 +59,10 @@ class ArmJointTrajectoryController(ArmController):
 
             last_time = trajectory_point.time_from_start
 
-            # TODO feedback
-            # self._feedback.feedback.actual = trajectory_point
-            # self._feedback.feedback.joint_names = goal.trajectory.joint_names
-            # self._action_server.publish_feedback(self._feedback)
+            self._feedback.header.stamp = rospy.Time.now()
+            self._feedback.joint_names = goal.trajectory.joint_names
+            self._feedback.actual = trajectory_point
+            self._action_server.publish_feedback(self._feedback)
 
             if self._action_server.is_preempt_requested():
                 rospy.logwarn("follow_joint_trajectory Preempted")
@@ -72,10 +71,7 @@ class ArmJointTrajectoryController(ArmController):
 
         rospy.loginfo("Finished goal execution")
 
-        # TODO result
-        # self._result.result.error_code = (
-        #     FollowJointTrajectoryActionResult().result.SUCCESSFUL
-        # )
+        self._result.error_code = FollowJointTrajectoryResult.SUCCESSFUL
 
         self._action_server.set_succeeded(self._result)
 
