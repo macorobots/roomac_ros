@@ -64,8 +64,6 @@ class ArmJointTrajectoryController(ArmController):
             rospy.loginfo("Movement time from msg: " + str(movement_time_from_msg))
             rospy.loginfo("Movement time used for execution: " + str(movement_time))
 
-            rospy.sleep(rospy.Duration(movement_time))
-
             last_time = trajectory_point.time_from_start
 
             if self._publish_joint_states:

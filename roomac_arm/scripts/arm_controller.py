@@ -124,6 +124,8 @@ class ArmController(object):
         for joint_name, angle in itertools.izip(joint_names, angles):
             self._servos[joint_name].execute_motion(angle, movement_duration)
 
+        rospy.sleep(rospy.Duration(movement_duration))
+
         return movement_duration
 
     def _get_valid_joints(self, joint_names, angles):
