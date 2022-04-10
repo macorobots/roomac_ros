@@ -5,7 +5,6 @@ Panels:
     Property Tree Widget:
       Expanded:
         - /Global Options1
-        - /TF1/Frames1
       Splitter Ratio: 0.5
     Tree Height: 760
   - Class: rviz/Selection
@@ -96,49 +95,53 @@ Visualization Manager:
       Frames:
         All Enabled: false
         artag_link:
-          Value: true
+          Value: false
         artag_link_2:
-          Value: true
+          Value: false
         base_link:
           Value: true
         base_up_1:
-          Value: true
+          Value: false
+        body_precision_test_tip:
+          Value: false
         camera_depth_frame:
           Value: false
         camera_depth_optical_frame:
           Value: false
         camera_link:
-          Value: true
+          Value: false
         camera_rgb_frame:
           Value: false
         camera_rgb_optical_frame:
           Value: false
         gazebo_camera_link:
-          Value: true
+          Value: false
         gripper_right_1:
-          Value: true
+          Value: false
         gripper_right_grip:
-          Value: true
+          Value: false
+        gripper_right_precision_test_tip:
+          Value: false
         head_1:
-          Value: true
+          Value: false
         imu:
-          Value: true
+          Value: false
         left_caster_1:
-          Value: true
+          Value: false
         left_wheel_1:
-          Value: true
+          Value: false
         left_wheel_hub_1:
-          Value: true
+          Value: false
         map:
           Value: true
         odom:
           Value: true
         right_caster_1:
-          Value: true
+          Value: false
         right_wheel_1:
-          Value: true
+          Value: false
         right_wheel_hub_1:
-          Value: true
+          Value: false
       Marker Scale: 1
       Name: TF
       Show Arrows: true
@@ -154,6 +157,8 @@ Visualization Manager:
               base_up_1:
                 head_1:
                   {}
+              body_precision_test_tip:
+                {}
               camera_link:
                 camera_depth_frame:
                   camera_depth_optical_frame:
@@ -248,10 +253,10 @@ Visualization Manager:
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 0.9697974920272827
+      Pitch: 0.8547976016998291
       Target Frame: base_link
       Value: Orbit (rviz)
-      Yaw: 2.818598747253418
+      Yaw: 3.1235992908477783
     Saved: ~
 Window Geometry:
   Displays:

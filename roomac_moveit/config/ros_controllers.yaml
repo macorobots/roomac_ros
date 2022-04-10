@@ -22,7 +22,7 @@ roomac:
       - right_elbow
       - right_wrist
       - right_gripper_twist
-    sim_control_mode: 1  # 0: position, 1: velocity
+    sim_control_mode: 1 # 0: position, 1: velocity
   # Publish all joint states
   # Creates the /joint_states topic necessary in ROS
   joint_state_controller:
@@ -76,7 +76,28 @@ roomac:
         i: 0.01
         i_clamp: 1
     constraints:
-      goal_time: 10.0
+      goal_time: 30.0
+      right_shoulder_pan:
+        goal: 0.01
+        trajectory: 0.01
+      right_shoulder_lift:
+        goal: 0.01
+        trajectory: 0.01
+      right_elbow:
+        goal: 0.01
+        trajectory: 0.01
+      right_wrist:
+        goal: 0.01
+        trajectory: 0.01
+      right_gripper_twist:
+        goal: 0.01
+        trajectory: 0.01
+      finger1_joint:
+        goal: 0.01
+        trajectory: 0.01
+      finger2_joint:
+        goal: 0.01
+        trajectory: 0.01
     state_publish_rate: 25
     allow_partial_joints_goal: True
 

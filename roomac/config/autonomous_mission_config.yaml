@@ -1,1 +1,8 @@
 positions_file: /home/roomac/roomac_data/positions.yaml
+
+# How long to wait for stabilization of artag position before picking is started
+wait_time_before_picking_action: 5.0 # [s]
+
+# How close filtered and real artag transform has to be to each other for detected position to be considered stable
+artag_stable_position_threshold: 0.04 # [m]
+artag_stable_orientation_threshold: 5.0 # [degrees]

@@ -1,0 +1,11 @@
+# Define the goal
+---
+# Define the result
+bool success
+---
+# Define a feedback message
+uint8 DRIVING_TO_TABLE=0
+uint8 PICKING_UP_OBJECT=1
+uint8 DRIVING_TO_HOME_POSITION=2
+
+uint8 status

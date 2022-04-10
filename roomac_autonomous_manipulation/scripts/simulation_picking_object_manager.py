@@ -15,19 +15,40 @@ class SimulationPickingObjectManager(PickingObjectManager):
         # super().__init__()
         super(SimulationPickingObjectManager, self).__init__()
 
-    def move_gripper(self, position1, position2):
+        # Parameters
+        self.detected_object_frame = rospy.get_param(
+            "~detected_object_frame", "detected_object"
+        )
+        self.finger1_joint_name = rospy.get_param(
+            "~finger1_joint_name", "finger1_joint"
+        )
+        self.finger2_joint_name = rospy.get_param(
+            "~finger2_joint_name", "finger2_joint"
+        )
+
+        self.open_gripper_value = rospy.get_param("~open_gripper_value", 0.0)
+        self.closed_gripper_value = rospy.get_param("~closed_gripper_value", 0.02)
+
+        self.controller_command_pub = rospy.Publisher(
+            "/roomac/arm_position_controller/command",
+            JointTrajectory,
+            queue_size=10,
+            latch=True,
+        )
+
+    def move_gripper(self, position1, position2, delay=1.0):
         msg = JointTrajectory()
 
         pt = JointTrajectoryPoint()
         pt.time_from_start = rospy.Duration(0.1)
 
-        msg.joint_names.append("finger1_joint")
+        msg.joint_names.append(self.finger1_joint_name)
         pt.positions.append(position1)
         pt.velocities.append(0.0)
         pt.accelerations.append(0.0)
         pt.effort.append(0.0)
 
-        msg.joint_names.append("finger2_joint")
+        msg.joint_names.append(self.finger2_joint_name)
         pt.positions.append(position2)
         pt.velocities.append(0.0)
         pt.accelerations.append(0.0)
@@ -37,23 +58,24 @@ class SimulationPickingObjectManager(PickingObjectManager):
 
         self.controller_command_pub.publish(msg)
 
-        rospy.Rate(1.0).sleep()
+        rospy.sleep(delay)
 
-    def close_gripper(self):
+    def close_gripper(self, delay=1.0):
         rospy.loginfo("Sending close gripper command")
-        self.move_gripper(-0.02, 0.02)
+        self.move_gripper(-self.closed_gripper_value, self.closed_gripper_value, delay)
 
-    def open_gripper(self):
+    def open_gripper(self, delay=1.0):
         rospy.loginfo("Sending open gripper command")
-        self.move_gripper(0.0, 0.0)
+        self.move_gripper(-self.open_gripper_value, self.open_gripper_value, delay)
 
     def get_object_point(self):
         object_point = PointStamped()
         object_point.header.stamp = rospy.Time(0)
-        object_point.header.frame_id = "ar_marker_2"
-        object_point.point.x = 0.0
-        object_point.point.y = 0.0
-        object_point.point.z = 0.0
+        object_point.header.frame_id = self.detected_object_frame
+
+        object_point.point.x = 0.0 + self.object_position_correction_x
+        object_point.point.y = 0.0 + self.object_position_correction_y
+        object_point.point.z = 0.0 + self.object_position_correction_z
 
         return object_point
 
