@@ -56,12 +56,15 @@ class Servo(object):
         self._max_speed = max_speed
 
     def _transform_angle_to_signal(self, angle):
-        return angle * self._angle_to_signal_scale_factor + self._zero_angle_signal
+        return round(
+            angle * self._angle_to_signal_scale_factor + self._zero_angle_signal
+        )
 
     def _bound_signal(self, signal):
         return max(self._lower_signal_bound, min(self._upper_signal_bound, signal))
 
     def _publish_signal(self, signal):
+        signal = self._bound_signal(signal)
         signal_msg = UInt16()
         signal_msg.data = signal
         self._signal_pub.publish(signal_msg)
@@ -152,7 +155,7 @@ class DigitalServo(Servo):
 
     def _calculate_playtime(self, movement_duration):
         # units of 10 ms
-        return self._bound_playtime(movement_duration * 100.0)
+        return self._bound_playtime(round(movement_duration * 100.0))
 
     def _set_movement_time(self, new_angle, movement_duration):
         self._playtime = self._calculate_playtime(movement_duration)
