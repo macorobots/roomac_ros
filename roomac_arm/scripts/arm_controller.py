@@ -44,6 +44,9 @@ class ArmController(object):
         self._interpolation_frequency = rospy.get_param(
             "~interpolation_frequency", 10.0
         )
+        self._interpolation_duration_type = rospy.get_param(
+            "~interpolation_duration_type", "exact"
+        )
 
         analog_scale_factor_wrist = (
             wrist_signal_zero_position - wrist_signal_90_degrees
@@ -123,7 +126,7 @@ class ArmController(object):
 
         self._publish_joint_states = rospy.get_param("~publish_joint_states", True)
         self._joint_state_pub = rospy.Publisher(
-            "joint_states_controller", JointState, queue_size=10
+            "joint_states_from_controller", JointState, queue_size=10
         )
 
         self._dynamic_reconfigure_srv = Server(
@@ -156,6 +159,15 @@ class ArmController(object):
     ):
         num_of_steps = int(math.ceil(movement_duration * self._interpolation_frequency))
 
+        if self._interpolation_duration_type == "exact":
+            time_step = movement_duration / num_of_steps
+            interpolated_movement_duration = movement_duration
+        elif self._interpolation_duration_type == "approximated":
+            time_step = 1.0 / self._interpolation_frequency
+            interpolated_movement_duration = num_of_steps * (
+                1.0 / self._interpolation_frequency
+            )
+
         angle_diffs = []
         for joint_name, angle in itertools.izip(joint_names, angles):
             angle_diffs.append(self._servos[joint_name].calculate_angle_diff(angle))
@@ -167,13 +179,8 @@ class ArmController(object):
         ]
         for i in range(num_of_steps):
             current_angles = np.add(current_angles, angle_steps)
-            self._execute_motion(
-                joint_names, current_angles, (1.0 / self._interpolation_frequency)
-            )
+            self._execute_motion(joint_names, current_angles, time_step)
 
-        interpolated_movement_duration = num_of_steps * (
-            1.0 / self._interpolation_frequency
-        )
         return interpolated_movement_duration
 
     def _execute_motion(self, joint_names, angles, movement_duration):

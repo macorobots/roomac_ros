@@ -24,3 +24,8 @@ publish_joint_states: true
 
 interpolate_movement: true
 interpolation_frequency: 10.0
+
+# exact or approximated
+# exact - movement duration will be exactly as requested, but interpolation frequency will vary
+# approximated - interpolation frequency will be exactly as requested, but movement duration will vary
+interpolation_duration_type: exact
