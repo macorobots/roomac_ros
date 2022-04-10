@@ -63,7 +63,6 @@ class ArmController(object):
         initial_playtime = 255
 
         self._servos["right_shoulder_pan"] = DigitalServo(
-            "shoulder_pan",
             zero_angle_signal[0],
             digital_lower_signal_bound,
             digital_upper_signal_bound,
@@ -72,7 +71,6 @@ class ArmController(object):
             initial_playtime,
         )
         self._servos["right_shoulder_lift"] = DigitalServo(
-            "shoulder_lift",
             zero_angle_signal[1],
             digital_lower_signal_bound,
             digital_upper_signal_bound,
@@ -81,7 +79,6 @@ class ArmController(object):
             initial_playtime,
         )
         self._servos["right_elbow"] = DigitalServo(
-            "elbow",
             zero_angle_signal[2],
             digital_lower_signal_bound,
             digital_upper_signal_bound,
@@ -91,7 +88,6 @@ class ArmController(object):
         )
 
         self._servos["right_wrist"] = AnalogServo(
-            "wrist",
             zero_angle_signal[3],
             analog_lower_signal_bound_wrist,
             analog_upper_signal_bound_wrist,
@@ -101,7 +97,6 @@ class ArmController(object):
             analog_update_delay,
         )
         self._servos["right_gripper_twist"] = AnalogServo(
-            "wrist_twist",
             zero_angle_signal[4],
             analog_lower_signal_bound,
             analog_upper_signal_bound,
@@ -111,7 +106,6 @@ class ArmController(object):
             analog_update_delay,
         )
         self._servos["right_gripper"] = AnalogServo(
-            "gripper",
             zero_angle_signal[5],
             analog_lower_signal_bound,
             analog_upper_signal_bound,
@@ -121,17 +115,33 @@ class ArmController(object):
             analog_update_delay,
         )
 
-        for x in self._servos:
-            self._servos[x].set_angle(0.0)
-
         self._publish_joint_states = rospy.get_param("~publish_joint_states", True)
         self._joint_state_pub = rospy.Publisher(
-            "joint_states_from_controller", JointState, queue_size=10
+            "joint_states_from_controller", JointState, queue_size=10, latch=True
+        )
+
+        self._servo_position_cmd_pub = rospy.Publisher(
+            "joint_state_cmd", JointState, queue_size=10
         )
 
         self._dynamic_reconfigure_srv = Server(
             ArmControllerConfig, self._dynamic_reconfigure_cb
         )
+
+        self._init_servos()
+
+    def _init_servos(self):
+        joint_names = []
+        position_signals = []
+        velocity_signals = []
+        for x in self._servos:
+            # initial speeds set when creating objects
+            self._servos[x].set_angle(0.0)
+            joint_names.append(x)
+            position_signals.append(self._servos[x].get_position_signal())
+            velocity_signals.append(self._servos[x].get_velocity_signal())
+
+        self._send_joint_state_cmd(joint_names, position_signals, velocity_signals)
 
     def go_to_point(self, joint_names, angles, duration=0.0):
         joint_names, angles = self._get_valid_joints(joint_names, angles)
@@ -184,8 +194,14 @@ class ArmController(object):
         return interpolated_movement_duration
 
     def _execute_motion(self, joint_names, angles, movement_duration):
+        position_signals = []
+        velocity_signals = []
         for joint_name, angle in itertools.izip(joint_names, angles):
-            self._servos[joint_name].execute_motion(angle, movement_duration)
+            self._servos[joint_name].set_angle_and_duration(angle, movement_duration)
+            position_signals.append(self._servos[joint_name].get_position_signal())
+            velocity_signals.append(self._servos[joint_name].get_velocity_signal())
+
+        self._send_joint_state_cmd(joint_names, position_signals, velocity_signals)
 
         if self._publish_joint_states:
             joint_state_msg = JointState()
@@ -195,6 +211,14 @@ class ArmController(object):
             self._joint_state_pub.publish(joint_state_msg)
 
         rospy.sleep(rospy.Duration(movement_duration))
+
+    def _send_joint_state_cmd(self, joint_names, position_signals, velocity_signals):
+        joint_state_cmd_msg = JointState()
+        joint_state_cmd_msg.header.stamp = rospy.Time.now()
+        joint_state_cmd_msg.name = joint_names
+        joint_state_cmd_msg.position = position_signals
+        joint_state_cmd_msg.velocity = velocity_signals
+        self._servo_position_cmd_pub.publish(joint_state_cmd_msg)
 
     def _get_valid_joints(self, joint_names, angles):
         valid_joint_names = []

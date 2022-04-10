@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 
 import math
+import itertools
+from ntpath import join
 
 import rospy
 from std_msgs.msg import UInt16, UInt8, Float32
@@ -8,31 +10,7 @@ from sensor_msgs.msg import JointState
 
 
 class Servo:
-    def __init__(
-        self, name, zero_angle_signal, angle_to_signal_scale_factor, playtime=True
-    ):
-        self._signal_sub = rospy.Subscriber(
-            name + "_position",
-            UInt16,
-            self._signal_cb,
-        )
-        self.name = name
-
-        if playtime:
-            self.speed_parameter_name = "Playtime"
-            self._playtime_sub = rospy.Subscriber(
-                name + "_playtime",
-                UInt8,
-                self._speed_cb,
-            )
-        else:
-            self.speed_parameter_name = "Speed"
-            self._speed_sub = rospy.Subscriber(
-                name + "_speed",
-                Float32,
-                self._speed_cb,
-            )
-
+    def __init__(self, zero_angle_signal, angle_to_signal_scale_factor):
         self.signal = None
         self.speed = None
 
@@ -48,12 +26,6 @@ class Servo:
         return (
             self.signal - self._zero_angle_signal
         ) / self._angle_to_signal_scale_factor
-
-    def _signal_cb(self, msg):
-        self.signal = msg.data
-
-    def _speed_cb(self, msg):
-        self.speed = msg.data
 
 
 class ArmStub:
@@ -83,79 +55,78 @@ class ArmStub:
             analog_upper_signal_bound - analog_lower_signal_bound
         ) / (180.0 * math.pi / 180.0)
 
-        self._servos = []
+        self._servos = {}
 
-        self._servos.append(
-            Servo("shoulder_pan", zero_angle_signal[0], digital_scale_factor, True)
+        self._servos["right_shoulder_pan"] = Servo(
+            zero_angle_signal[0], digital_scale_factor
         )
-        self._servos.append(
-            Servo("shoulder_lift", zero_angle_signal[1], digital_scale_factor, True)
+        self._servos["right_shoulder_lift"] = Servo(
+            zero_angle_signal[1], digital_scale_factor
         )
-        self._servos.append(
-            Servo(
-                "elbow",
-                zero_angle_signal[2],
-                digital_scale_factor / 2.0,  # no gear reduction
-                True,
-            )
+        self._servos["right_elbow"] = Servo(
+            zero_angle_signal[2],
+            digital_scale_factor / 2.0,  # no gear reduction
         )
-        self._servos.append(
-            Servo("wrist", zero_angle_signal[3], analog_scale_factor_wrist, False)
+        self._servos["right_wrist"] = Servo(
+            zero_angle_signal[3], analog_scale_factor_wrist
         )
-        self._servos.append(
-            Servo("wrist_twist", zero_angle_signal[4], analog_scale_factor, False)
+        self._servos["right_gripper_twist"] = Servo(
+            zero_angle_signal[4], analog_scale_factor
         )
-        self._servos.append(
-            Servo("gripper", zero_angle_signal[5], analog_scale_factor, False)
-        )
+        self._servos["right_gripper"] = Servo(zero_angle_signal[5], analog_scale_factor)
 
         self._joint_state_pub = rospy.Publisher(
             "joint_states_arm_stub", JointState, queue_size=10
         )
 
-        self._joint_name_remap = {
-            "shoulder_pan": "right_shoulder_pan",
-            "shoulder_lift": "right_shoulder_lift",
-            "elbow": "right_elbow",
-            "wrist": "right_wrist",
-            "wrist_twist": "right_gripper_twist",
-            "gripper": "right_gripper",
-        }
+        self._servo_position_cmd_sub = rospy.Subscriber(
+            "joint_state_cmd", JointState, self._servo_position_cmd_cb
+        )
 
-    def run(self):
-        rate = rospy.Rate(10.0)
-        while not rospy.is_shutdown():
-            try:
-                joint_state_msg = JointState()
-                joint_state_msg.header.stamp = rospy.Time.now()
-                joint_state_msg.name = []
-                joint_state_msg.position = []
+    def _servo_position_cmd_cb(self, msg):
+        for joint_name, position, velocity in itertools.izip(
+            msg.name, msg.position, msg.velocity
+        ):
+            if not joint_name in self._servos:
+                rospy.logwarn(joint_name + " not valid joint name")
+                continue
 
-                for x in self._servos:
-                    rospy.loginfo(
-                        "Servo: "
-                        + x.name
-                        + " Signal: "
-                        + str(x.signal)
-                        + " "
-                        + x.speed_parameter_name
-                        + ": "
-                        + str(x.speed)
-                    )
+            self._servos[joint_name].signal = position
+            self._servos[joint_name].speed = velocity
 
-                    joint_state_msg.name.append(self._joint_name_remap[x.name])
-                    joint_state_msg.position.append(x.calculate_angle())
+        self._publish_joint_states()
+        self._print_stats()
 
-                rospy.loginfo("--------")
+    def _publish_joint_states(self):
+        joint_state_msg = JointState()
+        joint_state_msg.header.stamp = rospy.Time.now()
+        joint_state_msg.name = []
+        joint_state_msg.position = []
+        for x in self._servos:
+            joint_state_msg.name.append(x)
+            joint_state_msg.position.append(self._servos[x].calculate_angle())
+        self._joint_state_pub.publish(joint_state_msg)
 
-                self._joint_state_pub.publish(joint_state_msg)
-            except RuntimeError as e:
-                rospy.logerr_throttle(1.0, e)
+    def _print_stats(self):
+        try:
+            for x in self._servos:
+                rospy.loginfo(
+                    "Servo: "
+                    + x.name
+                    + " Signal: "
+                    + str(x.signal)
+                    + " "
+                    + x.speed_parameter_name
+                    + ": "
+                    + str(x.speed)
+                )
 
-            rate.sleep()
+            rospy.loginfo("--------")
+        except RuntimeError as e:
+            rospy.logerr_throttle(1.0, e)
 
 
 if __name__ == "__main__":
     rospy.init_node("arm_controller")
     arm_stub = ArmStub()
-    arm_stub.run()
+    rospy.spin()
