@@ -2,6 +2,13 @@
 Changelog for package roomac_base
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* Merge branch 'master' into 18-ros-action
+* Merge branch 'master' into 18-ros-action
+* Merge branch 'master' into 18-ros-action
+* Contributors: Maciej Stepien
+
 1.3.4 (2022-03-28)
 ------------------
 
