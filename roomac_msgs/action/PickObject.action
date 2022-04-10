@@ -1,0 +1,15 @@
+# Define the goal
+---
+# Define the result
+bool success
+---
+# Define a feedback message
+uint8 GOING_TO_PRE_GRIPPING_POSITION=0
+uint8 PRE_GRIPPING_POSITION=1
+uint8 GOING_TO_GRIPPING_POSITION=2
+uint8 GRIPPING_POSITION=3
+uint8 CLOSING_GRIPPER=4
+uint8 GOING_TO_POST_GRIPPING_POSITION=5
+uint8 POST_GRIPPING_POSITION=6
+
+uint8 status
