@@ -5,7 +5,7 @@ Panels:
     Property Tree Widget:
       Expanded: ~
       Splitter Ratio: 0.7425600290298462
-    Tree Height: 431
+    Tree Height: 409
   - Class: rviz/Help
     Name: Help
   - Class: rviz/Views
@@ -406,146 +406,19 @@ Visualization Manager:
       Use rainbow: true
       Value: true
     - Class: rviz/TF
-      Enabled: true
+      Enabled: false
       Frame Timeout: 15
       Frames:
         All Enabled: true
-        ar_marker_0:
-          Value: true
-        ar_marker_0_only_yaw:
-          Value: true
-        ar_marker_2:
-          Value: true
-        ar_marker_2_only_yaw:
-          Value: true
-        artag_link:
-          Value: true
-        artag_link_2:
-          Value: true
-        base_link:
-          Value: true
-        base_up_1:
-          Value: true
-        body_precision_test_tip:
-          Value: true
-        camera_link:
-          Value: true
-        camera_up_depth_frame:
-          Value: true
-        camera_up_depth_optical_frame:
-          Value: true
-        camera_up_link:
-          Value: true
-        camera_up_rgb_frame:
-          Value: true
-        camera_up_rgb_optical_frame:
-          Value: true
-        detected_object:
-          Value: true
-        elbow_wrist_left_1:
-          Value: true
-        elbow_wrist_right_1:
-          Value: true
-        gazebo_camera_link:
-          Value: true
-        gripper_left_1:
-          Value: true
-        gripper_right_1:
-          Value: true
-        gripper_right_grip:
-          Value: true
-        gripper_right_precision_test_tip:
-          Value: true
-        head_1:
-          Value: true
-        imu:
-          Value: true
-        left_caster_1:
-          Value: true
-        left_wheel_1:
-          Value: true
-        left_wheel_hub_1:
-          Value: true
-        right_caster_1:
-          Value: true
-        right_wheel_1:
-          Value: true
-        right_wheel_hub_1:
-          Value: true
-        shoulder_elbow_left_1:
-          Value: true
-        shoulder_elbow_right_1:
-          Value: true
-        shoulder_left_1:
-          Value: true
-        shoulder_right_1:
-          Value: true
-        wrist_left_1:
-          Value: true
-        wrist_right_1:
-          Value: true
       Marker Scale: 0.10000000149011612
       Name: TF
       Show Arrows: true
       Show Axes: true
       Show Names: true
       Tree:
-        base_link:
-          artag_link:
-            artag_link_2:
-              camera_up_link:
-                ar_marker_0_only_yaw:
-                  {}
-                ar_marker_2_only_yaw:
-                  {}
-                camera_up_depth_frame:
-                  camera_up_depth_optical_frame:
-                    {}
-                camera_up_rgb_frame:
-                  camera_up_rgb_optical_frame:
-                    ar_marker_0:
-                      {}
-                    ar_marker_2:
-                      {}
-                detected_object:
-                  {}
-          base_up_1:
-            head_1:
-              {}
-            shoulder_left_1:
-              shoulder_elbow_left_1:
-                elbow_wrist_left_1:
-                  wrist_left_1:
-                    gripper_left_1:
-                      {}
-            shoulder_right_1:
-              shoulder_elbow_right_1:
-                elbow_wrist_right_1:
-                  wrist_right_1:
-                    gripper_right_1:
-                      gripper_right_grip:
-                        {}
-                      gripper_right_precision_test_tip:
-                        {}
-          body_precision_test_tip:
-            {}
-          camera_link:
-            gazebo_camera_link:
-              {}
-          imu:
-            {}
-          left_caster_1:
-            {}
-          left_wheel_1:
-            left_wheel_hub_1:
-              {}
-          right_caster_1:
-            {}
-          right_wheel_1:
-            right_wheel_hub_1:
-              {}
+        {}
       Update Interval: 0
-      Value: true
+      Value: false
   Enabled: true
   Global Options:
     Background Color: 48; 48; 48
@@ -569,34 +442,34 @@ Visualization Manager:
         Swap Stereo Eyes: false
         Value: false
       Focal Point:
-        X: -0.3363105058670044
-        Y: 0.37913960218429565
-        Z: 2.071261860692175e-6
+        X: -0.15407907962799072
+        Y: 0.14622420072555542
+        Z: 2.3096804397937376e-6
       Focal Shape Fixed Size: true
       Focal Shape Size: 0.05000000074505806
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 0.5647968053817749
+      Pitch: 0.7397965788841248
       Target Frame: base_link
       Value: XYOrbit (rviz)
-      Yaw: 5.509892463684082
+      Yaw: 5.274896621704102
     Saved: ~
 Window Geometry:
   Displays:
-    collapsed: false
-  Height: 1053
+    collapsed: true
+  Height: 1016
   Help:
     collapsed: false
-  Hide Left Dock: false
+  Hide Left Dock: true
   Hide Right Dock: false
   MotionPlanning:
-    collapsed: false
+    collapsed: true
   MotionPlanning - Trajectory Slider:
     collapsed: false
-  QMainWindow State: 000000ff00000000fd0000000100000000000001fc000003c7fc0200000007fb000000100044006900730070006c006100790073010000003b0000023e000000c700fffffffb0000000800480065006c00700000000342000000bb0000006e00fffffffb0000000a0056006900650077007300000003b0000000b0000000a000fffffffb0000000c00430061006d00650072006100000002ff000001610000000000000000fb0000001e004d006f00740069006f006e00200050006c0061006e006e0069006e00670100000374000001890000000000000000fb00000044004d006f00740069006f006e0050006c0061006e006e0069006e00670020002d0020005400720061006a006500630074006f0072007900200053006c00690064006500720000000000ffffffff0000001600000016fb0000001c004d006f00740069006f006e0050006c0061006e006e0069006e0067010000027f000001830000016900ffffff0000057e000003c700000001000000020000000100000002fc0000000100000002000000010000000a0054006f006f006c00730100000000ffffffff0000000000000000
+  QMainWindow State: 000000ff00000000fd0000000100000000000001fc000003a2fc0200000007fb000000100044006900730070006c006100790073000000003b00000228000000c700fffffffb0000000800480065006c00700000000342000000bb0000006e00fffffffb0000000a0056006900650077007300000003b0000000b0000000a000fffffffb0000000c00430061006d00650072006100000002ff000001610000000000000000fb0000001e004d006f00740069006f006e00200050006c0061006e006e0069006e00670100000374000001890000000000000000fb00000044004d006f00740069006f006e0050006c0061006e006e0069006e00670020002d0020005400720061006a006500630074006f0072007900200053006c00690064006500720000000000ffffffff0000001600000016fb0000001c004d006f00740069006f006e0050006c0061006e006e0069006e00670000000269000001740000017400ffffff000003c0000003a200000001000000020000000100000002fc0000000100000002000000010000000a0054006f006f006c00730100000000ffffffff0000000000000000
   Views:
     collapsed: false
-  Width: 1920
+  Width: 960
   X: 0
   Y: 27

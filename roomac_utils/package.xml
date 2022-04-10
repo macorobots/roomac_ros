@@ -1,13 +1,13 @@
 <?xml version="1.0"?>
 <package format="2">
-  <name>roomac_simulation</name>
+  <name>roomac_utils</name>
   <version>1.4.0</version>
-  <description>The roomac_simulation package</description>
+  <description>The roomac_utils package</description>
 
   <!-- One maintainer tag required, multiple allowed, one person per tag -->
   <!-- Example:  -->
   <!-- <maintainer email="jane.doe@example.com">Jane Doe</maintainer> -->
-  <maintainer email="maciej@todo.todo">maciej</maintainer>
+  <maintainer email="roomac@todo.todo">roomac</maintainer>
 
 
   <!-- One license tag required, multiple allowed, one license per tag -->
@@ -19,7 +19,7 @@
   <!-- Url tags are optional, but multiple are allowed, one per tag -->
   <!-- Optional attribute type can be: website, bugtracker, or repository -->
   <!-- Example: -->
-  <!-- <url type="website">http://wiki.ros.org/roomac_simulation</url> -->
+  <!-- <url type="website">http://wiki.ros.org/roomac_utils</url> -->
 
 
   <!-- Author tags are optional, multiple are allowed, one per tag -->
@@ -49,7 +49,9 @@
   <!-- Use doc_depend for packages you need only for building documentation: -->
   <!--   <doc_depend>doxygen</doc_depend> -->
   <buildtool_depend>catkin</buildtool_depend>
-  <exec_depend>rtabmap_ros</exec_depend>
+  <build_depend>rospy</build_depend>
+  <build_export_depend>rospy</build_export_depend>
+  <exec_depend>rospy</exec_depend>
 
 
   <!-- The export tag contains other, unspecified, tags -->

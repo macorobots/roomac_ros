@@ -1,0 +1,14 @@
+<launch>
+  <!-- Temporal solution before making changes in firmware, then it should be removed -->
+
+<!-- Eyes -->
+  <node pkg="rostopic" type="rostopic" name="rostopic_mode" args="pub --latch /eyes/mode std_msgs/UInt8 'data: 2'"/>
+  <node pkg="rostopic" type="rostopic" name="rostopic_settings" args="pub --latch /eyes/blinking_settings geometry_msgs/Quaternion 
+    '{x: 5.0, y: 80.0, z: 160.0, w: 1.0}'" />
+
+<!-- PIDs -->
+  <node pkg="rostopic" type="rostopic" name="rostopic_left_pid" args="pub --latch /left_motor/pid geometry_msgs/Vector3 
+    '{x: 1800.0, y: 0.0, z: 0.0}'" />
+  <node pkg="rostopic" type="rostopic" name="rostopic_right_pid" args="pub --latch /right_motor/pid geometry_msgs/Vector3 
+    '{x: 1800.0, y: 0.0, z: 0.0}'" />
+</launch>
