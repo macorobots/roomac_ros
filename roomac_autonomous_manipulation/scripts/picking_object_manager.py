@@ -163,7 +163,7 @@ class PickingObjectManager(object):
                 start_procedure_function=self.go_to_current_object_point,
                 get_procedure_state_function=self.moveit_finished_execution,
                 preempted_action_function=self.moveit_abort,
-                feedback_state=PickObjectFeedback.GOING_GRIPPING_POSITION,
+                feedback_state=PickObjectFeedback.GOING_TO_GRIPPING_POSITION,
             ),
             # Calculate error
             ActionProcedureStep(

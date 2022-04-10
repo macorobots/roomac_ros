@@ -1,12 +1,18 @@
+# Correction offset applied to object position [m]
 object_position_correction_x: 0.0
 object_position_correction_y: 0.0
 object_position_correction_z: 0.0
 
+# Offset applied to object position as a pre/post gripping position [m]
 pre_goal_retraction_x: 0.1
 post_goal_retraction_z: 0.08
 
+# How long to wait for gripper to open/close [s]
 open_gripper_wait_time: 0.0
 close_gripper_wait_time: 1.0
+
+# Number of retries of each procedure
+procedure_retry_threshold: 5
 
 wait_time_move_group_servers: 120.0
 
