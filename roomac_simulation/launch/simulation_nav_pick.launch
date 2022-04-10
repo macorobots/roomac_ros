@@ -2,9 +2,12 @@
 <!-- Roomac scripts -->
   <include file="$(find roomac)/launch/autonomous_mission.launch" />
 
-  <node name="simulation_picking_object_manager" pkg="roomac_autonomous_manipulation" type="simulation_picking_object_manager.py" output="screen"/>
+  <include file="$(find roomac_autonomous_manipulation)/launch/picking_object_manager.launch">
+    <arg name="simulation" value="true"/>
+  </include>
   <node name="add_robot_body_collision_to_scene" pkg="roomac_autonomous_manipulation" type="add_robot_body_collision_to_scene.py" output="screen"/>
-
+  <node name="add_table_body_collision_to_scene" pkg="roomac_autonomous_manipulation" type="add_table_body_collision_to_scene.py" output="screen"/>
+  
 <!-- ARtag -->
   <!-- Difference in kinect frames (real vs simulation), so parallel isn't working correctly.
   There is no need for it though, in simulation detection accuracy is very good -->

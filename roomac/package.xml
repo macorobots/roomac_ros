@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <package format="2">
   <name>roomac</name>
-  <version>1.3.4</version>
+  <version>1.4.0</version>
   <description>The roomac package</description>
 
   <!-- One maintainer tag required, multiple allowed, one person per tag -->
@@ -51,7 +51,7 @@
   <buildtool_depend>catkin</buildtool_depend>
   <exec_depend>roomac_arm</exec_depend>
   <exec_depend>roomac_base</exec_depend>
-
+  <depend>dynamic_reconfigure</depend>
 
   <!-- The export tag contains other, unspecified, tags -->
   <export>

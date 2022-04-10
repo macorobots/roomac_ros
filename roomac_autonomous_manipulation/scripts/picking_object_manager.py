@@ -8,85 +8,310 @@ import moveit_commander
 
 import geometry_msgs.msg
 from geometry_msgs.msg import PoseStamped, PointStamped, Quaternion, Point
-from trajectory_msgs.msg import JointTrajectory, JointTrajectoryPoint
-from std_srvs.srv import Trigger, TriggerResponse, TriggerRequest
-from roomac_autonomous_manipulation.srv import DetectGripperPosition
-
-from moveit_msgs.msg import (
-    AllowedCollisionMatrix,
-    PlanningScene,
-    PlanningSceneComponents,
-)
-from moveit_msgs.srv import GetPlanningScene
+from std_srvs.srv import Trigger, TriggerResponse
 
 import tf
 from tf.transformations import quaternion_from_euler
 
+from moveit_msgs.msg import MoveGroupActionFeedback
+from actionlib_msgs.msg import GoalID, GoalStatus
+
+from roomac_msgs.msg import (
+    PickObjectAction,
+    PickObjectFeedback,
+    PickObjectResult,
+)
+
+from dynamic_reconfigure.server import Server
+from roomac_autonomous_manipulation.cfg import PickManagerSettingsConfig
+
+
+from roomac_utils.action_procedure_executor import (
+    ActionProcedureStep,
+    SimpleActionExecutor,
+    GoalState,
+)
+
 
 class PickingObjectManager(object):
     def __init__(self):
+        # Parameters
+        self.object_position_correction_x = rospy.get_param(
+            "~object_position_correction_x", 0.0
+        )
+        self.object_position_correction_y = rospy.get_param(
+            "~object_position_correction_y", 0.0
+        )
+        self.object_position_correction_z = rospy.get_param(
+            "~object_position_correction_z", 0.0
+        )
+        self.pre_goal_retraction_x = rospy.get_param("~pre_goal_retraction_x", 0.1)
+        self.post_goal_retraction_z = rospy.get_param("~post_goal_retraction_z", 0.08)
+        self.open_gripper_wait_time = rospy.get_param("~open_gripper_wait_time", 0.0)
+        self.close_gripper_wait_time = rospy.get_param("~close_gripper_wait_time", 1.0)
+
+        # Instead of retries it would be probably better to change planning attempts in moveit
+        # as they are main reason
+        self.procedure_retry_threshold = rospy.get_param(
+            "~procedure_retry_threshold", 5
+        )
+
+        self.dynamic_reconfigure_srv = Server(
+            PickManagerSettingsConfig, self.dynamic_reconfigure_cb
+        )
+
+        wait_time_move_group_servers = rospy.get_param(
+            "~wait_time_move_group_servers", 60.0
+        )
+
+        move_group_planning_time = rospy.get_param("~move_group_planning_time", 60.0)
+        move_group_planning_attempts = rospy.get_param(
+            "~move_group_planning_attempts", 10
+        )
+
+        move_group_goal_orientation_tolerance = rospy.get_param(
+            "~move_group_goal_orientation_tolerance", 0.1
+        )
+        move_group_goal_position_tolerance = rospy.get_param(
+            "~move_group_goal_position_tolerance", 0.01
+        )
+
+        arm_name = rospy.get_param("~arm_name", "right_arm")
+        self.base_link_frame = rospy.get_param("~base_link_frame", "base_link")
+        self.gripper_frame = rospy.get_param("~gripper_frame", "gripper_right_grip")
+        self.object_name = rospy.get_param("~object_name", "object")
+        self.grasping_group_name = rospy.get_param("~grasping_group_name", "hand")
+        self.home_position_target_name = rospy.get_param(
+            "~home_position_target_name", "Home"
+        )
+
+        # Moveit stuff
+
         moveit_commander.roscpp_initialize(sys.argv)
         # when master is running remotely (e.g. on raspberry) communication is slower
         # and often timed out
         self.robot = moveit_commander.RobotCommander()
         self.move_group = moveit_commander.MoveGroupCommander(
-            name="right_arm", wait_for_servers=60.0
+            name=arm_name, wait_for_servers=wait_time_move_group_servers
         )
         self.scene = moveit_commander.PlanningSceneInterface()
+
+        # Doesn't work, only LOST is published, maybe it tracks goals published by itself, not external
+        # self.moveit_client = actionlib.SimpleActionClient("move_group", MoveGroupAction)
+        # self.moveit_client.wait_for_server()
+
+        self.moveit_feedback_sub = rospy.Subscriber(
+            "/move_group/feedback", MoveGroupActionFeedback, self.moveit_feedback_cb
+        )
+
+        self.moveit_cancel_pub = rospy.Publisher(
+            "/move_group/cancel", GoalID, queue_size=10
+        )
 
         # If there are problems with finding plan, although it didn't look to work properly
         # (actual number of attempts was different)
         self.move_group.allow_replanning(True)
-        self.move_group.set_planning_time(60)
-        self.move_group.set_num_planning_attempts(10)
+        self.move_group.set_planning_time(move_group_planning_time)
+        self.move_group.set_num_planning_attempts(move_group_planning_attempts)
 
         # only position ik, really important without it fails to find plan
-        self.move_group.set_goal_orientation_tolerance(0.1)
-
-        self.move_group.set_goal_position_tolerance(0.01)
-
-        self.retraction = 0.1
-
-        self.controller_command_pub = rospy.Publisher(
-            "/roomac/arm_position_controller/command",
-            JointTrajectory,
-            queue_size=10,
-            latch=True,
+        self.move_group.set_goal_orientation_tolerance(
+            move_group_goal_orientation_tolerance
         )
+        self.move_group.set_goal_position_tolerance(move_group_goal_position_tolerance)
+
+        # Services
 
         self.set_home_arm_srv = rospy.Service(
             "set_home_arm", Trigger, self.return_to_home_position
         )
-        self.pick_object_srv = rospy.Service("pick_object", Trigger, self.pick_object)
-        self.pick_object_with_correction_srv = rospy.Service(
-            "pick_object_with_correction", Trigger, self.pick_object_with_correction
+        self.remove_object_from_scene_srv = rospy.Service(
+            "remove_object_from_scene", Trigger, self.remove_object_from_scene_cb
         )
 
-        self.pick_correction_srv = rospy.ServiceProxy(
-            "pick_correction", DetectGripperPosition
+        self.moveit_feedback_state = None
+
+        self.current_object_point = None
+        self.current_pre_object_point = None
+        self.current_post_object_point = None
+
+        procedure_list = [
+            # Prepare picking
+            ActionProcedureStep(
+                start_procedure_function=self.prepare_picking,
+                get_procedure_state_function=lambda: GoalState.SUCCEEDED,
+                preempted_action_function=lambda: None,
+                feedback_state=PickObjectFeedback.PRE_GRIPPING_POSITION,
+            ),
+            # Open gripper
+            ActionProcedureStep(
+                start_procedure_function=self.open_gripper_with_delay,
+                get_procedure_state_function=lambda: GoalState.SUCCEEDED,
+                preempted_action_function=lambda: None,
+                feedback_state=PickObjectFeedback.PRE_GRIPPING_POSITION,
+            ),
+            # Go to pre point
+            ActionProcedureStep(
+                start_procedure_function=self.go_to_current_pre_object_point,
+                get_procedure_state_function=self.moveit_finished_execution,
+                preempted_action_function=self.moveit_abort,
+                feedback_state=PickObjectFeedback.GOING_TO_PRE_GRIPPING_POSITION,
+            ),
+            # Go to object point
+            ActionProcedureStep(
+                start_procedure_function=self.go_to_current_object_point,
+                get_procedure_state_function=self.moveit_finished_execution,
+                preempted_action_function=self.moveit_abort,
+                feedback_state=PickObjectFeedback.GOING_TO_GRIPPING_POSITION,
+            ),
+            # Calculate error
+            ActionProcedureStep(
+                start_procedure_function=self.print_current_error,
+                get_procedure_state_function=lambda: GoalState.SUCCEEDED,
+                preempted_action_function=lambda: None,
+                feedback_state=PickObjectFeedback.GRIPPING_POSITION,
+            ),
+            # Close gripper
+            ActionProcedureStep(
+                start_procedure_function=self.close_gripper_with_delay,
+                get_procedure_state_function=lambda: GoalState.SUCCEEDED,
+                preempted_action_function=lambda: None,
+                feedback_state=PickObjectFeedback.CLOSING_GRIPPER,
+            ),
+            # Attach object
+            ActionProcedureStep(
+                start_procedure_function=self.attach_object,
+                get_procedure_state_function=lambda: GoalState.SUCCEEDED,
+                preempted_action_function=lambda: None,
+                feedback_state=PickObjectFeedback.GRIPPING_POSITION,
+            ),
+            # Go to post point
+            ActionProcedureStep(
+                start_procedure_function=self.go_to_current_post_object_point,
+                get_procedure_state_function=self.moveit_finished_execution,
+                preempted_action_function=self.moveit_abort,
+                feedback_state=PickObjectFeedback.GOING_TO_POST_GRIPPING_POSITION,
+            ),
+        ]
+
+        self.pick_action_executor = SimpleActionExecutor(
+            "pick_object",
+            PickObjectAction,
+            PickObjectFeedback,
+            PickObjectResult,
+            10.0,
+            procedure_list,
+            self.procedure_retry_threshold,
         )
 
-        self.debug_points = rospy.Publisher(
-            "/debug_points", PointStamped, queue_size=5, latch=True
+    def go_to_current_object_point(self):
+        self.go_to_point(self.current_object_point)
+
+    def go_to_current_pre_object_point(self):
+        self.go_to_point(self.current_pre_object_point)
+
+    def go_to_current_post_object_point(self):
+        self.go_to_point(self.current_post_object_point)
+
+    def print_current_error(self):
+        self.print_error(self.current_object_point)
+
+    def prepare_picking(self):
+        self.remove_object_from_scene()
+
+        object_point = self.get_object_point()
+        object_point_transformed = self.transform_point(
+            object_point, self.base_link_frame
         )
 
-    def move_gripper(self, position):
+        self.add_object_to_scene(object_point_transformed.point)
+        pre_point, post_point = self.calculate_pre_and_post_points(
+            object_point_transformed.point
+        )
+
+        self.current_object_point = object_point_transformed.point
+        self.current_pre_object_point = pre_point
+        self.current_post_object_point = post_point
+
+    def moveit_feedback_cb(self, msg):
+        self.moveit_feedback_state = msg.status.status
+
+    def remove_object_from_scene(self):
+        self.scene.remove_attached_object(self.gripper_frame, name=self.object_name)
+        self.scene.remove_world_object(self.object_name)
+
+    def remove_object_from_scene_cb(self, req):
+        res = TriggerResponse()
+        res.success = True
+
+        self.remove_object_from_scene()
+
+        return res
+
+    def moveit_finished_execution(self):
+        goal_state = None
+
+        if not self.moveit_feedback_state:
+            return GoalState.IN_PROGRESS
+
+        state = self.moveit_feedback_state
+
+        if (
+            state == GoalStatus.PREEMPTED
+            or state == GoalStatus.ABORTED
+            or state == GoalStatus.REJECTED
+            or state == GoalStatus.RECALLED
+            or state == GoalStatus.LOST
+        ):
+            goal_state = GoalState.FAILED
+        elif state == GoalStatus.SUCCEEDED:
+            goal_state = GoalState.SUCCEEDED
+
+        else:
+            goal_state = GoalState.IN_PROGRESS
+
+        return goal_state
+
+    def moveit_abort(self):
+        # not woorking
+        # self.moveit_client.cancel_all_goals()
+
+        # not working
+        # self.move_group.stop()
+        # self.move_group.clear_pose_targets()
+
+        self.moveit_cancel_pub.publish(GoalID())
+
+    def attach_object(self):
+        grasping_group = self.grasping_group_name
+        touch_links = self.robot.get_link_names(group=grasping_group)
+        self.scene.attach_box(
+            self.gripper_frame, self.object_name, touch_links=touch_links
+        )
+
+    def close_gripper(self, delay=1.0):
         raise NotImplementedError()
 
-    def close_gripper(self):
+    def open_gripper(self, delay=1.0):
         raise NotImplementedError()
 
-    def open_gripper(self):
-        raise NotImplementedError()
+    def close_gripper_with_delay(self):
+        self.close_gripper(self.close_gripper_wait_time)
 
-    def find_and_execute_plan(self):
+    def open_gripper_with_delay(self):
+        self.open_gripper(self.open_gripper_wait_time)
+
+    def find_and_execute_plan(self, wait=True):
         plan = False
         while not plan:
             rospy.loginfo("Trying to find and execute plan")
-            plan = self.move_group.go(wait=True)
+            plan = self.move_group.go(wait=wait)
 
-        self.move_group.stop()
-        self.move_group.clear_pose_targets()
+        self.moveit_feedback_state = None
+
+        if wait:
+            self.move_group.stop()
+            self.move_group.clear_pose_targets()
 
     def get_perpendicular_orientation(self):
         orientation = Quaternion()
@@ -107,62 +332,31 @@ class PickingObjectManager(object):
         # self.move_group.set_pose_target(pose_goal)
 
         # Allow approximate solutions (True)
-        self.move_group.set_joint_value_target(pose_goal, "gripper_right_grip", True)
-        self.find_and_execute_plan()
+        self.move_group.set_joint_value_target(pose_goal, self.gripper_frame, True)
+        self.find_and_execute_plan(wait=False)
 
     def add_object_to_scene(self, point):
-        reference_frame = "base_link"
-        object_id = "object"
-
         # Remove leftover objects from a previous run
-        self.scene.remove_world_object(object_id)
+        self.scene.remove_world_object(self.object_name)
 
         # Real height is 0.125, but it collides with cardboard box then
         # and plan to pick it up isn't too good
         body_size = [0.015, 0.02, 0.06]
 
         body_pose = PoseStamped()
-        body_pose.header.frame_id = reference_frame
+        body_pose.header.frame_id = self.base_link_frame
         body_pose.pose.position.x = point.x
         body_pose.pose.position.y = point.y
         body_pose.pose.position.z = point.z - body_size[2] / 2.0 + 0.02
 
-        self.scene.add_box(object_id, body_pose, body_size)
-
-    # TODO: check this, appears to not work correctly
-    def add_to_allowed_collision_matrix(self, object_id):
-        # I also tried 5.0, but didn't help so no point in longer sleep
-        rospy.sleep(0.5)
-
-        self.planning_scene_pub = rospy.Publisher(
-            "/planning_scene", PlanningScene, queue_size=10
-        )
-        rospy.wait_for_service("/get_planning_scene", 10.0)
-        get_planning_scene = rospy.ServiceProxy("/get_planning_scene", GetPlanningScene)
-        request = PlanningSceneComponents(
-            components=PlanningSceneComponents.ALLOWED_COLLISION_MATRIX
-        )
-        response = get_planning_scene(request)
-
-        acm = response.scene.allowed_collision_matrix
-        if not object_id in acm.default_entry_names:
-            acm.default_entry_names += [object_id]
-            acm.default_entry_values += [True]
-
-            planning_scene_diff = PlanningScene(
-                is_diff=True, allowed_collision_matrix=acm
-            )
-
-            self.planning_scene_pub.publish(planning_scene_diff)
-            # I also tried 5.0, but didn't help so no point in longer sleep
-            rospy.sleep(0.5)
+        self.scene.add_box(self.object_name, body_pose, body_size)
 
     def calculate_pre_and_post_points(self, point):
         pre_point = copy.deepcopy(point)
-        pre_point.y -= self.retraction
+        pre_point.y -= self.pre_goal_retraction_x
 
         post_point = copy.deepcopy(point)
-        post_point.z += 0.2
+        post_point.z += self.post_goal_retraction_z
 
         return pre_point, post_point
 
@@ -170,7 +364,7 @@ class PickingObjectManager(object):
         res = TriggerResponse()
         res.success = True
 
-        self.move_group.set_named_target("Home")
+        self.move_group.set_named_target(self.home_position_target_name)
 
         self.find_and_execute_plan()
 
@@ -198,12 +392,14 @@ class PickingObjectManager(object):
     def print_error(self, goal_point):
         tip_point = PointStamped()
         tip_point.header.stamp = rospy.Time(0)
-        tip_point.header.frame_id = "gripper_right_grip"
+        tip_point.header.frame_id = self.gripper_frame
         tip_point.point.x = 0.0
         tip_point.point.y = 0.0
         tip_point.point.z = 0.0
 
-        gripper_point_transformed = self.transform_point(tip_point, "base_link")
+        gripper_point_transformed = self.transform_point(
+            tip_point, self.base_link_frame
+        )
 
         diff = Point()
         diff.x = gripper_point_transformed.point.x - goal_point.x
@@ -212,126 +408,14 @@ class PickingObjectManager(object):
 
         rospy.logwarn("Planner error: " + str(diff))
 
-    def pick_object(self, req):
-        res = TriggerResponse()
-        res.success = True
+    def dynamic_reconfigure_cb(self, config, level):
+        self.object_position_correction_x = config.object_position_correction_x
+        self.object_position_correction_y = config.object_position_correction_y
+        self.object_position_correction_z = config.object_position_correction_z
+        self.pre_goal_retraction_x = config.pre_goal_retraction_x
+        self.post_goal_retraction_z = config.post_goal_retraction_z
+        self.open_gripper_wait_time = config.open_gripper_wait_time
+        self.close_gripper_wait_time = config.close_gripper_wait_time
+        self.procedure_retry_threshold = config.procedure_retry_threshold
 
-        object_point = self.get_object_point()
-        object_point_transformed = self.transform_point(object_point, "base_link")
-
-        self.add_object_to_scene(object_point_transformed.point)
-        pre_point, post_point = self.calculate_pre_and_post_points(
-            object_point_transformed.point
-        )
-
-        self.go_to_point(pre_point)
-        self.open_gripper()
-
-        self.go_to_point(object_point_transformed.point)
-        self.print_error(object_point_transformed.point)
-
-        grasping_group = "hand"
-        touch_links = self.robot.get_link_names(group=grasping_group)
-        self.scene.attach_box("gripper_right_grip", "object", touch_links=touch_links)
-
-        self.close_gripper()
-        self.go_to_point(post_point)
-
-        # TODO: Probably shouldn't remove object after picking
-        self.scene.remove_attached_object("gripper_right_grip", name="object")
-        self.scene.remove_world_object("object")
-
-        return res
-
-    def update_object_position(self, gripper_point, pre_point, object_point):
-        gripper_point.header.stamp = rospy.Time(0)
-        gripper_point_transformed = self.transform_point(gripper_point, "base_link")
-
-        pre_point.header.stamp = rospy.Time(0)
-        pre_point_transformed = self.transform_point(pre_point_transformed, "base_link")
-
-        diff = Point()
-        diff.x = pre_point_transformed.point.x - gripper_point_transformed.point.x
-        diff.y = pre_point_transformed.point.y - gripper_point_transformed.point.y
-        diff.z = pre_point_transformed.point.z - gripper_point_transformed.point.z
-
-        object_point_corrected = Point()
-        object_point_corrected.x = object_point.point.x + diff.x
-        object_point_corrected.y = object_point.point.y + diff.y
-        object_point_corrected.z = object_point.point.z + diff.z
-
-        return object_point_corrected
-
-    def pick_object_with_correction(self, req):
-        res = TriggerResponse()
-        res.success = True
-
-        object_point = self.get_object_point()
-        object_point_transformed = self.transform_point(object_point, "base_link")
-
-        self.add_object_to_scene(object_point_transformed.point)
-        self.add_to_allowed_collision_matrix("object")
-
-        pre_point, post_point = self.calculate_pre_and_post_points(
-            object_point_transformed.point
-        )
-
-        pre_point_stamped = PointStamped()
-        pre_point_stamped.point = pre_point
-        pre_point_stamped.header = object_point_transformed.header
-
-        pre_point_transformed = self.transform_point(
-            pre_point_stamped, "camera_up_rgb_optical_frame"
-        )
-
-        self.debug_points.publish(pre_point_transformed)
-        self.debug_points.publish(object_point_transformed)
-
-        rospy.loginfo("Opening gripper")
-        self.open_gripper()
-
-        rospy.loginfo("Going to pre point")
-        self.go_to_point(pre_point)
-
-        rospy.loginfo("Getting gripper position")
-        self.pick_correction_srv.wait_for_service()
-        resp = self.pick_correction_srv.call()
-
-        while not resp.success:
-            rospy.logwarn(
-                "Getting gripper position not successful: "
-                + resp.message
-                + ". Retrying..."
-            )
-            resp = self.pick_correction_srv.call()
-
-        object_point_corrected = self.update_object_position(
-            resp.calculated_gripper_position,
-            pre_point_transformed,
-            object_point_transformed,
-        )
-
-        object_point_corrected_stamped = PointStamped()
-        object_point_corrected_stamped.point = object_point_corrected
-        object_point_corrected_stamped.header.stamp = rospy.Time.now()
-        object_point_corrected_stamped.header.frame_id = "base_link"
-        self.debug_points.publish(object_point_corrected_stamped)
-
-        # allowed collision matrix isn't really working, so it necessary to also move object
-        # in the scene to updated position, otherwise there will be problems with planning
-
-        self.add_object_to_scene(object_point_corrected)
-        self.add_to_allowed_collision_matrix("object")
-
-        rospy.loginfo("Going to point")
-        self.go_to_point(object_point_corrected)
-
-        rospy.loginfo("Closing gripper")
-        self.close_gripper()
-
-        rospy.loginfo("Going to post point")
-        self.go_to_point(post_point)
-
-        self.scene.remove_world_object("object")
-
-        return res
+        return config

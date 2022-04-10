@@ -1,0 +1,13 @@
+<launch>
+  <arg name="simulation" default="false"/>
+
+  <node unless="$(arg simulation)" name="real_picking_object_manager" pkg="roomac_autonomous_manipulation" 
+    type="real_picking_object_manager.py" output="screen">
+    <rosparam command="load" file="$(find roomac_autonomous_manipulation)/config/picking_object_manager_config.yaml" />
+  </node>
+
+  <node if="$(arg simulation)" name="simulation_picking_object_manager" pkg="roomac_autonomous_manipulation" 
+    type="simulation_picking_object_manager.py" output="screen">
+    <rosparam command="load" file="$(find roomac_autonomous_manipulation)/config/picking_object_manager_config.yaml" />
+  </node>
+</launch>
