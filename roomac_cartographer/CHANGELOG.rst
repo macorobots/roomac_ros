@@ -2,8 +2,8 @@
 Changelog for package roomac_cartographer
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+1.4.0 (2022-04-10)
+------------------
 * Merge branch 'master' into 18-ros-action
 * Merge branch 'master' into 18-ros-action
 * Merge branch 'master' into 18-ros-action
