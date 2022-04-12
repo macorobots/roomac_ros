@@ -114,11 +114,11 @@ roomac_msgs::ObjectAndTable ObjectDetection::FindObjectAndTable()
   try
   {
     pcl::PointCloud<pcl::PointXYZRGB>::Ptr clipped(new pcl::PointCloud<pcl::PointXYZRGB>);
-    clipped = RangeFilter(cloud);
+    clipped = RangeFilter(cloud, max_range_);
 
     pcl::PointCloud<pcl::PointXYZRGB>::Ptr without_table(new pcl::PointCloud<pcl::PointXYZRGB>);
     geometry_msgs::Point table_mass_center, min_point_table, max_point_table;
-    std::tie(without_table, table_mass_center, min_point_table, max_point_table) = TablePlaneDetection(clipped);
+    std::tie(without_table, table_mass_center, min_point_table, max_point_table) = DetectTablePlane(clipped);
 
     pcl::PointCloud<pcl::PointXYZRGB>::Ptr objects_on_table(new pcl::PointCloud<pcl::PointXYZRGB>);
     objects_on_table = FilterObjectsOnTable(without_table, min_point_table, max_point_table);
@@ -161,7 +161,7 @@ roomac_msgs::ObjectAndTable ObjectDetection::FindObjectAndTable()
 }
 
 pcl::PointCloud<pcl::PointXYZRGB>::Ptr
-ObjectDetection::RangeFilter(const pcl::PointCloud<pcl::PointXYZRGB>::Ptr& src_cloud)
+ObjectDetection::RangeFilter(const pcl::PointCloud<pcl::PointXYZRGB>::Ptr& src_cloud, float max_range)
 {
   if (src_cloud->empty())
   {
@@ -174,7 +174,7 @@ ObjectDetection::RangeFilter(const pcl::PointCloud<pcl::PointXYZRGB>::Ptr& src_c
   pcl::PassThrough<pcl::PointXYZRGB> pass;
   pass.setInputCloud(src_cloud);
   pass.setFilterFieldName("z");
-  pass.setFilterLimits(0.0, max_range_);
+  pass.setFilterLimits(0.0, max_range);
   // pass.setFilterLimitsNegative (true);
   pass.filter(*points_filtered);
 
@@ -182,7 +182,7 @@ ObjectDetection::RangeFilter(const pcl::PointCloud<pcl::PointXYZRGB>::Ptr& src_c
 }
 
 std::tuple<pcl::PointCloud<pcl::PointXYZRGB>::Ptr, geometry_msgs::Point, geometry_msgs::Point, geometry_msgs::Point>
-ObjectDetection::TablePlaneDetection(const pcl::PointCloud<pcl::PointXYZRGB>::Ptr& src_cloud)
+ObjectDetection::DetectTablePlane(const pcl::PointCloud<pcl::PointXYZRGB>::Ptr& src_cloud)
 {
   if (src_cloud->empty())
   {
@@ -354,7 +354,7 @@ ObjectDetection::DetectLargestCluster(const pcl::PointCloud<pcl::PointXYZRGB>::P
   pcl::removeNaNFromPointCloud(*src_cloud, *points_filtered, indices);
 
   std::vector<pcl::PointIndices> cluster_indices =
-      DetectClusterIndeces(points_filtered, cluster_tolerance, min_cluster_size, max_cluster_size);
+      DetectClusterIndices(points_filtered, cluster_tolerance, min_cluster_size, max_cluster_size);
 
   pcl::PointCloud<pcl::PointXYZRGB>::Ptr max_cloud_cluster(new pcl::PointCloud<pcl::PointXYZRGB>);
   int max_size = 0;
@@ -385,7 +385,7 @@ ObjectDetection::DetectLargestCluster(const pcl::PointCloud<pcl::PointXYZRGB>::P
 }
 
 std::vector<pcl::PointIndices>
-ObjectDetection::DetectClusterIndeces(const pcl::PointCloud<pcl::PointXYZRGB>::Ptr& src_cloud, float cluster_tolerance,
+ObjectDetection::DetectClusterIndices(const pcl::PointCloud<pcl::PointXYZRGB>::Ptr& src_cloud, float cluster_tolerance,
                                       int min_cluster_size, int max_cluster_size)
 {
   if (src_cloud->empty())
@@ -422,7 +422,7 @@ ObjectDetection::DetectObjectCluster(const pcl::PointCloud<pcl::PointXYZRGB>::Pt
   pcl::removeNaNFromPointCloud(*src_cloud, *points_filtered, indices);
 
   std::vector<pcl::PointIndices> cluster_indices =
-      DetectClusterIndeces(points_filtered, cluster_tolerance, min_cluster_size, max_cluster_size);
+      DetectClusterIndices(points_filtered, cluster_tolerance, min_cluster_size, max_cluster_size);
 
   pcl::PointCloud<pcl::PointXYZRGB>::Ptr object_cloud_cluster(new pcl::PointCloud<pcl::PointXYZRGB>);
   float min_x = std::numeric_limits<float>::max();
