@@ -116,27 +116,12 @@ roomac_msgs::ObjectAndTable ObjectDetection::FindObjectAndTable()
     pcl::PointCloud<pcl::PointXYZRGB>::Ptr clipped(new pcl::PointCloud<pcl::PointXYZRGB>);
     clipped = RangeFilter(cloud);
 
-    if (publish_debug_)
-    {
-      PublishPointcloud(clipped, floor_clipped_pub_);
-    }
-
     pcl::PointCloud<pcl::PointXYZRGB>::Ptr without_table(new pcl::PointCloud<pcl::PointXYZRGB>);
     geometry_msgs::Point table_mass_center, min_point_table, max_point_table;
     std::tie(without_table, table_mass_center, min_point_table, max_point_table) = TablePlaneDetection(clipped);
 
-    if (publish_debug_)
-    {
-      PublishPointcloud(without_table, without_table_pub_);
-    }
-
     pcl::PointCloud<pcl::PointXYZRGB>::Ptr objects_on_table(new pcl::PointCloud<pcl::PointXYZRGB>);
     objects_on_table = FilterObjectsOnTable(without_table, min_point_table, max_point_table);
-
-    if (publish_debug_)
-    {
-      PublishPointcloud(objects_on_table, only_objects_on_table_pub_);
-    }
 
     ROS_INFO("Detecting clusters");
     pcl::PointCloud<pcl::PointXYZRGB>::Ptr object_cluster(new pcl::PointCloud<pcl::PointXYZRGB>);
@@ -145,6 +130,9 @@ roomac_msgs::ObjectAndTable ObjectDetection::FindObjectAndTable()
 
     if (publish_debug_)
     {
+      PublishPointcloud(clipped, floor_clipped_pub_);
+      PublishPointcloud(without_table, without_table_pub_);
+      PublishPointcloud(objects_on_table, only_objects_on_table_pub_);
       PublishPointcloud(object_cluster, object_cloud_pub_);
     }
 
