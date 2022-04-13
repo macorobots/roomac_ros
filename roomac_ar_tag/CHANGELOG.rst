@@ -2,8 +2,8 @@
 Changelog for package roomac_ar_tag
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+1.4.1 (2022-04-13)
+------------------
 * Merge pull request `#37 <https://github.com/macstepien/roomac_ros/issues/37>`_ from macstepien/32-upper-camera-tf2-reading
   Better reading artags transforms
 * Merge branch 'master' into 32-upper-camera-tf-timeout
