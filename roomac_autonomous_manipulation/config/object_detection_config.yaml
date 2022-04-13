@@ -20,3 +20,5 @@ table_max_cluster_size: 150000
 max_range: 1.8
 table_detection_distance_threshold: 0.02
 table_voxels_leaf_size: 0.04
+
+objects_on_table_min_height: 0.05

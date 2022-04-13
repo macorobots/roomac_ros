@@ -65,7 +65,7 @@ private:
   DetectTablePlane(const pcl::PointCloud<pcl::PointXYZRGB>::Ptr& src_cloud);
 
   /**
-   * @brief Computes points that are above height of table and within tables rectangle
+   * @brief Computes points that are above height of table + objects_on_table_min_height and within tables rectangle
    *
    * @param src_cloud
    * @param min_point_table
@@ -201,6 +201,8 @@ private:
   float max_range_;
   float table_detection_distance_threshold_;
   float table_voxels_leaf_size_;
+
+  float objects_on_table_min_height_;
 
   std::string camera_frame_;
 

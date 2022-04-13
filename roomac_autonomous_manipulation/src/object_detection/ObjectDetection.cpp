@@ -44,6 +44,8 @@ ObjectDetection::ObjectDetection()
   table_detection_distance_threshold_ = ph.param<float>("table_detection_distance_threshold", 0.01);
   table_voxels_leaf_size_ = ph.param<float>("table_voxels_leaf_size", 0.01);
 
+  objects_on_table_min_height_ = ph.param<float>("objects_on_table_min_height", 0.05);
+
   publish_debug_ = ph.param<bool>("publish_debug", true);
 
   camera_frame_ = ph.param<std::string>("camera_frame", "camera_up_rgb_optical_frame");
@@ -279,7 +281,7 @@ ObjectDetection::FilterObjectsOnTable(const pcl::PointCloud<pcl::PointXYZRGB>::P
   pcl::PassThrough<pcl::PointXYZRGB> pass;
   pass.setInputCloud(src_cloud);
   pass.setFilterFieldName("z");
-  pass.setFilterLimits(0.0, min_point_table.z);
+  pass.setFilterLimits(0.0, min_point_table.z - objects_on_table_min_height_);
   pass.filter(*points_filtered);
 
   pass.setInputCloud(points_filtered);
