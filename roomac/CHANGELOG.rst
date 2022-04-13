@@ -2,8 +2,8 @@
 Changelog for package roomac
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+1.6.0 (2022-04-13)
+------------------
 * Merge pull request `#40 <https://github.com/macstepien/roomac_ros/issues/40>`_ from macstepien/35-joint-trajectory-arm-controller
   Joint trajectory arm controller
 * Merge branch 'master' into 35-joint-trajectory-arm-controller

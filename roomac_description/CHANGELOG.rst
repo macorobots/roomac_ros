@@ -2,8 +2,8 @@
 Changelog for package roomac_description
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+1.6.0 (2022-04-13)
+------------------
 * Merge branch 'master' into 35-joint-trajectory-arm-controller
 * Merge branch 'master' into joint-trajectory-arm-controller
   Conflicts:
