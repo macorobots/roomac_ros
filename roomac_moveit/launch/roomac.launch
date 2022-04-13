@@ -7,9 +7,6 @@
   <arg name="load_robot_description" default="true"/>
   <arg name="use_rviz" default="true" />
 
-  <!-- Arm controller -->
-  <include file="$(find roomac_arm)/launch/arm_follow_trajectory_controller.launch"/>
-
   <!-- Given the published joint states, publish tf for the robot links -->
   <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" respawn="true" output="screen" />
 
