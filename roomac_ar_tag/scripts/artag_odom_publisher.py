@@ -84,7 +84,9 @@ class ARTagOdomPublisher(object):
             tf2_ros.ConnectivityException,
             tf2_ros.ExtrapolationException,
         ):
-            raise RuntimeError("Couldn't get transform")
+            raise RuntimeError(
+                "Couldn't get " + source_frame + "->" + target_frame + " transform"
+            )
 
         pt = Point(
             trans.transform.translation.x,

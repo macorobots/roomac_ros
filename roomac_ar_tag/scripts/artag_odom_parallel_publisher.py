@@ -41,7 +41,9 @@ class ARTagParallerlOdomPublisher(ARTagOdomPublisher):
             tf2_ros.ConnectivityException,
             tf2_ros.ExtrapolationException,
         ):
-            raise RuntimeError("Couldn't get transform")
+            raise RuntimeError(
+                "Couldn't get " + camera_link + "->" + ar_marker_link + " transform"
+            )
 
         rot_quat = [
             trans.transform.rotation.x,
