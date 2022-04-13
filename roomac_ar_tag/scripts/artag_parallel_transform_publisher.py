@@ -30,6 +30,8 @@ class ARTagParallerlTransformPublisher:
             self.ar_marker_object_link + parallel_transform_suffix
         )
 
+        self.object_artag_enabled = rospy.get_param("~object_artag_enabled", True)
+
         self.tf_buffer = tf2_ros.Buffer()
         self.tf_listener = tf2_ros.TransformListener(self.tf_buffer)
         self.tf_broadcaster = tf2_ros.TransformBroadcaster()
@@ -98,11 +100,12 @@ class ARTagParallerlTransformPublisher:
                     self.ar_marker_only_yaw_robot_link,
                 )
 
-                self.send_only_yaw_transform(
-                    self.camera_link,
-                    self.ar_marker_object_link,
-                    self.ar_marker_only_yaw_object_link,
-                )
+                if self.object_artag_enabled:
+                    self.send_only_yaw_transform(
+                        self.camera_link,
+                        self.ar_marker_object_link,
+                        self.ar_marker_only_yaw_object_link,
+                    )
 
             except RuntimeError as e:
                 rospy.logwarn_throttle(

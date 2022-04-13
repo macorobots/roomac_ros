@@ -85,13 +85,15 @@ class RobotController:
         )
 
         self.clear_octomap_srv = rospy.ServiceProxy("/clear_octomap", Empty)
-        self.add_table_to_scene_srv = rospy.ServiceProxy("/add_table_to_scene", Trigger)
+        self.add_detected_table_to_scene_srv = rospy.ServiceProxy(
+            "/add_detected_table_to_scene", Trigger
+        )
 
         rospy.loginfo("Waiting for all services and servers to become available")
         self.move_base_client.wait_for_server()
         self.pick_object_client.wait_for_server()
         self.clear_octomap_srv.wait_for_service()
-        self.add_table_to_scene_srv.wait_for_service()
+        self.add_detected_table_to_scene_srv.wait_for_service()
         rospy.loginfo("All services and servers are available")
 
         procedure_list = [
@@ -183,7 +185,7 @@ class RobotController:
         )
         rospy.sleep(self.wait_time_before_picking_action)
         self.clear_octomap_srv.call()
-        self.add_table_to_scene_srv.call(TriggerRequest())
+        self.add_detected_table_to_scene_srv.call(TriggerRequest())
         self.pick_object_client.send_goal(PickActionGoal())
 
     def pick_object_finished_execution(self):

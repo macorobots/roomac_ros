@@ -51,6 +51,7 @@
   <buildtool_depend>catkin</buildtool_depend>
 
   <depend>dynamic_reconfigure</depend>
+  <depend>roomac_msgs</depend>
 
   <!-- The export tag contains other, unspecified, tags -->
   <export>

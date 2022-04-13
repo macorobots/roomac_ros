@@ -10,4 +10,5 @@
   <include if="$(arg picking_correction_enabled)" file="$(find roomac_autonomous_manipulation)/launch/picking_correction.launch" />
 
   <node name="add_table_body_collision_to_scene" pkg="roomac_autonomous_manipulation" type="add_table_body_collision_to_scene.py" output="screen"/>
+  <include file="$(find roomac_autonomous_manipulation)/launch/object_detection.launch"/>
 </launch>

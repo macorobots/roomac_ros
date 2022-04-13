@@ -1,5 +1,7 @@
 <launch>
-  <node pkg="robot_localization" type="ekf_localization_node" name="filtration_camera_object" clear_params="true">
+  <arg name="object_artag_enabled" default="false" />
+
+  <node if="$(arg object_artag_enabled)" pkg="robot_localization" type="ekf_localization_node" name="filtration_camera_object" clear_params="true">
     <rosparam command="load" file="$(find roomac_ar_tag)/config/fusion_camera_object.yaml" />
   </node>
 
@@ -8,10 +10,11 @@
   </node>
 
   <node name="artag_parallel_transform_publisher" pkg="roomac_ar_tag" type="artag_parallel_transform_publisher.py" output="screen">
-    <rosparam command="load" file="$(find roomac_ar_tag)/config/artag_odom_publisher_config.yaml" />
+    <rosparam command="load" file="$(find roomac_ar_tag)/config/artag_odom_publisher_config.yaml" subst_value="true"/>
   </node>
+
   <node name="artag_odom_publisher" pkg="roomac_ar_tag" type="artag_odom_publisher.py" output="screen">
-    <rosparam command="load" file="$(find roomac_ar_tag)/config/artag_odom_publisher_config.yaml" />
+    <rosparam command="load" file="$(find roomac_ar_tag)/config/artag_odom_publisher_config.yaml" subst_value="true"/>
   </node>
 
 </launch>
