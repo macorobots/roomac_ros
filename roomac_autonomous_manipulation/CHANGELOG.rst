@@ -2,6 +2,16 @@
 Changelog for package roomac_autonomous_manipulation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* Merge pull request `#40 <https://github.com/macstepien/roomac_ros/issues/40>`_ from macstepien/35-joint-trajectory-arm-controller
+  Joint trajectory arm controller
+* Merge branch 'master' into 35-joint-trajectory-arm-controller
+* Merge branch 'master' into joint-trajectory-arm-controller
+  Conflicts:
+  roomac_moveit/config/ros_controllers.yaml
+* Contributors: Maciej Stepien, Maciej Stępień
+
 1.5.1 (2022-04-13)
 ------------------
 * Merge pull request `#39 <https://github.com/macstepien/roomac_ros/issues/39>`_ from macstepien/26-refactor-arm-controller

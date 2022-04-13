@@ -2,6 +2,14 @@
 Changelog for package roomac_base
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* Merge branch 'master' into 35-joint-trajectory-arm-controller
+* Merge branch 'master' into joint-trajectory-arm-controller
+  Conflicts:
+  roomac_moveit/config/ros_controllers.yaml
+* Contributors: Maciej Stepien
+
 1.5.1 (2022-04-13)
 ------------------
 * Merge branch 'master' into 26-refactor-arm-controller
