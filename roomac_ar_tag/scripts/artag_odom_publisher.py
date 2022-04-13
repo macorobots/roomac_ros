@@ -4,7 +4,7 @@ import rospy
 import tf2_ros
 
 from nav_msgs.msg import Odometry
-from geometry_msgs.msg import Point, Pose, Quaternion
+from geometry_msgs.msg import Point, Pose
 
 
 class ARTagOdomPublisher(object):
@@ -26,14 +26,26 @@ class ARTagOdomPublisher(object):
         self.rate = rospy.Rate(rospy.get_param("~rate", 30.0))
 
         self.camera_link = rospy.get_param("~camera_link", "camera_up_link")
+        self.robot_link = rospy.get_param("~robot_link", "artag_link_2")
+        self.object_link = rospy.get_param("~object_link", "detected_object")
+
         self.ar_marker_robot_link = rospy.get_param(
             "~ar_marker_robot_link", "ar_marker_0"
         )
         self.ar_marker_object_link = rospy.get_param(
             "~ar_marker_object_link", "ar_marker_2"
         )
-        self.robot_link = rospy.get_param("~robot_link", "artag_link_2")
-        self.object_link = rospy.get_param("~object_link", "detected_object")
+
+        upper_kinect_mounted_parellel = rospy.get_param(
+            "~upper_kinect_mounted_parellel", True
+        )
+
+        if upper_kinect_mounted_parellel:
+            parallel_transform_suffix = rospy.get_param(
+                "~parallel_transform_suffix", "_only_yaw"
+            )
+            self.ar_marker_robot_link += parallel_transform_suffix
+            self.ar_marker_object_link += parallel_transform_suffix
 
         self.tf_buffer = tf2_ros.Buffer()
         self.tf_listener = tf2_ros.TransformListener(self.tf_buffer)

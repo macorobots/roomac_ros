@@ -8,15 +8,30 @@ from tf.transformations import euler_from_quaternion, quaternion_from_euler
 
 from geometry_msgs.msg import TransformStamped
 
-from artag_odom_publisher import ARTagOdomPublisher
 
-
-class ARTagParallerlOdomPublisher(ARTagOdomPublisher):
+class ARTagParallerlTransformPublisher:
     def __init__(self):
-        super(ARTagParallerlOdomPublisher, self).__init__()
+        self.rate = rospy.Rate(rospy.get_param("~rate", 30.0))
 
-        self.ar_marker_only_yaw_robot_link = self.ar_marker_robot_link + "_only_yaw"
-        self.ar_marker_only_yaw_object_link = self.ar_marker_object_link + "_only_yaw"
+        self.camera_link = rospy.get_param("~camera_link", "camera_up_link")
+        self.ar_marker_robot_link = rospy.get_param(
+            "~ar_marker_robot_link", "ar_marker_0"
+        )
+        self.ar_marker_object_link = rospy.get_param(
+            "~ar_marker_object_link", "ar_marker_2"
+        )
+        parallel_transform_suffix = rospy.get_param(
+            "~parallel_transform_suffix", "_only_yaw"
+        )
+        self.ar_marker_only_yaw_robot_link = (
+            self.ar_marker_robot_link + parallel_transform_suffix
+        )
+        self.ar_marker_only_yaw_object_link = (
+            self.ar_marker_object_link + parallel_transform_suffix
+        )
+
+        self.tf_buffer = tf2_ros.Buffer()
+        self.tf_listener = tf2_ros.TransformListener(self.tf_buffer)
         self.tf_broadcaster = tf2_ros.TransformBroadcaster()
 
     def send_only_yaw_transform(self, camera_link, ar_marker_link, target_link):
@@ -73,7 +88,7 @@ class ARTagParallerlOdomPublisher(ARTagOdomPublisher):
 
     def run(self):
         """Runs in the loop with a given rate, publishing
-        odometry messages
+        parallel transforms
         """
         while not rospy.is_shutdown():
             try:
@@ -89,30 +104,16 @@ class ARTagParallerlOdomPublisher(ARTagOdomPublisher):
                     self.ar_marker_only_yaw_object_link,
                 )
 
-                odom_robot_msg = self.calculate_odom_msg(
-                    self.ar_marker_only_yaw_robot_link,
-                    self.camera_link,
-                    self.robot_link,
-                    reversed=True,
-                )
-
-                odom_object_msg = self.calculate_odom_msg(
-                    self.ar_marker_only_yaw_object_link,
-                    self.camera_link,
-                    self.object_link,
-                    reversed=False,
-                )
             except RuntimeError as e:
-                rospy.logwarn_throttle(5, "[Marker odom publisher] " + str(e))
+                rospy.logwarn_throttle(
+                    5, "[Marker parallel transform publisher] " + str(e)
+                )
                 continue
-
-            self.odom_robot_pub.publish(odom_robot_msg)
-            self.odom_object_pub.publish(odom_object_msg)
 
             self.rate.sleep()
 
 
 if __name__ == "__main__":
-    rospy.init_node("artag_odom_publisher")
-    odom_publisher = ARTagParallerlOdomPublisher()
+    rospy.init_node("artag_parallel_transform_publisher")
+    odom_publisher = ARTagParallerlTransformPublisher()
     odom_publisher.run()

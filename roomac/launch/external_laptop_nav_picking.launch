@@ -1,9 +1,7 @@
 <launch>
   <arg name="picking_correction_enabled" default="false" />
 
-  <include file="$(find roomac_autonomous_manipulation)/launch/real_picking.launch">
-    <arg name="upper_kinect_mounted_parellel" value="true"/>
-  </include>
+  <include file="$(find roomac_autonomous_manipulation)/launch/real_picking.launch"/>
 
   <include file="$(find roomac_autonomous_manipulation)/launch/picking_object_manager.launch">
     <arg name="simulation" value="false"/>
