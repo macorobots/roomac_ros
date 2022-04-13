@@ -425,7 +425,7 @@ ObjectDetection::DetectObjectCluster(const pcl::PointCloud<pcl::PointXYZRGB>::Pt
       DetectClusterIndices(points_filtered, cluster_tolerance, min_cluster_size, max_cluster_size);
 
   pcl::PointCloud<pcl::PointXYZRGB>::Ptr object_cloud_cluster(new pcl::PointCloud<pcl::PointXYZRGB>);
-  float min_x = std::numeric_limits<float>::max();
+  float min_y = std::numeric_limits<float>::max();
 
   int j = 1;
   for (std::vector<pcl::PointIndices>::const_iterator it = cluster_indices.begin(); it != cluster_indices.end(); ++it)
@@ -452,10 +452,10 @@ ObjectDetection::DetectObjectCluster(const pcl::PointCloud<pcl::PointXYZRGB>::Pt
 
     geometry_msgs::Point center = CalculateMassCenter(cloud_cluster);
 
-    if (center.x < min_x)
+    if (center.y < min_y)
     {
       copyPointCloud(*cloud_cluster, *object_cloud_cluster);
-      min_x = center.x;
+      min_y = center.y;
     }
   }
 

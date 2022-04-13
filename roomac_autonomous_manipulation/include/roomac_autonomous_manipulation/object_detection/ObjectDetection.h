@@ -149,7 +149,7 @@ private:
 
   /**
    * @brief Detects objects pointcloud - computes clusters and selects one with minimum
-   * x coordinate of mass center - closest to the edge of the table
+   * y coordinate of mass center - closest to the edge of the table
    *
    * @param src_cloud source cloud for detection
    * @param cluster_tolerance euclidean clustering parameters
