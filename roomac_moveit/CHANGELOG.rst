@@ -2,8 +2,8 @@
 Changelog for package roomac_moveit
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+1.5.1 (2022-04-13)
+------------------
 * Merge branch 'master' into 26-refactor-arm-controller
 * Merge branch 'master' into 26-refactor-arm-controller
 * Contributors: Maciej Stepien

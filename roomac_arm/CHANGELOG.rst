@@ -2,8 +2,8 @@
 Changelog for package roomac_arm
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+1.5.1 (2022-04-13)
+------------------
 * Merge pull request `#39 <https://github.com/macstepien/roomac_ros/issues/39>`_ from macstepien/26-refactor-arm-controller
   Refactor arm controller
 * Merge branch 'master' into 26-refactor-arm-controller
