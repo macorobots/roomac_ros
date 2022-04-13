@@ -5,5 +5,5 @@
 
   <node name="add_robot_body_collision_to_scene" pkg="roomac_autonomous_manipulation" type="add_robot_body_collision_to_scene.py" output="screen"/>
 
-  <node name="arm_controller" pkg="roomac_arm" type="arm_controller.py"/>
+  <include file="$(find roomac_arm)/launch/arm_controller.launch"/>
 </launch>
