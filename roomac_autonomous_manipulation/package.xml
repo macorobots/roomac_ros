@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <package format="2">
   <name>roomac_autonomous_manipulation</name>
-  <version>1.4.0</version>
+  <version>1.5.1</version>
   <description>The roomac_autonomous_manipulation package</description>
 
   <!-- One maintainer tag required, multiple allowed, one person per tag -->
@@ -51,6 +51,7 @@
   <buildtool_depend>catkin</buildtool_depend>
 
   <depend>dynamic_reconfigure</depend>
+  <depend>roomac_msgs</depend>
 
   <!-- The export tag contains other, unspecified, tags -->
   <export>

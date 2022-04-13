@@ -1,7 +1,7 @@
 <launch>
-  <arg name="upper_kinect_mounted_parellel" default="true" />
+  <arg name="object_artag_enabled" default="false" />
 
-  <node pkg="robot_localization" type="ekf_localization_node" name="filtration_camera_object" clear_params="true">
+  <node if="$(arg object_artag_enabled)" pkg="robot_localization" type="ekf_localization_node" name="filtration_camera_object" clear_params="true">
     <rosparam command="load" file="$(find roomac_ar_tag)/config/fusion_camera_object.yaml" />
   </node>
 
@@ -9,14 +9,12 @@
     <rosparam command="load" file="$(find roomac_ar_tag)/config/fusion_camera_robot.yaml" />
   </node>
 
-  <node if="$(arg upper_kinect_mounted_parellel)" name="artag_odom_parallel_publisher" pkg="roomac_ar_tag" 
-    type="artag_odom_parallel_publisher.py" output="screen">
-    <rosparam command="load" file="$(find roomac_ar_tag)/config/artag_odom_publisher_config.yaml" />
+  <node name="artag_parallel_transform_publisher" pkg="roomac_ar_tag" type="artag_parallel_transform_publisher.py" output="screen">
+    <rosparam command="load" file="$(find roomac_ar_tag)/config/artag_odom_publisher_config.yaml" subst_value="true"/>
   </node>
 
-  <node unless="$(arg upper_kinect_mounted_parellel)" name="artag_odom_publisher" pkg="roomac_ar_tag" 
-    type="artag_odom_publisher.py" output="screen">
-    <rosparam command="load" file="$(find roomac_ar_tag)/config/artag_odom_publisher_config.yaml" />
+  <node name="artag_odom_publisher" pkg="roomac_ar_tag" type="artag_odom_publisher.py" output="screen">
+    <rosparam command="load" file="$(find roomac_ar_tag)/config/artag_odom_publisher_config.yaml" subst_value="true"/>
   </node>
 
 </launch>

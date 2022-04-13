@@ -1,0 +1,5 @@
+---
+bool success
+string message
+
+roomac_msgs/ObjectAndTable object_and_table

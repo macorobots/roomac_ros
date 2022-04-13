@@ -1,0 +1,3 @@
+geometry_msgs/Point mass_center
+geometry_msgs/Point min_point_bounding_box
+geometry_msgs/Point max_point_bounding_box

@@ -1,0 +1,3 @@
+Header header
+roomac_msgs/ObjectWithBoundingBox table
+roomac_msgs/ObjectWithBoundingBox object
