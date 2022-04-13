@@ -2,6 +2,12 @@
 Changelog for package roomac_msgs
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* Merge branch 'master' into 26-refactor-arm-controller
+* Merge branch 'master' into 26-refactor-arm-controller
+* Contributors: Maciej Stepien
+
 1.5.0 (2022-04-13)
 ------------------
 * Merge pull request `#38 <https://github.com/macstepien/roomac_ros/issues/38>`_ from macstepien/34-pointcloud-object-detection

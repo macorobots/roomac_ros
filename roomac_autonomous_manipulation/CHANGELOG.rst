@@ -2,6 +2,14 @@
 Changelog for package roomac_autonomous_manipulation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* Merge pull request `#39 <https://github.com/macstepien/roomac_ros/issues/39>`_ from macstepien/26-refactor-arm-controller
+  Refactor arm controller
+* Merge branch 'master' into 26-refactor-arm-controller
+* Merge branch 'master' into 26-refactor-arm-controller
+* Contributors: Maciej Stepien, Maciej Stępień
+
 1.5.0 (2022-04-13)
 ------------------
 * Merge pull request `#38 <https://github.com/macstepien/roomac_ros/issues/38>`_ from macstepien/34-pointcloud-object-detection

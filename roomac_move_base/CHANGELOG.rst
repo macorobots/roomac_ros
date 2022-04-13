@@ -2,6 +2,12 @@
 Changelog for package roomac_move_base
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* Merge branch 'master' into 26-refactor-arm-controller
+* Merge branch 'master' into 26-refactor-arm-controller
+* Contributors: Maciej Stepien
+
 1.5.0 (2022-04-13)
 ------------------
 * Merge branch 'master' into 34-pointcloud-object-detection
