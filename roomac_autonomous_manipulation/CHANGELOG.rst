@@ -2,6 +2,13 @@
 Changelog for package roomac_autonomous_manipulation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+1.4.1 (2022-04-13)
+------------------
+* Merge pull request `#37 <https://github.com/macstepien/roomac_ros/issues/37>`_ from macstepien/32-upper-camera-tf2-reading
+  Better reading artags transforms
+* Merge branch 'master' into 32-upper-camera-tf-timeout
+* Contributors: Maciej Stepien, Maciej Stępień
+
 1.4.0 (2022-04-10)
 ------------------
 * Merge pull request `#33 <https://github.com/macstepien/roomac_ros/issues/33>`_ from macstepien/18-ros-action

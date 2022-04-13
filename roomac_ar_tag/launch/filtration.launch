@@ -1,5 +1,4 @@
 <launch>
-  <arg name="upper_kinect_mounted_parellel" default="true" />
   <arg name="object_artag_enabled" default="false" />
 
   <node if="$(arg object_artag_enabled)" pkg="robot_localization" type="ekf_localization_node" name="filtration_camera_object" clear_params="true">

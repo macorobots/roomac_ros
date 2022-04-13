@@ -9,3 +9,6 @@ ar_marker_robot_link: "ar_marker_0"
 ar_marker_object_link: "ar_marker_2"
 robot_link: "artag_link_2"
 object_link: "detected_object"
+
+upper_kinect_mounted_parellel: true
+parallel_transform_suffix: _only_yaw
