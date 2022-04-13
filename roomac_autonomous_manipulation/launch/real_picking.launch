@@ -1,9 +1,5 @@
 <launch>
-  <arg name="upper_kinect_mounted_parellel" default="true"/>
-
-  <include file="$(find roomac_autonomous_manipulation)/launch/real_ar_object_detection.launch">
-    <arg name="upper_kinect_mounted_parellel" value="$(arg upper_kinect_mounted_parellel)"/>
-  </include>
+  <include file="$(find roomac_autonomous_manipulation)/launch/real_ar_object_detection.launch"/>
 
   <include file="$(find roomac_moveit)/launch/demo.launch"/>
 

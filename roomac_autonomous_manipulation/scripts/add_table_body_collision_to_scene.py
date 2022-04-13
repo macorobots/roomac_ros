@@ -7,6 +7,8 @@ from geometry_msgs.msg import PoseStamped
 
 from std_srvs.srv import Empty, Trigger, TriggerResponse, TriggerRequest
 
+from roomac_msgs.srv import DetectObjectAndTable
+
 
 class ObstaclesManager:
     def __init__(self):
@@ -26,6 +28,10 @@ class ObstaclesManager:
 
         self.add_table_to_scene_srv = rospy.Service(
             "add_table_to_scene", Trigger, self.add_table
+        )
+
+        self.add_detected_table_to_scene_srv = rospy.Service(
+            "add_detected_table_to_scene", Trigger, self.add_detected_table_to_scene
         )
 
         self.add_table_and_cardbox_to_scene_srv = rospy.Service(
@@ -122,6 +128,61 @@ class ObstaclesManager:
         table_body_pose.pose.position.z = 0.0
 
         self.scene.add_box(self.table_body_id, table_body_pose, self.table_body_size)
+
+        self.clear_octomap_srv.call()
+
+        return res
+
+    def add_detected_table_to_scene(self, req):
+        res = TriggerResponse()
+        res.success = True
+
+        detect_table_and_object_srv = rospy.ServiceProxy(
+            "/detect_table_and_object", DetectObjectAndTable
+        )
+        detect_table_and_object_srv.wait_for_service()
+
+        object_and_table = detect_table_and_object_srv.call()
+        detected_table_min_point = (
+            object_and_table.object_and_table.table.min_point_bounding_box
+        )
+        detected_table_max_point = (
+            object_and_table.object_and_table.table.max_point_bounding_box
+        )
+
+        #  Add table
+
+        # Remove leftover objects from a previous run
+        self.scene.remove_world_object(self.table_body_id)
+        self.scene.remove_world_object(self.carboard_box_body_id)
+
+        detected_table_body_pose = PoseStamped()
+        detected_table_body_pose.header = object_and_table.object_and_table.header
+        detected_table_body_pose.pose.position.x = (
+            detected_table_max_point.x + detected_table_min_point.x
+        ) / 2.0
+        detected_table_body_pose.pose.position.y = (
+            detected_table_max_point.y + detected_table_min_point.y
+        ) / 2.0
+        detected_table_body_pose.pose.position.z = (
+            detected_table_max_point.z + detected_table_min_point.z
+        ) / 2.0
+
+        detected_table_body_base_size = [
+            detected_table_max_point.x - detected_table_min_point.x,
+            detected_table_max_point.y - detected_table_min_point.y,
+            detected_table_max_point.z - detected_table_min_point.z,
+        ]
+
+        detected_table_body_size = [
+            detected_table_body_base_size[0] + 2 * self.safety_margin_table,
+            detected_table_body_base_size[1] + 2 * self.safety_margin_table,
+            detected_table_body_base_size[2] + 2 * self.safety_margin_table,
+        ]
+
+        self.scene.add_box(
+            self.table_body_id, detected_table_body_pose, detected_table_body_size
+        )
 
         self.clear_octomap_srv.call()
 

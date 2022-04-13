@@ -1,4 +1,4 @@
-#include <roomac_autonomous_manipulation/PickCorrection.h>
+#include <roomac_autonomous_manipulation/pick_correction/PickCorrection.h>
 
 #include <limits>
 
@@ -44,8 +44,8 @@ PickCorrection::PickCorrection() : tf_listener_(tf_buffer_)
   reconfigure_server_.setCallback(f);
 }
 
-bool PickCorrection::HandlePickCorrection(roomac_autonomous_manipulation::DetectGripperPosition::Request& req,
-                                          roomac_autonomous_manipulation::DetectGripperPosition::Response& res)
+bool PickCorrection::HandlePickCorrection(roomac_msgs::DetectGripperPosition::Request& req,
+                                          roomac_msgs::DetectGripperPosition::Response& res)
 {
   geometry_msgs::Point pt_average;
   for (int i = 0; i < num_of_readings_for_average_; ++i)

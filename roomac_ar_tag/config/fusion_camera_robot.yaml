@@ -8,6 +8,8 @@ silent_tf_failure: false
 # cycle on the EKF without correcting it. This parameter can be thought of as the minimum frequency with which the
 # filter will generate new output. Defaults to 1 / frequency if not specified.
 sensor_timeout: 0.1
+# With large number set EKF won't do estimation without sensor readings, but in ar tag detection small 
+# intervals without detection happen, and then without transform pointcloud isn't displayed
 
 # ekf_localization_node and ukf_localization_node both use a 3D omnidirectional motion model. If this parameter is
 # set to true, no 3D information will be used in your state estimate. Use this if you are operating in a planar
@@ -187,4 +189,4 @@ initial_estimate_covariance: [1e-9, 0,    0,    0,    0,    0,    0,    0,    0,
                               0,    0,    0,    0,    0,    0,    0,    0,    0,    0,     0,     0,     0,    1e-9, 0,
                               0,    0,    0,    0,    0,    0,    0,    0,    0,    0,     0,     0,     0,    0,    1e-9]
 
-predict_to_current_time: true
+predict_to_current_time: false

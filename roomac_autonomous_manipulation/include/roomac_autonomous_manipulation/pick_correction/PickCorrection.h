@@ -17,7 +17,7 @@
 #include <dynamic_reconfigure/server.h>
 
 #include <roomac_autonomous_manipulation/PickCorrectionConfig.h>
-#include <roomac_autonomous_manipulation/DetectGripperPosition.h>
+#include <roomac_msgs/DetectGripperPosition.h>
 
 class PickCorrection
 {
@@ -28,8 +28,8 @@ private:
   /**
    * @brief Handles service call, calculates gripper position as an avarage of few detections
    */
-  bool HandlePickCorrection(roomac_autonomous_manipulation::DetectGripperPosition::Request& req,
-                            roomac_autonomous_manipulation::DetectGripperPosition::Response& res);
+  bool HandlePickCorrection(roomac_msgs::DetectGripperPosition::Request& req,
+                            roomac_msgs::DetectGripperPosition::Response& res);
   /**
    * @brief Gets most recent pointcloud and detects gripper position
    *

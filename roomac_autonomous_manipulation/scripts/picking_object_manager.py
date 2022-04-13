@@ -21,6 +21,7 @@ from roomac_msgs.msg import (
     PickObjectFeedback,
     PickObjectResult,
 )
+from roomac_msgs.srv import DetectObjectAndTable
 
 from dynamic_reconfigure.server import Server
 from roomac_autonomous_manipulation.cfg import PickManagerSettingsConfig
@@ -219,7 +220,7 @@ class PickingObjectManager(object):
     def prepare_picking(self):
         self.remove_object_from_scene()
 
-        object_point = self.get_object_point()
+        object_point = self.get_detected_object_point()
         object_point_transformed = self.transform_point(
             object_point, self.base_link_frame
         )
@@ -372,6 +373,29 @@ class PickingObjectManager(object):
 
     def get_object_point(self):
         raise NotImplementedError()
+
+    def get_detected_object_point(self):
+        detect_table_and_object_srv = rospy.ServiceProxy(
+            "/detect_table_and_object", DetectObjectAndTable
+        )
+        detect_table_and_object_srv.wait_for_service()
+
+        object_and_table = detect_table_and_object_srv.call()
+
+        object_point_stamped = PointStamped()
+        object_point_stamped.header.frame_id = (
+            object_and_table.object_and_table.header.frame_id
+        )
+        object_point_stamped.header.stamp = rospy.Time(0)
+        object_point_stamped.point = (
+            object_and_table.object_and_table.object.mass_center
+        )
+
+        object_point_stamped.point.x += self.object_position_correction_x
+        object_point_stamped.point.y += self.object_position_correction_y
+        object_point_stamped.point.z += self.object_position_correction_z
+
+        return object_point_stamped
 
     def transform_point(self, point, target_frame):
         listener = tf.TransformListener()
