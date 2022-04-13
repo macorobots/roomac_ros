@@ -42,13 +42,13 @@ class RealPickingObjectManager(PickingObjectManager):
         # difference between real manipulator and model
 
         if object_type == "bottle":
-            self.object_point.point.x = -0.06 - 0.055
-            self.object_point.point.y = -0.16 - 0.008 + 0.04
-            self.object_point.point.z = 0.195 + 0.02
+            self.object_point.x = -0.06 - 0.055
+            self.object_point.y = -0.16 - 0.008 + 0.04
+            self.object_point.z = 0.195 + 0.02
         elif object_type == "cardbox_object":
-            self.object_point.point.x = -0.04 - 0.025
-            self.object_point.point.y = -0.09 - 0.008 + 0.02
-            self.object_point.point.z = 0.1
+            self.object_point.x = -0.04 - 0.025
+            self.object_point.y = -0.09 - 0.008 + 0.02
+            self.object_point.z = 0.1
 
         self.closed_gripper_value = 0.1
         if object_type == "bottle":

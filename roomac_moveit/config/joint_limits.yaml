@@ -22,34 +22,34 @@ joint_limits:
     has_velocity_limits: true
     max_velocity: 2.0
     has_acceleration_limits: true
-    max_acceleration: 0.3
+    max_acceleration: 3.0
     # min_position: -2.1
     # max_position: 2.1
   right_gripper_twist:
     has_velocity_limits: true
     max_velocity: 2.0
     has_acceleration_limits: true
-    max_acceleration: 0.3
+    max_acceleration: 3.0
     # min_position: -1.570
     # max_position: 1.570
   right_shoulder_lift:
     has_velocity_limits: true
     max_velocity: 2.0
     has_acceleration_limits: true
-    max_acceleration: 0.3
+    max_acceleration: 3.0
     # min_position: -0.800
     # max_position: 1.979
   right_shoulder_pan:
     has_velocity_limits: true
     max_velocity: 2.0
     has_acceleration_limits: true
-    max_acceleration: 0.3
+    max_acceleration: 3.0
     # min_position: -2.390
     # max_position: 0.489
   right_wrist:
     has_velocity_limits: true
     max_velocity: 2.0
     has_acceleration_limits: true
-    max_acceleration: 0.3
+    max_acceleration: 3.0
     # min_position: -1.994
     # max_position: 1.146

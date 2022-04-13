@@ -1,10 +1,10 @@
 #!/usr/bin/env python
 import rospy
 
-import tf
+import tf2_ros
 
 from nav_msgs.msg import Odometry
-from geometry_msgs.msg import Point, Pose, Quaternion
+from geometry_msgs.msg import Point, Pose
 
 
 class ARTagOdomPublisher(object):
@@ -26,16 +26,31 @@ class ARTagOdomPublisher(object):
         self.rate = rospy.Rate(rospy.get_param("~rate", 30.0))
 
         self.camera_link = rospy.get_param("~camera_link", "camera_up_link")
+        self.robot_link = rospy.get_param("~robot_link", "artag_link_2")
+        self.object_link = rospy.get_param("~object_link", "detected_object")
+
         self.ar_marker_robot_link = rospy.get_param(
             "~ar_marker_robot_link", "ar_marker_0"
         )
         self.ar_marker_object_link = rospy.get_param(
             "~ar_marker_object_link", "ar_marker_2"
         )
-        self.robot_link = rospy.get_param("~robot_link", "artag_link_2")
-        self.object_link = rospy.get_param("~object_link", "detected_object")
 
-        self.tf_listener = tf.TransformListener()
+        self.object_artag_enabled = rospy.get_param("~object_artag_enabled", True)
+
+        upper_kinect_mounted_parellel = rospy.get_param(
+            "~upper_kinect_mounted_parellel", True
+        )
+
+        if upper_kinect_mounted_parellel:
+            parallel_transform_suffix = rospy.get_param(
+                "~parallel_transform_suffix", "_only_yaw"
+            )
+            self.ar_marker_robot_link += parallel_transform_suffix
+            self.ar_marker_object_link += parallel_transform_suffix
+
+        self.tf_buffer = tf2_ros.Buffer()
+        self.tf_listener = tf2_ros.TransformListener(self.tf_buffer)
 
         self.odom_robot_pub = rospy.Publisher(
             "odom_artag_robot", Odometry, queue_size=50
@@ -47,7 +62,7 @@ class ARTagOdomPublisher(object):
     def calculate_odom_msg(
         self, ar_marker_link, camera_link, target_link, reversed=False
     ):
-        """Calculates odometry message
+        """Calculates odometry message, waits up to 5 second to read tf
 
         Args:
             ar_marker_link (string): ar marker link name
@@ -75,18 +90,24 @@ class ARTagOdomPublisher(object):
             header_child_link = target_link
 
         try:
-            (trans, rot) = self.tf_listener.lookupTransform(
-                target_frame, source_frame, rospy.Time(0)
+            trans = self.tf_buffer.lookup_transform(
+                target_frame, source_frame, rospy.Time.now(), rospy.Duration(5.0)
             )
         except (
-            tf.LookupException,
-            tf.ConnectivityException,
-            tf.ExtrapolationException,
+            tf2_ros.LookupException,
+            tf2_ros.ConnectivityException,
+            tf2_ros.ExtrapolationException,
         ):
-            raise RuntimeError("Couldn't get transform")
+            raise RuntimeError(
+                "Couldn't get " + source_frame + "->" + target_frame + " transform"
+            )
 
-        pt = Point(trans[0], trans[1], trans[2])
-        quat = Quaternion(rot[0], rot[1], rot[2], rot[3])
+        pt = Point(
+            trans.transform.translation.x,
+            trans.transform.translation.y,
+            trans.transform.translation.z,
+        )
+        quat = trans.transform.rotation
 
         odom_msg = Odometry()
         odom_msg.header.stamp = rospy.Time.now()
@@ -110,19 +131,20 @@ class ARTagOdomPublisher(object):
                     self.robot_link,
                     reversed=True,
                 )
+                self.odom_robot_pub.publish(odom_robot_msg)
 
-                odom_object_msg = self.calculate_odom_msg(
-                    self.ar_marker_object_link,
-                    self.camera_link,
-                    self.object_link,
-                    reversed=False,
-                )
+                if self.object_artag_enabled:
+                    odom_object_msg = self.calculate_odom_msg(
+                        self.ar_marker_object_link,
+                        self.camera_link,
+                        self.object_link,
+                        reversed=False,
+                    )
+                    self.odom_object_pub.publish(odom_object_msg)
+
             except RuntimeError as e:
                 rospy.logwarn_throttle(5, "[Marker odom publisher] " + str(e))
                 continue
-
-            self.odom_robot_pub.publish(odom_robot_msg)
-            self.odom_object_pub.publish(odom_object_msg)
 
             self.rate.sleep()
 

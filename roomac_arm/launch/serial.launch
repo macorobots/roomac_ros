@@ -1,6 +1,6 @@
 <launch>
 
-  <node name="serial_node_arm" pkg="rosserial_python" type="serial_node.py" output="screen">
+  <node name="serial_node_arm" pkg="rosserial_python" type="serial_node.py" output="screen" ns="arm_position_controller">
     <param name="port" type="string" value="/dev/ttyUSB0" />
   </node>
 

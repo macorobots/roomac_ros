@@ -234,7 +234,7 @@ Visualization Manager:
         Scene Color: 0; 170; 255
         Scene Display Time: 0.10000000149011612
         Show Scene Geometry: true
-        Voxel Coloring: Cell Probability
+        Voxel Coloring: Z-Axis
         Voxel Rendering: Occupied Voxels
       Scene Robot:
         Attached Body Color: 0; 170; 255

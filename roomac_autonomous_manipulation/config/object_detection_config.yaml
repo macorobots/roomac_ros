@@ -1,0 +1,24 @@
+publish_debug: true
+
+camera_frame: "camera_up_rgb_optical_frame"
+
+# Number of gripper position estimates that will be avaraged to get final one
+num_of_readings_for_average: 5
+max_num_of_failed_readings: 5
+
+# Euclidean clustering parameters
+object_cluster_tolerance: 0.05
+object_min_cluster_size: 10
+object_max_cluster_size: 150000
+
+# Euclidean clustering parameters
+table_cluster_tolerance: 0.05
+table_min_cluster_size: 10
+table_max_cluster_size: 150000
+
+# as in sensor_manager.launch.xml
+max_range: 1.8
+table_detection_distance_threshold: 0.02
+table_voxels_leaf_size: 0.04
+
+objects_on_table_min_height: 0.05

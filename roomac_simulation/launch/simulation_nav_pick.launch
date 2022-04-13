@@ -7,13 +7,12 @@
   </include>
   <node name="add_robot_body_collision_to_scene" pkg="roomac_autonomous_manipulation" type="add_robot_body_collision_to_scene.py" output="screen"/>
   <node name="add_table_body_collision_to_scene" pkg="roomac_autonomous_manipulation" type="add_table_body_collision_to_scene.py" output="screen"/>
+  <include file="$(find roomac_autonomous_manipulation)/launch/object_detection.launch"/>
   
 <!-- ARtag -->
   <!-- Difference in kinect frames (real vs simulation), so parallel isn't working correctly.
   There is no need for it though, in simulation detection accuracy is very good -->
-  <include file="$(find roomac_ar_tag)/launch/ar_tag.launch">
-    <arg name="upper_kinect_mounted_parellel" value="false"/>
-  </include>
+  <include file="$(find roomac_ar_tag)/launch/ar_tag.launch"/>
 
 <!-- Rtabmap -->
   <include file="$(find roomac_rtabmap)/launch/rtabmap_localization_fusion.launch">
