@@ -2,6 +2,11 @@
 Changelog for package roomac_cartographer
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* Merge branch 'master' into 32-upper-camera-tf-timeout
+* Contributors: Maciej Stepien
+
 1.4.0 (2022-04-10)
 ------------------
 * Merge branch 'master' into 18-ros-action
