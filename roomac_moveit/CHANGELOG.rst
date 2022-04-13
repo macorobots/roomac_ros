@@ -2,8 +2,8 @@
 Changelog for package roomac_moveit
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+1.5.0 (2022-04-13)
+------------------
 * Merge pull request `#38 <https://github.com/macstepien/roomac_ros/issues/38>`_ from macstepien/34-pointcloud-object-detection
   Pointcloud object detection
 * Merge branch 'master' into 34-pointcloud-object-detection

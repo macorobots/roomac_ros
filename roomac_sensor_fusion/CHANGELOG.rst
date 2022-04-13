@@ -2,8 +2,8 @@
 Changelog for package roomac_sensor_fusion
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+1.5.0 (2022-04-13)
+------------------
 * Merge branch 'master' into 34-pointcloud-object-detection
   Conflicts:
   roomac_ar_tag/launch/filtration.launch
