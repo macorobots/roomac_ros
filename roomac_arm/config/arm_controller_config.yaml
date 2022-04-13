@@ -1,13 +1,9 @@
-change_threshold: 0.01
-max_speed: 0.005 # rad/s
+min_change_threshold: 0.01 # [rad]
+max_speed: 0.5 # [rad/s]
 
-max_movement_time: 1000
-# max value is 255, and it is rounded to it if excceding (in 10ms)
+analog_update_delay: 0.007 # [s]
 
-analog_update_delay: 0.7
-# real value 0.7 (in units of 10ms as playtime in digitalServo)
-
-zero_positions: [850, 320, 512, 1509, 1500, 650]
+zero_angle_signal: [850, 320, 512, 1509, 1500, 650]
 
 analog_lower_signal_bound: 500
 analog_upper_signal_bound: 2500
@@ -21,6 +17,15 @@ digital_upper_signal_bound: 1024
 wrist_signal_zero_position: 1509
 wrist_signal_90_degrees: 697
 
-analog_speed: 10 # Change in ms in signal per analogUpdateDelay
+analog_speed: 2.0 # Change in signal per analog_update_delay
+wrist_speed: 4.0 # Change in signal per analog_update_delay
 
-wrist_speed: 4.0
+publish_joint_states: true
+
+interpolate_movement: true
+interpolation_frequency: 10.0
+
+# exact or approximated
+# exact - movement duration will be exactly as requested, but interpolation frequency will vary
+# approximated - interpolation frequency will be exactly as requested, but movement duration will vary
+interpolation_duration_type: exact

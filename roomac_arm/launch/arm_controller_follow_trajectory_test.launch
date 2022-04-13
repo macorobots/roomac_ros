@@ -1,0 +1,20 @@
+<launch>
+  <node name="arm_joint_trajectory_controller" pkg="roomac_arm" type="arm_joint_trajectory_controller.py" output="screen">
+    <rosparam command="load" file="$(find roomac_arm)/config/arm_controller_config.yaml" />
+  </node>
+
+  <node name="arm_stub" pkg="roomac_arm" type="arm_stub.py" output="screen">
+    <rosparam command="load" file="$(find roomac_arm)/config/arm_controller_config.yaml" />
+  </node>
+
+  <param name="robot_description" command="$(find xacro)/xacro $(find roomac_description)/urdf/roomac.xacro" />
+  <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" />
+
+  <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher">
+    <rosparam param="source_list">["/joint_states_controller"]</rosparam>
+    <rosparam param="source_list">["/joint_states_arm_stub"]</rosparam>
+  </node>
+
+  <arg name="rvizconfig" default="$(find roomac_arm)/rviz/test_controller.rviz" />
+  <node  name="rviz" pkg="rviz" type="rviz" args="-d $(arg rvizconfig)" required="true" />
+</launch>

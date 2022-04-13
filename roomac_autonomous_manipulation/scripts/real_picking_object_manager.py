@@ -5,6 +5,10 @@ import rospy
 from sensor_msgs.msg import JointState
 from geometry_msgs.msg import PointStamped, Point
 
+import actionlib
+from control_msgs.msg import FollowJointTrajectoryAction, FollowJointTrajectoryGoal
+from trajectory_msgs.msg import JointTrajectoryPoint
+
 from picking_object_manager import (
     PickingObjectManager,
 )
@@ -32,9 +36,6 @@ class RealPickingObjectManager(PickingObjectManager):
             "~cardbox_object_closed_gripper_value", 0.1
         )
 
-        self.gripper_command = rospy.Publisher(
-            "/joint_states", JointState, queue_size=5
-        )
         self.object_point = Point()
 
         # object is positioned away from ar tag + componsetion for
@@ -55,11 +56,25 @@ class RealPickingObjectManager(PickingObjectManager):
         elif object_type == "cardbox_object":
             self.closed_gripper_value = self.cardbox_object_closed_gripper_value
 
+        self.follow_joint_trajectory_client = actionlib.SimpleActionClient(
+            "follow_joint_trajectory", FollowJointTrajectoryAction
+        )
+        self.follow_joint_trajectory_client.wait_for_server()
+
     def move_gripper(self, position, delay=1.0):
-        gripper_msg = JointState()
-        gripper_msg.name = [self.gripper_joint_name]
-        gripper_msg.position = [position]
-        self.gripper_command.publish(gripper_msg)
+        point = JointTrajectoryPoint()
+        point.positions = [position]
+        point.time_from_start = [delay]
+
+        goal = FollowJointTrajectoryGoal()
+        goal.trajectory.header.stamp = rospy.Time.now()
+        goal.trajectory.joint_names = [self.gripper_joint_name]
+        goal.trajectory.points = [point]
+        goal.path_tolerance = []
+        goal.goal_tolerance = []
+        goal.goal_time_tolerance = rospy.Duration(delay / 2.0)
+
+        self.follow_joint_trajectory_client.send_goal(goal)
 
         rospy.sleep(delay)
 

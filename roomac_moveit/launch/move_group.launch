@@ -63,6 +63,7 @@
     <arg name="moveit_controller_manager" value="roomac" unless="$(arg fake_execution)"/>
     <arg name="moveit_controller_manager" value="fake" if="$(arg fake_execution)"/>
     <arg name="execution_type" value="$(arg execution_type)" />
+    <arg name="gazebo" value="$(arg gazebo)"/>
   </include>
 
   <!-- Sensors Functionality -->

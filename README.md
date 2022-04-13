@@ -221,12 +221,12 @@ roslaunch roomac_simulation simulation_test_arm_precision.launch
 
 On raspberry: 
 ```
-roslaunch roomac_arm arm_controller_hardware.launch
+roslaunch roomac_arm demo_arm_hardware.launch
 ```
 
 On laptop:
 ```
-roslaunch roomac_arm arm_controller_gui.launch
+roslaunch roomac_arm demo_arm_control_gui.launch
 ```
 
 ## Kinect in Docker

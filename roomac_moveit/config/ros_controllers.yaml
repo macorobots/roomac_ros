@@ -100,15 +100,3 @@ roomac:
         trajectory: 0.01
     state_publish_rate: 25
     allow_partial_joints_goal: True
-
-controller_list:
-  - name: arm_position_controller
-    action_ns: follow_joint_trajectory
-    type: FollowJointTrajectory
-    default: true
-    joints:
-      - right_shoulder_pan
-      - right_shoulder_lift
-      - right_elbow
-      - right_wrist
-      - right_gripper_twist

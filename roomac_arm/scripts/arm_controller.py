@@ -1,303 +1,255 @@
 #!/usr/bin/env python
 
+import math
+import itertools
+import numpy as np
+
 import rospy
 from sensor_msgs.msg import JointState
-from std_msgs.msg import UInt16, UInt8, Float32
-import math
+
+from dynamic_reconfigure.server import Server
+from roomac_arm.cfg import ArmControllerConfig
+
+from servo_controller import AnalogServo, DigitalServo
 
 
-class Servo:
-    def __init__(
-        self, name, zero_position, lower_signal_bound, upper_signal_bound, scale_factor
-    ):
-        self.name = name
-        self.position_pub = rospy.Publisher(
-            name + "_position", UInt16, queue_size=5, latch=True
-        )
-
-        self.zero_position = zero_position
-        self.last_position = None
-
-        self.lower_signal_bound = lower_signal_bound
-        self.upper_signal_bound = upper_signal_bound
-
-        self.scale_factor = scale_factor
-
-    def calculate_position_diff(self, new_position):
-        return abs(new_position - self.last_position)
-
-    def publish_position(self, position):
-        position_msg = UInt16()
-        position_msg.data = position
-        self.position_pub.publish(position_msg)
-
-    def transform_angle_to_signal(self, angle):
-        return angle * self.scale_factor + self.zero_position
-
-    def is_initialized(self):
-        return not (self.last_position is None)
-
-    def bound_angle(self, value):
-        return max(self.lower_signal_bound, min(self.upper_signal_bound, value))
-
-    def set_angle(self, angle):
-        signal = self.bound_angle(self.transform_angle_to_signal(angle))
-        self.publish_position(signal)
-        self.last_position = angle
-
-
-class AnalogServo(Servo):
-    def __init__(
-        self, name, zero_position, lower_signal_bound, upper_signal_bound, scale_factor
-    ):
-        Servo.__init__(
-            self,
-            name,
-            zero_position,
-            lower_signal_bound,
-            upper_signal_bound,
-            scale_factor,
-        )
-        self.speeds_pub = rospy.Publisher(
-            self.name + "_speed", Float32, queue_size=5, latch=True
-        )
-
-    def publish_speed(self, speed):
-        speed_msg = Float32()
-        speed_msg.data = speed
-        self.speeds_pub.publish(speed_msg)
-
-
-class DigitalServo(Servo):
-    def __init__(
-        self, name, zero_position, lower_signal_bound, upper_signal_bound, scale_factor
-    ):
-        Servo.__init__(
-            self,
-            name,
-            zero_position,
-            lower_signal_bound,
-            upper_signal_bound,
-            scale_factor,
-        )
-
-        self.speeds_pub = rospy.Publisher(
-            self.name + "_playtime", UInt8, queue_size=5, latch=True
-        )
-        self.publish_playtime(255)
-
-    def bound_playtime(self, value):
-        return max(0, min(255, value))
-
-    def publish_playtime(self, playtime):
-        playtime = self.bound_playtime(playtime)
-        playtime_msg = UInt8()
-        playtime_msg.data = playtime
-        self.speeds_pub.publish(playtime_msg)
-
-
-class ArmController:
+class ArmController(object):
     def __init__(self):
-        self.zero_positions = rospy.get_param(
-            "~zero_positions", [850, 320, 512, 1509, 1500, 650]
+        zero_angle_signal = rospy.get_param(
+            "~zero_angle_signal", [850, 320, 512, 1509, 1500, 650]
         )
-        self.max_movement_time = rospy.get_param("~max_movement_time", 1000)
-        self.analog_lower_signal_bound = rospy.get_param(
-            "~analog_lower_signal_bound", 500
-        )
-        self.analog_upper_signal_bound = rospy.get_param(
-            "~analog_upper_signal_bound", 2500
-        )
-        self.analog_lower_signal_bound_wrist = rospy.get_param(
+        analog_lower_signal_bound = rospy.get_param("~analog_lower_signal_bound", 500)
+        analog_upper_signal_bound = rospy.get_param("~analog_upper_signal_bound", 2500)
+        analog_lower_signal_bound_wrist = rospy.get_param(
             "~analog_lower_signal_bound_wrist", 600
         )
-        self.analog_upper_signal_bound_wrist = rospy.get_param(
+        analog_upper_signal_bound_wrist = rospy.get_param(
             "~analog_upper_signal_bound_wrist", 2400
         )
-        self.digital_lower_signal_bound = rospy.get_param(
-            "~digital_lower_signal_bound", 0
-        )
-        self.digital_upper_signal_bound = rospy.get_param(
+        digital_lower_signal_bound = rospy.get_param("~digital_lower_signal_bound", 0)
+        digital_upper_signal_bound = rospy.get_param(
             "~digital_upper_signal_bound", 1024
         )
-        self.wrist_signal_zero_position = rospy.get_param(
+        wrist_signal_zero_position = rospy.get_param(
             "~wrist_signal_zero_position", 1509
         )
-        self.wrist_signal_90_degrees = rospy.get_param("~wrist_signal_90_degrees", 697)
-        self.analog_speed = rospy.get_param("~analog_speed", 10)
-        self.wrist_speed = rospy.get_param("~wrist_speed", 4.0)
-        self.analog_update_delay = rospy.get_param("~analog_update_delay", 0.7)
-        self.change_threshold = rospy.get_param("~change_threshold", 0.01)
-        self.max_speed = rospy.get_param("~max_speed", 0.005)
+        wrist_signal_90_degrees = rospy.get_param("~wrist_signal_90_degrees", 697)
+        analog_speed = rospy.get_param("~analog_speed", 2.0)
+        wrist_speed = rospy.get_param("~wrist_speed", 4.0)
+        analog_update_delay = rospy.get_param("~analog_update_delay", 0.7)
+        self._min_change_threshold = rospy.get_param("~min_change_threshold", 0.01)
+        max_speed = rospy.get_param("~max_speed", 0.005)
 
-        self.joint_names = [
-            "right_shoulder_pan",
-            "right_shoulder_lift",
-            "right_elbow",
-            "right_wrist",
-            "right_gripper_twist",
-            "right_gripper",
-        ]
+        self._interpolate_movement = rospy.get_param("~interpolate_movement", True)
+        self._interpolation_frequency = rospy.get_param(
+            "~interpolation_frequency", 10.0
+        )
+        self._interpolation_duration_type = rospy.get_param(
+            "~interpolation_duration_type", "exact"
+        )
 
-        self.digital_joint_names = [
-            self.joint_names[0],
-            self.joint_names[1],
-            self.joint_names[2],
-        ]
-        self.analog_joint_names = [
-            self.joint_names[3],
-            self.joint_names[4],
-            self.joint_names[5],
-        ]
-
-        self.topic_names = [
-            "shoulder_pan",
-            "shoulder_lift",
-            "elbow",
-            "wrist",
-            "wrist_twist",
-            "gripper",
-        ]
-
-        self.analog_scale_factor_wrist = (
-            self.wrist_signal_zero_position - self.wrist_signal_90_degrees
+        analog_scale_factor_wrist = (
+            wrist_signal_zero_position - wrist_signal_90_degrees
         ) / (90.0 * math.pi / 180.0)
-        self.digital_scale_factor = (
-            self.digital_upper_signal_bound - self.digital_lower_signal_bound
+        digital_scale_factor = (
+            digital_upper_signal_bound - digital_lower_signal_bound
         ) / ((330.0 / 2.0) * math.pi / 180.0)
-        self.analog_scale_factor = (
-            self.analog_upper_signal_bound - self.analog_lower_signal_bound
+        analog_scale_factor = (
+            analog_upper_signal_bound - analog_lower_signal_bound
         ) / (180.0 * math.pi / 180.0)
 
-        self.scaling_factors = [
-            self.digital_scale_factor,
-            self.digital_scale_factor,
-            self.digital_scale_factor / 2.0,  # no gear reduction
-            self.analog_scale_factor_wrist,
-            self.analog_scale_factor,
-            self.analog_scale_factor,
-        ]
+        self._servos = {}
 
-        self.lower_signal_bounds = [
-            self.digital_lower_signal_bound,
-            self.digital_lower_signal_bound,
-            self.digital_lower_signal_bound,
-            self.analog_lower_signal_bound_wrist,
-            self.analog_lower_signal_bound,
-            self.analog_lower_signal_bound,
-        ]
+        initial_playtime = 255
 
-        self.upperSignalBounds = [
-            self.digital_upper_signal_bound,
-            self.digital_upper_signal_bound,
-            self.digital_upper_signal_bound,
-            self.analog_upper_signal_bound_wrist,
-            self.analog_upper_signal_bound,
-            self.analog_upper_signal_bound,
-        ]
-
-        self.servos = {}
-
-        self.jointsSub = rospy.Subscriber(
-            "/joint_states", JointState, self.joints_state_cb, queue_size=1
+        self._servos["right_shoulder_pan"] = DigitalServo(
+            "shoulder_pan",
+            zero_angle_signal[0],
+            digital_lower_signal_bound,
+            digital_upper_signal_bound,
+            digital_scale_factor,
+            max_speed,
+            initial_playtime,
+        )
+        self._servos["right_shoulder_lift"] = DigitalServo(
+            "shoulder_lift",
+            zero_angle_signal[1],
+            digital_lower_signal_bound,
+            digital_upper_signal_bound,
+            digital_scale_factor,
+            max_speed,
+            initial_playtime,
+        )
+        self._servos["right_elbow"] = DigitalServo(
+            "elbow",
+            zero_angle_signal[2],
+            digital_lower_signal_bound,
+            digital_upper_signal_bound,
+            digital_scale_factor / 2.0,  # no gear reduction
+            max_speed,
+            initial_playtime,
         )
 
-        for id in range(len(self.joint_names)):
-            joint_name = self.joint_names[id]
-            if joint_name in self.digital_joint_names:
-                self.servos[joint_name] = DigitalServo(
-                    self.topic_names[id],
-                    self.zero_positions[id],
-                    self.lower_signal_bounds[id],
-                    self.upperSignalBounds[id],
-                    self.scaling_factors[id],
-                )
-            elif joint_name in self.analog_joint_names:
-                self.servos[joint_name] = AnalogServo(
-                    self.topic_names[id],
-                    self.zero_positions[id],
-                    self.lower_signal_bounds[id],
-                    self.upperSignalBounds[id],
-                    self.scaling_factors[id],
-                )
-
-            self.servos[joint_name].set_angle(0.0)
-
-        self.servos["right_wrist"].publish_speed(self.wrist_speed)
-
-    def calculate_movement_time(self, max_digital_angle_diff, max_analog_angle_diff):
-
-        digital_movement_time = min(
-            (max_digital_angle_diff / math.pi) * self.max_movement_time, 255
+        self._servos["right_wrist"] = AnalogServo(
+            "wrist",
+            zero_angle_signal[3],
+            analog_lower_signal_bound_wrist,
+            analog_upper_signal_bound_wrist,
+            analog_scale_factor_wrist,
+            max_speed,
+            wrist_speed,
+            analog_update_delay,
+        )
+        self._servos["right_gripper_twist"] = AnalogServo(
+            "wrist_twist",
+            zero_angle_signal[4],
+            analog_lower_signal_bound,
+            analog_upper_signal_bound,
+            analog_scale_factor,
+            max_speed,
+            analog_speed,
+            analog_update_delay,
+        )
+        self._servos["right_gripper"] = AnalogServo(
+            "gripper",
+            zero_angle_signal[5],
+            analog_lower_signal_bound,
+            analog_upper_signal_bound,
+            analog_scale_factor,
+            max_speed,
+            analog_speed,
+            analog_update_delay,
         )
 
-        analog_movement_time = (
-            (max_analog_angle_diff * self.analog_scale_factor) / self.analog_speed
-        ) * self.analog_update_delay
+        for x in self._servos:
+            self._servos[x].set_angle(0.0)
 
-        if digital_movement_time > analog_movement_time:
-            movementTime = digital_movement_time
-        else:
-            movementTime = analog_movement_time
+        self._publish_joint_states = rospy.get_param("~publish_joint_states", True)
+        self._joint_state_pub = rospy.Publisher(
+            "joint_states_from_controller", JointState, queue_size=10
+        )
 
-        if movementTime > self.max_movement_time:
-            movementTime = self.max_movement_time
+        self._dynamic_reconfigure_srv = Server(
+            ArmControllerConfig, self._dynamic_reconfigure_cb
+        )
 
-        return movementTime
+    def go_to_point(self, joint_names, angles, duration=0.0):
+        joint_names, angles = self._get_valid_joints(joint_names, angles)
 
-    def joints_state_cb(self, state):
-
-        max_digital_angle_diff = 0
-        max_analog_angle_diff = 0
-
-        for id in range(len(state.name)):
-            joint_name = state.name[id]
-
-            if not joint_name in self.servos:
-                continue
-
-            if not self.servos[joint_name].is_initialized():
-                rospy.logerr(joint_name + " not initialized")
-                continue
-
-            position_diff = self.servos[joint_name].calculate_position_diff(
-                state.position[id]
-            )
-
-            if joint_name in self.digital_joint_names:
-                if position_diff > max_digital_angle_diff:
-                    max_digital_angle_diff = position_diff
-
-            elif joint_name in self.analog_joint_names:
-                if position_diff > max_analog_angle_diff:
-                    max_analog_angle_diff = position_diff
-
-        if (
-            max_digital_angle_diff < self.change_threshold
-            and max_analog_angle_diff < self.change_threshold
-        ):
+        if not self._angle_change_above_min_threshold(joint_names, angles):
             return
 
-        movement_time = self.calculate_movement_time(
-            max_digital_angle_diff, max_analog_angle_diff
+        min_movement_duration = self._calculate_min_movement_duration(
+            joint_names, angles
         )
+        movement_duration = max(duration, min_movement_duration)
 
-        for joint_name in self.digital_joint_names:
-            self.servos[joint_name].publish_playtime(movement_time)
+        if self._interpolate_movement:
+            # in interpolation movement_duration is rounded to be multiple of interpolaction frequency
+            movement_duration = self._execute_motion_with_interpolation(
+                joint_names, angles, movement_duration
+            )
+        else:
+            self._execute_motion(joint_names, angles, movement_duration)
 
-        for id in range(len(state.name)):
+        return movement_duration
 
-            joint_name = state.name[id]
+    def _execute_motion_with_interpolation(
+        self, joint_names, angles, movement_duration
+    ):
+        num_of_steps = int(math.ceil(movement_duration * self._interpolation_frequency))
 
-            if not joint_name in self.servos:
+        if self._interpolation_duration_type == "exact":
+            time_step = movement_duration / num_of_steps
+            interpolated_movement_duration = movement_duration
+        elif self._interpolation_duration_type == "approximated":
+            time_step = 1.0 / self._interpolation_frequency
+            interpolated_movement_duration = num_of_steps * (
+                1.0 / self._interpolation_frequency
+            )
+
+        angle_diffs = []
+        for joint_name, angle in itertools.izip(joint_names, angles):
+            angle_diffs.append(self._servos[joint_name].calculate_angle_diff(angle))
+
+        angle_steps = [x / num_of_steps for x in angle_diffs]
+
+        current_angles = [
+            self._servos[joint_name].get_current_angle() for joint_name in joint_names
+        ]
+        for i in range(num_of_steps):
+            current_angles = np.add(current_angles, angle_steps)
+            self._execute_motion(joint_names, current_angles, time_step)
+
+        return interpolated_movement_duration
+
+    def _execute_motion(self, joint_names, angles, movement_duration):
+        for joint_name, angle in itertools.izip(joint_names, angles):
+            self._servos[joint_name].execute_motion(angle, movement_duration)
+
+        if self._publish_joint_states:
+            joint_state_msg = JointState()
+            joint_state_msg.header.stamp = rospy.Time.now()
+            joint_state_msg.name = joint_names
+            joint_state_msg.position = angles
+            self._joint_state_pub.publish(joint_state_msg)
+
+        rospy.sleep(rospy.Duration(movement_duration))
+
+    def _get_valid_joints(self, joint_names, angles):
+        valid_joint_names = []
+        valid_angles = []
+
+        for joint_name, angle in itertools.izip(joint_names, angles):
+            if not joint_name in self._servos:
+                rospy.logwarn(joint_name + " not valid joint name")
                 continue
 
-            self.servos[joint_name].set_angle(state.position[id])
+            if not self._servos[joint_name].is_initialized():
+                rospy.logwarn(joint_name + " not initialized")
+                continue
 
-        rospy.sleep(rospy.Duration(movement_time / 100))
+            valid_joint_names.append(joint_name)
+            valid_angles.append(angle)
 
+        return valid_joint_names, valid_angles
 
-if __name__ == "__main__":
-    rospy.init_node("arm_controller")
-    controller = ArmController()
-    rospy.spin()
+    def _angle_change_above_min_threshold(self, joint_names, angles):
+        angle_diffs = []
+
+        # Python3
+        # for joint_name, angle in zip(joint_names, angles):
+        for joint_name, angle in itertools.izip(joint_names, angles):
+            angle_diffs.append(
+                abs(self._servos[joint_name].calculate_angle_diff(angle))
+            )
+
+        max_angle_diff = max(angle_diffs)
+
+        if max_angle_diff < self._min_change_threshold:
+            return False
+        else:
+            return True
+
+    def _calculate_min_movement_duration(self, joint_names, angles):
+        min_movement_duration = 0
+        for joint_name, angle in itertools.izip(joint_names, angles):
+            min_duration = self._servos[joint_name].calculate_min_movement_duration(
+                angle
+            )
+            if min_duration > min_movement_duration:
+                min_movement_duration = min_duration
+
+        return min_movement_duration
+
+    def _dynamic_reconfigure_cb(self, config, level):
+
+        self._min_change_threshold = config.min_change_threshold
+
+        for x in self._servos:
+            self._servos[x].set_max_speed(config.max_speed)
+
+        self._interpolate_movement = config.interpolate_movement
+        self._interpolation_frequency = config.interpolation_frequency
+
+        return config

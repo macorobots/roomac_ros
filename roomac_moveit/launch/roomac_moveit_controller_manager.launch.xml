@@ -1,4 +1,5 @@
 <launch>
+  <arg name="gazebo" default="false" />
 
   <!-- loads moveit_controller_manager on the parameter server which is taken as argument
     if no argument is passed, moveit_simple_controller_manager will be set -->
@@ -6,5 +7,7 @@
   <param name="moveit_controller_manager" value="$(arg moveit_controller_manager)"/>
 
   <!-- loads ros_controllers to the param server -->
-  <rosparam file="$(find roomac_moveit)/config/ros_controllers.yaml"/>
+  <rosparam file="$(find roomac_moveit)/config/moveit_controllers.yaml"/>
+  <rosparam if="$(arg gazebo)" file="$(find roomac_moveit)/config/ros_controllers.yaml"/>
+
 </launch>

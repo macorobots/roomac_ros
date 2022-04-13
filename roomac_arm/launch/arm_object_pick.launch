@@ -1,8 +1,0 @@
-<launch>
-  
-  <include file="$(find roomac_arm)/launch/arm_moveit.launch" />
-  <include file="$(find roomac_kinect)/launch/upper_kinect.launch" />
-
-<!-- rosrun rail_segmentation rail_segmentation -->
-
-</launch>
