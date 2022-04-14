@@ -1,7 +1,8 @@
 <launch>
 
-  <node name="serial_node_arm" pkg="rosserial_python" type="serial_node.py" output="screen" ns="arm_position_controller">
+  <node name="serial_node_arm" pkg="rosserial_python" type="serial_node.py" output="screen">
     <param name="port" type="string" value="/dev/ttyUSB0" />
+    <remap from="joint_state_cmd" to="/arm_position_controller/joint_state_cmd" />
   </node>
 
 </launch>
