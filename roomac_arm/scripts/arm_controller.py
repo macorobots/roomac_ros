@@ -215,10 +215,14 @@ class ArmController(object):
     def _send_joint_state_cmd(self, joint_names, position_signals, velocity_signals):
         joint_state_cmd_msg = JointState()
         joint_state_cmd_msg.header.stamp = rospy.Time.now()
-        joint_state_cmd_msg.name = joint_names
-        joint_state_cmd_msg.position = position_signals
-        joint_state_cmd_msg.velocity = velocity_signals
-        self._servo_position_cmd_pub.publish(joint_state_cmd_msg)
+
+        for joint_name, position, velocity in itertools.izip(
+            joint_names, position_signals, velocity_signals
+        ):
+            joint_state_cmd_msg.name = [joint_name]
+            joint_state_cmd_msg.position = [position]
+            joint_state_cmd_msg.velocity = [velocity]
+            self._servo_position_cmd_pub.publish(joint_state_cmd_msg)
 
     def _get_valid_joints(self, joint_names, angles):
         valid_joint_names = []
