@@ -205,6 +205,25 @@ class PickingObjectManager(object):
             self.procedure_retry_threshold,
         )
 
+        self.open_gripper_srv = rospy.Service(
+            "open_gripper", Trigger, self.open_gripper_cb
+        )
+        self.close_gripper_srv = rospy.Service(
+            "close_gripper", Trigger, self.close_gripper_cb
+        )
+
+    def open_gripper_cb(self, req):
+        res = TriggerResponse()
+        res.success = True
+        self.open_gripper()
+        return res
+
+    def close_gripper_cb(self, req):
+        res = TriggerResponse()
+        res.success = True
+        self.close_gripper()
+        return res
+
     def go_to_current_object_point(self):
         self.go_to_point(self.current_object_point)
 
