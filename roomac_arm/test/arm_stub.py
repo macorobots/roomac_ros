@@ -11,7 +11,7 @@ from sensor_msgs.msg import JointState
 
 class Servo:
     def __init__(self, zero_angle_signal, angle_to_signal_scale_factor):
-        self.signal = None
+        self.signal = zero_angle_signal
         self.speed = None
 
         self._zero_angle_signal = zero_angle_signal
@@ -19,9 +19,7 @@ class Servo:
 
     def calculate_angle(self):
         if not self.signal:
-            raise RuntimeError(
-                "Servo " + self.name + " not initialized (signal wasn't yet received)"
-            )
+            raise RuntimeError("Servo not initialized (signal wasn't yet received)")
 
         return (
             self.signal - self._zero_angle_signal
@@ -112,13 +110,11 @@ class ArmStub:
             for x in self._servos:
                 rospy.loginfo(
                     "Servo: "
-                    + x.name
+                    + x
                     + " Signal: "
-                    + str(x.signal)
-                    + " "
-                    + x.speed_parameter_name
-                    + ": "
-                    + str(x.speed)
+                    + str(self._servos[x].signal)
+                    + " Speed: "
+                    + str(self._servos[x].speed)
                 )
 
             rospy.loginfo("--------")
