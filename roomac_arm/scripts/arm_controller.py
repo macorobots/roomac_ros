@@ -34,8 +34,6 @@ class ArmController(object):
             "~wrist_signal_zero_position", 1509
         )
         wrist_signal_90_degrees = rospy.get_param("~wrist_signal_90_degrees", 697)
-        analog_speed = rospy.get_param("~analog_speed", 2.0)
-        wrist_speed = rospy.get_param("~wrist_speed", 4.0)
         analog_update_delay = rospy.get_param("~analog_update_delay", 0.7)
         self._min_change_threshold = rospy.get_param("~min_change_threshold", 0.01)
         max_speed = rospy.get_param("~max_speed", 0.005)
@@ -61,6 +59,7 @@ class ArmController(object):
         self._servos = {}
 
         initial_playtime = 255
+        initial_analog_speed = 2.0
 
         self._servos["right_shoulder_pan"] = DigitalServo(
             "shoulder_pan",
@@ -69,7 +68,6 @@ class ArmController(object):
             digital_upper_signal_bound,
             digital_scale_factor,
             max_speed,
-            initial_playtime,
         )
         self._servos["right_shoulder_lift"] = DigitalServo(
             "shoulder_lift",
@@ -78,7 +76,6 @@ class ArmController(object):
             digital_upper_signal_bound,
             digital_scale_factor,
             max_speed,
-            initial_playtime,
         )
         self._servos["right_elbow"] = DigitalServo(
             "elbow",
@@ -87,7 +84,6 @@ class ArmController(object):
             digital_upper_signal_bound,
             digital_scale_factor / 2.0,  # no gear reduction
             max_speed,
-            initial_playtime,
         )
 
         self._servos["right_wrist"] = AnalogServo(
@@ -97,7 +93,6 @@ class ArmController(object):
             analog_upper_signal_bound_wrist,
             analog_scale_factor_wrist,
             max_speed,
-            wrist_speed,
             analog_update_delay,
         )
         self._servos["right_gripper_twist"] = AnalogServo(
@@ -107,7 +102,6 @@ class ArmController(object):
             analog_upper_signal_bound,
             analog_scale_factor,
             max_speed,
-            analog_speed,
             analog_update_delay,
         )
         self._servos["right_gripper"] = AnalogServo(
@@ -117,12 +111,14 @@ class ArmController(object):
             analog_upper_signal_bound,
             analog_scale_factor,
             max_speed,
-            analog_speed,
             analog_update_delay,
         )
 
-        for x in self._servos:
-            self._servos[x].set_angle(0.0)
+        for x in ["right_shoulder_pan", "right_shoulder_lift", "right_elbow"]:
+            self._servos[x].init_servo(0.0, initial_playtime)
+
+        for x in ["right_wrist", "right_gripper_twist", "right_gripper"]:
+            self._servos[x].init_servo(0.0, initial_analog_speed)
 
         self._publish_joint_states = rospy.get_param("~publish_joint_states", True)
         self._joint_state_pub = rospy.Publisher(

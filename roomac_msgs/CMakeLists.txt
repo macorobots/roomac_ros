@@ -21,6 +21,8 @@ add_message_files(
   FILES
   ObjectAndTable.msg
   ObjectWithBoundingBox.msg
+  DigitalServoCmd.msg
+  AnalogServoCmd.msg
 )
 
 generate_messages(

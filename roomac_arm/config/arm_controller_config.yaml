@@ -17,9 +17,6 @@ digital_upper_signal_bound: 1024
 wrist_signal_zero_position: 1509
 wrist_signal_90_degrees: 697
 
-analog_speed: 2.0 # Change in signal per analog_update_delay
-wrist_speed: 4.0 # Change in signal per analog_update_delay
-
 publish_joint_states: true
 
 interpolate_movement: true

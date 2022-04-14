@@ -1,0 +1,2 @@
+uint16 signal
+float32 signal_change_step
