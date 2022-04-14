@@ -57,22 +57,21 @@ class RealPickingObjectManager(PickingObjectManager):
             self.closed_gripper_value = self.cardbox_object_closed_gripper_value
 
         self.follow_joint_trajectory_client = actionlib.SimpleActionClient(
-            "follow_joint_trajectory", FollowJointTrajectoryAction
+            "/arm_position_controller/follow_joint_trajectory",
+            FollowJointTrajectoryAction,
         )
         self.follow_joint_trajectory_client.wait_for_server()
 
     def move_gripper(self, position, delay=1.0):
         point = JointTrajectoryPoint()
         point.positions = [position]
-        point.time_from_start = [delay]
+        point.time_from_start = rospy.Duration(delay)
 
         goal = FollowJointTrajectoryGoal()
         goal.trajectory.header.stamp = rospy.Time.now()
+        goal.trajectory.header.frame_id = "base_link"
         goal.trajectory.joint_names = [self.gripper_joint_name]
         goal.trajectory.points = [point]
-        goal.path_tolerance = []
-        goal.goal_tolerance = []
-        goal.goal_time_tolerance = rospy.Duration(delay / 2.0)
 
         self.follow_joint_trajectory_client.send_goal(goal)
 
