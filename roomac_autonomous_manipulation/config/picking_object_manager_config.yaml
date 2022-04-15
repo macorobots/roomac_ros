@@ -1,9 +1,10 @@
 # Correction offset applied to object position [m]
-object_position_correction_x: 0.0
-object_position_correction_y: 0.0
+object_position_correction_x: 0.01
+object_position_correction_y: -0.035
 object_position_correction_z: 0.0
 
 # Offset applied to object position as a pre/post gripping position [m]
+#! pre gripping position is currently disabled
 pre_goal_retraction_x: 0.1
 post_goal_retraction_z: 0.08
 
