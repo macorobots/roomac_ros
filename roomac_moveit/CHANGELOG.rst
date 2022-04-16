@@ -2,6 +2,12 @@
 Changelog for package roomac_moveit
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* Merge pull request `#42 <https://github.com/macstepien/roomac_ros/issues/42>`_ from macstepien/36-new-arm-cmd
+  New arm commands
+* Contributors: Maciej Stępień
+
 1.6.0 (2022-04-13)
 ------------------
 * Merge pull request `#40 <https://github.com/macstepien/roomac_ros/issues/40>`_ from macstepien/35-joint-trajectory-arm-controller

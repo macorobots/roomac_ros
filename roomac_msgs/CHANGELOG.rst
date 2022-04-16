@@ -2,6 +2,12 @@
 Changelog for package roomac_msgs
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* Merge pull request `#42 <https://github.com/macstepien/roomac_ros/issues/42>`_ from macstepien/36-new-arm-cmd
+  New arm commands
+* Contributors: Maciej Stępień
+
 1.6.0 (2022-04-13)
 ------------------
 * Merge branch 'master' into 35-joint-trajectory-arm-controller

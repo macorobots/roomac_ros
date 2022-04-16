@@ -2,6 +2,9 @@
 Changelog for package roomac_ar_tag
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+
 1.6.0 (2022-04-13)
 ------------------
 * Merge branch 'master' into 35-joint-trajectory-arm-controller
