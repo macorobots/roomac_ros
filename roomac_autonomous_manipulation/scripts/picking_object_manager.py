@@ -151,13 +151,14 @@ class PickingObjectManager(object):
                 preempted_action_function=lambda: None,
                 feedback_state=PickObjectFeedback.PRE_GRIPPING_POSITION,
             ),
-            # Go to pre point
-            ActionProcedureStep(
-                start_procedure_function=self.go_to_current_pre_object_point,
-                get_procedure_state_function=self.moveit_finished_execution,
-                preempted_action_function=self.moveit_abort,
-                feedback_state=PickObjectFeedback.GOING_TO_PRE_GRIPPING_POSITION,
-            ),
+            # # Go to pre point, now disabled as picking is faster withtout it and after
+            # # recent improvements it isn't really necessary
+            # ActionProcedureStep(
+            #     start_procedure_function=self.go_to_current_pre_object_point,
+            #     get_procedure_state_function=self.moveit_finished_execution,
+            #     preempted_action_function=self.moveit_abort,
+            #     feedback_state=PickObjectFeedback.GOING_TO_PRE_GRIPPING_POSITION,
+            # ),
             # Go to object point
             ActionProcedureStep(
                 start_procedure_function=self.go_to_current_object_point,
@@ -204,6 +205,25 @@ class PickingObjectManager(object):
             procedure_list,
             self.procedure_retry_threshold,
         )
+
+        self.open_gripper_srv = rospy.Service(
+            "open_gripper", Trigger, self.open_gripper_cb
+        )
+        self.close_gripper_srv = rospy.Service(
+            "close_gripper", Trigger, self.close_gripper_cb
+        )
+
+    def open_gripper_cb(self, req):
+        res = TriggerResponse()
+        res.success = True
+        self.open_gripper()
+        return res
+
+    def close_gripper_cb(self, req):
+        res = TriggerResponse()
+        res.success = True
+        self.close_gripper()
+        return res
 
     def go_to_current_object_point(self):
         self.go_to_point(self.current_object_point)

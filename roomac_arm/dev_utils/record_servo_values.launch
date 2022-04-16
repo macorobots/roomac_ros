@@ -1,8 +1,6 @@
 <launch>
   <node pkg="rosbag" type="record" name="record_servo" output="screen" 
     args="-o /home/roomac/catkin_ws/
-    /shoulder_pan_position /shoulder_lift_position /elbow_position /wrist_position /wrist_twist_position /gripper_position 
-    /shoulder_pan_playtime /shoulder_lift_playtime /elbow_playtime 
-    /wrist_speed /wrist_twist_speed /gripper_speed
-    /joint_states" />
+    /arm_position_controller/shoulder_pan_cmd /arm_position_controller/shoulder_lift_cmd /arm_position_controller/elbow_cmd 
+    /arm_position_controller/wrist_cmd /arm_position_controller/wrist_twist_cmd /arm_position_controller/gripper_cmd" />
 </launch>

@@ -23,8 +23,10 @@ joint_limits:
     max_velocity: 2.0
     has_acceleration_limits: true
     max_acceleration: 3.0
-    # min_position: -2.1
-    # max_position: 2.1
+    # Actual value is -2.1, setting 0 is to enforce more natural movement
+    # without bending elbow in opposite direction
+    min_position: 0
+    max_position: 2.1
   right_gripper_twist:
     has_velocity_limits: true
     max_velocity: 2.0
@@ -51,5 +53,6 @@ joint_limits:
     max_velocity: 2.0
     has_acceleration_limits: true
     max_acceleration: 3.0
-    # min_position: -1.994
-    # max_position: 1.146
+    min_position: -1.994
+    # Actual value is 1.146, 0.0 to enforce more natrual movement
+    max_position: 0
