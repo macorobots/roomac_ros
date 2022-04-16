@@ -2,6 +2,9 @@
 Changelog for package roomac_rtabmap
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+1.7.0 (2022-04-16)
+------------------
+
 1.6.0 (2022-04-13)
 ------------------
 * Merge branch 'master' into 35-joint-trajectory-arm-controller
