@@ -1,3 +1,0 @@
-<launch>
-  <include file="$(find roomac_base)/launch/base_controller_hardware.launch" />
-</launch>

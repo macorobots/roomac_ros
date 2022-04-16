@@ -1,0 +1,4 @@
+<launch>
+  <include file="$(find roomac_arm)/launch/serial.launch"/>
+  <include file="$(find roomac_base)/launch/joy.launch"/>
+</launch>
