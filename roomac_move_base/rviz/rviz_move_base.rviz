@@ -7,7 +7,7 @@ Panels:
         - /Global Options1
         - /TF1/Frames1
       Splitter Ratio: 0.5
-    Tree Height: 793
+    Tree Height: 365
   - Class: rviz/Selection
     Name: Selection
   - Class: rviz/Tool Properties
@@ -185,7 +185,7 @@ Visualization Manager:
       Color: 255; 255; 255
       Color Transformer: Intensity
       Decay Time: 0
-      Enabled: false
+      Enabled: true
       Invert Rainbow: false
       Max Color: 255; 255; 255
       Min Color: 0; 0; 0
@@ -200,7 +200,7 @@ Visualization Manager:
       Unreliable: false
       Use Fixed Frame: true
       Use rainbow: true
-      Value: false
+      Value: true
     - Alpha: 1
       Autocompute Intensity Bounds: true
       Autocompute Value Bounds:
@@ -463,25 +463,25 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/Orbit
-      Distance: 4.172175407409668
+      Distance: 4.833672046661377
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
         Swap Stereo Eyes: false
         Value: false
       Focal Point:
-        X: -0.8526705503463745
-        Y: -0.8504869937896729
-        Z: 1.6955071687698364
+        X: -1.5847384929656982e-5
+        Y: -0.837460994720459
+        Z: 1.7140979766845703
       Focal Shape Fixed Size: true
       Focal Shape Size: 0.05000000074505806
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 0.5447976589202881
+      Pitch: 0.6897975206375122
       Target Frame: map
       Value: Orbit (rviz)
-      Yaw: 3.1836373805999756
+      Yaw: 4.723649024963379
     Saved: ~
 Window Geometry:
   Displays:
