@@ -1,7 +1,4 @@
 <launch>
-  <param name="robot_description" command="$(find xacro)/xacro $(find roomac_description)/urdf/roomac.xacro" />
-  <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" />
-
   <include file="$(find freenect_launch)/launch/freenect.launch">
     <arg name="depth_registration" value="true" />
   </include>
