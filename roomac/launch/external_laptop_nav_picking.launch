@@ -13,5 +13,5 @@
   <include file="$(find roomac_autonomous_manipulation)/launch/object_detection.launch"/>
 
   <arg name="rvizconfig" default="$(find roomac_move_base)/rviz/rviz_move_base.rviz" />
-  <node  name="rviz_move_base" pkg="rviz" type="rviz" args="-d $(arg rvizconfig)" required="true" />
+  <node  name="rviz_move_base" pkg="rviz" type="rviz" args="-d $(arg rvizconfig)" />
 </launch>

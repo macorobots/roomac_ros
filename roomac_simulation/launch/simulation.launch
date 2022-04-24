@@ -10,5 +10,5 @@
   </include>
   <include file="$(find roomac_description)/launch/controller.launch"/>
 
-  <node args="-d $(arg rviz_config_file)" name="rviz" pkg="rviz" required="true" type="rviz"/>
+  <node args="-d $(arg rviz_config_file)" name="rviz" pkg="rviz" type="rviz"/>
 </launch>
