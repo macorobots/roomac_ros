@@ -2,6 +2,13 @@
 Changelog for package roomac_kinect
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* Merge pull request `#43 <https://github.com/macstepien/roomac_ros/issues/43>`_ from macstepien/integration-improvements
+  Integration improvements
+* Merge branch 'master' into 41-fix-phantoms
+* Contributors: Maciej Stepien, Maciej Stępień
+
 1.7.0 (2022-04-16)
 ------------------
 

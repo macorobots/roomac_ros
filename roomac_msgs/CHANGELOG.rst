@@ -2,6 +2,11 @@
 Changelog for package roomac_msgs
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* Merge branch 'master' into 41-fix-phantoms
+* Contributors: Maciej Stepien
+
 1.7.0 (2022-04-16)
 ------------------
 * Merge pull request `#42 <https://github.com/macstepien/roomac_ros/issues/42>`_ from macstepien/36-new-arm-cmd
