@@ -1,8 +1,11 @@
 local_costmap:
   plugins:
+    # Static map is necessary in local costmap, so that TEB will be able to check collisions
+    - {name: static_map,       type: "costmap_2d::StaticLayer"}
     - {name: rgbd_obstacle_layer, type: "spatio_temporal_voxel_layer/SpatioTemporalVoxelLayer"}
-    - {name: inflation_layer, type: "costmap_2d::InflationLayer"}
 
+    # Inflation layer is not used by TEB so it is not needed in local costmap
+    # - {name: inflation_layer, type: "costmap_2d::InflationLayer"}
 
   global_frame: map
   robot_base_frame: base_link
