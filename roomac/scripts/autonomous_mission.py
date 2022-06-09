@@ -109,12 +109,13 @@ class RobotController:
                 preempted_action_function=self.move_base_abort,
                 feedback_state=PickAndBringFeedback.DRIVING_TO_TABLE,
             ),
-            ActionProcedureStep(
-                start_procedure_function=lambda: None,
-                get_procedure_state_function=self.check_if_artag_position_is_stable,
-                preempted_action_function=lambda: None,
-                feedback_state=PickAndBringFeedback.PICKING_UP_OBJECT,
-            ),
+            # Doesn't work for bundle
+            # ActionProcedureStep(
+            #     start_procedure_function=lambda: None,
+            #     get_procedure_state_function=self.check_if_artag_position_is_stable,
+            #     preempted_action_function=lambda: None,
+            #     feedback_state=PickAndBringFeedback.PICKING_UP_OBJECT,
+            # ),
             ActionProcedureStep(
                 start_procedure_function=self.pick_object,
                 get_procedure_state_function=self.pick_object_finished_execution,
@@ -153,7 +154,7 @@ class RobotController:
 
     def check_if_artag_position_is_stable(self):
         try:
-            artag_pose = self.get_position("camera_up_link", "ar_marker_0")
+            artag_pose = self.get_position("camera_up_link", "ar_marker_8")
             artag_pose_filtered = self.get_position("camera_up_link", "artag_link_2")
         except RuntimeError as e:
             rospy.logerr("Exception: " + str(e))
