@@ -2,6 +2,9 @@
 Changelog for package roomac_sensor_fusion
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+
 1.8.1 (2022-06-09)
 ------------------
 * Merge pull request `#44 <https://github.com/macstepien/roomac_ros/issues/44>`_ from macstepien/odometry-accuracy-tests

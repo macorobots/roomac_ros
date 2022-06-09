@@ -2,6 +2,9 @@
 Changelog for package roomac_autonomous_manipulation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+
 1.8.1 (2022-06-09)
 ------------------
 
