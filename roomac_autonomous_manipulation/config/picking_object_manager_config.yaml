@@ -1,7 +1,7 @@
 # Correction offset applied to object position [m]
-object_position_correction_x: 0.01
-object_position_correction_y: -0.035
-object_position_correction_z: 0.0
+object_position_correction_x: 0.02
+object_position_correction_y: -0.045
+object_position_correction_z: 0.007
 
 # Offset applied to object position as a pre/post gripping position [m]
 #! pre gripping position is currently disabled
@@ -39,7 +39,7 @@ gripper_joint_name: right_gripper
 # Almost maximum, if needed can go to 1.2
 opened_gripper_value: 1.0
 
-bottle_closed_gripper_value: 0.4
+bottle_closed_gripper_value: 0.2
 cardbox_object_closed_gripper_value: 0.1
 
 # Simulation picking object manager settings
