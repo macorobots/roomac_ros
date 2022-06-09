@@ -18,6 +18,8 @@
 
   <!-- Load updated joint limits (override information from URDF) -->
   <group ns="$(arg robot_description)_planning">
+    <!-- increase wait time when looking up transform from camera to robot - artag sometimes isn't detected -->
+    <param name="shape_transform_cache_lookup_wait_time" value="1.0" />
     <rosparam command="load" file="$(find roomac_moveit)/config/joint_limits.yaml"/>
     <rosparam command="load" file="$(find roomac_moveit)/config/cartesian_limits.yaml"/>
   </group>

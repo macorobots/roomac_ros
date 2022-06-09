@@ -16,5 +16,5 @@
   </node>
 
   <arg name="rvizconfig" default="$(find roomac_arm)/rviz/test_controller.rviz" />
-  <node  name="rviz" pkg="rviz" type="rviz" args="-d $(arg rvizconfig)" required="true" />
+  <node  name="rviz" pkg="rviz" type="rviz" args="-d $(arg rvizconfig)"/>
 </launch>

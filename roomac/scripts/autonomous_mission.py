@@ -23,8 +23,8 @@ from roomac_msgs.msg import (
     PickAndBringAction,
     PickAndBringFeedback,
     PickAndBringResult,
-    PickAction,
-    PickActionGoal,
+    PickObjectAction,
+    PickObjectActionGoal,
 )
 
 from dynamic_reconfigure.server import Server
@@ -81,7 +81,7 @@ class RobotController:
             "move_base", MoveBaseAction
         )
         self.pick_object_client = actionlib.SimpleActionClient(
-            "pick_object", PickAction
+            "pick_object", PickObjectAction
         )
 
         self.clear_octomap_srv = rospy.ServiceProxy("/clear_octomap", Empty)
@@ -186,7 +186,7 @@ class RobotController:
         rospy.sleep(self.wait_time_before_picking_action)
         self.clear_octomap_srv.call()
         self.add_detected_table_to_scene_srv.call(TriggerRequest())
-        self.pick_object_client.send_goal(PickActionGoal())
+        self.pick_object_client.send_goal(PickObjectActionGoal())
 
     def pick_object_finished_execution(self):
         goal_state = None

@@ -1,0 +1,22 @@
+<launch>
+  <node pkg="rosbag" type="record" name="record_servo" output="screen" 
+    args="-o /home/roomac/catkin_ws/
+    /move_base_node/DWAPlannerROS/global_plan
+    /move_base_node/DWAPlannerROS/local_plan
+    /move_base_node/GlobalPlanner/plan
+    /move_base_node/TebLocalPlannerROS/global_plan
+    /move_base_node/TebLocalPlannerROS/local_plan
+    /move_base_node/TebLocalPlannerROS/teb_poses
+    /move_base_node/global_costmap/costmap
+    /move_base_node/global_costmap/costmap_updates
+    /move_base_node/global_costmap/footprint
+    /move_base_node/local_costmap/costmap
+    /move_base_node/local_costmap/costmap_updates
+    /move_base_node/local_costmap/rgbd_obstacle_layer/voxel_grid
+    /move_base_simple/goal
+    /rtabmap/cloud_map
+    /rtabmap/octomap_grid
+    /rtabmap/octomap_grid_updates
+    /tf
+    /tf_static" />
+</launch>

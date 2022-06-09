@@ -1,0 +1,8 @@
+<launch>
+  <node pkg="rosbag" type="play" name="player" output="screen" args="--clock -r 1 -s 400 /home/roomac/catkin_ws/nav_rviz.bag"/>
+  <arg name="rvizconfig" default="$(find roomac_move_base)/rviz/rviz_move_base.rviz" />
+  <node  name="rviz_move_base" pkg="rviz" type="rviz" args="-d $(arg rvizconfig)" />
+  <param command="$(find xacro)/xacro $(find roomac_description)/urdf/roomac.xacro" name="robot_description"/>
+  <!-- <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher"/> -->
+  <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher"/>
+</launch>

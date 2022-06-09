@@ -309,6 +309,7 @@ class PickingObjectManager(object):
         self.scene.attach_box(
             self.gripper_frame, self.object_name, touch_links=touch_links
         )
+        self.scene.remove_world_object(self.object_name + "_lower")
 
     def close_gripper(self, delay=1.0):
         raise NotImplementedError()
@@ -362,7 +363,7 @@ class PickingObjectManager(object):
 
         # Real height is 0.125, but it collides with cardboard box then
         # and plan to pick it up isn't too good
-        body_size = [0.015, 0.02, 0.06]
+        body_size = [0.015, 0.04, 0.06]
 
         body_pose = PoseStamped()
         body_pose.header.frame_id = self.base_link_frame
@@ -371,6 +372,13 @@ class PickingObjectManager(object):
         body_pose.pose.position.z = point.z - body_size[2] / 2.0 + 0.02
 
         self.scene.add_box(self.object_name, body_pose, body_size)
+
+        # Lower part of the bottle, so moveit won't approach it from lower position
+        # causing bottle to fall
+        body_size = [0.06, 0.06, 0.06]
+        body_pose.header.frame_id = self.base_link_frame
+        body_pose.pose.position.z -= 0.03
+        self.scene.add_box(self.object_name + "_lower", body_pose, body_size)
 
     def calculate_pre_and_post_points(self, point):
         pre_point = copy.deepcopy(point)

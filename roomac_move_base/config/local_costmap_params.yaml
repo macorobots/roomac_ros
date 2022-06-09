@@ -1,8 +1,11 @@
 local_costmap:
   plugins:
+    # Static map is necessary in local costmap, so that TEB will be able to check collisions
+    - {name: static_map,       type: "costmap_2d::StaticLayer"}
     - {name: rgbd_obstacle_layer, type: "spatio_temporal_voxel_layer/SpatioTemporalVoxelLayer"}
-    - {name: inflation_layer, type: "costmap_2d::InflationLayer"}
 
+    # Inflation layer is not used by TEB so it is not needed in local costmap
+    # - {name: inflation_layer, type: "costmap_2d::InflationLayer"}
 
   global_frame: map
   robot_base_frame: base_link
@@ -74,7 +77,7 @@ local_costmap:
       inf_is_valid: false          # default false, for laser scans
       clear_after_reading: true    # default false, clear the buffer after the layer gets readings from it
       voxel_filter: true           # default off, apply voxel filter to sensor, recommend on 
-      voxel_min_points: 4          # default 0, minimum points per voxel for voxel filter
+      voxel_min_points: 20          # default 0, minimum points per voxel for voxel filter, even with that hight number phantoms sometimes happen
     rgbd1_clear:
       enabled: true                #default true, can be toggled on/off with associated service call
       data_type: PointCloud2

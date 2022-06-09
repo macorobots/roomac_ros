@@ -469,14 +469,14 @@
 </joint>
 
 <joint name="left_shoulder_lift" type="continuous">
-  <origin rpy="0 0 0" xyz="-0.0265 0.0995 0.0"/>
+  <origin rpy="0.32 0 0" xyz="-0.0265 0.0995 0.0"/>
   <parent link="shoulder_left_1"/>
   <child link="shoulder_elbow_left_1"/>
   <axis xyz="-1.0 -0.0 0.0"/>
 </joint>
 
 <joint name="left_elbow" type="continuous">
-  <origin rpy="0 0 0" xyz="0.0425 0.0 -0.201075"/>
+  <origin rpy="-0.64 0 0" xyz="0.0425 0.0 -0.201075"/>
   <parent link="shoulder_elbow_left_1"/>
   <child link="elbow_wrist_left_1"/>
   <axis xyz="1.0 0.0 -0.0"/>

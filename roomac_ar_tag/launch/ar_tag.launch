@@ -1,6 +1,7 @@
 <launch>
-
-  <include file="$(find roomac_ar_tag)/launch/filtration.launch"/>
+  <include file="$(find roomac_ar_tag)/launch/filtration.launch">
+    <arg name="filtration_enabled" value="false" />
+  </include>
 
   <arg name="marker_size" default="4.4" />
   <arg name="max_new_marker_error" default="0.08" />

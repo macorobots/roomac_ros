@@ -4,7 +4,7 @@
 
   <arg name="rvizconfig" default="$(find roomac_kinect)/rviz/roomac_kinect_calibration.rviz" />
   <node name="joint_state_publisher" pkg="joint_state_publisher_gui" type="joint_state_publisher_gui" />
-  <node name="rviz" pkg="rviz" type="rviz" args="-d $(arg rvizconfig)" required="true" />
+  <node name="rviz" pkg="rviz" type="rviz" args="-d $(arg rvizconfig)" />
 
 
   <include file="$(find freenect_launch)/launch/freenect.launch" />
