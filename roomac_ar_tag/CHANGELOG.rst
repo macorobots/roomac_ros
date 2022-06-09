@@ -2,8 +2,8 @@
 Changelog for package roomac_ar_tag
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+1.8.0 (2022-06-09)
+------------------
 * Merge pull request `#43 <https://github.com/macstepien/roomac_ros/issues/43>`_ from macstepien/integration-improvements
   Integration improvements
 * Merge branch 'master' into 41-fix-phantoms
