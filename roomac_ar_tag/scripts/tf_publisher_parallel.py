@@ -17,7 +17,7 @@ if __name__ == "__main__":
     while not rospy.is_shutdown():
         try:
             (trans, rot) = listener.lookupTransform(
-                "camera_up_link", "ar_marker_0", rospy.Time(0)
+                "camera_up_link", "ar_marker_8", rospy.Time(0)
             )
         except (
             tf.LookupException,
@@ -28,20 +28,20 @@ if __name__ == "__main__":
 
         rpy_robot = euler_from_quaternion(rot)
         rot_robot_only_yaw = quaternion_from_euler(
-            math.pi / 2, rpy_robot[1], -math.pi / 2
+            math.pi / 2, -rpy_robot[1], -math.pi / 2
         )
 
         br.sendTransform(
             trans,
             rot_robot_only_yaw,
             rospy.Time.now(),
-            "ar_marker_0_only_yaw",
+            "ar_marker_8_only_yaw",
             "camera_up_link",
         )
 
         try:
             (trans, rot) = listener.lookupTransform(
-                "ar_marker_0_only_yaw", "camera_up_link", rospy.Time(0)
+                "ar_marker_8_only_yaw", "camera_up_link", rospy.Time(0)
             )
         except (
             tf.LookupException,

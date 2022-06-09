@@ -553,7 +553,7 @@
 </joint>
 
 <joint name="artag_joint_2" type="fixed">
-    <origin rpy="0 0 ${pi/2}" xyz="0 0 0"/>
+    <origin rpy="0 0 ${pi/2}" xyz="0.0595 -0.004 0"/>
     <parent link="artag_link"/>
     <child link="artag_link_2"/>
 </joint>
