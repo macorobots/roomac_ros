@@ -2,6 +2,9 @@
 Changelog for package roomac_utils
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+
 1.8.0 (2022-06-09)
 ------------------
 * Merge branch 'master' into 41-fix-phantoms

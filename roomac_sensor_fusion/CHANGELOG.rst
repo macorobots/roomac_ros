@@ -2,6 +2,12 @@
 Changelog for package roomac_sensor_fusion
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* Merge pull request `#44 <https://github.com/macstepien/roomac_ros/issues/44>`_ from macstepien/odometry-accuracy-tests
+  Odometry accuracy tests improvements
+* Contributors: Maciej Stępień
+
 1.8.0 (2022-06-09)
 ------------------
 * Merge pull request `#43 <https://github.com/macstepien/roomac_ros/issues/43>`_ from macstepien/integration-improvements

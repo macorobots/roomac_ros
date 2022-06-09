@@ -2,6 +2,9 @@
 Changelog for package roomac_moveit
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+
 1.8.0 (2022-06-09)
 ------------------
 * Merge pull request `#43 <https://github.com/macstepien/roomac_ros/issues/43>`_ from macstepien/integration-improvements
