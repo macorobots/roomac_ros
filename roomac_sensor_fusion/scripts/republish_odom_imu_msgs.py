@@ -76,12 +76,18 @@ class OdomRepublisher:
         # Calculate direction of vx
         # atan2 The returned value is between PI and -PI.
         angle = math.atan2((currentPosition.y - self.lastPosition.y), (currentPosition.x - self.lastPosition.x))
-        angle_diff = abs(angle - self.lastPosition.theta)
+        directionAngleDiff = abs(angle - self.lastPosition.theta)
 
-        if angle_diff > math.pi/2:
+        if directionAngleDiff > math.pi/2:
             vx = -vx
 
-        vth = (currentPosition.theta - self.lastPosition.theta)/dt
+        angleDiff = math.fmod((currentPosition.theta - self.lastPosition.theta), 2*math.pi)
+        if angleDiff > math.pi:
+          angleDiff = 2*math.pi - angleDiff
+        elif angleDiff < -math.pi:
+          angleDiff = 2*math.pi + angleDiff
+          
+        vth = angleDiff/dt
     else:
         vx = 0
         vth = 0
