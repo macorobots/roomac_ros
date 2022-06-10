@@ -1,4 +1,6 @@
-# Roomac ROS packages
+# Roomac ROS
+
+![roomac_logo](.github/logo.png)
 
 ## Usage
 
