@@ -1,5 +1,7 @@
 # Roomac ROS
 
+[![Build and push docker image](https://github.com/macstepien/roomac_ros/actions/workflows/build_and_push_docker_image.yml/badge.svg)](https://github.com/macstepien/roomac_ros/actions/workflows/build_and_push_docker_image.yml)
+
 ![roomac_logo](.github/logo.png)
 
 ## Usage
