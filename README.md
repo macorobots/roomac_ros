@@ -166,7 +166,7 @@ roslaunch roomac_simulation simulation_localization_autonomy.launch
 
 ### Simulation picking
 ```
-roslaunch roomac_simulation simulation_pick_place.launch
+roslaunch roomac_simulation simulation_only_picking.launch
 ```
 Then after everything launches to pick object:
 ```
