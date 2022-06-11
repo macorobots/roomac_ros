@@ -38,10 +38,6 @@
     <arg name="gui" value="true"/>
     <arg name="headless" value="false"/>
     <arg name="debug" value="false"/>
-    
-    <!-- otherwise error is printed: 
-    https://answers.ros.org/question/293830/what-is-the-fix-for-no-p-gain-specified-for-pid-namespace-gazebo_ros_controlpid_gainsback_right_wheel_joint-ros-melodic/ -->
-    <rosparam command="load" file="$(find roomac_simulation)/config/gazebo_ros_control.yaml" ns="roomac"/>
   </include>
 
   <param name="robot_description" command="$(find xacro)/xacro $(find roomac_description)/urdf/roomac_simulation_picking.xacro" />
