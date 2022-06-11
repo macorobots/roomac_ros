@@ -1,16 +1,30 @@
 <launch>
-  <include file="$(find roomac_moveit)/launch/demo_gazebo.launch" />
+<!-- Gazebo -->
+  <include file="$(find roomac_simulation)/launch/gazebo.launch">
+    <arg name="gazebo_gui" value="true"/>
+    <arg name="world_name" value="$(find roomac_simulation)/worlds/pick_aruco_cube.world"/>
+  </include>
 
+<!-- Roomac scripts -->
+  <include file="$(find roomac_autonomous_manipulation)/launch/picking_object_manager.launch">
+    <arg name="simulation" value="true"/>
+  </include>
+  <node name="add_robot_body_collision_to_scene" pkg="roomac_autonomous_manipulation" type="add_robot_body_collision_to_scene.py" output="screen"/>
+  <node name="add_table_body_collision_to_scene" pkg="roomac_autonomous_manipulation" type="add_table_body_collision_to_scene.py" output="screen"/>
+  <include file="$(find roomac_autonomous_manipulation)/launch/object_detection.launch"/>
+  
+<!-- ARtag -->
   <!-- Difference in kinect frames (real vs simulation), so parallel isn't working correctly.
   There is no need for it though, in simulation detection accuracy is very good -->
   <include file="$(find roomac_ar_tag)/launch/ar_tag.launch"/>
 
-  <node name="add_robot_body_collision_to_scene" pkg="roomac_autonomous_manipulation" type="add_robot_body_collision_to_scene.py" output="screen"/>
-  <node name="add_table_body_collision_to_scene" pkg="roomac_autonomous_manipulation" type="add_table_body_collision_to_scene.py" output="screen"/>
-  
-  <include file="$(find roomac_autonomous_manipulation)/launch/picking_object_manager.launch">
-    <arg name="simulation" value="true"/>
+<!-- MoveIt -->
+  <include file="$(find roomac_moveit)/launch/roomac_simulation.launch"/>
+
+<!-- RViz -->
+  <include file="$(find roomac_moveit)/launch/moveit_rviz.launch">
+    <arg name="rviz_config" value="$(find roomac_moveit)/launch/moveit.rviz"/>
+    <arg name="debug" value="false"/>
   </include>
 
-  <include file="$(find roomac_autonomous_manipulation)/launch/object_detection.launch"/>
 </launch>
