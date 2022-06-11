@@ -1,0 +1,19 @@
+<launch>
+  <arg name="gazebo_gui" default="true"/>
+  <arg name="world_name" value="$(find roomac_simulation)/worlds/small_house.world"/>
+
+  <include file="$(find roomac_simulation)/launch/empty_world.launch">
+    <arg name="world_name" value="$(arg world_name)"/>
+    <arg name="paused" value="false"/>
+    <arg name="use_sim_time" value="true"/>
+    <arg name="gui" value="true"/>
+    <arg name="headless" value="false"/>
+    <arg name="debug" value="false"/>
+  </include>
+
+  <param name="robot_description" command="$(find xacro)/xacro $(find roomac_description)/urdf/roomac_simulation_picking.xacro" />
+  <node name="spawn_gazebo_model" pkg="gazebo_ros" type="spawn_model" args="-urdf -param robot_description -model robot -x 0.3 -y 0 -z 0.2"
+    respawn="false" output="screen" />
+
+  <include file="$(find roomac_moveit)/launch/ros_controllers.launch"/>
+</launch>
