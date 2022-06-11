@@ -1,6 +1,6 @@
 global_costmap:
   plugins:
-    - {name: static_map,       type: "costmap_2d::StaticLayer"}
+    - {name: static_map_layer,       type: "costmap_2d::StaticLayer"}
     - {name: inflation_layer, type: "costmap_2d::InflationLayer"}
 
   global_frame: map
@@ -21,8 +21,6 @@ global_costmap:
   rolling_window: false
   # (bool, default: false)
   # Whether or not to use a rolling window version of the costmap. If the static_map parameter is set to true, this parameter must be set to false.
-  static_map: true
-
   
   always_send_full_costmap: false
   # (bool, default: false)
@@ -44,7 +42,7 @@ global_costmap:
     # (double, default: 10.0)
     # A scaling factor to apply to cost values during inflation. The cost function is computed as follows for all cells in the costmap further than the inscribed radius distance and closer than the inflation radius distance away from an actual obstacle: exp(-1.0 * cost_scaling_factor * (distance_from_obstacle - inscribed_radius)) * (costmap_2d::INSCRIBED_INFLATED_OBSTACLE - 1), where costmap_2d::INSCRIBED_INFLATED_OBSTACLE is currently 254. NOTE: since the cost_scaling_factor is multiplied by a negative in the formula, increasing the factor will decrease the resulting cost values. 
   
-  static_map:
+  static_map_layer:
     unknown_cost_value: -1
     # (int, default: -1)
     # The value for which a cost should be considered unknown when reading in a map from the map server. If the costmap is not tracking unknown space, costs of this value will be considered occupied. A value of zero also results in this parameter being unused. 
@@ -76,5 +74,3 @@ global_costmap:
     trinary_costmap: true
     # (bool, default: true)
     # If true, translates all map message values to NO_INFORMATION/FREE_SPACE/LETHAL_OBSTACLE (three values). If false, a full spectrum of intermediate values is possible. 
-
-  
