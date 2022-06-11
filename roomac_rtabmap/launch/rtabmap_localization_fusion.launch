@@ -22,7 +22,8 @@
       <param name="queue_size" type="int" value="10"/>
 
       <!-- When RGBD/SavedLocalizationIgnored is set to false, rtabmap assumes that the robot is starting from where it stopped mapping, providing the map on start. If the initial localization is wrong (kidnapped robot problem), RTAB-Map will still relocalize the robot on loop closure / global localization. When RGBD/SavedLocalizationIgnored is set to true, rtabmap won't publish the map until it can be localized against the map saved in the database. (from https://answers.ros.org/question/302694/rtabmap-localization/) -->
-      <param name="RGBD/SavedLocalizationIgnored" type="bool" value="true"/>
+      <!-- Parameter name changed: "RGBD/SavedLocalizationIgnored" -> "RGBD/StartAtOrigin" -->
+      <param name="RGBD/StartAtOrigin" type="bool" value="true"/>
 
       <!-- SLAM mode, otherwise it is Localization mode. -->
       <param name="Mem/IncrementalMemory" type="string" value="false"/>

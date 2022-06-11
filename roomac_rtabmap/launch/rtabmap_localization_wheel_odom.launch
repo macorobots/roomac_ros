@@ -18,7 +18,7 @@
     <node name="rtabmap" pkg="rtabmap_ros" type="rtabmap" output="screen">
       <remap from="odom" to="/odom"/>
       <param name="queue_size" type="int" value="10"/>
-      <param name="RGBD/SavedLocalizationIgnored" type="bool" value="true"/>
+      <param name="RGBD/StartAtOrigin" type="bool" value="true"/>
 
       <rosparam file="$(find roomac_rtabmap)/config/rtabmap_wheel_odom.yaml" command="load" />
     </node>
