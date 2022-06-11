@@ -203,9 +203,9 @@
     <rightJoint>right_wheel</rightJoint>
     <!-- TODO -->
     <!-- The distance from the center of one wheel to the other, in meters, defaults to 0.34 m -->
-    <!-- <wheelSeparation>0.5380</wheelSeparation> -->
+    <wheelSeparation>0.507</wheelSeparation>
     <!-- Diameter of the wheels, in meters, defaults to 0.15 m -->
-    <!-- <wheelDiameter>0.2410</wheelDiameter> -->
+    <wheelDiameter>0.29</wheelDiameter>
     <!-- Wheel acceleration, in rad/s^2, defaults to 0.0 rad/s^2 -->
     <wheelAcceleration>0.5</wheelAcceleration>
     <!-- Maximum torque which the wheels can produce, in Nm, defaults to 5 Nm -->
@@ -218,8 +218,8 @@
     <odometryFrame>odom</odometryFrame>
     <!-- Robot frame to calculate odometry from, defaults to `base_footprint` -->
     <robotBaseFrame>base_link</robotBaseFrame>
-    <!-- Odometry source, 0 for ENCODER, 1 for WORLD, defaults to WORLD -->
-    <odometrySource>1</odometrySource>
+    <!-- Odometry source, 0 for ENCODER, 1 for WORLD, defaults to WORLD, Not really correct, for setting one I got warning -->
+    <odometrySource>world</odometrySource>
     <!-- Set to true to publish transforms for the wheel links, defaults to false -->
     <publishWheelTF>true</publishWheelTF>
     <!-- Set to true to publish transforms for the odometry, defaults to true -->
@@ -228,6 +228,10 @@
     <publishWheelJointState>true</publishWheelJointState>
     <!-- Set to true to swap right and left wheels, defaults to true -->
     <legacyMode>false</legacyMode>
+
+    <rosDebugLevel>na</rosDebugLevel>
+    <publishOdomTF>true</publishOdomTF>
+    <publishTf>true</publishTf>
   </plugin>
 </gazebo>
 
