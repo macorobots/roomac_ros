@@ -189,6 +189,7 @@
       <Cy>0</Cy>
       <focalLength>0</focalLength>
       <hackBaseline>0</hackBaseline>
+      <robotNamespace>/</robotNamespace>
     </plugin>
   </sensor>
 </gazebo>
