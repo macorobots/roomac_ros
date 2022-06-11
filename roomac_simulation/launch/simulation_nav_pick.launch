@@ -1,9 +1,10 @@
 <launch>
   <remap from="/odometry/filtered" to="/odom"/>
 
-  <!-- Gazebo -->
+<!-- Gazebo -->
   <include file="$(find roomac_simulation)/launch/gazebo.launch">
     <arg name="gazebo_gui" value="true"/>
+    <arg name="world_name" value="$(find roomac_simulation)/worlds/small_house.world"/>
   </include>
 
 <!-- Roomac scripts -->

@@ -1,6 +1,6 @@
 <launch>
   <arg name="gazebo_gui" default="true"/>
-  <arg name="world_name" value="$(find roomac_simulation)/worlds/small_house.world"/>
+  <arg name="world_name" default="$(find roomac_simulation)/worlds/small_house.world"/>
 
   <include file="$(find gazebo_ros)/launch/empty_world.launch">
     <arg name="world_name" value="$(arg world_name)"/>
