@@ -1,0 +1,37 @@
+gazebo_ros_control:
+  pid_gains:
+    right_shoulder_pan:
+      p: 10
+      d: 0
+      i: 0.01
+      i_clamp: 1
+    right_shoulder_lift:
+      p: 10
+      d: 0
+      i: 0.01
+      i_clamp: 1
+    right_elbow:
+      p: 10
+      d: 0
+      i: 0.01
+      i_clamp: 1
+    right_wrist:
+      p: 10
+      d: 0
+      i: 0.01
+      i_clamp: 1
+    right_gripper_twist:
+      p: 10
+      d: 0
+      i: 0.01
+      i_clamp: 1
+    finger1_joint:
+      p: 10
+      d: 0
+      i: 0.01
+      i_clamp: 1
+    finger2_joint:
+      p: 10
+      d: 0
+      i: 0.01
+      i_clamp: 1
