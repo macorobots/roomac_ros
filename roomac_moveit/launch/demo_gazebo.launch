@@ -1,6 +1,7 @@
 <launch>
-  <arg name="pipeline" default="ompl" />
+  <remap from="arm_position_controller/follow_joint_trajectory" to="/roomac/arm_position_controller/follow_joint_trajectory" />
 
+  <arg name="pipeline" default="ompl" />
 
   <!-- By default, we do not start a database (it can be large) -->
   <arg name="db" default="false" />
@@ -12,8 +13,6 @@
 
   <!-- By default, we won't load or override the robot_description -->
   <arg name="load_robot_description" default="false"/>
-
-<remap from="arm_position_controller/follow_joint_trajectory" to="/roomac/arm_position_controller/follow_joint_trajectory" />
 
   <!--
   By default, hide joint_state_publisher's GUI
