@@ -1,7 +1,16 @@
 <?xml version="1.0" ?>
 <robot name="roomac" xmlns:xacro="http://www.ros.org/wiki/xacro">
 
-<link name="base_link">
+<link name="base_link" />
+
+<joint name="robot_base" type="fixed">
+  <parent link="base_link"/>
+  <child link="robot_base_1"/>
+</joint>
+
+<!-- Additional link needed to solve moveit warning (as far as I know it shouldn't cause any issue as I'm not using KDL, but still better to solve it): -->
+<!-- The root link base_link has an inertia specified in the URDF, but KDL does not support a root link with an inertia.  As a workaround, you can add an extra dummy link to your URDF. -->
+<link name="robot_base_1">
   <inertial>
     <origin rpy="0 0 0" xyz="-0.13060699359614247 -1.269142483394603e-05 0.10737373059306837"/>
     <mass value="3.353734949059196"/>
