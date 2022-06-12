@@ -88,7 +88,7 @@
           <plugin name="camera_controller_up" filename="libgazebo_ros_openni_kinect.so">
             <baseline>0.2</baseline>
             <alwaysOn>true</alwaysOn>
-            <updateRate>1.0</updateRate>
+            <updateRate>10.0</updateRate>
             <cameraName>camera_up_ir</cameraName>
             <imageTopicName>/camera_up/color/image_raw</imageTopicName>
             <cameraInfoTopicName>/camera_up/rgb/camera_info</cameraInfoTopicName>

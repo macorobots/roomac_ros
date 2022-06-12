@@ -1,4 +1,6 @@
 <launch>
+  <remap from="/camera_up/depth_registered/camera_info" to="/camera_up_ir/depth/camera_info" />
+
   <arg name="urdf_path" default="$(find roomac_description)/urdf/roomac_simulation_picking.xacro"/>
 
   <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher">
