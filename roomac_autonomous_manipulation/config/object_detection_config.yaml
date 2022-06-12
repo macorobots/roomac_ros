@@ -1,7 +1,5 @@
 publish_debug: true
 
-camera_frame: "camera_up_rgb_optical_frame"
-
 # Number of gripper position estimates that will be avaraged to get final one
 num_of_readings_for_average: 1
 max_num_of_failed_readings: 5

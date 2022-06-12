@@ -48,8 +48,6 @@ ObjectDetection::ObjectDetection()
 
   publish_debug_ = ph.param<bool>("publish_debug", true);
 
-  camera_frame_ = ph.param<std::string>("camera_frame", "camera_up_rgb_optical_frame");
-
   dynamic_reconfigure::Server<roomac_autonomous_manipulation::ObjectDetectionConfig>::CallbackType f;
   f = boost::bind(&ObjectDetection::ReconfigureCallback, this, _1, _2);
   reconfigure_server_.setCallback(f);
@@ -80,9 +78,6 @@ bool ObjectDetection::HandleObjectDetection(roomac_msgs::DetectObjectAndTable::R
   }
 
   roomac_msgs::ObjectAndTable object_and_table_average = CalculateAverage(object_and_table_readings);
-
-  object_and_table_average.header.frame_id = camera_frame_;
-  object_and_table_average.header.stamp = ros::Time::now();
 
   if (publish_debug_)
   {
@@ -128,14 +123,14 @@ roomac_msgs::ObjectAndTable ObjectDetection::FindObjectAndTable()
     ROS_INFO("Detecting clusters");
     pcl::PointCloud<pcl::PointXYZRGB>::Ptr object_cluster(new pcl::PointCloud<pcl::PointXYZRGB>);
     object_cluster = DetectObjectCluster(objects_on_table, object_cluster_tolerance_, object_min_cluster_size_,
-                                         object_max_cluster_size_);
+                                         object_max_cluster_size_, cloud_msg->header.frame_id);
 
     if (publish_debug_)
     {
-      PublishPointcloud(clipped, floor_clipped_pub_);
-      PublishPointcloud(without_table, without_table_pub_);
-      PublishPointcloud(objects_on_table, only_objects_on_table_pub_);
-      PublishPointcloud(object_cluster, object_cloud_pub_);
+      PublishPointcloud(clipped, floor_clipped_pub_, cloud_msg->header.frame_id);
+      PublishPointcloud(without_table, without_table_pub_, cloud_msg->header.frame_id);
+      PublishPointcloud(objects_on_table, only_objects_on_table_pub_, cloud_msg->header.frame_id);
+      PublishPointcloud(object_cluster, object_cloud_pub_, cloud_msg->header.frame_id);
     }
 
     geometry_msgs::Point min_point_object, max_point_object;
@@ -143,6 +138,9 @@ roomac_msgs::ObjectAndTable ObjectDetection::FindObjectAndTable()
     geometry_msgs::Point object_mass_center = CalculateMassCenter(object_cluster);
 
     roomac_msgs::ObjectAndTable msg;
+
+    msg.header.frame_id = cloud_msg->header.frame_id;
+    msg.header.stamp = cloud_msg->header.stamp;
 
     msg.table.mass_center = table_mass_center;
     msg.table.min_point_bounding_box = min_point_table;
@@ -412,7 +410,7 @@ ObjectDetection::DetectClusterIndices(const pcl::PointCloud<pcl::PointXYZRGB>::P
 
 pcl::PointCloud<pcl::PointXYZRGB>::Ptr
 ObjectDetection::DetectObjectCluster(const pcl::PointCloud<pcl::PointXYZRGB>::Ptr& src_cloud, float cluster_tolerance,
-                                     int min_cluster_size, int max_cluster_size)
+                                     int min_cluster_size, int max_cluster_size, const std::string& pointcloud_frame_id)
 {
   if (src_cloud->empty())
   {
@@ -449,7 +447,7 @@ ObjectDetection::DetectObjectCluster(const pcl::PointCloud<pcl::PointXYZRGB>::Pt
 
     if (publish_debug_)
     {
-      PublishPointcloud(cloud_cluster, clusters_pub_);
+      PublishPointcloud(cloud_cluster, clusters_pub_, pointcloud_frame_id);
     }
 
     geometry_msgs::Point center = CalculateMassCenter(cloud_cluster);
@@ -516,17 +514,21 @@ ObjectDetection::CalculateAverage(const std::vector<roomac_msgs::ObjectAndTable>
     object_readings.push_back(x.object);
   }
 
+  average.header.frame_id = object_and_table_readings[0].header.frame_id;
+  average.header.stamp = ros::Time::now();
+
   average.table = CalculateAverage(table_readings);
   average.object = CalculateAverage(object_readings);
 
   return average;
 }
 
-void ObjectDetection::PublishPointcloud(const pcl::PointCloud<pcl::PointXYZRGB>::Ptr& cloud, ros::Publisher& pub)
+void ObjectDetection::PublishPointcloud(const pcl::PointCloud<pcl::PointXYZRGB>::Ptr& cloud, ros::Publisher& pub,
+                                        const std::string& pointcloud_frame_id)
 {
   sensor_msgs::PointCloud2 cloud_msg;
   pcl::toROSMsg(*cloud, cloud_msg);
-  cloud_msg.header.frame_id = camera_frame_;
+  cloud_msg.header.frame_id = pointcloud_frame_id;
   cloud_msg.header.stamp = ros::Time::now();
   pub.publish(cloud_msg);
 }
