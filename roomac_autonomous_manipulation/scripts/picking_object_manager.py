@@ -241,16 +241,11 @@ class PickingObjectManager(object):
         self.remove_object_from_scene()
 
         object_point = self.get_detected_object_point()
-        object_point_transformed = self.transform_point(
-            object_point, self.base_link_frame
-        )
 
-        self.add_object_to_scene(object_point_transformed.point)
-        pre_point, post_point = self.calculate_pre_and_post_points(
-            object_point_transformed.point
-        )
+        self.add_object_to_scene(object_point.point)
+        pre_point, post_point = self.calculate_pre_and_post_points(object_point.point)
 
-        self.current_object_point = object_point_transformed.point
+        self.current_object_point = object_point.point
         self.current_pre_object_point = pre_point
         self.current_post_object_point = post_point
 
@@ -419,11 +414,15 @@ class PickingObjectManager(object):
             object_and_table.object_and_table.object.mass_center
         )
 
-        object_point_stamped.point.x += self.object_position_correction_x
-        object_point_stamped.point.y += self.object_position_correction_y
-        object_point_stamped.point.z += self.object_position_correction_z
+        object_point_transformed = self.transform_point(
+            object_point_stamped, self.base_link_frame
+        )
 
-        return object_point_stamped
+        object_point_transformed.point.x += self.object_position_correction_x
+        object_point_transformed.point.y += self.object_position_correction_y
+        object_point_transformed.point.z += self.object_position_correction_z
+
+        return object_point_transformed
 
     def transform_point(self, point, target_frame):
         listener = tf.TransformListener()
