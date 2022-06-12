@@ -29,8 +29,6 @@ object_name: object
 grasping_group_name: hand
 home_position_target_name: Home
 
-detected_object_frame: detected_object
-
 # Real picking object manager settings
 # Currently supported "bottle" and "cardbox_object"
 object_type: bottle
@@ -43,7 +41,5 @@ bottle_closed_gripper_value: 0.2
 cardbox_object_closed_gripper_value: 0.1
 
 # Simulation picking object manager settings
-finger1_joint_name: finger1_joint
-finger2_joint_name: finger2_joint
 open_gripper_value: 0.0
-closed_gripper_value: 0.02
+closed_gripper_value: 0.05
