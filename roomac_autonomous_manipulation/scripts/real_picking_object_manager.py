@@ -85,18 +85,6 @@ class RealPickingObjectManager(PickingObjectManager):
         rospy.loginfo("Sending open gripper command")
         self.move_gripper(self.opened_gripper_value, delay)
 
-    def get_object_point(self):
-        object_point_stamped = PointStamped()
-        object_point_stamped.header.stamp = rospy.Time(0)
-        object_point_stamped.header.frame_id = self.detected_object_frame
-        object_point_stamped.point = self.object_point
-
-        object_point_stamped.point.x += self.object_position_correction_x
-        object_point_stamped.point.y += self.object_position_correction_y
-        object_point_stamped.point.z += self.object_position_correction_z
-
-        return object_point_stamped
-
 
 if __name__ == "__main__":
     rospy.init_node("picking_object_manager")

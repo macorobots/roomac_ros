@@ -394,9 +394,6 @@ class PickingObjectManager(object):
 
         return res
 
-    def get_object_point(self):
-        raise NotImplementedError()
-
     def get_detected_object_point(self):
         detect_table_and_object_srv = rospy.ServiceProxy(
             "/detect_table_and_object", DetectObjectAndTable
