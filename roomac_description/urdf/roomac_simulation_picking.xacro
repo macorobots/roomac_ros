@@ -10,4 +10,11 @@
 <xacro:include filename="$(find roomac_description)/urdf/roomac_gripper_simulation.trans" />
 <xacro:include filename="$(find roomac_description)/urdf/roomac_arm_precision_test.xacro" />
 
+<joint name="artag_joint_2" type="fixed">
+    <origin rpy="${-pi/2} 0 0" xyz="0.04857 0 0"/>
+    <parent link="artag_link_bundle_visual"/>
+    <child link="artag_link_2"/>
+</joint>
+<link name="artag_link_2"/>
+
 </robot>
