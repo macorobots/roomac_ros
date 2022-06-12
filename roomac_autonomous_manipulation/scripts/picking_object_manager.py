@@ -2,6 +2,7 @@
 
 import sys
 import copy
+import math
 
 import rospy
 import moveit_commander
@@ -332,7 +333,7 @@ class PickingObjectManager(object):
 
     def get_perpendicular_orientation(self):
         orientation = Quaternion()
-        quat = quaternion_from_euler(-1.461, -1.445, 3.016)
+        quat = quaternion_from_euler(-math.pi / 2, -math.pi / 2, math.pi)
         orientation.x = quat[0]
         orientation.y = quat[1]
         orientation.z = quat[2]
