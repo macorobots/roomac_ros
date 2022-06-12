@@ -155,7 +155,9 @@ class RobotController:
     def check_if_artag_position_is_stable(self):
         try:
             artag_pose = self.get_position("camera_up_link", "ar_marker_8")
-            artag_pose_filtered = self.get_position("camera_up_link", "artag_link_2")
+            artag_pose_filtered = self.get_position(
+                "camera_up_link", "artag_link_bundle"
+            )
         except RuntimeError as e:
             rospy.logerr("Exception: " + str(e))
             return GoalState.IN_PROGRESS

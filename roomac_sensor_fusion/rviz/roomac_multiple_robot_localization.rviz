@@ -200,7 +200,7 @@ Visualization Manager:
         All Enabled: false
         artag_link:
           Value: false
-        artag_link_2:
+        artag_link_bundle:
           Value: false
         base_link:
           Value: false
@@ -251,28 +251,18 @@ Visualization Manager:
         odom:
           base_link:
             artag_link:
-              artag_link_2:
-                {}
+              artag_link_bundle: {}
             base_up_1:
-              head_1:
-                {}
-            body_precision_test_tip:
-              {}
+              head_1: {}
+            body_precision_test_tip: {}
             camera_link:
-              gazebo_camera_link:
-                {}
-            imu:
-              {}
-            left_caster_1:
-              {}
-            right_caster_1:
-              {}
-          base_link_imu_ang_vel:
-            {}
-          base_link_wheel_odom:
-            {}
-          base_link_wheel_odom_vel:
-            {}
+              gazebo_camera_link: {}
+            imu: {}
+            left_caster_1: {}
+            right_caster_1: {}
+          base_link_imu_ang_vel: {}
+          base_link_wheel_odom: {}
+          base_link_wheel_odom_vel: {}
       Update Interval: 0
       Value: true
     - Alpha: 1

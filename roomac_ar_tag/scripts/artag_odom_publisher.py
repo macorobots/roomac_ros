@@ -26,7 +26,7 @@ class ARTagOdomPublisher(object):
         self.rate = rospy.Rate(rospy.get_param("~rate", 30.0))
 
         self.camera_link = rospy.get_param("~camera_link", "camera_up_link")
-        self.robot_link = rospy.get_param("~robot_link", "artag_link_2")
+        self.robot_link = rospy.get_param("~robot_link", "artag_link_bundle")
         self.object_link = rospy.get_param("~object_link", "detected_object")
 
         self.ar_marker_robot_link = rospy.get_param(

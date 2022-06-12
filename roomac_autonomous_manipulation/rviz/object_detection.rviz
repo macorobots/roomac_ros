@@ -90,7 +90,7 @@ Visualization Manager:
           Value: true
         artag_link:
           Value: true
-        artag_link_2:
+        artag_link_bundle:
           Value: true
         base_link:
           Value: true
@@ -161,53 +161,37 @@ Visualization Manager:
         odom:
           base_link:
             artag_link:
-              artag_link_2:
+              artag_link_bundle:
                 camera_up_link:
-                  ar_marker_0:
-                    {}
-                  ar_marker_2:
-                    {}
-                  detected_object:
-                    {}
+                  ar_marker_0: {}
+                  ar_marker_2: {}
+                  detected_object: {}
             base_up_1:
-              head_1:
-                {}
+              head_1: {}
               shoulder_left_1:
                 shoulder_elbow_left_1:
                   elbow_wrist_left_1:
                     wrist_left_1:
-                      gripper_left_1:
-                        {}
+                      gripper_left_1: {}
               shoulder_right_1:
                 shoulder_elbow_right_1:
                   elbow_wrist_right_1:
                     wrist_right_1:
                       gripper_right_1:
-                        finger1:
-                          {}
-                        finger2:
-                          {}
-                        gripper_right_grip:
-                          {}
-                        gripper_right_precision_test_tip:
-                          {}
-            body_precision_test_tip:
-              {}
+                        finger1: {}
+                        finger2: {}
+                        gripper_right_grip: {}
+                        gripper_right_precision_test_tip: {}
+            body_precision_test_tip: {}
             camera_link:
-              gazebo_camera_link:
-                {}
-            imu:
-              {}
-            left_caster_1:
-              {}
+              gazebo_camera_link: {}
+            imu: {}
+            left_caster_1: {}
             left_wheel_1:
-              left_wheel_hub_1:
-                {}
-            right_caster_1:
-              {}
+              left_wheel_hub_1: {}
+            right_caster_1: {}
             right_wheel_1:
-              right_wheel_hub_1:
-                {}
+              right_wheel_hub_1: {}
       Update Interval: 0
       Value: true
     - Alpha: 1
