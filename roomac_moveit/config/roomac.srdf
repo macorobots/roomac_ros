@@ -189,4 +189,6 @@
     <disable_collisions link1="shoulder_right_1" link2="wrist_left_1" reason="Never" />
     <disable_collisions link1="shoulder_right_1" link2="artag_link_bundle_visual" reason="Adjacent" />
     <disable_collisions link1="finger1" link2="finger2" reason="Adjacent" />
+    <disable_collisions link1="finger1" link2="wrist_right_1" reason="Adjacent" />
+    <disable_collisions link1="finger2" link2="wrist_right_1" reason="Adjacent" />
 </robot>
