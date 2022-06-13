@@ -174,8 +174,8 @@
       <imageTopicName>/${camera_name}/color/image_raw</imageTopicName>
       <cameraInfoTopicName>/${camera_name}/color/camera_info</cameraInfoTopicName>
       <depthImageTopicName>/${camera_name}/depth/image_raw</depthImageTopicName>
-      <depthImageInfoTopicName>/${camera_name}/depth/camera_info</depthImageInfoTopicName>
-      <pointCloudTopicName>/${camera_name}/depth/points</pointCloudTopicName>
+      <depthImageInfoTopicName>/${camera_name}/depth_registered/camera_info</depthImageInfoTopicName>
+      <pointCloudTopicName>/${camera_name}/depth_registered/points</pointCloudTopicName>
       <frameName>${frame_name}</frameName>
       <pointCloudCutoff>0.5</pointCloudCutoff>
       <pointCloudCutoffMax>3.0</pointCloudCutoffMax>
