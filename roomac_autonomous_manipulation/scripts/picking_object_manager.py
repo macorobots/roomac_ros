@@ -14,7 +14,11 @@ from std_srvs.srv import Trigger, TriggerResponse
 import tf
 from tf.transformations import quaternion_from_euler
 
-from moveit_msgs.msg import MoveGroupActionFeedback
+from moveit_msgs.msg import (
+    MoveGroupActionFeedback,
+    AttachedCollisionObject,
+    CollisionObject,
+)
 from actionlib_msgs.msg import GoalID, GoalStatus
 
 from roomac_msgs.msg import (
@@ -81,7 +85,6 @@ class PickingObjectManager(object):
         arm_name = rospy.get_param("~arm_name", "right_arm")
         self.base_link_frame = rospy.get_param("~base_link_frame", "base_link")
         self.gripper_frame = rospy.get_param("~gripper_frame", "gripper_right_grip")
-        self.object_name = rospy.get_param("~object_name", "object")
         self.grasping_group_name = rospy.get_param("~grasping_group_name", "hand")
         self.home_position_target_name = rospy.get_param(
             "~home_position_target_name", "Home"
@@ -141,6 +144,9 @@ class PickingObjectManager(object):
         self.current_object_point = None
         self.current_pre_object_point = None
         self.current_post_object_point = None
+
+        self.bottle_name = "bottle"
+        self.bottle_cap_name = "bottle_cap"
 
         procedure_list = [
             # Prepare picking
@@ -259,8 +265,11 @@ class PickingObjectManager(object):
         self.moveit_feedback_state = msg.status.status
 
     def remove_object_from_scene(self):
-        self.scene.remove_attached_object(self.gripper_frame, name=self.object_name)
-        self.scene.remove_world_object(self.object_name)
+        self.scene.remove_attached_object(self.gripper_frame, name=self.bottle_name)
+        self.scene.remove_world_object(self.bottle_name)
+
+        self.scene.remove_attached_object(self.gripper_frame, name=self.bottle_cap_name)
+        self.scene.remove_world_object(self.bottle_cap_name)
 
     def remove_object_from_scene_cb(self, req):
         res = TriggerResponse()
@@ -307,10 +316,17 @@ class PickingObjectManager(object):
     def attach_object(self):
         grasping_group = self.grasping_group_name
         touch_links = self.robot.get_link_names(group=grasping_group)
-        self.scene.attach_box(
-            self.gripper_frame, self.object_name, touch_links=touch_links
-        )
-        self.scene.remove_world_object(self.object_name + "_lower")
+
+        aco_bottle = AttachedCollisionObject()
+        aco_bottle.object = CollisionObject()
+        aco_bottle.object.id = self.bottle_name
+        aco_bottle.link_name = self.gripper_frame
+        aco_bottle.touch_links = touch_links
+        self.scene.attach_object(aco_bottle)
+
+        aco_bottle_cap = copy.deepcopy(aco_bottle)
+        aco_bottle_cap.object.id = self.bottle_cap_name
+        self.scene.attach_object(aco_bottle_cap)
 
     def close_gripper(self, delay=1.0):
         raise NotImplementedError()
@@ -360,7 +376,7 @@ class PickingObjectManager(object):
 
     def add_object_to_scene(self, point):
         # Remove leftover objects from a previous run
-        self.scene.remove_world_object(self.object_name)
+        self.remove_object_from_scene()
 
         body_pose = PoseStamped()
         body_pose.header.frame_id = self.base_link_frame
@@ -369,7 +385,7 @@ class PickingObjectManager(object):
         body_pose.pose.position.z = point.z
 
         self.scene.add_cylinder(
-            self.object_name,
+            self.bottle_cap_name,
             body_pose,
             self.bottle_cap_height,
             self.bottle_cap_radius,
@@ -382,7 +398,7 @@ class PickingObjectManager(object):
             point.z - (self.bottle_cap_height + self.bottle_height) / 2.0
         )
         self.scene.add_cylinder(
-            self.object_name + "_lower",
+            self.bottle_name,
             body_pose,
             self.bottle_height,
             self.bottle_radius,
