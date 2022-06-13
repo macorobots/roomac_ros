@@ -6,3 +6,12 @@ object_position_correction_z: 0.02
 # Simulation picking object manager settings
 open_gripper_value: 0.0
 closed_gripper_value: 0.05
+
+# Bottle size
+bottle_cap_height: 0.03
+bottle_cap_radius: 0.025
+
+# Lower than real height - otherwise it colides with table scene box and plan
+# to pick up bottle isn't good
+bottle_height: 0.1
+bottle_radius: 0.04

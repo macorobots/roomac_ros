@@ -13,3 +13,12 @@ opened_gripper_value: 1.0
 
 bottle_closed_gripper_value: 0.2
 cardbox_object_closed_gripper_value: 0.1
+
+# Bottle size
+bottle_cap_height: 0.02
+bottle_cap_radius: 0.01
+
+# Lower than real height - otherwise it colides with table scene box and plan
+# to pick up bottle isn't good
+bottle_height: 0.1
+bottle_radius: 0.03

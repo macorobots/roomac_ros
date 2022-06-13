@@ -87,6 +87,11 @@ class PickingObjectManager(object):
             "~home_position_target_name", "Home"
         )
 
+        self.bottle_cap_height = rospy.get_param("~bottle_cap_height", 0.06)
+        self.bottle_cap_radius = rospy.get_param("~bottle_cap_radius", 0.025)
+        self.bottle_height = rospy.get_param("~bottle_height", 0.1)
+        self.bottle_radius = rospy.get_param("~bottle_radius", 0.04)
+
         # Moveit stuff
 
         moveit_commander.roscpp_initialize(sys.argv)
@@ -357,24 +362,31 @@ class PickingObjectManager(object):
         # Remove leftover objects from a previous run
         self.scene.remove_world_object(self.object_name)
 
-        # Real height is 0.125, but it collides with cardboard box then
-        # and plan to pick it up isn't too good
-        body_size = [0.015, 0.04, 0.06]
-
         body_pose = PoseStamped()
         body_pose.header.frame_id = self.base_link_frame
         body_pose.pose.position.x = point.x
         body_pose.pose.position.y = point.y
-        body_pose.pose.position.z = point.z - body_size[2] / 2.0 + 0.02
+        body_pose.pose.position.z = point.z
 
-        self.scene.add_box(self.object_name, body_pose, body_size)
+        self.scene.add_cylinder(
+            self.object_name,
+            body_pose,
+            self.bottle_cap_height,
+            self.bottle_cap_radius,
+        )
 
         # Lower part of the bottle, so moveit won't approach it from lower position
         # causing bottle to fall
-        body_size = [0.06, 0.06, 0.06]
         body_pose.header.frame_id = self.base_link_frame
-        body_pose.pose.position.z -= 0.03
-        self.scene.add_box(self.object_name + "_lower", body_pose, body_size)
+        body_pose.pose.position.z = (
+            point.z - (self.bottle_cap_height + self.bottle_height) / 2.0
+        )
+        self.scene.add_cylinder(
+            self.object_name + "_lower",
+            body_pose,
+            self.bottle_height,
+            self.bottle_radius,
+        )
 
     def calculate_pre_and_post_points(self, point):
         pre_point = copy.deepcopy(point)
