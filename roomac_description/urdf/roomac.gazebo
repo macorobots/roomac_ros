@@ -212,7 +212,7 @@
     <!-- Topic to receive geometry_msgs/Twist message commands, defaults to `cmd_vel` -->
     <commandTopic>cmd_vel</commandTopic>
     <!-- Topic to publish nav_msgs/Odometry messages, defaults to `odom` -->
-    <odometryTopic>odom</odometryTopic>
+    <odometryTopic>/wheel_odom/odom</odometryTopic>
     <!-- Odometry frame, defaults to `odom` -->
     <odometryFrame>odom</odometryFrame>
     <!-- Robot frame to calculate odometry from, defaults to `base_footprint` -->
@@ -229,7 +229,7 @@
     <legacyMode>false</legacyMode>
 
     <rosDebugLevel>na</rosDebugLevel>
-    <publishOdomTF>true</publishOdomTF>
+    <publishOdomTF>false</publishOdomTF>
     <publishTf>true</publishTf>
   </plugin>
 </gazebo>

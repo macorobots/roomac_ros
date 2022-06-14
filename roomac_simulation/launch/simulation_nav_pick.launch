@@ -1,6 +1,4 @@
 <launch>
-  <remap from="/odometry/filtered" to="/odom"/>
-
 <!-- Gazebo -->
   <include file="$(find roomac_simulation)/launch/gazebo.launch">
     <arg name="gazebo_gui" value="true"/>
@@ -31,6 +29,12 @@
 
 <!-- Move base -->
   <include file="$(find roomac_move_base)/launch/move_base_fusion.launch"/>
+
+<!-- Robot localization -->
+<!-- TODO: add IMU to gazebo and use default configuration -->
+  <node pkg="robot_localization" type="ekf_localization_node" name="ekf_se" clear_params="true">
+    <rosparam command="load" file="$(find roomac_sensor_fusion)/config/fusion_simulation.yaml" />
+  </node>
 
 <!-- MoveIt -->
   <include file="$(find roomac_moveit)/launch/roomac_simulation.launch"/>
