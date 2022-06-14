@@ -31,9 +31,8 @@
   <include file="$(find roomac_move_base)/launch/move_base_fusion.launch"/>
 
 <!-- Robot localization -->
-<!-- TODO: add IMU to gazebo and use default configuration -->
   <node pkg="robot_localization" type="ekf_localization_node" name="ekf_se" clear_params="true">
-    <rosparam command="load" file="$(find roomac_sensor_fusion)/config/fusion_simulation.yaml" />
+    <rosparam command="load" file="$(find roomac_sensor_fusion)/config/fusion.yaml" />
   </node>
 
 <!-- MoveIt -->
