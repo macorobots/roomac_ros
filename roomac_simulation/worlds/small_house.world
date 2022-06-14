@@ -96,7 +96,7 @@
         <include>
             <uri>model://aws_robomaker_residential_NightStand_01</uri>
         </include>
-        <pose frame=''>4.817081 -1.999215 0.005256 0 0 1.57</pose>
+        <pose frame=''>4.817081 -1.999215 0.005256 0 0 -1.57</pose>
 	</model>
 	<model name='Board_01_001'>
         <static>true</static>    
