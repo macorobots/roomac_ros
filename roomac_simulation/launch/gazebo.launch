@@ -12,8 +12,10 @@
   </include>
 
   <param name="robot_description" command="$(find xacro)/xacro $(find roomac_description)/urdf/roomac_simulation_picking.xacro" />
+  
+  <!-- Delay necessary for correct start of controllers -->
   <node name="spawn_gazebo_model" pkg="gazebo_ros" type="spawn_model" args="-urdf -param robot_description -model robot -x 0.3 -y 0 -z 0.15"
-    respawn="false" output="screen" launch-prefix="bash -c 'sleep 10; $0 $@'" />
+    respawn="false" output="screen" launch-prefix="bash -c 'sleep 15; $0 $@'" />
 
   <include file="$(find roomac_moveit)/launch/ros_controllers.launch"/>
 </launch>
