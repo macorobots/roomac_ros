@@ -9,7 +9,7 @@ import moveit_commander
 
 import geometry_msgs.msg
 from geometry_msgs.msg import PoseStamped, PointStamped, Quaternion, Point
-from std_srvs.srv import Trigger, TriggerResponse
+from std_srvs.srv import Trigger, TriggerResponse, Empty
 
 import tf
 from tf.transformations import quaternion_from_euler
@@ -225,6 +225,9 @@ class PickingObjectManager(object):
             "close_gripper", Trigger, self.close_gripper_cb
         )
 
+        self.clear_octomap_srv = rospy.ServiceProxy("/clear_octomap", Empty)
+        self.clear_octomap_srv.wait_for_service()
+
     def open_gripper_cb(self, req):
         res = TriggerResponse()
         res.success = True
@@ -255,6 +258,10 @@ class PickingObjectManager(object):
         object_point = self.get_detected_object_point()
 
         self.add_object_to_scene(object_point.point)
+
+        # Clear octomap after adding objects to force clearing object points
+        # This especially caused problems in simulation - object points weren't cleared and picking failed
+        self.clear_octomap_srv.call()
         pre_point, post_point = self.calculate_pre_and_post_points(object_point.point)
 
         self.current_object_point = object_point.point
