@@ -1,7 +1,9 @@
 <launch>
+  <arg name="gui" default="true"/>
+
 <!-- Gazebo -->
   <include file="$(find roomac_simulation)/launch/gazebo.launch">
-    <arg name="gazebo_gui" value="true"/>
+    <arg name="gazebo_gui" value="$(arg gui)"/>
     <arg name="world_name" value="$(find roomac_simulation)/worlds/small_house.world"/>
   </include>
 
@@ -39,12 +41,12 @@
   <include file="$(find roomac_moveit)/launch/roomac_simulation.launch"/>
 
 <!-- RViz -->
-  <include file="$(find roomac_moveit)/launch/moveit_rviz.launch">
+  <include if="$(arg gui)" file="$(find roomac_moveit)/launch/moveit_rviz.launch">
     <arg name="rviz_config" value="$(find roomac_moveit)/launch/moveit.rviz"/>
     <arg name="debug" value="false"/>
   </include>
 
-  <node args="-d $(find roomac_move_base)/rviz/rviz_move_base.rviz" name="rviz" pkg="rviz" type="rviz"/>
+  <node if="$(arg gui)" args="-d $(find roomac_move_base)/rviz/rviz_move_base.rviz" name="rviz" pkg="rviz" type="rviz"/>
 
 <!-- ROS Mobile -->
   <include file="$(find roomac)/launch/ros_mobile.launch"/>
