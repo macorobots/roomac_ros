@@ -55,7 +55,7 @@ if __name__ == "__main__":
             rot,
             rospy.Time.now(),
             "camera_up_link",
-            "artag_link_2",
+            "artag_link_bundle",
         )
 
         rate.sleep()

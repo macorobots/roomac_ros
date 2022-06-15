@@ -1,8 +1,3 @@
-# Correction offset applied to object position [m]
-object_position_correction_x: 0.02
-object_position_correction_y: -0.045
-object_position_correction_z: 0.007
-
 # Offset applied to object position as a pre/post gripping position [m]
 #! pre gripping position is currently disabled
 pre_goal_retraction_x: 0.1
@@ -25,25 +20,5 @@ move_group_goal_position_tolerance: 0.01
 arm_name: right_arm
 base_link_frame: base_link
 gripper_frame: gripper_right_grip
-object_name: object
 grasping_group_name: hand
 home_position_target_name: Home
-
-detected_object_frame: detected_object
-
-# Real picking object manager settings
-# Currently supported "bottle" and "cardbox_object"
-object_type: bottle
-gripper_joint_name: right_gripper
-
-# Almost maximum, if needed can go to 1.2
-opened_gripper_value: 1.0
-
-bottle_closed_gripper_value: 0.2
-cardbox_object_closed_gripper_value: 0.1
-
-# Simulation picking object manager settings
-finger1_joint_name: finger1_joint
-finger2_joint_name: finger2_joint
-open_gripper_value: 0.0
-closed_gripper_value: 0.02

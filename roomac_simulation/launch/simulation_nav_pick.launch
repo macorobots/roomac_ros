@@ -1,5 +1,9 @@
 <launch>
-  <remap from="/odometry/filtered" to="/odom"/>
+<!-- Gazebo -->
+  <include file="$(find roomac_simulation)/launch/gazebo.launch">
+    <arg name="gazebo_gui" value="true"/>
+    <arg name="world_name" value="$(find roomac_simulation)/worlds/small_house.world"/>
+  </include>
 
 <!-- Roomac scripts -->
   <include file="$(find roomac)/launch/autonomous_mission.launch" />
@@ -24,49 +28,15 @@
   </include>
 
 <!-- Move base -->
-  <include file="$(find roomac_move_base)/launch/move_base_fusion.launch">
-  </include>
+  <include file="$(find roomac_move_base)/launch/move_base_fusion.launch"/>
 
-<!-- Gazebo -->
-  <arg name="gazebo_gui" default="true"/>
-  <arg name="world_name" value="$(find roomac_simulation)/worlds/small_house.world"/>
-
-  <include file="$(find roomac_simulation)/launch/empty_world.launch">
-    <arg name="world_name" value="$(arg world_name)"/>
-    <arg name="paused" value="false"/>
-    <arg name="use_sim_time" value="true"/>
-    <arg name="gui" value="true"/>
-    <arg name="headless" value="false"/>
-    <arg name="debug" value="false"/>
-  </include>
-
-  <param name="robot_description" command="$(find xacro)/xacro $(find roomac_description)/urdf/roomac_simulation_picking.xacro" />
-  <node name="spawn_gazebo_model" pkg="gazebo_ros" type="spawn_model" args="-urdf -param robot_description -model robot -x 0.3 -y 0 -z 0.2"
-    respawn="false" output="screen" />
-
-  <include file="$(find roomac_moveit)/launch/ros_controllers.launch"/>
+<!-- Robot localization -->
+  <node pkg="robot_localization" type="ekf_localization_node" name="ekf_se" clear_params="true">
+    <rosparam command="load" file="$(find roomac_sensor_fusion)/config/fusion.yaml" />
+  </node>
 
 <!-- MoveIt -->
-  <arg name="urdf_path" default="$(find roomac_description)/urdf/roomac_simulation_picking.xacro"/>
-
-  <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher">
-    <rosparam param="source_list">[move_group/fake_controller_joint_states]</rosparam>
-    <rosparam param="source_list">[/roomac/joint_states]</rosparam>
-  </node>
-
-  <node name="robot_state_publisher" output="screen" pkg="robot_state_publisher" respawn="true" type="robot_state_publisher">
-    <remap from="/joint_states" to="/roomac/joint_states"/>
-  </node>
-
-  <include file="$(find roomac_moveit)/launch/move_group.launch">
-    <arg name="allow_trajectory_execution" value="true"/>
-    <arg name="fake_execution" value="false"/>
-    <arg name="info" value="true"/>
-    <arg name="debug" value="false"/>
-    <arg name="load_robot_description" value="false"/>
-    <arg name="gazebo" value="true"/>
-    <arg name="simulation_description" value="true" />
-  </include>
+  <include file="$(find roomac_moveit)/launch/roomac_simulation.launch"/>
 
 <!-- RViz -->
   <include file="$(find roomac_moveit)/launch/moveit_rviz.launch">

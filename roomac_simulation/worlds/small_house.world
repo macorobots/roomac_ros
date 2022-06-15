@@ -96,7 +96,7 @@
         <include>
             <uri>model://aws_robomaker_residential_NightStand_01</uri>
         </include>
-        <pose frame=''>-4.407341 2.860420 0.005256 0 0.000002 0</pose>
+        <pose frame=''>4.817081 -1.999215 0.005256 0 0 -1.57</pose>
 	</model>
 	<model name='Board_01_001'>
         <static>true</static>    
@@ -842,11 +842,11 @@
       <name>table1</name>
       <pose>4.78 -2.0 0 0 0 1.57</pose>
     </include>
-    <!-- Cube with ArUco markers on the sides -->
+
     <include>
-      <name>table_cube</name>
-      <uri>model://aruco_cube</uri>
-      <pose>4.43 -2.12 1.2 0 0 0</pose>
+      <name>bottle</name>
+      <uri>model://bottle</uri>
+      <pose>4.43 -2.12 0.817 0 0 0</pose>
     </include>
 
     <model name='kinect_up'>
@@ -879,7 +879,7 @@
           <plugin name="camera_controller_up" filename="libgazebo_ros_openni_kinect.so">
             <baseline>0.2</baseline>
             <alwaysOn>true</alwaysOn>
-            <updateRate>1.0</updateRate>
+            <updateRate>10.0</updateRate>
             <cameraName>camera_up_ir</cameraName>
             <imageTopicName>/camera_up/color/image_raw</imageTopicName>
             <cameraInfoTopicName>/camera_up/rgb/camera_info</cameraInfoTopicName>

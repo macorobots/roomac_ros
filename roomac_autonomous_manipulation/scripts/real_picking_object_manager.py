@@ -25,9 +25,6 @@ class RealPickingObjectManager(PickingObjectManager):
         self.gripper_joint_name = rospy.get_param(
             "~gripper_joint_name", "right_gripper"
         )
-        self.detected_object_frame = rospy.get_param(
-            "~detected_object_frame", "detected_object"
-        )
         self.opened_gripper_value = rospy.get_param("~opened_gripper_value", 1.0)
         self.bottle_closed_gripper_value = rospy.get_param(
             "~bottle_closed_gripper_value", 0.4
@@ -84,18 +81,6 @@ class RealPickingObjectManager(PickingObjectManager):
     def open_gripper(self, delay=1.0):
         rospy.loginfo("Sending open gripper command")
         self.move_gripper(self.opened_gripper_value, delay)
-
-    def get_object_point(self):
-        object_point_stamped = PointStamped()
-        object_point_stamped.header.stamp = rospy.Time(0)
-        object_point_stamped.header.frame_id = self.detected_object_frame
-        object_point_stamped.point = self.object_point
-
-        object_point_stamped.point.x += self.object_position_correction_x
-        object_point_stamped.point.y += self.object_position_correction_y
-        object_point_stamped.point.z += self.object_position_correction_z
-
-        return object_point_stamped
 
 
 if __name__ == "__main__":

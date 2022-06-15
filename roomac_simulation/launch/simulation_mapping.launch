@@ -1,15 +1,28 @@
 <launch>
-  <remap from="/odometry/filtered" to="/odom"/>
-
-  <include file="$(find roomac_simulation)/launch/simulation.launch">
+<!-- Gazebo -->
+  <include file="$(find roomac_simulation)/launch/gazebo.launch">
     <arg name="gazebo_gui" value="true"/>
-    <arg name="rviz_config_file" value="$(find roomac_simulation)/rviz/simulation_rtabmap.rviz"/>
+    <arg name="world_name" value="$(find roomac_simulation)/worlds/small_house.world"/>
   </include>
 
+<!-- Rtabmap -->
   <include file="$(find roomac_rtabmap)/launch/rtabmap_fusion.launch">
     <arg name="rgb_image_topic" value="/camera/color/image_raw"/>
     <arg name="depth_image_topic" value="/camera/depth/image_raw"/>
     <arg name="rgb_camera_info_topic" value="/camera/color/camera_info"/>
   </include>
 
+<!-- Robot localization -->
+  <node pkg="robot_localization" type="ekf_localization_node" name="ekf_se" clear_params="true">
+    <rosparam command="load" file="$(find roomac_sensor_fusion)/config/fusion.yaml" />
+  </node>
+
+  <node args="-d $(find roomac_move_base)/rviz/rviz_move_base.rviz" name="rviz" pkg="rviz" type="rviz"/>
+
+<!-- ROS Mobile -->
+  <include file="$(find roomac)/launch/ros_mobile.launch"/>
+
+<!-- MoveIt -->
+  <!-- for transform publishing -->
+  <include file="$(find roomac_moveit)/launch/roomac_simulation.launch"/>
 </launch>

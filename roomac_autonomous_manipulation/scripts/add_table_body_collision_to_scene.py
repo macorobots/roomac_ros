@@ -54,7 +54,7 @@ class ObstaclesManager:
         ]
 
         self.table_body_base_size = [0.74, 1.18, 0.05]
-        self.safety_margin_table = 0.1
+        self.safety_margin_table = 0.05
         self.table_body_size = [
             self.table_body_base_size[0] + 2 * self.safety_margin_table,
             self.table_body_base_size[1] + 2 * self.safety_margin_table,

@@ -72,8 +72,7 @@ Visualization Manager:
       Show Arrows: true
       Show Axes: true
       Show Names: true
-      Tree:
-        {}
+      Tree: {}
       Update Interval: 0
       Value: false
     - Alpha: 1
@@ -306,7 +305,7 @@ Visualization Manager:
           Show Axes: false
           Show Trail: false
           Value: true
-        artag_link_2:
+        artag_link_bundle:
           Alpha: 1
           Show Axes: false
           Show Trail: false

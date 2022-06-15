@@ -2,7 +2,7 @@
 <robot name="roomac" xmlns:xacro="http://www.ros.org/wiki/xacro">
   <link name="gripper_right_grip"/>
   <joint name="right_grip" type="fixed">
-    <origin rpy="0 0 0" xyz="0.0 0.0 -0.085"/>
+    <origin rpy="0 0 0" xyz="0.0 0.0 -0.04"/>
     <parent link="gripper_right_1"/>
     <child link="gripper_right_grip"/>
   </joint>
@@ -45,14 +45,14 @@
     <collision>
       <origin xyz="0 0 -0.03" rpy="0 0 0"/>
       <geometry>
-        <box size="0.02 0.02 0.06" />
+        <box size="0.02 0.01 0.06" />
       </geometry>
     </collision>
 
     <visual>
       <origin xyz="0 0 -0.03" rpy="0 0 0"/>
       <geometry>
-        <box size="0.02 0.02 0.06" />
+        <box size="0.02 0.01 0.06" />
       </geometry>
     </visual>
 
@@ -78,14 +78,14 @@
     <collision>
       <origin xyz="0 0 -0.03" rpy="0 0 0"/>
       <geometry>
-        <box size="0.02 0.02 0.06" />
+        <box size="0.02 0.01 0.06" />
       </geometry>
     </collision>
 
     <visual>
       <origin xyz="0 0 -0.03" rpy="0 0 0"/>
       <geometry>
-        <box size="0.02 0.02 0.06" />
+        <box size="0.02 0.01 0.06" />
       </geometry>
     </visual>
 

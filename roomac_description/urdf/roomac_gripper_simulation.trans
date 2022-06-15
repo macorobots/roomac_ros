@@ -4,10 +4,10 @@
 <transmission name="finger1_tran">
   <type>transmission_interface/SimpleTransmission</type>
   <joint name="finger1_joint">
-    <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+    <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
   </joint>
   <actuator name="finger1_actr">
-    <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+    <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
     <mechanicalReduction>1</mechanicalReduction>
   </actuator>
 </transmission>
@@ -15,10 +15,10 @@
 <transmission name="finger2_tran">
   <type>transmission_interface/SimpleTransmission</type>
   <joint name="finger2_joint">
-    <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+    <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
   </joint>
   <actuator name="finger2_actr">
-    <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+    <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
     <mechanicalReduction>1</mechanicalReduction>
   </actuator>
 </transmission>

@@ -160,7 +160,8 @@ private:
    */
   pcl::PointCloud<pcl::PointXYZRGB>::Ptr DetectObjectCluster(const pcl::PointCloud<pcl::PointXYZRGB>::Ptr& src_cloud,
                                                              float cluster_tolerance, int min_cluster_size,
-                                                             int max_cluster_size);
+                                                             int max_cluster_size,
+                                                             const std::string& pointcloud_frame_id);
 
   /**
    * @brief Detects largest cluster in pointcloud using euclidean clustering
@@ -179,7 +180,8 @@ private:
   /**
    * @brief Publishes pointcloud cloud using given publisher pub
    */
-  void PublishPointcloud(const pcl::PointCloud<pcl::PointXYZRGB>::Ptr& cloud, ros::Publisher& pub);
+  void PublishPointcloud(const pcl::PointCloud<pcl::PointXYZRGB>::Ptr& cloud, ros::Publisher& pub,
+                         const std::string& pointcloud_frame_id);
 
   /**
    * @brief Sets parameters changed dynamically
@@ -203,8 +205,6 @@ private:
   float table_voxels_leaf_size_;
 
   float objects_on_table_min_height_;
-
-  std::string camera_frame_;
 
   ros::ServiceServer service_;
 

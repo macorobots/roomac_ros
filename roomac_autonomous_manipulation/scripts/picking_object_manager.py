@@ -2,18 +2,23 @@
 
 import sys
 import copy
+import math
 
 import rospy
 import moveit_commander
 
 import geometry_msgs.msg
 from geometry_msgs.msg import PoseStamped, PointStamped, Quaternion, Point
-from std_srvs.srv import Trigger, TriggerResponse
+from std_srvs.srv import Trigger, TriggerResponse, Empty
 
 import tf
 from tf.transformations import quaternion_from_euler
 
-from moveit_msgs.msg import MoveGroupActionFeedback
+from moveit_msgs.msg import (
+    MoveGroupActionFeedback,
+    AttachedCollisionObject,
+    CollisionObject,
+)
 from actionlib_msgs.msg import GoalID, GoalStatus
 
 from roomac_msgs.msg import (
@@ -80,11 +85,15 @@ class PickingObjectManager(object):
         arm_name = rospy.get_param("~arm_name", "right_arm")
         self.base_link_frame = rospy.get_param("~base_link_frame", "base_link")
         self.gripper_frame = rospy.get_param("~gripper_frame", "gripper_right_grip")
-        self.object_name = rospy.get_param("~object_name", "object")
         self.grasping_group_name = rospy.get_param("~grasping_group_name", "hand")
         self.home_position_target_name = rospy.get_param(
             "~home_position_target_name", "Home"
         )
+
+        self.bottle_cap_height = rospy.get_param("~bottle_cap_height", 0.06)
+        self.bottle_cap_radius = rospy.get_param("~bottle_cap_radius", 0.025)
+        self.bottle_height = rospy.get_param("~bottle_height", 0.1)
+        self.bottle_radius = rospy.get_param("~bottle_radius", 0.04)
 
         # Moveit stuff
 
@@ -135,6 +144,9 @@ class PickingObjectManager(object):
         self.current_object_point = None
         self.current_pre_object_point = None
         self.current_post_object_point = None
+
+        self.bottle_name = "bottle"
+        self.bottle_cap_name = "bottle_cap"
 
         procedure_list = [
             # Prepare picking
@@ -213,6 +225,9 @@ class PickingObjectManager(object):
             "close_gripper", Trigger, self.close_gripper_cb
         )
 
+        self.clear_octomap_srv = rospy.ServiceProxy("/clear_octomap", Empty)
+        self.clear_octomap_srv.wait_for_service()
+
     def open_gripper_cb(self, req):
         res = TriggerResponse()
         res.success = True
@@ -241,16 +256,15 @@ class PickingObjectManager(object):
         self.remove_object_from_scene()
 
         object_point = self.get_detected_object_point()
-        object_point_transformed = self.transform_point(
-            object_point, self.base_link_frame
-        )
 
-        self.add_object_to_scene(object_point_transformed.point)
-        pre_point, post_point = self.calculate_pre_and_post_points(
-            object_point_transformed.point
-        )
+        self.add_object_to_scene(object_point.point)
 
-        self.current_object_point = object_point_transformed.point
+        # Clear octomap after adding objects to force clearing object points
+        # This especially caused problems in simulation - object points weren't cleared and picking failed
+        self.clear_octomap_srv.call()
+        pre_point, post_point = self.calculate_pre_and_post_points(object_point.point)
+
+        self.current_object_point = object_point.point
         self.current_pre_object_point = pre_point
         self.current_post_object_point = post_point
 
@@ -258,8 +272,11 @@ class PickingObjectManager(object):
         self.moveit_feedback_state = msg.status.status
 
     def remove_object_from_scene(self):
-        self.scene.remove_attached_object(self.gripper_frame, name=self.object_name)
-        self.scene.remove_world_object(self.object_name)
+        self.scene.remove_attached_object(self.gripper_frame, name=self.bottle_name)
+        self.scene.remove_world_object(self.bottle_name)
+
+        self.scene.remove_attached_object(self.gripper_frame, name=self.bottle_cap_name)
+        self.scene.remove_world_object(self.bottle_cap_name)
 
     def remove_object_from_scene_cb(self, req):
         res = TriggerResponse()
@@ -306,10 +323,17 @@ class PickingObjectManager(object):
     def attach_object(self):
         grasping_group = self.grasping_group_name
         touch_links = self.robot.get_link_names(group=grasping_group)
-        self.scene.attach_box(
-            self.gripper_frame, self.object_name, touch_links=touch_links
-        )
-        self.scene.remove_world_object(self.object_name + "_lower")
+
+        aco_bottle = AttachedCollisionObject()
+        aco_bottle.object = CollisionObject()
+        aco_bottle.object.id = self.bottle_name
+        aco_bottle.link_name = self.gripper_frame
+        aco_bottle.touch_links = touch_links
+        self.scene.attach_object(aco_bottle)
+
+        aco_bottle_cap = copy.deepcopy(aco_bottle)
+        aco_bottle_cap.object.id = self.bottle_cap_name
+        self.scene.attach_object(aco_bottle_cap)
 
     def close_gripper(self, delay=1.0):
         raise NotImplementedError()
@@ -337,7 +361,7 @@ class PickingObjectManager(object):
 
     def get_perpendicular_orientation(self):
         orientation = Quaternion()
-        quat = quaternion_from_euler(-1.461, -1.445, 3.016)
+        quat = quaternion_from_euler(-math.pi / 2, -math.pi / 2, math.pi)
         orientation.x = quat[0]
         orientation.y = quat[1]
         orientation.z = quat[2]
@@ -359,26 +383,33 @@ class PickingObjectManager(object):
 
     def add_object_to_scene(self, point):
         # Remove leftover objects from a previous run
-        self.scene.remove_world_object(self.object_name)
-
-        # Real height is 0.125, but it collides with cardboard box then
-        # and plan to pick it up isn't too good
-        body_size = [0.015, 0.04, 0.06]
+        self.remove_object_from_scene()
 
         body_pose = PoseStamped()
         body_pose.header.frame_id = self.base_link_frame
         body_pose.pose.position.x = point.x
         body_pose.pose.position.y = point.y
-        body_pose.pose.position.z = point.z - body_size[2] / 2.0 + 0.02
+        body_pose.pose.position.z = point.z
 
-        self.scene.add_box(self.object_name, body_pose, body_size)
+        self.scene.add_cylinder(
+            self.bottle_cap_name,
+            body_pose,
+            self.bottle_cap_height,
+            self.bottle_cap_radius,
+        )
 
         # Lower part of the bottle, so moveit won't approach it from lower position
         # causing bottle to fall
-        body_size = [0.06, 0.06, 0.06]
         body_pose.header.frame_id = self.base_link_frame
-        body_pose.pose.position.z -= 0.03
-        self.scene.add_box(self.object_name + "_lower", body_pose, body_size)
+        body_pose.pose.position.z = (
+            point.z - (self.bottle_cap_height + self.bottle_height) / 2.0
+        )
+        self.scene.add_cylinder(
+            self.bottle_name,
+            body_pose,
+            self.bottle_height,
+            self.bottle_radius,
+        )
 
     def calculate_pre_and_post_points(self, point):
         pre_point = copy.deepcopy(point)
@@ -399,9 +430,6 @@ class PickingObjectManager(object):
 
         return res
 
-    def get_object_point(self):
-        raise NotImplementedError()
-
     def get_detected_object_point(self):
         detect_table_and_object_srv = rospy.ServiceProxy(
             "/detect_table_and_object", DetectObjectAndTable
@@ -419,11 +447,15 @@ class PickingObjectManager(object):
             object_and_table.object_and_table.object.mass_center
         )
 
-        object_point_stamped.point.x += self.object_position_correction_x
-        object_point_stamped.point.y += self.object_position_correction_y
-        object_point_stamped.point.z += self.object_position_correction_z
+        object_point_transformed = self.transform_point(
+            object_point_stamped, self.base_link_frame
+        )
 
-        return object_point_stamped
+        object_point_transformed.point.x += self.object_position_correction_x
+        object_point_transformed.point.y += self.object_position_correction_y
+        object_point_transformed.point.z += self.object_position_correction_z
+
+        return object_point_transformed
 
     def transform_point(self, point, target_frame):
         listener = tf.TransformListener()
