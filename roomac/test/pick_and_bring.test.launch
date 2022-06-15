@@ -1,0 +1,7 @@
+<launch>
+  <include file="$(find roomac_simulation)/launch/simulation_nav_pick.launch">
+    <arg name="gui" value="false"/>
+  </include>
+  
+  <test test-name="pick_and_bring_test" pkg="roomac" type="pick_and_bring.test.py" time-limit="180.0"/>
+</launch>
