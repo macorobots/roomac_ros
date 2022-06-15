@@ -1,8 +1,9 @@
 frame_id: "base_link"
 subscribe_scan: true
 subscribe_rgbd: true
+subscribe_rgb: false
 
-# The frame attached to odometry. If empty, rtabmap will subscribe to odom topic to get odometry. 
+# The frame attached to odometry. If empty, rtabmap will subscribe to odom topic to get odometry.
 # If set, odometry is got from tf (in this case, a covariance of 1 is used).
 odom_frame_id: "odom"
 # visual_odometry: false

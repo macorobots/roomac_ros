@@ -24,7 +24,7 @@
       <!-- Set parameters for mapping just in case they were changed in localization and rosparam server wasn't reloaded -->
       <param name="Mem/IncrementalMemory" type="string" value="true"/>
       <param name="Mem/InitWMWithAllNodes" type="string" value="false"/>
-      <param name="RGBD/SavedLocalizationIgnored" type="bool" value="false"/>
+      <param name="RGBD/StartAtOrigin" type="bool" value="false"/>
 
       <rosparam file="$(find roomac_rtabmap)/config/rtabmap_wheel_odom.yaml" command="load" />
     </node>

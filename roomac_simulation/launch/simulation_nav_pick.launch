@@ -1,4 +1,6 @@
 <launch>
+  <remap from="/odometry/filtered" to="/odom"/>
+
 <!-- Roomac scripts -->
   <include file="$(find roomac)/launch/autonomous_mission.launch" />
 
@@ -16,7 +18,6 @@
 
 <!-- Rtabmap -->
   <include file="$(find roomac_rtabmap)/launch/rtabmap_localization_fusion.launch">
-    <remap from="/odometry/filtered" to="/odom"/>
     <arg name="rgb_image_topic" value="/camera/color/image_raw"/>
     <arg name="depth_image_topic" value="/camera/depth/image_raw"/>
     <arg name="rgb_camera_info_topic" value="/camera/color/camera_info"/>
@@ -24,7 +25,6 @@
 
 <!-- Move base -->
   <include file="$(find roomac_move_base)/launch/move_base_fusion.launch">
-    <remap from="/odometry/filtered" to="/odom"/>
   </include>
 
 <!-- Gazebo -->
