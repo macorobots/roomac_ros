@@ -2,6 +2,9 @@
 Changelog for package roomac_sensor_fusion
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+
 1.9.0 (2022-06-09)
 ------------------
 

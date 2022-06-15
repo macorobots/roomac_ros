@@ -2,6 +2,9 @@
 Changelog for package roomac
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+
 1.9.0 (2022-06-09)
 ------------------
 * Merge pull request `#45 <https://github.com/macstepien/roomac_ros/issues/45>`_ from macstepien/artag-bundle
