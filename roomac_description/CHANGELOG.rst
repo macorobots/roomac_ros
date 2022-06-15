@@ -2,8 +2,8 @@
 Changelog for package roomac_description
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+1.9.1 (2022-06-15)
+------------------
 * Merge pull request `#50 <https://github.com/macstepien/roomac_ros/issues/50>`_ from macstepien/fix-log-warnings-and-errors
   Fix log warnings and errors
 * Contributors: Maciej Stępień
