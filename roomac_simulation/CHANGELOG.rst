@@ -2,6 +2,12 @@
 Changelog for package roomac_simulation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* Merge pull request `#51 <https://github.com/macstepien/roomac_ros/issues/51>`_ from macstepien/fix-gazebo-simulation
+  Fix gazebo simulation
+* Contributors: Maciej Stępień
+
 1.9.1 (2022-06-15)
 ------------------
 * Merge pull request `#50 <https://github.com/macstepien/roomac_ros/issues/50>`_ from macstepien/fix-log-warnings-and-errors
