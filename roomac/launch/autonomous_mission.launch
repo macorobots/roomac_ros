@@ -1,5 +1,7 @@
 <launch>
+  <arg name="positions_file" default="~/roomac_data/positions.yaml"/>
+
   <node name="autonomous_mission" pkg="roomac" type="autonomous_mission.py" output="screen">
-    <rosparam command="load" file="$(find roomac)/config/autonomous_mission_config.yaml" />
+    <rosparam command="load" file="$(find roomac)/config/autonomous_mission_config.yaml" subst_value="true"/>
   </node>
 </launch>

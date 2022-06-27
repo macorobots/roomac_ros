@@ -1,5 +1,7 @@
 <launch>
   <arg name="gui" default="true"/>
+  <arg name="map_file" default="~/roomac_data/rtabmap.db"/>
+  <arg name="positions_file" default="~/roomac_data/positions.yaml"/>
 
 <!-- Gazebo -->
   <include file="$(find roomac_simulation)/launch/gazebo.launch">
@@ -8,7 +10,9 @@
   </include>
 
 <!-- Roomac scripts -->
-  <include file="$(find roomac)/launch/autonomous_mission.launch" />
+  <include file="$(find roomac)/launch/autonomous_mission.launch">
+    <arg name="positions_file" value="$(arg positions_file)"/>
+  </include>
 
   <include file="$(find roomac_autonomous_manipulation)/launch/picking_object_manager.launch">
     <arg name="simulation" value="true"/>
@@ -27,6 +31,7 @@
     <arg name="rgb_image_topic" value="/camera/color/image_raw"/>
     <arg name="depth_image_topic" value="/camera/depth/image_raw"/>
     <arg name="rgb_camera_info_topic" value="/camera/color/camera_info"/>
+    <arg name="map_file" value="$(arg map_file)"/>
   </include>
 
 <!-- Move base -->

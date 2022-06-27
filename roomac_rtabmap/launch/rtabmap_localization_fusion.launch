@@ -1,4 +1,6 @@
 <launch>
+  <arg name="map_file" default="~/roomac_data/rtabmap.db"/>
+
   <arg name="rgb_image_topic" default="/camera/rgb/image_rect_color"/>
   <arg name="depth_image_topic" default="/camera/depth_registered/image_raw"/>
   <arg name="rgb_camera_info_topic" default="/camera/rgb/camera_info"/>
@@ -16,7 +18,7 @@
     </node>
 
     <node name="rtabmap" pkg="rtabmap_ros" type="rtabmap" output="screen">
-      <param name="database_path" type="string" value="~/roomac_data/rtabmap.db"/>
+      <param name="database_path" type="string" value="$(arg map_file)"/>
 
       <remap from="odom" to="/odometry/filtered"/>
       <param name="queue_size" type="int" value="10"/>

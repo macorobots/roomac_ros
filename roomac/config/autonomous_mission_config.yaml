@@ -1,4 +1,4 @@
-positions_file: /home/roomac/roomac_data/positions.yaml
+positions_file: $(arg positions_file)
 
 # How long to wait for stabilization of artag position before picking is started
 wait_time_before_picking_action: 0.1 # [s]
