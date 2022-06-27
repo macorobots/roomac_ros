@@ -20,6 +20,11 @@ RUN sudo apt-get update && \
 
 COPY --chown=${user}:${user} ./ /home/$user/catkin_ws/src/roomac_ros
 
+RUN git clone https://github.com/TAMS-Group/bio_ik.git catkin_ws/src/bio_ik && \
+    git clone https://github.com/aws-robotics/aws-robomaker-small-house-world.git catkin_ws/src/aws-robomaker-small-house-world && \
+    git clone https://github.com/JenniferBuehler/gazebo-pkgs.git catkin_ws/src/gazebo-pkgs && \
+    git clone https://github.com/JenniferBuehler/general-message-pkgs.git catkin_ws/src/general-message-pkgs
+
 WORKDIR /home/${user}/catkin_ws
 
 # update necessary - recently docker wasn't building without it 
@@ -33,4 +38,4 @@ WORKDIR /home/${user}
 
 RUN echo "source /opt/ros/$ROS_DISTRO/setup.bash" >> /home/${user}/.bashrc && \
     echo "source /home/$user/catkin_ws/devel/setup.bash --extend" >> /home/${user}/.bashrc && \
-    echo "export GAZEBO_MODEL_PATH=\$GAZEBO_MODEL_PATH:/home/roomac/catkin_ws/src/roomac/roomac_simulation/models/" >> /home/${user}/.bashrc
+    echo "export GAZEBO_MODEL_PATH=\$GAZEBO_MODEL_PATH:/home/roomac/catkin_ws/src/roomac_ros/roomac_simulation/models/" >> /home/${user}/.bashrc
