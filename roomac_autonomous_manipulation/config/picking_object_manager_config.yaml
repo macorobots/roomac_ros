@@ -3,10 +3,6 @@
 pre_goal_retraction_x: 0.1
 post_goal_retraction_z: 0.08
 
-# How long to wait for gripper to open/close [s]
-open_gripper_wait_time: 0.0
-close_gripper_wait_time: 1.0
-
 # Number of retries of each procedure
 procedure_retry_threshold: 5
 

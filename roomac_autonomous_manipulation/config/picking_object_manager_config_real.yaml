@@ -22,3 +22,7 @@ bottle_cap_radius: 0.015
 # to pick up bottle isn't good
 bottle_height: 0.1
 bottle_radius: 0.04
+
+# How long to wait for gripper to open/close [s]
+open_gripper_wait_time: 0.0
+close_gripper_wait_time: 1.0
