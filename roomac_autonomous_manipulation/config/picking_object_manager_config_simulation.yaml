@@ -1,7 +1,7 @@
 # Correction offset applied to object position [m]
 object_position_correction_x: 0.0
 object_position_correction_y: 0.0
-object_position_correction_z: 0.02
+object_position_correction_z: 0.03
 
 # Simulation picking object manager settings
 open_gripper_value: 0.0
