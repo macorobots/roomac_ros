@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <package format="2">
   <name>roomac_autonomous_manipulation</name>
-  <version>1.10.0</version>
+  <version>1.10.1</version>
   <description>The roomac_autonomous_manipulation package</description>
 
   <!-- One maintainer tag required, multiple allowed, one person per tag -->

@@ -2,8 +2,8 @@
 Changelog for package roomac
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+1.10.1 (2022-07-06)
+-------------------
 * Merge pull request `#52 <https://github.com/macstepien/roomac_ros/issues/52>`_ from macstepien/gazebo-integration-tests
   Gazebo integration tests
 * Contributors: Maciej Stępień
