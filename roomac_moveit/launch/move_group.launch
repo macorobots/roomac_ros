@@ -69,6 +69,7 @@
   <!-- Sensors Functionality -->
   <include ns="move_group" file="$(find roomac_moveit)/launch/sensor_manager.launch.xml" if="$(arg allow_trajectory_execution)">
     <arg name="moveit_sensor_manager" value="roomac" />
+    <arg name="gazebo" value="$(arg gazebo)"/>
   </include>
 
   <!-- Start the actual move_group node/action server -->
