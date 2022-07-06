@@ -2,6 +2,9 @@
 Changelog for package roomac_ar_tag
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+
 1.10.0 (2022-06-15)
 -------------------
 * Merge pull request `#51 <https://github.com/macstepien/roomac_ros/issues/51>`_ from macstepien/fix-gazebo-simulation
