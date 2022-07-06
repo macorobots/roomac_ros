@@ -1,6 +1,6 @@
 <launch>
   <arg name="gui" default="true"/>
-  <arg name="map_file" default="~/roomac_data/rtabmap.db"/>
+  <arg name="map_file" default="/home/roomac/roomac_data/rtabmap.db"/>
   <arg name="positions_file" default="/home/roomac/roomac_data/positions.yaml"/>
 
 <!-- Gazebo -->

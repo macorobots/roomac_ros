@@ -1,5 +1,5 @@
 <launch>
-  <arg name="map_file" default="~/roomac_data/rtabmap.db"/>
+  <arg name="map_file" default="/home/roomac/roomac_data/rtabmap.db"/>
 
   <arg name="rgb_image_topic" default="/camera/rgb/image_rect_color"/>
   <arg name="depth_image_topic" default="/camera/depth_registered/image_raw"/>
