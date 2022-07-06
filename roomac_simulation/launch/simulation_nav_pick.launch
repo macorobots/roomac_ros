@@ -1,7 +1,7 @@
 <launch>
   <arg name="gui" default="true"/>
   <arg name="map_file" default="~/roomac_data/rtabmap.db"/>
-  <arg name="positions_file" default="~/roomac_data/positions.yaml"/>
+  <arg name="positions_file" default="/home/roomac/roomac_data/positions.yaml"/>
 
 <!-- Gazebo -->
   <include file="$(find roomac_simulation)/launch/gazebo.launch">
