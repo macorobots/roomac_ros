@@ -1,12 +1,19 @@
 <launch>
+  <arg name="gui" default="true"/>
+  <arg name="map_file" default="/home/roomac/roomac_data/rtabmap.db"/>
+  <arg name="positions_file" default="/home/roomac/roomac_data/positions.yaml"/>
+
 <!-- Gazebo -->
   <include file="$(find roomac_simulation)/launch/gazebo.launch">
-    <arg name="gazebo_gui" value="true"/>
+    <arg name="gazebo_gui" value="$(arg gui)"/>
     <arg name="world_name" value="$(find roomac_simulation)/worlds/small_house.world"/>
   </include>
 
 <!-- Roomac scripts -->
-  <include file="$(find roomac)/launch/autonomous_mission.launch" />
+  <include file="$(find roomac)/launch/autonomous_mission.launch">
+    <arg name="positions_file" value="$(arg positions_file)"/>
+    <arg name="simulation" value="true"/>
+  </include>
 
   <include file="$(find roomac_autonomous_manipulation)/launch/picking_object_manager.launch">
     <arg name="simulation" value="true"/>
@@ -25,6 +32,7 @@
     <arg name="rgb_image_topic" value="/camera/color/image_raw"/>
     <arg name="depth_image_topic" value="/camera/depth/image_raw"/>
     <arg name="rgb_camera_info_topic" value="/camera/color/camera_info"/>
+    <arg name="map_file" value="$(arg map_file)"/>
   </include>
 
 <!-- Move base -->
@@ -39,12 +47,12 @@
   <include file="$(find roomac_moveit)/launch/roomac_simulation.launch"/>
 
 <!-- RViz -->
-  <include file="$(find roomac_moveit)/launch/moveit_rviz.launch">
+  <include if="$(arg gui)" file="$(find roomac_moveit)/launch/moveit_rviz.launch">
     <arg name="rviz_config" value="$(find roomac_moveit)/launch/moveit.rviz"/>
     <arg name="debug" value="false"/>
   </include>
 
-  <node args="-d $(find roomac_move_base)/rviz/rviz_move_base.rviz" name="rviz" pkg="rviz" type="rviz"/>
+  <node if="$(arg gui)" args="-d $(find roomac_move_base)/rviz/rviz_move_base.rviz" name="rviz" pkg="rviz" type="rviz"/>
 
 <!-- ROS Mobile -->
   <include file="$(find roomac)/launch/ros_mobile.launch"/>

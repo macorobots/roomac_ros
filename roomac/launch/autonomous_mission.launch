@@ -1,5 +1,12 @@
 <launch>
+  <arg name="positions_file" default="/home/roomac/roomac_data/positions.yaml"/>
+  <arg name="simulation" default="false"/>
+
+  <!-- how long to wait for stabilization of artag position before picking is started, has to be longer for simulation -->
+  <arg if="$(arg simulation)" name="wait_time_before_picking_action" value="5.0"/>
+  <arg unless="$(arg simulation)" name="wait_time_before_picking_action" value="0.1"/>
+
   <node name="autonomous_mission" pkg="roomac" type="autonomous_mission.py" output="screen">
-    <rosparam command="load" file="$(find roomac)/config/autonomous_mission_config.yaml" />
+    <rosparam command="load" file="$(find roomac)/config/autonomous_mission_config.yaml" subst_value="true"/>
   </node>
 </launch>

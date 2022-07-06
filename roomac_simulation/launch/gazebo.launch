@@ -6,8 +6,9 @@
     <arg name="world_name" value="$(arg world_name)"/>
     <arg name="paused" value="false"/>
     <arg name="use_sim_time" value="true"/>
-    <arg name="gui" value="true"/>
-    <arg name="headless" value="false"/>
+    <arg name="gui" value="$(arg gazebo_gui)"/>
+    <!-- Headless doesn't appear to be used now, setting gui should be enough -->
+    <!-- <arg name="headless" value="false"/> -->
     <arg name="debug" value="false"/>
   </include>
 
