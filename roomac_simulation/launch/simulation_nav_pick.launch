@@ -12,6 +12,7 @@
 <!-- Roomac scripts -->
   <include file="$(find roomac)/launch/autonomous_mission.launch">
     <arg name="positions_file" value="$(arg positions_file)"/>
+    <arg name="simulation" value="true"/>
   </include>
 
   <include file="$(find roomac_autonomous_manipulation)/launch/picking_object_manager.launch">
