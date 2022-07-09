@@ -32,7 +32,7 @@ WORKDIR /home/${user}/catkin_ws
 RUN sudo apt-get update && \
     rosdep update && \
     rosdep install --from-paths src --ignore-src -y && \
-    catkin config --init --extend /opt/ros/melodic && \
+    catkin config --init --extend /opt/ros/melodic --cmake-args -DCMAKE_BUILD_TYPE=Release && \
     catkin build
 
 WORKDIR /home/${user}
