@@ -107,11 +107,11 @@ class ArmStub:
         )
 
         self._joint_name_remap = {
-            "shoulder_pan": "right_shoulder_pan",
-            "shoulder_lift": "right_shoulder_lift",
-            "elbow": "right_elbow",
-            "wrist": "right_wrist",
-            "wrist_twist": "right_gripper_twist",
+            "shoulder_pan": "shoulder_pitch_right",
+            "shoulder_lift": "shoulder_roll_right",
+            "elbow": "elbow_right",
+            "wrist": "wrist_right",
+            "wrist_twist": "gripper_twist_right",
             "gripper": "right_gripper",
         }
 

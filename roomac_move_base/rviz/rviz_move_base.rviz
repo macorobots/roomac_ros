@@ -368,32 +368,32 @@ Visualization Manager:
           Alpha: 1
           Show Axes: false
           Show Trail: false
-        left_caster_1:
+        caster_left_1:
           Alpha: 1
           Show Axes: false
           Show Trail: false
           Value: true
-        left_wheel_1:
+        wheel_left_1:
           Alpha: 1
           Show Axes: false
           Show Trail: false
           Value: true
-        left_wheel_hub_1:
+        hub_left_1:
           Alpha: 1
           Show Axes: false
           Show Trail: false
           Value: true
-        right_caster_1:
+        caster_right_1:
           Alpha: 1
           Show Axes: false
           Show Trail: false
           Value: true
-        right_wheel_1:
+        wheel_right_1:
           Alpha: 1
           Show Axes: false
           Show Trail: false
           Value: true
-        right_wheel_hub_1:
+        hub_right_1:
           Alpha: 1
           Show Axes: false
           Show Trail: false

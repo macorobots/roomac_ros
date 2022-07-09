@@ -126,21 +126,21 @@ Visualization Manager:
           Value: false
         imu:
           Value: false
-        left_caster_1:
+        caster_left_1:
           Value: false
-        left_wheel_1:
+        wheel_left_1:
           Value: false
-        left_wheel_hub_1:
+        hub_left_1:
           Value: false
         map:
           Value: true
         odom:
           Value: true
-        right_caster_1:
+        caster_right_1:
           Value: false
-        right_wheel_1:
+        wheel_right_1:
           Value: false
-        right_wheel_hub_1:
+        hub_right_1:
           Value: false
       Marker Scale: 1
       Name: TF
@@ -163,8 +163,8 @@ Visualization Manager:
                   camera_rgb_optical_frame: {}
                 gazebo_camera_link: {}
               imu: {}
-              left_caster_1: {}
-              right_caster_1: {}
+              caster_left_1: {}
+              caster_right_1: {}
       Update Interval: 0
       Value: true
     - Angle Tolerance: 0.0010000000474974513

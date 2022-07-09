@@ -74,19 +74,19 @@ Visualization Manager:
           Value: true
         head_1:
           Value: true
-        left_caster_1:
+        caster_left_1:
           Value: true
-        left_wheel_1:
+        wheel_left_1:
           Value: true
-        left_wheel_hub_1:
+        hub_left_1:
           Value: true
         odom:
           Value: true
-        right_caster_1:
+        caster_right_1:
           Value: true
-        right_wheel_1:
+        wheel_right_1:
           Value: true
-        right_wheel_hub_1:
+        hub_right_1:
           Value: true
         shoulder_elbow_left_1:
           Value: true
@@ -109,34 +109,26 @@ Visualization Manager:
         odom:
           base_link:
             base_up_1:
-              head_1:
-                {}
+              head_1: {}
               shoulder_left_1:
                 shoulder_elbow_left_1:
                   elbow_wrist_left_1:
                     wrist_left_1:
-                      gripper_left_1:
-                        {}
+                      gripper_left_1: {}
               shoulder_right_1:
                 shoulder_elbow_right_1:
                   elbow_wrist_right_1:
                     wrist_right_1:
                       gripper_right_1:
-                        gripper_right_grip:
-                          {}
+                        gripper_right_grip: {}
             camera_link:
-              gazebo_camera_link:
-                {}
-            left_caster_1:
-              {}
-            left_wheel_1:
-              left_wheel_hub_1:
-                {}
-            right_caster_1:
-              {}
-            right_wheel_1:
-              right_wheel_hub_1:
-                {}
+              gazebo_camera_link: {}
+            caster_left_1: {}
+            wheel_left_1:
+              hub_left_1: {}
+            caster_right_1: {}
+            wheel_right_1:
+              hub_right_1: {}
       Update Interval: 0
       Value: true
     - Alpha: 1

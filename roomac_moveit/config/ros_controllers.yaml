@@ -10,18 +10,18 @@ roomac:
   # Settings for ros_control hardware interface
   hardware_interface:
     joints:
-      # - left_wheel
-      # - right_wheel
-      # - left_shoulder_pan
-      # - left_shoulder_lift
-      # - left_elbow
-      # - left_wrist
-      # - left_gripper_twist
-      - right_shoulder_pan
-      - right_shoulder_lift
-      - right_elbow
-      - right_wrist
-      - right_gripper_twist
+      # - wheel_left
+      # - wheel_right
+      # - shoulder_pitch_left
+      # - shoulder_roll_left
+      # - elbow_left
+      # - wrist_left
+      # - gripper_twist_left
+      - shoulder_pitch_right
+      - shoulder_roll_right
+      - elbow_right
+      - wrist_right
+      - gripper_twist_right
     sim_control_mode: 1 # 0: position, 1: velocity
   # Publish all joint states
   # Creates the /joint_states topic necessary in ROS
@@ -32,52 +32,52 @@ roomac:
   arm_position_controller:
     type: position_controllers/JointTrajectoryController
     joints:
-      - right_shoulder_pan
-      - right_shoulder_lift
-      - right_elbow
-      - right_wrist
-      - right_gripper_twist
+      - shoulder_pitch_right
+      - shoulder_roll_right
+      - elbow_right
+      - wrist_right
+      - gripper_twist_right
     gains:
-      right_shoulder_pan:
+      shoulder_pitch_right:
         p: 10
         d: 0
         i: 0.01
         i_clamp: 1
-      right_shoulder_lift:
+      shoulder_roll_right:
         p: 10
         d: 0
         i: 0.01
         i_clamp: 1
-      right_elbow:
+      elbow_right:
         p: 10
         d: 0
         i: 0.01
         i_clamp: 1
-      right_wrist:
+      wrist_right:
         p: 10
         d: 0
         i: 0.01
         i_clamp: 1
-      right_gripper_twist:
+      gripper_twist_right:
         p: 10
         d: 0
         i: 0.01
         i_clamp: 1
     constraints:
       goal_time: 30.0
-      right_shoulder_pan:
+      shoulder_pitch_right:
         goal: 0.01
         trajectory: 0.01
-      right_shoulder_lift:
+      shoulder_roll_right:
         goal: 0.01
         trajectory: 0.01
-      right_elbow:
+      elbow_right:
         goal: 0.01
         trajectory: 0.01
-      right_wrist:
+      wrist_right:
         goal: 0.01
         trajectory: 0.01
-      right_gripper_twist:
+      gripper_twist_right:
         goal: 0.01
         trajectory: 0.01
     state_publish_rate: 25

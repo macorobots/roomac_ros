@@ -4,43 +4,43 @@ roomac:
     type: joint_state_controller/JointStateController
     publish_rate: 50
   # Position Controllers --------------------------------------
-  right_shoulder_pan_position_controller:
+  shoulder_pitch_right_position_controller:
     type: position_controllers/JointTrajectoryController
-    joints: [right_shoulder_pan]
-    pid: {p: 10.0, i: 0.01, d: 0.0}
-  right_shoulder_lift_position_controller:
+    joints: [shoulder_pitch_right]
+    pid: { p: 10.0, i: 0.01, d: 0.0 }
+  shoulder_roll_right_position_controller:
     type: position_controllers/JointTrajectoryController
-    joints: [right_shoulder_lift]
-    pid: {p: 10.0, i: 0.01, d: 0.0}
-  right_elbow_position_controller:
+    joints: [shoulder_roll_right]
+    pid: { p: 10.0, i: 0.01, d: 0.0 }
+  elbow_right_position_controller:
     type: position_controllers/JointTrajectoryController
-    joints: [right_elbow]
-    pid: {p: 10.0, i: 0.01, d: 0.0}
-  right_wrist_position_controller:
+    joints: [elbow_right]
+    pid: { p: 10.0, i: 0.01, d: 0.0 }
+  wrist_right_position_controller:
     type: position_controllers/JointTrajectoryController
-    joints: [right_wrist]
-    pid: {p: 10.0, i: 0.01, d: 0.0}
-  right_gripper_twist_position_controller:
+    joints: [wrist_right]
+    pid: { p: 10.0, i: 0.01, d: 0.0 }
+  gripper_twist_right_position_controller:
     type: position_controllers/JointTrajectoryController
-    joints: [right_gripper_twist]
-    pid: {p: 10.0, i: 0.01, d: 0.0}
-  left_shoulder_pan_position_controller:
+    joints: [gripper_twist_right]
+    pid: { p: 10.0, i: 0.01, d: 0.0 }
+  shoulder_pitch_left_position_controller:
     type: position_controllers/JointTrajectoryController
-    joints: [left_shoulder_pan]
-    pid: {p: 10.0, i: 0.01, d: 0.0}
-  left_shoulder_lift_position_controller:
+    joints: [shoulder_pitch_left]
+    pid: { p: 10.0, i: 0.01, d: 0.0 }
+  shoulder_roll_left_position_controller:
     type: position_controllers/JointTrajectoryController
-    joints: [left_shoulder_lift]
-    pid: {p: 10.0, i: 0.01, d: 0.0}
-  left_elbow_position_controller:
+    joints: [shoulder_roll_left]
+    pid: { p: 10.0, i: 0.01, d: 0.0 }
+  elbow_left_position_controller:
     type: position_controllers/JointTrajectoryController
-    joints: [left_elbow]
-    pid: {p: 10.0, i: 0.01, d: 0.0}
-  left_wrist_position_controller:
+    joints: [elbow_left]
+    pid: { p: 10.0, i: 0.01, d: 0.0 }
+  wrist_left_position_controller:
     type: position_controllers/JointTrajectoryController
-    joints: [left_wrist]
-    pid: {p: 10.0, i: 0.01, d: 0.0}
-  left_gripper_twist_position_controller:
+    joints: [wrist_left]
+    pid: { p: 10.0, i: 0.01, d: 0.0 }
+  gripper_twist_left_position_controller:
     type: position_controllers/JointTrajectoryController
-    joints: [left_gripper_twist]
-    pid: {p: 10.0, i: 0.01, d: 0.0}
+    joints: [gripper_twist_left]
+    pid: { p: 10.0, i: 0.01, d: 0.0 }

@@ -100,17 +100,17 @@ Visualization Manager:
           Value: true
         imu:
           Value: true
-        left_caster_1:
+        caster_left_1:
           Value: true
-        left_wheel_1:
+        wheel_left_1:
           Value: true
-        left_wheel_hub_1:
+        hub_left_1:
           Value: true
-        right_caster_1:
+        caster_right_1:
           Value: true
-        right_wheel_1:
+        wheel_right_1:
           Value: true
-        right_wheel_hub_1:
+        hub_right_1:
           Value: true
         shoulder_elbow_left_1:
           Value: true
@@ -157,12 +157,12 @@ Visualization Manager:
           camera_link:
             gazebo_camera_link: {}
           imu: {}
-          left_caster_1: {}
-          left_wheel_1:
-            left_wheel_hub_1: {}
-          right_caster_1: {}
-          right_wheel_1:
-            right_wheel_hub_1: {}
+          caster_left_1: {}
+          wheel_left_1:
+            hub_left_1: {}
+          caster_right_1: {}
+          wheel_right_1:
+            hub_right_1: {}
       Update Interval: 0
       Value: true
     - Alpha: 1

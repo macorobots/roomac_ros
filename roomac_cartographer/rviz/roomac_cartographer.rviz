@@ -82,21 +82,21 @@ Visualization Manager:
           Value: true
         head_1:
           Value: true
-        left_caster_1:
+        caster_left_1:
           Value: true
-        left_wheel_1:
+        wheel_left_1:
           Value: true
-        left_wheel_hub_1:
+        hub_left_1:
           Value: true
         map:
           Value: true
         odom:
           Value: true
-        right_caster_1:
+        caster_right_1:
           Value: true
-        right_wheel_1:
+        wheel_right_1:
           Value: true
-        right_wheel_hub_1:
+        hub_right_1:
           Value: true
       Marker Scale: 1
       Name: TF
@@ -108,21 +108,15 @@ Visualization Manager:
           odom:
             base_link:
               base_up_1:
-                head_1:
-                  {}
+                head_1: {}
               camera_link:
                 camera_depth_frame:
-                  camera_depth_optical_frame:
-                    {}
+                  camera_depth_optical_frame: {}
                 camera_rgb_frame:
-                  camera_rgb_optical_frame:
-                    {}
-                gazebo_camera_link:
-                  {}
-              left_caster_1:
-                {}
-              right_caster_1:
-                {}
+                  camera_rgb_optical_frame: {}
+                gazebo_camera_link: {}
+              caster_left_1: {}
+              caster_right_1: {}
       Update Interval: 0
       Value: true
     - Class: rviz/Image

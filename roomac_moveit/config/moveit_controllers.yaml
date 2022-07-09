@@ -4,8 +4,8 @@ controller_list:
     type: FollowJointTrajectory
     default: true
     joints:
-      - right_shoulder_pan
-      - right_shoulder_lift
-      - right_elbow
-      - right_wrist
-      - right_gripper_twist
+      - shoulder_pitch_right
+      - shoulder_roll_right
+      - elbow_right
+      - wrist_right
+      - gripper_twist_right

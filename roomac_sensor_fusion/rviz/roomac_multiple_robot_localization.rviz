@@ -228,19 +228,19 @@ Visualization Manager:
           Value: false
         imu:
           Value: false
-        left_caster_1:
+        caster_left_1:
           Value: false
-        left_wheel_1:
+        wheel_left_1:
           Value: false
-        left_wheel_hub_1:
+        hub_left_1:
           Value: false
         odom:
           Value: true
-        right_caster_1:
+        caster_right_1:
           Value: false
-        right_wheel_1:
+        wheel_right_1:
           Value: false
-        right_wheel_hub_1:
+        hub_right_1:
           Value: false
       Marker Scale: 2
       Name: TF
@@ -258,8 +258,8 @@ Visualization Manager:
             camera_link:
               gazebo_camera_link: {}
             imu: {}
-            left_caster_1: {}
-            right_caster_1: {}
+            caster_left_1: {}
+            caster_right_1: {}
           base_link_imu_ang_vel: {}
           base_link_wheel_odom: {}
           base_link_wheel_odom_vel: {}

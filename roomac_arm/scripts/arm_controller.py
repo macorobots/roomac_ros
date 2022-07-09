@@ -61,7 +61,7 @@ class ArmController(object):
         initial_playtime = 255
         initial_analog_speed = 2.0
 
-        self._servos["right_shoulder_pan"] = DigitalServo(
+        self._servos["shoulder_pitch_right"] = DigitalServo(
             "shoulder_pan",
             zero_angle_signal[0],
             digital_lower_signal_bound,
@@ -69,7 +69,7 @@ class ArmController(object):
             digital_scale_factor,
             max_speed,
         )
-        self._servos["right_shoulder_lift"] = DigitalServo(
+        self._servos["shoulder_roll_right"] = DigitalServo(
             "shoulder_lift",
             zero_angle_signal[1],
             digital_lower_signal_bound,
@@ -77,7 +77,7 @@ class ArmController(object):
             digital_scale_factor,
             max_speed,
         )
-        self._servos["right_elbow"] = DigitalServo(
+        self._servos["elbow_right"] = DigitalServo(
             "elbow",
             zero_angle_signal[2],
             digital_lower_signal_bound,
@@ -86,7 +86,7 @@ class ArmController(object):
             max_speed,
         )
 
-        self._servos["right_wrist"] = AnalogServo(
+        self._servos["wrist_right"] = AnalogServo(
             "wrist",
             zero_angle_signal[3],
             analog_lower_signal_bound_wrist,
@@ -95,7 +95,7 @@ class ArmController(object):
             max_speed,
             analog_update_delay,
         )
-        self._servos["right_gripper_twist"] = AnalogServo(
+        self._servos["gripper_twist_right"] = AnalogServo(
             "wrist_twist",
             zero_angle_signal[4],
             analog_lower_signal_bound,
@@ -114,10 +114,10 @@ class ArmController(object):
             analog_update_delay,
         )
 
-        for x in ["right_shoulder_pan", "right_shoulder_lift", "right_elbow"]:
+        for x in ["shoulder_pitch_right", "shoulder_roll_right", "elbow_right"]:
             self._servos[x].init_servo(0.0, initial_playtime)
 
-        for x in ["right_wrist", "right_gripper_twist", "right_gripper"]:
+        for x in ["wrist_right", "gripper_twist_right", "right_gripper"]:
             self._servos[x].init_servo(0.0, initial_analog_speed)
 
         self._publish_joint_states = rospy.get_param("~publish_joint_states", True)

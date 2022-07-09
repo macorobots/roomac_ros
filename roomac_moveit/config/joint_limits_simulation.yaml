@@ -21,7 +21,7 @@ joint_limits:
     max_acceleration: 0
     # min_position: 0.0
     # max_position: 0.05
-  right_elbow:
+  elbow_right:
     has_velocity_limits: true
     max_velocity: 0.5
     has_acceleration_limits: true
@@ -30,28 +30,28 @@ joint_limits:
     # without bending elbow in opposite direction
     min_position: 0
     max_position: 2.1
-  right_gripper_twist:
+  gripper_twist_right:
     has_velocity_limits: true
     max_velocity: 0.5
     has_acceleration_limits: true
     max_acceleration: 1.0
     # min_position: -1.570
     # max_position: 1.570
-  right_shoulder_lift:
+  shoulder_roll_right:
     has_velocity_limits: true
     max_velocity: 0.5
     has_acceleration_limits: true
     max_acceleration: 1.0
     # min_position: -0.800
     # max_position: 1.979
-  right_shoulder_pan:
+  shoulder_pitch_right:
     has_velocity_limits: true
     max_velocity: 0.5
     has_acceleration_limits: true
     max_acceleration: 1.0
     # min_position: -2.390
     # max_position: 0.489
-  right_wrist:
+  wrist_right:
     has_velocity_limits: true
     max_velocity: 0.5
     has_acceleration_limits: true

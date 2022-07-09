@@ -147,7 +147,7 @@ right_arm:
     - LazyPRMstar
     - SPARS
     - SPARStwo
-  projection_evaluator: joints(right_shoulder_pan,right_shoulder_lift)
+  projection_evaluator: joints(shoulder_pitch_right,shoulder_roll_right)
   longest_valid_segment_fraction: 0.01
 hand:
   planner_configs:
