@@ -926,6 +926,7 @@
 </joint>
 
 <joint name="kinect_joint" type="fixed">
+  <!-- todo: update kinect position -->
 		<origin rpy="0 ${(31.513/180.)*pi} 0" xyz="-0.108561 0.039543 0.479024"/>
 		<parent link="base_link"/>
 		<child link="camera_link"/>
@@ -943,8 +944,7 @@
 </link>
 
 <joint name="artag_joint" type="fixed">
-    <!-- Real z position is 0.972, but I had to add 12mm (height of plywood) - this urdf is older - pre base rework -->
-    <origin rpy="0 0 0" xyz="-0.149 -0.125 0.984"/>
+    <origin rpy="0 0 0" xyz="-0.149 -0.125 0.972"/>
     <parent link="base_link"/>
     <child link="artag_link"/>
 </joint>
