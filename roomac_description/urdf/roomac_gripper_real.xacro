@@ -18,7 +18,7 @@
     <geometry>
       <mesh filename="package://roomac_description/meshes/gripper_right_1.stl" scale="0.001 0.001 0.001"/>
     </geometry>
-    <material name="silver"/>
+    <material name="black"/>
   </visual>
   <collision>
     <origin xyz="0.114635 0.244052 -0.544809" rpy="0 0 0"/>
@@ -40,7 +40,7 @@
     <geometry>
       <mesh filename="package://roomac_description/meshes/gripper_finger_1_right_1.stl" scale="0.001 0.001 0.001"/>
     </geometry>
-    <material name="silver"/>
+    <material name="black"/>
   </visual>
   <collision>
     <origin xyz="0.117385 0.274314 -0.487702" rpy="0 0 0"/>
@@ -61,7 +61,7 @@
     <geometry>
       <mesh filename="package://roomac_description/meshes/gripper_finger_2_right_1.stl" scale="0.001 0.001 0.001"/>
     </geometry>
-    <material name="silver"/>
+    <material name="black"/>
   </visual>
   <collision>
     <origin xyz="0.117385 0.214585 -0.487702" rpy="0 0 0"/>

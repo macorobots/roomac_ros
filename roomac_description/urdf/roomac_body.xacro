@@ -21,7 +21,7 @@
     <geometry>
       <mesh filename="package://roomac_description/meshes/base_link.stl" scale="0.001 0.001 0.001"/>
     </geometry>
-    <material name="silver"/>
+    <material name="black"/>
   </visual>
   <collision>
     <origin xyz="0 0 0" rpy="0 0 0"/>
@@ -84,7 +84,7 @@
     <geometry>
       <mesh filename="package://roomac_description/meshes/hub_right_1.stl" scale="0.001 0.001 0.001"/>
     </geometry>
-    <material name="silver"/>
+    <material name="black"/>
   </visual>
   <collision>
     <origin xyz="0.0 0.246 0.0" rpy="0 0 0"/>
@@ -105,7 +105,7 @@
     <geometry>
       <mesh filename="package://roomac_description/meshes/hub_left_1.stl" scale="0.001 0.001 0.001"/>
     </geometry>
-    <material name="silver"/>
+    <material name="black"/>
   </visual>
   <collision>
     <origin xyz="0.0 -0.246 0.0" rpy="0 0 0"/>
@@ -189,7 +189,7 @@
     <geometry>
       <mesh filename="package://roomac_description/meshes/eye_left_1.stl" scale="0.001 0.001 0.001"/>
     </geometry>
-    <material name="silver"/>
+    <material name="white"/>
   </visual>
   <collision>
     <origin xyz="0.0825 -0.056021 -1.083347" rpy="0 0 0"/>
@@ -210,7 +210,7 @@
     <geometry>
       <mesh filename="package://roomac_description/meshes/elbow_right_1.stl" scale="0.001 0.001 0.001"/>
     </geometry>
-    <material name="silver"/>
+    <material name="black"/>
   </visual>
   <collision>
     <origin xyz="0.1135 0.243979 -0.774925" rpy="0 0 0"/>
@@ -231,7 +231,7 @@
     <geometry>
       <mesh filename="package://roomac_description/meshes/elbow_wrist_right_1.stl" scale="0.001 0.001 0.001"/>
     </geometry>
-    <material name="silver"/>
+    <material name="black"/>
   </visual>
   <collision>
     <origin xyz="0.0925 0.243979 -0.733443" rpy="0 0 0"/>
@@ -252,7 +252,7 @@
     <geometry>
       <mesh filename="package://roomac_description/meshes/caster_tire_right_1.stl" scale="0.001 0.001 0.001"/>
     </geometry>
-    <material name="silver"/>
+    <material name="black"/>
   </visual>
   <collision>
     <origin xyz="0.325 0.161 0.105" rpy="0 0 0"/>
@@ -273,7 +273,7 @@
     <geometry>
       <mesh filename="package://roomac_description/meshes/caster_tire_left_1.stl" scale="0.001 0.001 0.001"/>
     </geometry>
-    <material name="silver"/>
+    <material name="black"/>
   </visual>
   <collision>
     <origin xyz="0.325 -0.161 0.105" rpy="0 0 0"/>
@@ -294,7 +294,7 @@
     <geometry>
       <mesh filename="package://roomac_description/meshes/wheel_tire_right_1.stl" scale="0.001 0.001 0.001"/>
     </geometry>
-    <material name="silver"/>
+    <material name="black"/>
   </visual>
   <collision>
     <origin xyz="0.0 0.257 -0.0" rpy="0 0 0"/>
@@ -315,7 +315,7 @@
     <geometry>
       <mesh filename="package://roomac_description/meshes/wheel_tire_left_1.stl" scale="0.001 0.001 0.001"/>
     </geometry>
-    <material name="silver"/>
+    <material name="black"/>
   </visual>
   <collision>
     <origin xyz="0.0 -0.257 0.0" rpy="0 0 0"/>
@@ -336,7 +336,7 @@
     <geometry>
       <mesh filename="package://roomac_description/meshes/base_link_frames_1.stl" scale="0.001 0.001 0.001"/>
     </geometry>
-    <material name="silver"/>
+    <material name="white"/>
   </visual>
   <collision>
     <origin xyz="0.223282 0.099058 0.0075" rpy="0 0 0"/>
@@ -357,7 +357,7 @@
     <geometry>
       <mesh filename="package://roomac_description/meshes/shoulder_elbow_gear_right_1.stl" scale="0.001 0.001 0.001"/>
     </geometry>
-    <material name="silver"/>
+    <material name="black"/>
   </visual>
   <collision>
     <origin xyz="0.113 0.243979 -0.9345" rpy="0 0 0"/>
@@ -378,7 +378,7 @@
     <geometry>
       <mesh filename="package://roomac_description/meshes/wrist_right_1.stl" scale="0.001 0.001 0.001"/>
     </geometry>
-    <material name="silver"/>
+    <material name="black"/>
   </visual>
   <collision>
     <origin xyz="0.139354 0.243979 -0.603601" rpy="0 0 0"/>
@@ -420,7 +420,7 @@
     <geometry>
       <mesh filename="package://roomac_description/meshes/shoulder_right_1.stl" scale="0.001 0.001 0.001"/>
     </geometry>
-    <material name="silver"/>
+    <material name="black"/>
   </visual>
   <collision>
     <origin xyz="0.1135 0.174979 -0.9345" rpy="0 0 0"/>
@@ -441,7 +441,7 @@
     <geometry>
       <mesh filename="package://roomac_description/meshes/shoulder_base_right_1.stl" scale="0.001 0.001 0.001"/>
     </geometry>
-    <material name="silver"/>
+    <material name="black"/>
   </visual>
   <collision>
     <origin xyz="0.0725 0.134829 -0.961645" rpy="0 0 0"/>
@@ -462,7 +462,7 @@
     <geometry>
       <mesh filename="package://roomac_description/meshes/head_1.stl" scale="0.001 0.001 0.001"/>
     </geometry>
-    <material name="silver"/>
+    <material name="black"/>
   </visual>
   <collision>
     <origin xyz="0.08 -2.1e-05 -0.969145" rpy="0 0 0"/>
@@ -483,7 +483,7 @@
     <geometry>
       <mesh filename="package://roomac_description/meshes/eye_right_1.stl" scale="0.001 0.001 0.001"/>
     </geometry>
-    <material name="silver"/>
+    <material name="white"/>
   </visual>
   <collision>
     <origin xyz="0.0825 0.055979 -1.083347" rpy="0 0 0"/>
@@ -504,7 +504,7 @@
     <geometry>
       <mesh filename="package://roomac_description/meshes/shoulder_base_left_1.stl" scale="0.001 0.001 0.001"/>
     </geometry>
-    <material name="silver"/>
+    <material name="black"/>
   </visual>
   <collision>
     <origin xyz="0.0725 -0.134871 -0.961645" rpy="0 0 0"/>
@@ -525,7 +525,7 @@
     <geometry>
       <mesh filename="package://roomac_description/meshes/shoulder_left_1.stl" scale="0.001 0.001 0.001"/>
     </geometry>
-    <material name="silver"/>
+    <material name="black"/>
   </visual>
   <collision>
     <origin xyz="0.1135 -0.175021 -0.9345" rpy="0 0 0"/>
@@ -546,7 +546,7 @@
     <geometry>
       <mesh filename="package://roomac_description/meshes/gripper_finger_2_left_1.stl" scale="0.001 0.001 0.001"/>
     </geometry>
-    <material name="silver"/>
+    <material name="black"/>
   </visual>
   <collision>
     <origin xyz="0.117385 -0.214627 -0.487684" rpy="0 0 0"/>
@@ -567,7 +567,7 @@
     <geometry>
       <mesh filename="package://roomac_description/meshes/gripper_finger_1_left_1.stl" scale="0.001 0.001 0.001"/>
     </geometry>
-    <material name="silver"/>
+    <material name="black"/>
   </visual>
   <collision>
     <origin xyz="0.117385 -0.274357 -0.487684" rpy="0 0 0"/>
@@ -588,7 +588,7 @@
     <geometry>
       <mesh filename="package://roomac_description/meshes/gripper_left_1.stl" scale="0.001 0.001 0.001"/>
     </geometry>
-    <material name="silver"/>
+    <material name="black"/>
   </visual>
   <collision>
     <origin xyz="0.114635 -0.244094 -0.544791" rpy="0 0 0"/>
@@ -609,7 +609,7 @@
     <geometry>
       <mesh filename="package://roomac_description/meshes/wrist_left_1.stl" scale="0.001 0.001 0.001"/>
     </geometry>
-    <material name="silver"/>
+    <material name="black"/>
   </visual>
   <collision>
     <origin xyz="0.139354 -0.244021 -0.603583" rpy="0 0 0"/>
@@ -630,7 +630,7 @@
     <geometry>
       <mesh filename="package://roomac_description/meshes/elbow_wrist_left_1.stl" scale="0.001 0.001 0.001"/>
     </geometry>
-    <material name="silver"/>
+    <material name="black"/>
   </visual>
   <collision>
     <origin xyz="0.0925 -0.244021 -0.733425" rpy="0 0 0"/>
@@ -651,7 +651,7 @@
     <geometry>
       <mesh filename="package://roomac_description/meshes/elbow_left_1.stl" scale="0.001 0.001 0.001"/>
     </geometry>
-    <material name="silver"/>
+    <material name="black"/>
   </visual>
   <collision>
     <origin xyz="0.1135 -0.244021 -0.774925" rpy="0 0 0"/>
@@ -693,7 +693,7 @@
     <geometry>
       <mesh filename="package://roomac_description/meshes/shoulder_elbow_gear_left_1.stl" scale="0.001 0.001 0.001"/>
     </geometry>
-    <material name="silver"/>
+    <material name="black"/>
   </visual>
   <collision>
     <origin xyz="0.113 -0.244021 -0.9345" rpy="0 0 0"/>
