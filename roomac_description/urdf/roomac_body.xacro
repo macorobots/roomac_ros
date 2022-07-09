@@ -740,7 +740,7 @@
   <origin xyz="-0.041 -0.04015 -0.027145" rpy="0 0 0"/>
   <parent link="shoulder_base_right_1"/>
   <child link="shoulder_right_1"/>
-  <axis xyz="0.0 -1.0 0.0"/>
+  <axis xyz="0.0 1.0 0.0"/>
   <limit effort="30" velocity="1.0" lower="-2.390" upper="0.489" />
 </joint>
 
