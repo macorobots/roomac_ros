@@ -7,7 +7,17 @@
 # width 57.5
 # 35.5 to back from base_link
 # 15 to front from base_link
-footprint: [[0.15, 0.2875], [-0.355, 0.2875], [-0.355, -0.2875], [0.15, -0.2875]]
+footprint:
+  [
+    [0.15, 0.2875],
+    [-0.15, 0.2875],
+    [-0.15, 0.215],
+    [-0.355, 0.215],
+    [-0.355, -0.215],
+    [-0.15, -0.215],
+    [-0.15, -0.2875],
+    [0.15, -0.2875],
+  ]
 
 # Footprint padding has to be quite low, because in the back of the robot there is quite big difference 
 # between footprint and real robot and it has problems in navigating more narrow corridors.

@@ -28,7 +28,18 @@ footprint_model/type: polygon
 
 #Deleted parametrs for circular, line, two_circles
  
-footprint_model/vertices: [[0.15, 0.2875], [-0.355, 0.2875], [-0.355, -0.2875], [0.15, -0.2875]]
+footprint_model/vertices:
+  [
+    [0.15, 0.2875],
+    [-0.15, 0.2875],
+    [-0.15, 0.215],
+    [-0.355, 0.215],
+    [-0.355, -0.215],
+    [-0.15, -0.215],
+    [-0.15, -0.2875],
+    [0.15, -0.2875],
+  ]
+
 # (double[], default: [ [0.25,-0.05], [...], ...])
 # This parameter is only relevant for type "polygon". It contains the list of polygon vertices (2d coordinates each). The polygon is always closed: do not repeat the first vertex at the end. 
 
