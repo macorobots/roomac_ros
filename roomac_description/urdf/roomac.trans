@@ -1,133 +1,133 @@
 <?xml version="1.0" ?>
 <robot name="roomac" xmlns:xacro="http://www.ros.org/wiki/xacro" >
 
-<transmission name="right_shoulder_pan_tran">
+<transmission name="elbow_right_tran">
   <type>transmission_interface/SimpleTransmission</type>
-  <joint name="right_shoulder_pan">
+  <joint name="elbow_right">
     <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
   </joint>
-  <actuator name="right_shoulder_pan_actr">
+  <actuator name="elbow_right_actr">
     <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
     <mechanicalReduction>1</mechanicalReduction>
   </actuator>
 </transmission>
 
-<transmission name="right_shoulder_lift_tran">
+<transmission name="shoulder_roll_right_tran">
   <type>transmission_interface/SimpleTransmission</type>
-  <joint name="right_shoulder_lift">
+  <joint name="shoulder_roll_right">
     <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
   </joint>
-  <actuator name="right_shoulder_lift_actr">
+  <actuator name="shoulder_roll_right_actr">
     <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
     <mechanicalReduction>1</mechanicalReduction>
   </actuator>
 </transmission>
 
-<transmission name="right_elbow_tran">
+<transmission name="gripper_twist_right_tran">
   <type>transmission_interface/SimpleTransmission</type>
-  <joint name="right_elbow">
+  <joint name="gripper_twist_right">
     <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
   </joint>
-  <actuator name="right_elbow_actr">
+  <actuator name="gripper_twist_right_actr">
     <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
     <mechanicalReduction>1</mechanicalReduction>
   </actuator>
 </transmission>
 
-<transmission name="right_wrist_tran">
+<transmission name="wrist_right_tran">
   <type>transmission_interface/SimpleTransmission</type>
-  <joint name="right_wrist">
+  <joint name="wrist_right">
     <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
   </joint>
-  <actuator name="right_wrist_actr">
+  <actuator name="wrist_right_actr">
     <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
     <mechanicalReduction>1</mechanicalReduction>
   </actuator>
 </transmission>
 
-<transmission name="right_gripper_twist_tran">
+<transmission name="shoulder_pitch_right_tran">
   <type>transmission_interface/SimpleTransmission</type>
-  <joint name="right_gripper_twist">
+  <joint name="shoulder_pitch_right">
     <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
   </joint>
-  <actuator name="right_gripper_twist_actr">
+  <actuator name="shoulder_pitch_right_actr">
     <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
     <mechanicalReduction>1</mechanicalReduction>
   </actuator>
 </transmission>
 
-<transmission name="left_shoulder_pan_tran">
+<transmission name="shoulder_pitch_left_tran">
   <type>transmission_interface/SimpleTransmission</type>
-  <joint name="left_shoulder_pan">
+  <joint name="shoulder_pitch_left">
     <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
   </joint>
-  <actuator name="left_shoulder_pan_actr">
+  <actuator name="shoulder_pitch_left_actr">
     <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
     <mechanicalReduction>1</mechanicalReduction>
   </actuator>
 </transmission>
 
-<transmission name="left_shoulder_lift_tran">
+<transmission name="gripper_twist_left_tran">
   <type>transmission_interface/SimpleTransmission</type>
-  <joint name="left_shoulder_lift">
+  <joint name="gripper_twist_left">
     <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
   </joint>
-  <actuator name="left_shoulder_lift_actr">
+  <actuator name="gripper_twist_left_actr">
     <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
     <mechanicalReduction>1</mechanicalReduction>
   </actuator>
 </transmission>
 
-<transmission name="left_elbow_tran">
+<transmission name="wrist_left_tran">
   <type>transmission_interface/SimpleTransmission</type>
-  <joint name="left_elbow">
+  <joint name="wrist_left">
     <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
   </joint>
-  <actuator name="left_elbow_actr">
+  <actuator name="wrist_left_actr">
     <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
     <mechanicalReduction>1</mechanicalReduction>
   </actuator>
 </transmission>
 
-<transmission name="left_wrist_tran">
+<transmission name="elbow_left_tran">
   <type>transmission_interface/SimpleTransmission</type>
-  <joint name="left_wrist">
+  <joint name="elbow_left">
     <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
   </joint>
-  <actuator name="left_wrist_actr">
+  <actuator name="elbow_left_actr">
     <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
     <mechanicalReduction>1</mechanicalReduction>
   </actuator>
 </transmission>
 
-<transmission name="left_gripper_twist_tran">
+<transmission name="shoulder_roll_left_tran">
   <type>transmission_interface/SimpleTransmission</type>
-  <joint name="left_gripper_twist">
+  <joint name="shoulder_roll_left">
     <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
   </joint>
-  <actuator name="left_gripper_twist_actr">
+  <actuator name="shoulder_roll_left_actr">
     <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
     <mechanicalReduction>1</mechanicalReduction>
   </actuator>
 </transmission>
 
-<transmission name="right_wheel_tran">
+<transmission name="wheel_right_tran">
   <type>transmission_interface/SimpleTransmission</type>
-  <joint name="right_wheel">
+  <joint name="wheel_right">
     <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
   </joint>
-  <actuator name="right_wheel_actr">
+  <actuator name="wheel_right_actr">
     <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
     <mechanicalReduction>1</mechanicalReduction>
   </actuator>
 </transmission>
 
-<transmission name="left_wheel_tran">
+<transmission name="wheel_left_tran">
   <type>transmission_interface/SimpleTransmission</type>
-  <joint name="left_wheel">
+  <joint name="wheel_left">
     <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
   </joint>
-  <actuator name="left_wheel_actr">
+  <actuator name="wheel_left_actr">
     <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
     <mechanicalReduction>1</mechanicalReduction>
   </actuator>

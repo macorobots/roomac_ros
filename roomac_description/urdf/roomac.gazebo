@@ -5,6 +5,7 @@
 <xacro:property name="standard_friction" value="1.0" />
 <xacro:property name="caster_friction" value="0.01" />
 <xacro:property name="wheel_friction" value="100.0" />
+<xacro:property name="finger_friction" value="100.0" />
 
 <gazebo reference="base_link">
   <material>${body_color}</material>
@@ -14,21 +15,63 @@
   <gravity>true</gravity>
 </gazebo>
 
-<gazebo reference="right_wheel_hub_1">
+<gazebo reference="caster_right_1">
   <material>${body_color}</material>
   <mu1>${standard_friction}</mu1>
   <mu2>${standard_friction}</mu2>
   <selfCollide>true</selfCollide>
 </gazebo>
 
-<gazebo reference="shoulder_right_1">
+<gazebo reference="caster_left_1">
   <material>${body_color}</material>
   <mu1>${standard_friction}</mu1>
   <mu2>${standard_friction}</mu2>
   <selfCollide>true</selfCollide>
 </gazebo>
 
-<gazebo reference="shoulder_elbow_right_1">
+<gazebo reference="hub_right_1">
+  <material>${body_color}</material>
+  <mu1>${standard_friction}</mu1>
+  <mu2>${standard_friction}</mu2>
+  <selfCollide>true</selfCollide>
+</gazebo>
+
+<gazebo reference="hub_left_1">
+  <material>${body_color}</material>
+  <mu1>${standard_friction}</mu1>
+  <mu2>${standard_friction}</mu2>
+  <selfCollide>true</selfCollide>
+</gazebo>
+
+<gazebo reference="wheel_right_1">
+  <material>${body_color}</material>
+  <mu1>${standard_friction}</mu1>
+  <mu2>${standard_friction}</mu2>
+  <selfCollide>true</selfCollide>
+</gazebo>
+
+<gazebo reference="wheel_left_1">
+  <material>${body_color}</material>
+  <mu1>${standard_friction}</mu1>
+  <mu2>${standard_friction}</mu2>
+  <selfCollide>true</selfCollide>
+</gazebo>
+
+<gazebo reference="frame_1">
+  <material>${body_color}</material>
+  <mu1>${standard_friction}</mu1>
+  <mu2>${standard_friction}</mu2>
+  <selfCollide>true</selfCollide>
+</gazebo>
+
+<gazebo reference="eye_left_1">
+  <material>${body_color}</material>
+  <mu1>${standard_friction}</mu1>
+  <mu2>${standard_friction}</mu2>
+  <selfCollide>true</selfCollide>
+</gazebo>
+
+<gazebo reference="elbow_right_1">
   <material>${body_color}</material>
   <mu1>${standard_friction}</mu1>
   <mu2>${standard_friction}</mu2>
@@ -42,7 +85,56 @@
   <selfCollide>true</selfCollide>
 </gazebo>
 
-<gazebo reference="wrist_right_1">
+<gazebo reference="gripper_finger_1_right_1">
+  <material>${body_color}</material>
+  <mu1>${finger_friction}</mu1>
+  <mu2>${finger_friction}</mu2>
+  <selfCollide>true</selfCollide>
+</gazebo>
+
+<gazebo reference="gripper_finger_2_right_1">
+  <material>${body_color}</material>
+  <mu1>${finger_friction}</mu1>
+  <mu2>${finger_friction}</mu2>
+  <selfCollide>true</selfCollide>
+</gazebo>
+
+<gazebo reference="caster_tire_right_1">
+  <material>${body_color}</material>
+  <mu1>${caster_friction}</mu1>
+  <mu2>${caster_friction}</mu2>
+  <selfCollide>true</selfCollide>
+</gazebo>
+
+<gazebo reference="caster_tire_left_1">
+  <material>${body_color}</material>
+  <mu1>${caster_friction}</mu1>
+  <mu2>${caster_friction}</mu2>
+  <selfCollide>true</selfCollide>
+</gazebo>
+
+<gazebo reference="wheel_tire_right_1">
+  <material>${body_color}</material>
+  <mu1>${wheel_friction}</mu1>
+  <mu2>${wheel_friction}</mu2>
+  <selfCollide>true</selfCollide>
+</gazebo>
+
+<gazebo reference="wheel_tire_left_1">
+  <material>${body_color}</material>
+  <mu1>${wheel_friction}</mu1>
+  <mu2>${wheel_friction}</mu2>
+  <selfCollide>true</selfCollide>
+</gazebo>
+
+<gazebo reference="base_link_frames_1">
+  <material>${body_color}</material>
+  <mu1>${standard_friction}</mu1>
+  <mu2>${standard_friction}</mu2>
+  <selfCollide>true</selfCollide>
+</gazebo>
+
+<gazebo reference="shoulder_elbow_gear_right_1">
   <material>${body_color}</material>
   <mu1>${standard_friction}</mu1>
   <mu2>${standard_friction}</mu2>
@@ -56,7 +148,28 @@
   <selfCollide>true</selfCollide>
 </gazebo>
 
-<gazebo reference="base_up_1">
+<gazebo reference="wrist_right_1">
+  <material>${body_color}</material>
+  <mu1>${standard_friction}</mu1>
+  <mu2>${standard_friction}</mu2>
+  <selfCollide>true</selfCollide>
+</gazebo>
+
+<gazebo reference="shoulder_elbow_right_1">
+  <material>${body_color}</material>
+  <mu1>${standard_friction}</mu1>
+  <mu2>${standard_friction}</mu2>
+  <selfCollide>true</selfCollide>
+</gazebo>
+
+<gazebo reference="shoulder_right_1">
+  <material>${body_color}</material>
+  <mu1>${standard_friction}</mu1>
+  <mu2>${standard_friction}</mu2>
+  <selfCollide>true</selfCollide>
+</gazebo>
+
+<gazebo reference="shoulder_base_right_1">
   <material>${body_color}</material>
   <mu1>${standard_friction}</mu1>
   <mu2>${standard_friction}</mu2>
@@ -70,7 +183,14 @@
   <selfCollide>true</selfCollide>
 </gazebo>
 
-<gazebo reference="left_wheel_hub_1">
+<gazebo reference="eye_right_1">
+  <material>${body_color}</material>
+  <mu1>${standard_friction}</mu1>
+  <mu2>${standard_friction}</mu2>
+  <selfCollide>true</selfCollide>
+</gazebo>
+
+<gazebo reference="shoulder_base_left_1">
   <material>${body_color}</material>
   <mu1>${standard_friction}</mu1>
   <mu2>${standard_friction}</mu2>
@@ -84,14 +204,21 @@
   <selfCollide>true</selfCollide>
 </gazebo>
 
-<gazebo reference="shoulder_elbow_left_1">
+<gazebo reference="gripper_finger_2_left_1">
   <material>${body_color}</material>
-  <mu1>${standard_friction}</mu1>
-  <mu2>${standard_friction}</mu2>
+  <mu1>${finger_friction}</mu1>
+  <mu2>${finger_friction}</mu2>
   <selfCollide>true</selfCollide>
 </gazebo>
 
-<gazebo reference="elbow_wrist_left_1">
+<gazebo reference="gripper_finger_1_left_1">
+  <material>${body_color}</material>
+  <mu1>${finger_friction}</mu1>
+  <mu2>${finger_friction}</mu2>
+  <selfCollide>true</selfCollide>
+</gazebo>
+
+<gazebo reference="gripper_left_1">
   <material>${body_color}</material>
   <mu1>${standard_friction}</mu1>
   <mu2>${standard_friction}</mu2>
@@ -105,38 +232,31 @@
   <selfCollide>true</selfCollide>
 </gazebo>
 
-<gazebo reference="gripper_left_1">
+<gazebo reference="elbow_wrist_left_1">
   <material>${body_color}</material>
   <mu1>${standard_friction}</mu1>
   <mu2>${standard_friction}</mu2>
   <selfCollide>true</selfCollide>
 </gazebo>
 
-<gazebo reference="right_wheel_1">
+<gazebo reference="elbow_left_1">
   <material>${body_color}</material>
-  <mu1>${wheel_friction}</mu1>
-  <mu2>${wheel_friction}</mu2>
+  <mu1>${standard_friction}</mu1>
+  <mu2>${standard_friction}</mu2>
   <selfCollide>true</selfCollide>
 </gazebo>
 
-<gazebo reference="left_wheel_1">
+<gazebo reference="shoulder_elbow_left_1">
   <material>${body_color}</material>
-  <mu1>${wheel_friction}</mu1>
-  <mu2>${wheel_friction}</mu2>
+  <mu1>${standard_friction}</mu1>
+  <mu2>${standard_friction}</mu2>
   <selfCollide>true</selfCollide>
 </gazebo>
 
-<gazebo reference="right_caster_1">
+<gazebo reference="shoulder_elbow_gear_left_1">
   <material>${body_color}</material>
-  <mu1>${caster_friction}</mu1>
-  <mu2>${caster_friction}</mu2>
-  <selfCollide>true</selfCollide>
-</gazebo>
-
-<gazebo reference="left_caster_1">
-  <material>${body_color}</material>
-  <mu1>${caster_friction}</mu1>
-  <mu2>${caster_friction}</mu2>
+  <mu1>${standard_friction}</mu1>
+  <mu2>${standard_friction}</mu2>
   <selfCollide>true</selfCollide>
 </gazebo>
 
