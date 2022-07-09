@@ -108,9 +108,9 @@ Visualization Manager:
           Value: true
         elbow_wrist_right_1:
           Value: true
-        finger1:
+        gripper_finger_1_right_1:
           Value: true
-        finger2:
+        gripper_finger_2_right_1:
           Value: true
         gazebo_camera_link:
           Value: true
@@ -178,8 +178,8 @@ Visualization Manager:
                   elbow_wrist_right_1:
                     wrist_right_1:
                       gripper_right_1:
-                        finger1: {}
-                        finger2: {}
+                        gripper_finger_1_right_1: {}
+                        gripper_finger_2_right_1: {}
                         gripper_right_grip: {}
                         gripper_right_precision_test_tip: {}
             body_precision_test_tip: {}

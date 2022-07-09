@@ -60,13 +60,13 @@ class Grasp:
     pt = JointTrajectoryPoint()
     pt.time_from_start = rospy.Duration(0.1)
 
-    msg.joint_names.append("finger1_joint")
+    msg.joint_names.append("gripper_finger_r_right")
     pt.positions.append(position1)
     pt.velocities.append(0.)
     pt.accelerations.append(0.)
     pt.effort.append(0.)
 
-    msg.joint_names.append("finger2_joint")
+    msg.joint_names.append("gripper_finger_l_right")
     pt.positions.append(position2)
     pt.velocities.append(0.)
     pt.accelerations.append(0.)

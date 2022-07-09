@@ -86,16 +86,16 @@ roomac:
   gripper_effort_controller:
     type: effort_controllers/JointGroupPositionController
     joints:
-      - finger1_joint
-      - finger2_joint
-    finger1_joint:
+      - gripper_finger_r_right
+      - gripper_finger_l_right
+    gripper_finger_r_right:
       pid:
         p: 100
         d: 0
         i: 0.01
         i_clamp: 1
 
-    finger2_joint:
+    gripper_finger_l_right:
       pid:
         p: 100
         d: 0

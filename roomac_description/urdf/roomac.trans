@@ -133,4 +133,26 @@
   </actuator>
 </transmission>
 
+<transmission name="gripper_finger_r_right_tran">
+  <type>transmission_interface/SimpleTransmission</type>
+  <joint name="gripper_finger_r_right">
+    <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+  </joint>
+  <actuator name="gripper_finger_r_right_actr">
+    <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+    <mechanicalReduction>1</mechanicalReduction>
+  </actuator>
+</transmission>
+
+<transmission name="gripper_finger_2_right_1_tran">
+  <type>transmission_interface/SimpleTransmission</type>
+  <joint name="gripper_finger_l_right">
+    <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+  </joint>
+  <actuator name="gripper_finger_2_right_1_actr">
+    <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+    <mechanicalReduction>1</mechanicalReduction>
+  </actuator>
+</transmission>
+
 </robot>

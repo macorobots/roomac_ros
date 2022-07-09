@@ -4,8 +4,8 @@ object_position_correction_y: 0.0
 object_position_correction_z: 0.03
 
 # Simulation picking object manager settings
-open_gripper_value: 0.0
-closed_gripper_value: 0.05
+open_gripper_value: 0.0045
+closed_gripper_value: -0.015
 
 # Bottle size
 bottle_cap_height: 0.03

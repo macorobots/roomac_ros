@@ -174,5 +174,5 @@ hand:
     - LazyPRMstar
     - SPARS
     - SPARStwo
-  projection_evaluator: joints(finger1_joint,finger2_joint)
+  projection_evaluator: joints(gripper_finger_r_right,gripper_finger_l_right)
   longest_valid_segment_fraction: 0.01

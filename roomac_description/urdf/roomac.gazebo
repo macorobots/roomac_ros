@@ -88,20 +88,6 @@
   <selfCollide>true</selfCollide>
 </gazebo>
 
-<gazebo reference="gripper_finger_1_right_1">
-  <material>${black}</material>
-  <mu1>${finger_friction}</mu1>
-  <mu2>${finger_friction}</mu2>
-  <selfCollide>true</selfCollide>
-</gazebo>
-
-<gazebo reference="gripper_finger_2_right_1">
-  <material>${black}</material>
-  <mu1>${finger_friction}</mu1>
-  <mu2>${finger_friction}</mu2>
-  <selfCollide>true</selfCollide>
-</gazebo>
-
 <gazebo reference="caster_tire_right_1">
   <material>${black}</material>
   <mu1>${caster_friction}</mu1>
@@ -144,11 +130,12 @@
   <selfCollide>true</selfCollide>
 </gazebo>
 
+<!-- Disable collision between gripper and fingers, otherwise it causes oscillations of fingers -->
 <gazebo reference="gripper_right_1">
   <material>${black}</material>
   <mu1>${standard_friction}</mu1>
   <mu2>${standard_friction}</mu2>
-  <selfCollide>true</selfCollide>
+  <selfCollide>false</selfCollide>
 </gazebo>
 
 <gazebo reference="wrist_right_1">
@@ -261,6 +248,70 @@
   <mu1>${standard_friction}</mu1>
   <mu2>${standard_friction}</mu2>
   <selfCollide>true</selfCollide>
+</gazebo>
+
+<!-- gripper settings from https://github.com/martinandrovich/rb-rovi/blob/master/ws/src/ur5_description/robots/wsg.gazebo.xacro -->
+<!-- Disable collision between gripper and fingers, otherwise it causes oscillations of fingers -->
+<!-- TODO change gripper so that it doesn't collide -->
+
+<gazebo reference="gripper_finger_1_right_1">
+  <selfCollide>false</selfCollide>
+  <gravity>0</gravity>
+  <turnGravityOff>true</turnGravityOff>
+  <collision>
+  <surface>
+    <friction>
+      <torsional>
+        <coefficient>10.0</coefficient>
+        <use_patch_radius>true</use_patch_radius>
+        <patch_radius>0.05</patch_radius>
+      </torsional>
+    </friction>
+    <contact>
+      <poissons_ratio>0.5</poissons_ratio>
+      <elastic_modulus>1e8</elastic_modulus>
+    </contact>
+  </surface>
+  </collision>
+  <mu1>${finger_friction}</mu1>
+  <mu2>${finger_friction}</mu2>
+  <maxVel>1</maxVel>
+  <kp>1000000.0</kp>
+  <kd>100.0</kd> 
+  <fdir1>0 0 1</fdir1>
+  <minDepth>0.0</minDepth>
+  <maxContacts>100</maxContacts>
+  <material>${black}</material>
+</gazebo>
+
+<gazebo reference="gripper_finger_2_right_1">
+  <selfCollide>false</selfCollide>
+  <gravity>0</gravity>
+  <turnGravityOff>true</turnGravityOff>
+  <collision>
+  <surface>
+    <friction>
+      <torsional>
+        <coefficient>10.0</coefficient>
+        <use_patch_radius>true</use_patch_radius>
+        <patch_radius>0.05</patch_radius>
+      </torsional>
+    </friction>
+    <contact>
+      <poissons_ratio>0.5</poissons_ratio>
+      <elastic_modulus>1e8</elastic_modulus>
+    </contact>
+  </surface>
+  </collision>
+  <mu1>${finger_friction}</mu1>
+  <mu2>${finger_friction}</mu2>
+  <maxVel>1</maxVel>
+  <kp>1000000.0</kp>
+  <kd>100.0</kd> 
+  <fdir1>0 0 1</fdir1>
+  <minDepth>0.0</minDepth>
+  <maxContacts>100</maxContacts>
+  <material>${black}</material>
 </gazebo>
 
 <!-- Pointcloud in gazebo is published in different coordinates than in reality, real frame has to be rotated -->
@@ -382,6 +433,28 @@
   <plugin filename="libgazebo_ros_control.so" name="control">
     <robotNamespace>/roomac</robotNamespace>
   </plugin>
+</gazebo>
+
+<!-- Use special extension for grasping - once it detects force acting upon object it atteches it to gripper.
+I wasn't able to make grasping work in Gazebo alone, it will be more realistic and better to do it in Gazebo alone, 
+so probably it will be good to try again someday. -->
+<!-- plugin from https://github.com/JenniferBuehler/gazebo-pkgs -->
+<gazebo>
+   <plugin name="gazebo_grasp_fix" filename="libgazebo_grasp_fix.so">
+        <arm>
+           <arm_name>right_arm</arm_name>
+           <palm_link> gripper_right_1  </palm_link>
+           <gripper_link> gripper_finger_1_right_1 </gripper_link>
+           <gripper_link> gripper_finger_2_right_1 </gripper_link>
+        </arm>
+       <forces_angle_tolerance>100</forces_angle_tolerance>
+       <update_rate>16</update_rate>
+       <grip_count_threshold>4</grip_count_threshold>
+       <max_grip_count>8</max_grip_count>
+       <release_tolerance>0.005</release_tolerance>
+       <disable_collisions_on_attach>false</disable_collisions_on_attach>
+       <contact_topic>__default_topic__</contact_topic>
+    </plugin>
 </gazebo>
 
 </robot>
