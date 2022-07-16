@@ -26,6 +26,12 @@
     <rosparam command="load" file="$(find roomac_moveit)/config/cartesian_limits.yaml"/>
   </group>
 
+  <!-- Load padding -->
+  <!-- TODO: doesn't appear to be working correctly -->
+  <group ns="$(arg robot_description)_planning">
+    <rosparam command="load" file="$(find roomac_moveit)/config/padding.yaml" />
+  </group>
+
   <!-- Load default settings for kinematics; these settings are overridden by settings in a node's namespace -->
   <group ns="$(arg robot_description)_kinematics">
     <rosparam command="load" file="$(find roomac_moveit)/config/kinematics.yaml"/>
