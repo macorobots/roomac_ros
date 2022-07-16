@@ -190,6 +190,24 @@ class ArmController(object):
             joint_state_msg.position = angles
             self._joint_state_pub.publish(joint_state_msg)
 
+        # TODO: refactor
+        for joint_name, angle in itertools.izip(joint_names, angles):
+            if joint_name == "right_gripper":
+                joint_state_msg = JointState()
+                joint_state_msg.header.stamp = rospy.Time.now()
+                joint_state_msg.name = [
+                    "gripper_finger_r_right",
+                    "gripper_finger_l_right",
+                ]
+                # Linear approximation using these two points
+                # 0.2 -> 0.005m
+                # 1.0 -> -0.0045m
+                m = -0.011875
+                b = 0.007375
+                dist = m * angle + b
+                joint_state_msg.position = [dist, -dist]
+                self._joint_state_pub.publish(joint_state_msg)
+
         rospy.sleep(rospy.Duration(movement_duration))
 
     def _get_valid_joints(self, joint_names, angles):
