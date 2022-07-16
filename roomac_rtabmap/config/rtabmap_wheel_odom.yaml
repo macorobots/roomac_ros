@@ -1,4 +1,4 @@
-frame_id: "base_link"
+frame_id: "base_footprint"
 subscribe_depth: false
 subscribe_rgbd: true
 subscribe_rgb: false

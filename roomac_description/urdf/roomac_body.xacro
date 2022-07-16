@@ -4,6 +4,7 @@
 <!-- BODY -->
 
 <link name="base_link" />
+<link name="base_footprint" />
 
 <!-- Additional link needed to solve moveit warning (as far as I know it shouldn't cause any issue as I'm not using KDL, but still better to solve it): -->
 <!-- The root link base_link has an inertia specified in the URDF, but KDL does not support a root link with an inertia.  As a workaround, you can add an extra dummy link to your URDF. -->
@@ -69,6 +70,13 @@
     </geometry>
   </collision>
 </link>
+
+
+<joint name="base_joint" type="fixed">
+  <origin rpy="0 0 0" xyz="0 0 0.145"/>
+  <parent link="base_footprint"/>
+  <child link="base_link"/>
+</joint>
 
 <joint name="robot_base" type="fixed">
   <parent link="base_link"/>
