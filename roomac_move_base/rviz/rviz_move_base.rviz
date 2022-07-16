@@ -6,8 +6,9 @@ Panels:
       Expanded:
         - /Global Options1
         - /TF1/Frames1
+        - /cloud_map1
       Splitter Ratio: 0.5
-    Tree Height: 365
+    Tree Height: 793
   - Class: rviz/Selection
     Name: Selection
   - Class: rviz/Tool Properties
@@ -72,7 +73,8 @@ Visualization Manager:
       Show Arrows: true
       Show Axes: true
       Show Names: true
-      Tree: {}
+      Tree:
+        {}
       Update Interval: 0
       Value: false
     - Alpha: 1
@@ -223,7 +225,7 @@ Visualization Manager:
       Size (Pixels): 3
       Size (m): 0.05000000074505806
       Style: Boxes
-      Topic: /rtabmap/cloud_map
+      Topic: /rtabmap/cloud_obstacles
       Unreliable: false
       Use Fixed Frame: true
       Use rainbow: true
@@ -304,8 +306,16 @@ Visualization Manager:
           Alpha: 1
           Show Axes: false
           Show Trail: false
-          Value: true
         artag_link_bundle:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+        artag_link_bundle_visual:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        base_footprint:
           Alpha: 1
           Show Axes: false
           Show Trail: false
@@ -313,8 +323,7 @@ Visualization Manager:
           Alpha: 1
           Show Axes: false
           Show Trail: false
-          Value: true
-        base_up_1:
+        base_link_frames_1:
           Alpha: 1
           Show Axes: false
           Show Trail: false
@@ -327,6 +336,36 @@ Visualization Manager:
           Alpha: 1
           Show Axes: false
           Show Trail: false
+        caster_left_1:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        caster_right_1:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        caster_tire_left_1:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        caster_tire_right_1:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        elbow_left_1:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        elbow_right_1:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
         elbow_wrist_left_1:
           Alpha: 1
           Show Axes: false
@@ -337,10 +376,45 @@ Visualization Manager:
           Show Axes: false
           Show Trail: false
           Value: true
+        eye_left_1:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        eye_right_1:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        frame_1:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
         gazebo_camera_link:
           Alpha: 1
           Show Axes: false
           Show Trail: false
+        gripper_finger_1_left_1:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        gripper_finger_1_right_1:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        gripper_finger_2_left_1:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        gripper_finger_2_right_1:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
         gripper_left_1:
           Alpha: 1
           Show Axes: false
@@ -364,36 +438,41 @@ Visualization Manager:
           Show Axes: false
           Show Trail: false
           Value: true
-        imu:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-        caster_left_1:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        wheel_left_1:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
         hub_left_1:
           Alpha: 1
           Show Axes: false
           Show Trail: false
           Value: true
-        caster_right_1:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        wheel_right_1:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
         hub_right_1:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        imu:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+        robot_base_1:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        shoulder_base_left_1:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        shoulder_base_right_1:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        shoulder_elbow_gear_left_1:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        shoulder_elbow_gear_right_1:
           Alpha: 1
           Show Axes: false
           Show Trail: false
@@ -414,6 +493,26 @@ Visualization Manager:
           Show Trail: false
           Value: true
         shoulder_right_1:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        wheel_left_1:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        wheel_right_1:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        wheel_tire_left_1:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        wheel_tire_right_1:
           Alpha: 1
           Show Axes: false
           Show Trail: false
