@@ -2,6 +2,12 @@
 Changelog for package roomac
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* Merge pull request `#54 <https://github.com/macstepien/roomac_ros/issues/54>`_ from macstepien/increase-test-time-limit
+  Increase time limit of integration test
+* Contributors: Maciej Stępień
+
 1.10.2 (2022-07-16)
 -------------------
 
