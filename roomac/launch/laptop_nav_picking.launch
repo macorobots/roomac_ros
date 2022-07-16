@@ -8,6 +8,9 @@
   <include file="$(find roomac)/launch/autonomous_mission.launch" />
   <include file="$(find roomac)/launch/ros_mobile.launch"/>
 
+  <!-- Publishing wheel joints only for nicer visualization in rviz -->
+  <node name="wheel_joint_publisher" pkg="roomac" type="wheel_joint_publisher.py" output="screen"/>
+
   <!-- Temporal solution before making changes in firmware, then it should be removed -->
   <include file="$(find roomac)/launch/firmware_configurations.launch"/>
 </launch>
