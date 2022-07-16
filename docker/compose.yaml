@@ -1,0 +1,24 @@
+version: "3.9"
+services:
+  roomac:
+    image: roomac-tests:latest
+    build:
+      context: ../
+      dockerfile: Dockerfile
+
+    stdin_open: true # docker run -i
+    tty: true # docker run -t
+    entrypoint: /bin/bash
+
+    volumes:
+      - roomac_data:/home/roomac/roomac_data
+      - type: bind
+        source: ~/Documents/roomac/roomac_ws
+        target: /home/roomac/catkin_ws
+      - /tmp/.X11-unix:/tmp/.X11-unix
+
+    runtime: nvidia
+    environment:
+      - DISPLAY=${DISPLAY}
+      - NVIDIA_VISIBLE_DEVICES=all
+      - NVIDIA_DRIVER_CAPABILITIES=all

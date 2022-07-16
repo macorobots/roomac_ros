@@ -2,6 +2,12 @@
 Changelog for package roomac_rtabmap
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+1.10.3 (2022-07-16)
+-------------------
+
+1.10.2 (2022-07-16)
+-------------------
+
 1.10.1 (2022-07-06)
 -------------------
 * Merge pull request `#52 <https://github.com/macstepien/roomac_ros/issues/52>`_ from macstepien/gazebo-integration-tests

@@ -5,5 +5,5 @@
     <arg name="positions_file" value="$(find roomac)/tests/positions_test.yaml"/>
   </include>
   
-  <test test-name="pick_and_bring_test" pkg="roomac" type="pick_and_bring.test.py" time-limit="180.0"/>
+  <test test-name="pick_and_bring_test" pkg="roomac" type="pick_and_bring.test.py" time-limit="360.0"/>
 </launch>
