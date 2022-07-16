@@ -25,7 +25,7 @@
     <group_state name="Home" group="right_arm">
         <joint name="elbow_right" value="0.74" />
         <joint name="gripper_twist_right" value="0" />
-        <joint name="shoulder_roll_right" value="0.32" />
+        <joint name="shoulder_roll_right" value="0.4" />
         <joint name="shoulder_pitch_right" value="0" />
         <joint name="wrist_right" value="0" />
     </group_state>
