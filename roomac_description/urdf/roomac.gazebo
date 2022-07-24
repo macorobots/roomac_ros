@@ -10,7 +10,7 @@
 <xacro:property name="wheel_friction" value="100.0" />
 <xacro:property name="finger_friction" value="100.0" />
 
-<gazebo reference="robot_body_1">
+<gazebo reference="robot_body_link">
   <material>${black}</material>
   <mu1>${standard_friction}</mu1>
   <mu2>${standard_friction}</mu2>
@@ -18,56 +18,56 @@
   <gravity>true</gravity>
 </gazebo>
 
-<gazebo reference="caster_right_1">
+<gazebo reference="caster_right_link">
   <material>${grey}</material>
   <mu1>${standard_friction}</mu1>
   <mu2>${standard_friction}</mu2>
   <selfCollide>true</selfCollide>
 </gazebo>
 
-<gazebo reference="caster_left_1">
+<gazebo reference="caster_left_link">
   <material>${grey}</material>
   <mu1>${standard_friction}</mu1>
   <mu2>${standard_friction}</mu2>
   <selfCollide>true</selfCollide>
 </gazebo>
 
-<gazebo reference="wheel_right_1">
+<gazebo reference="wheel_right_link">
   <material>${grey}</material>
   <mu1>${wheel_friction}</mu1>
   <mu2>${wheel_friction}</mu2>
   <selfCollide>true</selfCollide>
 </gazebo>
 
-<gazebo reference="wheel_left_1">
+<gazebo reference="wheel_left_link">
   <material>${grey}</material>
   <mu1>${wheel_friction}</mu1>
   <mu2>${wheel_friction}</mu2>
   <selfCollide>true</selfCollide>
 </gazebo>
 
-<gazebo reference="frame_1">
+<gazebo reference="frame_link">
   <material>${grey}</material>
   <mu1>${standard_friction}</mu1>
   <mu2>${standard_friction}</mu2>
   <selfCollide>true</selfCollide>
 </gazebo>
 
-<gazebo reference="eye_left_1">
+<gazebo reference="eye_left_link">
   <material>${white}</material>
   <mu1>${standard_friction}</mu1>
   <mu2>${standard_friction}</mu2>
   <selfCollide>true</selfCollide>
 </gazebo>
 
-<gazebo reference="elbow_wrist_right_1">
+<gazebo reference="elbow_wrist_right_link">
   <material>${black}</material>
   <mu1>${standard_friction}</mu1>
   <mu2>${standard_friction}</mu2>
   <selfCollide>true</selfCollide>
 </gazebo>
 
-<gazebo reference="base_link_frames_1">
+<gazebo reference="robot_body_frames_link">
   <material>${white}</material>
   <mu1>${standard_friction}</mu1>
   <mu2>${standard_friction}</mu2>
@@ -75,91 +75,91 @@
 </gazebo>
 
 <!-- Disable collision between gripper and fingers, otherwise it causes oscillations of fingers -->
-<gazebo reference="gripper_right_1">
+<gazebo reference="gripper_right_link">
   <material>${black}</material>
   <mu1>${standard_friction}</mu1>
   <mu2>${standard_friction}</mu2>
   <selfCollide>false</selfCollide>
 </gazebo>
 
-<gazebo reference="wrist_right_1">
+<gazebo reference="wrist_right_link">
   <material>${black}</material>
   <mu1>${standard_friction}</mu1>
   <mu2>${standard_friction}</mu2>
   <selfCollide>true</selfCollide>
 </gazebo>
 
-<gazebo reference="shoulder_elbow_right_1">
+<gazebo reference="shoulder_elbow_right_link">
   <material>${grey}</material>
   <mu1>${standard_friction}</mu1>
   <mu2>${standard_friction}</mu2>
   <selfCollide>true</selfCollide>
 </gazebo>
 
-<gazebo reference="shoulder_right_1">
+<gazebo reference="shoulder_right_link">
   <material>${black}</material>
   <mu1>${standard_friction}</mu1>
   <mu2>${standard_friction}</mu2>
   <selfCollide>true</selfCollide>
 </gazebo>
 
-<gazebo reference="head_1">
+<gazebo reference="head_link">
   <material>${black}</material>
   <mu1>${standard_friction}</mu1>
   <mu2>${standard_friction}</mu2>
   <selfCollide>true</selfCollide>
 </gazebo>
 
-<gazebo reference="eye_right_1">
+<gazebo reference="eye_right_link">
   <material>${white}</material>
   <mu1>${standard_friction}</mu1>
   <mu2>${standard_friction}</mu2>
   <selfCollide>true</selfCollide>
 </gazebo>
 
-<gazebo reference="shoulder_left_1">
+<gazebo reference="shoulder_left_link">
   <material>${black}</material>
   <mu1>${standard_friction}</mu1>
   <mu2>${standard_friction}</mu2>
   <selfCollide>true</selfCollide>
 </gazebo>
 
-<gazebo reference="gripper_finger_2_left_1">
+<gazebo reference="gripper_finger_r_left_link">
   <material>${black}</material>
   <mu1>${finger_friction}</mu1>
   <mu2>${finger_friction}</mu2>
   <selfCollide>true</selfCollide>
 </gazebo>
 
-<gazebo reference="gripper_finger_1_left_1">
+<gazebo reference="gripper_finger_l_left_link">
   <material>${black}</material>
   <mu1>${finger_friction}</mu1>
   <mu2>${finger_friction}</mu2>
   <selfCollide>true</selfCollide>
 </gazebo>
 
-<gazebo reference="gripper_left_1">
+<gazebo reference="gripper_left_link">
   <material>${black}</material>
   <mu1>${standard_friction}</mu1>
   <mu2>${standard_friction}</mu2>
   <selfCollide>true</selfCollide>
 </gazebo>
 
-<gazebo reference="wrist_left_1">
+<gazebo reference="wrist_left_link">
   <material>${black}</material>
   <mu1>${standard_friction}</mu1>
   <mu2>${standard_friction}</mu2>
   <selfCollide>true</selfCollide>
 </gazebo>
 
-<gazebo reference="elbow_wrist_left_1">
+<gazebo reference="elbow_wrist_left_link">
   <material>${black}</material>
   <mu1>${standard_friction}</mu1>
   <mu2>${standard_friction}</mu2>
   <selfCollide>true</selfCollide>
 </gazebo>
 
-<gazebo reference="shoulder_elbow_left_1">
+<gazebo reference="shoulder_elbow_left_link">
   <material>${grey}</material>
   <mu1>${standard_friction}</mu1>
   <mu2>${standard_friction}</mu2>
@@ -171,7 +171,7 @@
 <!-- Disable collision between gripper and fingers, otherwise it causes oscillations of fingers -->
 <!-- TODO change gripper so that it doesn't collide -->
 
-<gazebo reference="gripper_finger_1_right_1">
+<gazebo reference="gripper_finger_r_right_link">
   <selfCollide>false</selfCollide>
   <gravity>0</gravity>
   <turnGravityOff>true</turnGravityOff>
@@ -201,7 +201,7 @@
   <material>${black}</material>
 </gazebo>
 
-<gazebo reference="gripper_finger_2_right_1">
+<gazebo reference="gripper_finger_l_right_link">
   <selfCollide>false</selfCollide>
   <gravity>0</gravity>
   <turnGravityOff>true</turnGravityOff>
@@ -325,7 +325,7 @@
   </plugin>
 </gazebo>
 
-<gazebo reference="imu">
+<gazebo reference="imu_link">
   <gravity>true</gravity>
   <sensor name="imu_sensor" type="imu">
     <always_on>true</always_on>
@@ -334,12 +334,12 @@
     <topic>__default_topic__</topic>
     <plugin filename="libgazebo_ros_imu_sensor.so" name="imu_plugin">
       <topicName>/imu/orientation</topicName>
-      <bodyName>imu</bodyName>
+      <bodyName>imu_link</bodyName>
       <updateRateHZ>10.0</updateRateHZ>
       <gaussianNoise>0.0</gaussianNoise>
       <xyzOffset>0 0 0</xyzOffset>
       <rpyOffset>0 0 0</rpyOffset>
-      <frameName>imu</frameName>
+      <frameName>imu_link</frameName>
       <initialOrientationAsReference>false</initialOrientationAsReference>
     </plugin>
     <pose>0 0 0 0 0 0</pose>
@@ -360,9 +360,9 @@ so probably it will be good to try again someday. -->
    <plugin name="gazebo_grasp_fix" filename="libgazebo_grasp_fix.so">
         <arm>
            <arm_name>right_arm</arm_name>
-           <palm_link> gripper_right_1  </palm_link>
-           <gripper_link> gripper_finger_1_right_1 </gripper_link>
-           <gripper_link> gripper_finger_2_right_1 </gripper_link>
+           <palm_link> gripper_right_link  </palm_link>
+           <gripper_link> gripper_finger_r_right_link </gripper_link>
+           <gripper_link> gripper_finger_l_right_link </gripper_link>
         </arm>
        <forces_angle_tolerance>100</forces_angle_tolerance>
        <update_rate>16</update_rate>

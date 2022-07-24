@@ -67,9 +67,9 @@ permit_corrected_publication: false
 #     3b. MAKE SURE something else is generating the odom->base_link transform. Note that this can even be another state
 #         estimation node from robot_localization! However, that instance should *not* fuse the global data.
 map_frame: map              # Defaults to "map" if unspecified
-odom_frame: artag_link_bundle            # Defaults to "odom" if unspecified
+odom_frame: artag_bundle_link            # Defaults to "odom" if unspecified
 base_link_frame: camera_up_link  # Defaults to "base_link" if unspecified
-world_frame: artag_link_bundle           # Defaults to the value of odom_frame if unspecified
+world_frame: artag_bundle_link           # Defaults to the value of odom_frame if unspecified
 
 # The filter accepts an arbitrary number of inputs from each input message type (nav_msgs/Odometry,
 # geometry_msgs/PoseWithCovarianceStamped, geometry_msgs/TwistWithCovarianceStamped,

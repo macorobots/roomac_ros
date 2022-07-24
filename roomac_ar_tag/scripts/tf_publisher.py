@@ -37,7 +37,7 @@ if __name__ == "__main__":
             continue
 
         br.sendTransform(
-            trans, rot, rospy.Time.now(), "camera_up_link", "artag_link_bundle"
+            trans, rot, rospy.Time.now(), "camera_up_link", "artag_bundle_link"
         )
 
         rate.sleep()

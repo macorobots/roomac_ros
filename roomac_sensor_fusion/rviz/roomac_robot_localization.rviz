@@ -76,25 +76,25 @@ Visualization Manager:
           Value: false
         gazebo_camera_link:
           Value: false
-        gripper_right_1:
+        gripper_right_link:
           Value: false
-        gripper_right_grip:
+        gripping_right_link:
           Value: false
-        head_1:
+        head_link:
           Value: false
-        imu:
+        imu_link:
           Value: false
-        caster_left_1:
+        caster_left_link:
           Value: false
-        wheel_left_1:
+        wheel_left_link:
           Value: false
         hub_left_1:
           Value: false
         odom:
           Value: true
-        caster_right_1:
+        caster_right_link:
           Value: false
-        wheel_right_1:
+        wheel_right_link:
           Value: false
         hub_right_1:
           Value: false
@@ -106,16 +106,16 @@ Visualization Manager:
       Tree:
         base_link:
           base_up_1:
-            head_1: {}
+            head_link: {}
           camera_link:
             camera_depth_frame:
               camera_depth_optical_frame: {}
             camera_rgb_frame:
               camera_rgb_optical_frame: {}
             gazebo_camera_link: {}
-          imu: {}
-          caster_left_1: {}
-          caster_right_1: {}
+          imu_link: {}
+          caster_left_link: {}
+          caster_right_link: {}
         odom: {}
       Update Interval: 0
       Value: true

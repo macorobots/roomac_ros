@@ -39,7 +39,7 @@ class TestArmPrecisionManager(PickingObjectManager):
     def get_object_point(self):
         object_point = PointStamped()
         object_point.header.stamp = rospy.Time(0)
-        object_point.header.frame_id = "body_precision_test_tip"
+        object_point.header.frame_id = "body_precision_test_tip_link"
         object_point.point.x = 0.0
         object_point.point.y = 0.0
         object_point.point.z = 0.0
@@ -58,13 +58,13 @@ class TestArmPrecisionManager(PickingObjectManager):
     def print_error(self):
         tip_point = PointStamped()
         tip_point.header.stamp = rospy.Time(0)
-        tip_point.header.frame_id = "gripper_right_precision_test_tip"
+        tip_point.header.frame_id = "gripper_right_precision_test_tip_link"
         tip_point.point.x = 0.0
         tip_point.point.y = 0.0
         tip_point.point.z = 0.0
 
         object_point_transformed = self.transform_point(
-            tip_point, "body_precision_test_tip"
+            tip_point, "body_precision_test_tip_link"
         )
 
         rospy.logwarn("Planner error: " + str(object_point_transformed.point))
@@ -80,7 +80,7 @@ class TestArmPrecisionManager(PickingObjectManager):
 
         # Allow approximate solutions (True)
         self.move_group.set_joint_value_target(
-            pose_goal, "gripper_right_precision_test_tip", True
+            pose_goal, "gripper_right_precision_test_tip_link", True
         )
         self.find_and_execute_plan()
         self.print_error()

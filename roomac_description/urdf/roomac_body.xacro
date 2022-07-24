@@ -1,6 +1,8 @@
 <?xml version="1.0" ?>
 <robot name="roomac" xmlns:xacro="http://www.ros.org/wiki/xacro">
 
+<!-- todo: standardize joint names -->
+
 <!-- BODY -->
 
 <link name="base_link" />
@@ -8,7 +10,7 @@
 
 <!-- Additional link needed to solve moveit warning (as far as I know it shouldn't cause any issue as I'm not using KDL, but still better to solve it): -->
 <!-- The root link base_link has an inertia specified in the URDF, but KDL does not support a root link with an inertia.  As a workaround, you can add an extra dummy link to your URDF. -->
-<link name="robot_body_1">
+<link name="robot_body_link">
   <inertial>
     <origin xyz="-0.14414593948878596 0.007272292388517288 0.4790557350675238" rpy="0 0 0"/>
     <mass value="7.356876734373038"/>
@@ -29,7 +31,7 @@
   </collision>
 </link>
 
-<link name="base_link_frames_1">
+<link name="robot_body_frames_link">
   <inertial>
     <origin xyz="0.09299736209064594 0.09816853953024438 0.7758797564332383" rpy="0 0 0"/>
     <mass value="0.7337661134722138"/>
@@ -38,19 +40,19 @@
   <visual>
     <origin xyz="0.223282 0.099058 0.0075" rpy="0 0 0"/>
     <geometry>
-      <mesh filename="package://roomac_description/meshes/base_link_frames_1.stl" scale="0.001 0.001 0.001"/>
+      <mesh filename="package://roomac_description/meshes/robot_body_frames_link.stl" scale="0.001 0.001 0.001"/>
     </geometry>
     <material name="white"/>
   </visual>
   <collision>
     <origin xyz="0.223282 0.099058 0.0075" rpy="0 0 0"/>
     <geometry>
-      <mesh filename="package://roomac_description/meshes/base_link_frames_1.stl" scale="0.001 0.001 0.001"/>
+      <mesh filename="package://roomac_description/meshes/robot_body_frames_link.stl" scale="0.001 0.001 0.001"/>
     </geometry>
   </collision>
 </link>
 
-<link name="frame_1">
+<link name="frame_link">
   <inertial>
     <origin xyz="-0.06363233755923882 -0.10316506754069626 -0.18305645699853168" rpy="0 0 0"/>
     <mass value="4.866480003493675"/>
@@ -59,14 +61,14 @@
   <visual>
     <origin xyz="0.06485 -0.10315 -0.52765" rpy="0 0 0"/>
     <geometry>
-      <mesh filename="package://roomac_description/meshes/frame_1.stl" scale="0.001 0.001 0.001"/>
+      <mesh filename="package://roomac_description/meshes/frame_link.stl" scale="0.001 0.001 0.001"/>
     </geometry>
     <material name="silver"/>
   </visual>
   <collision>
     <origin xyz="0.06485 -0.10315 -0.52765" rpy="0 0 0"/>
     <geometry>
-      <mesh filename="package://roomac_description/meshes/frame_1.stl" scale="0.001 0.001 0.001"/>
+      <mesh filename="package://roomac_description/meshes/frame_link.stl" scale="0.001 0.001 0.001"/>
     </geometry>
   </collision>
 </link>
@@ -79,19 +81,19 @@
 
 <joint name="robot_body" type="fixed">
   <parent link="base_link"/>
-  <child link="robot_body_1"/>
+  <child link="robot_body_link"/>
 </joint>
 
-<joint name="base_link_frames" type="fixed">
+<joint name="robot_body_frames" type="fixed">
   <origin xyz="-0.223282 -0.099058 -0.0075" rpy="0 0 0"/>
   <parent link="base_link"/>
-  <child link="base_link_frames_1"/>
+  <child link="robot_body_frames_link"/>
 </joint>
 
 <joint name="frame" type="fixed">
   <origin xyz="-0.06485 0.10315 0.52765" rpy="0 0 0"/>
   <parent link="base_link"/>
-  <child link="frame_1"/>
+  <child link="frame_link"/>
 </joint>
 
 <!-- KINECT -->
@@ -106,18 +108,18 @@
 
 <!-- IMU -->
 
-<link name="imu" />
+<link name="imu_link" />
 <joint name="imu_joint" type="fixed">
   <origin rpy="0 0 0" xyz="-0.09873 -0.0375 0.0305"/>
   <parent link="base_link"/>
-  <child link="imu"/>
+  <child link="imu_link"/>
 </joint>
 
 <!-- ARTAG -->
 
 <link name="artag_link" />
 
-<link name="artag_link_bundle_visual">
+<link name="artag_bundle_visual_link">
   <inertial>
     <origin rpy="0 0 0" xyz="0 0 0"/>
     <mass value="0.1"/>
@@ -146,12 +148,12 @@
 <joint name="artag_joint_bundle_visual" type="fixed">
   <origin rpy="0 0 0" xyz="0.01 0.0 0.0"/>
   <parent link="artag_link"/>
-  <child link="artag_link_bundle_visual"/>
+  <child link="artag_bundle_visual_link"/>
 </joint>
 
 <!-- CASTERS -->
 
-<link name="caster_right_1">
+<link name="caster_right_link">
   <inertial>
     <origin xyz="0.00355868425330208 -0.0279262663780577 -0.08858638249680677" rpy="0 0 0"/>
     <mass value="1.0173955553418546"/>
@@ -166,12 +168,12 @@
   <collision>
     <origin xyz="0.324 0.133 0.00465" rpy="0 0 0"/>
     <geometry>
-      <mesh filename="package://roomac_description/meshes/caster_right_1.stl" scale="0.001 0.001 0.001"/>
+      <mesh filename="package://roomac_description/meshes/caster_right_link.stl" scale="0.001 0.001 0.001"/>
     </geometry>
   </collision>
 </link>
 
-<link name="caster_left_1">
+<link name="caster_left_link">
   <inertial>
     <origin xyz="0.0035586842533020246 0.02192626637805642 -0.0885863824968092" rpy="0 0 0"/>
     <mass value="1.0173955553418546"/>
@@ -186,7 +188,7 @@
   <collision>
     <origin xyz="0.324 -0.139 0.00465" rpy="0 0 0"/>
     <geometry>
-      <mesh filename="package://roomac_description/meshes/caster_left_1.stl" scale="0.001 0.001 0.001"/>
+      <mesh filename="package://roomac_description/meshes/caster_left_link.stl" scale="0.001 0.001 0.001"/>
     </geometry>
   </collision>
 </link>
@@ -194,18 +196,18 @@
 <joint name="caster_right" type="fixed">
   <origin xyz="-0.324 -0.133 -0.00465" rpy="0 0 0"/>
   <parent link="base_link"/>
-  <child link="caster_right_1"/>
+  <child link="caster_right_link"/>
 </joint>
 
 <joint name="caster_left" type="fixed">
   <origin xyz="-0.324 0.139 -0.00465" rpy="0 0 0"/>
   <parent link="base_link"/>
-  <child link="caster_left_1"/>
+  <child link="caster_left_link"/>
 </joint>
 
 <!-- WHEELS -->
 
-<link name="wheel_right_1">
+<link name="wheel_right_link">
   <inertial>
     <origin xyz="-8.535155939829862e-08 -0.045545810193822645 1.2324269625501287e-07" rpy="0 0 0"/>
     <mass value="2.752514069802561"/>
@@ -220,12 +222,12 @@
   <collision>
     <origin xyz="-0.0 0.21064 0.0" rpy="0 0 0"/>
     <geometry>
-      <mesh filename="package://roomac_description/meshes/wheel_right_1.stl" scale="0.001 0.001 0.001"/>
+      <mesh filename="package://roomac_description/meshes/wheel_right_link.stl" scale="0.001 0.001 0.001"/>
     </geometry>
   </collision>
 </link>
 
-<link name="wheel_left_1">
+<link name="wheel_left_link">
   <inertial>
     <origin xyz="-7.854137935392783e-08 0.039545809782175645 1.1633993854093376e-07" rpy="0 0 0"/>
     <mass value="2.7525139105402956"/>
@@ -240,7 +242,7 @@
   <collision>
     <origin xyz="0.0 -0.21664 0.0" rpy="0 0 0"/>
     <geometry>
-      <mesh filename="package://roomac_description/meshes/wheel_left_1.stl" scale="0.001 0.001 0.001"/>
+      <mesh filename="package://roomac_description/meshes/wheel_left_link.stl" scale="0.001 0.001 0.001"/>
     </geometry>
   </collision>
 </link>
@@ -248,20 +250,20 @@
 <joint name="wheel_right" type="continuous">
   <origin xyz="0.0 -0.21064 0.0" rpy="0 0 0"/>
   <parent link="base_link"/>
-  <child link="wheel_right_1"/>
+  <child link="wheel_right_link"/>
   <axis xyz="0 1 0"/>
 </joint>
 
 <joint name="wheel_left" type="continuous">
   <origin xyz="0.0 0.21664 0.0" rpy="0 0 0"/>
   <parent link="base_link"/>
-  <child link="wheel_left_1"/>
+  <child link="wheel_left_link"/>
   <axis xyz="0 1 0"/>
 </joint>
 
 <!-- HEAD -->
 
-<link name="head_1">
+<link name="head_link">
   <inertial>
     <origin xyz="-0.057525587412925475 -6.228687900878637e-07 0.06845033639955778" rpy="0 0 0"/>
     <mass value="4.300223439076428"/>
@@ -270,19 +272,19 @@
   <visual>
     <origin xyz="0.08 -2.1e-05 -0.969145" rpy="0 0 0"/>
     <geometry>
-      <mesh filename="package://roomac_description/meshes/head_1.stl" scale="0.001 0.001 0.001"/>
+      <mesh filename="package://roomac_description/meshes/head_link.stl" scale="0.001 0.001 0.001"/>
     </geometry>
     <material name="black"/>
   </visual>
   <collision>
     <origin xyz="0.08 -2.1e-05 -0.969145" rpy="0 0 0"/>
     <geometry>
-      <mesh filename="package://roomac_description/meshes/head_1.stl" scale="0.001 0.001 0.001"/>
+      <mesh filename="package://roomac_description/meshes/head_link.stl" scale="0.001 0.001 0.001"/>
     </geometry>
   </collision>
 </link>
 
-<link name="eye_right_1">
+<link name="eye_right_link">
   <inertial>
     <origin xyz="0.00626024105824001 3.517735655544918e-08 -3.559806300845736e-07" rpy="0 0 0"/>
     <mass value="0.12003246414388505"/>
@@ -291,19 +293,19 @@
   <visual>
     <origin xyz="0.0825 0.055979 -1.083347" rpy="0 0 0"/>
     <geometry>
-      <mesh filename="package://roomac_description/meshes/eye_right_1.stl" scale="0.001 0.001 0.001"/>
+      <mesh filename="package://roomac_description/meshes/eye_right_link.stl" scale="0.001 0.001 0.001"/>
     </geometry>
     <material name="white"/>
   </visual>
   <collision>
     <origin xyz="0.0825 0.055979 -1.083347" rpy="0 0 0"/>
     <geometry>
-      <mesh filename="package://roomac_description/meshes/eye_right_1.stl" scale="0.001 0.001 0.001"/>
+      <mesh filename="package://roomac_description/meshes/eye_right_link.stl" scale="0.001 0.001 0.001"/>
     </geometry>
   </collision>
 </link>
 
-<link name="eye_left_1">
+<link name="eye_left_link">
   <inertial>
     <origin xyz="0.006260241058239718 3.517735615299333e-08 -3.5598063252706424e-07" rpy="0 0 0"/>
     <mass value="0.12003246414388502"/>
@@ -312,39 +314,39 @@
   <visual>
     <origin xyz="0.0825 -0.056021 -1.083347" rpy="0 0 0"/>
     <geometry>
-      <mesh filename="package://roomac_description/meshes/eye_left_1.stl" scale="0.001 0.001 0.001"/>
+      <mesh filename="package://roomac_description/meshes/eye_left_link.stl" scale="0.001 0.001 0.001"/>
     </geometry>
     <material name="white"/>
   </visual>
   <collision>
     <origin xyz="0.0825 -0.056021 -1.083347" rpy="0 0 0"/>
     <geometry>
-      <mesh filename="package://roomac_description/meshes/eye_left_1.stl" scale="0.001 0.001 0.001"/>
+      <mesh filename="package://roomac_description/meshes/eye_left_link.stl" scale="0.001 0.001 0.001"/>
     </geometry>
   </collision>
 </link>
 
 <joint name="head" type="fixed">
   <origin xyz="-0.01515 -0.103129 0.441495" rpy="0 0 0"/>
-  <parent link="frame_1"/>
-  <child link="head_1"/>
+  <parent link="frame_link"/>
+  <child link="head_link"/>
 </joint>
 
 <joint name="eye_right" type="fixed">
   <origin xyz="-0.0025 -0.056 0.114202" rpy="0 0 0"/>
-  <parent link="head_1"/>
-  <child link="eye_right_1"/>
+  <parent link="head_link"/>
+  <child link="eye_right_link"/>
 </joint>
 
 <joint name="eye_left" type="fixed">
   <origin xyz="-0.0025 0.056 0.114202" rpy="0 0 0"/>
-  <parent link="head_1"/>
-  <child link="eye_left_1"/>
+  <parent link="head_link"/>
+  <child link="eye_left_link"/>
 </joint>
 
 <!-- RIGHT ARM -->
 
-<link name="shoulder_right_1">
+<link name="shoulder_right_link">
   <inertial>
     <origin xyz="-0.00456057320555428 -0.012787272244286635 0.0077144845604640855" rpy="0 0 0"/>
     <mass value="2.3807768899181916"/>
@@ -353,19 +355,19 @@
   <visual>
     <origin xyz="0.1135 0.174979 -0.9345" rpy="0 0 0"/>
     <geometry>
-      <mesh filename="package://roomac_description/meshes/shoulder_right_1.stl" scale="0.001 0.001 0.001"/>
+      <mesh filename="package://roomac_description/meshes/shoulder_right_link.stl" scale="0.001 0.001 0.001"/>
     </geometry>
     <material name="black"/>
   </visual>
   <collision>
     <origin xyz="0.1135 0.174979 -0.9345" rpy="0 0 0"/>
     <geometry>
-      <mesh filename="package://roomac_description/meshes/shoulder_right_1.stl" scale="0.001 0.001 0.001"/>
+      <mesh filename="package://roomac_description/meshes/shoulder_right_link.stl" scale="0.001 0.001 0.001"/>
     </geometry>
   </collision>
 </link>
 
-<link name="shoulder_elbow_right_1">
+<link name="shoulder_elbow_right_link">
   <inertial>
     <origin xyz="-1.8144588477334023e-05 1.4016989058340812e-07 -0.08491558495824947" rpy="0 0 0"/>
     <mass value="1.0007451414955084"/>
@@ -374,18 +376,18 @@
   <visual>
     <origin xyz="0.113 0.243979 -0.9345" rpy="0 0 0"/>
     <geometry>
-      <mesh filename="package://roomac_description/meshes/shoulder_elbow_right_1.dae" scale="0.001 0.001 0.001"/>
+      <mesh filename="package://roomac_description/meshes/shoulder_elbow_right_link.dae" scale="0.001 0.001 0.001"/>
     </geometry>
   </visual>
   <collision>
     <origin xyz="0.113 0.243979 -0.9345" rpy="0 0 0"/>
     <geometry>
-      <mesh filename="package://roomac_description/meshes/shoulder_elbow_right_1.stl" scale="0.001 0.001 0.001"/>
+      <mesh filename="package://roomac_description/meshes/shoulder_elbow_right_link.stl" scale="0.001 0.001 0.001"/>
     </geometry>
   </collision>
 </link>
 
-<link name="elbow_wrist_right_1">
+<link name="elbow_wrist_right_link">
   <inertial>
     <origin xyz="-0.019371175261057735 -0.001202599027629786 -0.0924289033208664" rpy="0 0 0"/>
     <mass value="0.6102002908923237"/>
@@ -394,19 +396,19 @@
   <visual>
     <origin xyz="0.0925 0.243979 -0.733425" rpy="0 0 0"/>
     <geometry>
-      <mesh filename="package://roomac_description/meshes/elbow_wrist_right_1.stl" scale="0.001 0.001 0.001"/>
+      <mesh filename="package://roomac_description/meshes/elbow_wrist_right_link.stl" scale="0.001 0.001 0.001"/>
     </geometry>
     <material name="black"/>
   </visual>
   <collision>
     <origin xyz="0.0925 0.243979 -0.733425" rpy="0 0 0"/>
     <geometry>
-      <mesh filename="package://roomac_description/meshes/elbow_wrist_right_1.stl" scale="0.001 0.001 0.001"/>
+      <mesh filename="package://roomac_description/meshes/elbow_wrist_right_link.stl" scale="0.001 0.001 0.001"/>
     </geometry>
   </collision>
 </link>
 
-<link name="wrist_right_1">
+<link name="wrist_right_link">
   <inertial>
     <origin xyz="0.02427263159088841 -0.0008946909470901598 -0.023520404043236964" rpy="0 0 0"/>
     <mass value="0.15933052176631626"/>
@@ -415,21 +417,19 @@
   <visual>
     <origin xyz="0.139354 0.243979 -0.603583" rpy="0 0 0"/>
     <geometry>
-      <mesh filename="package://roomac_description/meshes/wrist_right_1.stl" scale="0.001 0.001 0.001"/>
+      <mesh filename="package://roomac_description/meshes/wrist_right_link.stl" scale="0.001 0.001 0.001"/>
     </geometry>
     <material name="black"/>
   </visual>
   <collision>
     <origin xyz="0.139354 0.243979 -0.603583" rpy="0 0 0"/>
     <geometry>
-      <mesh filename="package://roomac_description/meshes/wrist_right_1.stl" scale="0.001 0.001 0.001"/>
+      <mesh filename="package://roomac_description/meshes/wrist_right_link.stl" scale="0.001 0.001 0.001"/>
     </geometry>
   </collision>
 </link>
 
-<link name="gripper_right_grip"/>
-
-<link name="gripper_right_1">
+<link name="gripper_right_link">
   <inertial>
     <origin xyz="-0.00024163561260406863 0.0010341725235240573 -0.024005848417666398" rpy="0 0 0"/>
     <mass value="0.20788263258389922"/>
@@ -438,19 +438,23 @@
   <visual>
     <origin xyz="0.114635 0.244052 -0.544791" rpy="0 0 0"/>
     <geometry>
-      <mesh filename="package://roomac_description/meshes/gripper_right_1.stl" scale="0.001 0.001 0.001"/>
+      <mesh filename="package://roomac_description/meshes/gripper_right_link.stl" scale="0.001 0.001 0.001"/>
     </geometry>
     <material name="black"/>
   </visual>
   <collision>
     <origin xyz="0.114635 0.244052 -0.544791" rpy="0 0 0"/>
     <geometry>
-      <mesh filename="package://roomac_description/meshes/gripper_right_1.stl" scale="0.001 0.001 0.001"/>
+      <mesh filename="package://roomac_description/meshes/gripper_right_link.stl" scale="0.001 0.001 0.001"/>
     </geometry>
   </collision>
 </link>
 
-<link name="gripper_finger_1_right_1">
+<!-- Point approximately in the middle between fingers, used as a position for gripping objects 
+  (in inverse kinematics this point should match objects position) -->
+<link name="gripping_right_link"/>
+
+<link name="gripper_finger_r_right_link">
   <inertial>
     <origin xyz="0.004500248654851852 0.005686730528388695 -0.011016022246636392" rpy="0 0 0"/>
     <mass value="0.03746064390067365"/>
@@ -459,19 +463,19 @@
   <visual>
     <origin xyz="0.117385 0.274314 -0.487684" rpy="0 0 0"/>
     <geometry>
-      <mesh filename="package://roomac_description/meshes/gripper_finger_1_right_1.stl" scale="0.001 0.001 0.001"/>
+      <mesh filename="package://roomac_description/meshes/gripper_finger_r_right_link.stl" scale="0.001 0.001 0.001"/>
     </geometry>
     <material name="black"/>
   </visual>
   <collision>
     <origin xyz="0.117385 0.274314 -0.487684" rpy="0 0 0"/>
     <geometry>
-      <mesh filename="package://roomac_description/meshes/gripper_finger_1_right_1.stl" scale="0.001 0.001 0.001"/>
+      <mesh filename="package://roomac_description/meshes/gripper_finger_r_right_link.stl" scale="0.001 0.001 0.001"/>
     </geometry>
   </collision>
 </link>
 
-<link name="gripper_finger_2_right_1">
+<link name="gripper_finger_l_right_link">
   <inertial>
     <origin xyz="0.0045002486085409105 -0.005494466341388893 -0.01111360012887036" rpy="0 0 0"/>
     <mass value="0.037460643900623564"/>
@@ -480,14 +484,14 @@
   <visual>
     <origin xyz="0.117385 0.214585 -0.487684" rpy="0 0 0"/>
     <geometry>
-      <mesh filename="package://roomac_description/meshes/gripper_finger_2_right_1.stl" scale="0.001 0.001 0.001"/>
+      <mesh filename="package://roomac_description/meshes/gripper_finger_l_right_link.stl" scale="0.001 0.001 0.001"/>
     </geometry>
     <material name="black"/>
   </visual>
   <collision>
     <origin xyz="0.117385 0.214585 -0.487684" rpy="0 0 0"/>
     <geometry>
-      <mesh filename="package://roomac_description/meshes/gripper_finger_2_right_1.stl" scale="0.001 0.001 0.001"/>
+      <mesh filename="package://roomac_description/meshes/gripper_finger_l_right_link.stl" scale="0.001 0.001 0.001"/>
     </geometry>
   </collision>
 </link>
@@ -497,15 +501,15 @@
 <joint name="shoulder_pitch_right" type="revolute">
   <origin xyz="-0.1135 -0.174979 0.9345" rpy="0 0 0"/>
   <parent link="base_link"/>
-  <child link="shoulder_right_1"/>
+  <child link="shoulder_right_link"/>
   <axis xyz="0 1 0"/>
   <limit effort="30" velocity="1.0" lower="-2.390" upper="0.489" />
 </joint>
 
 <joint name="shoulder_roll_right" type="revolute">
   <origin xyz="0.0005 -0.069 0.0" rpy="0 0 0"/>
-  <parent link="shoulder_right_1"/>
-  <child link="shoulder_elbow_right_1"/>
+  <parent link="shoulder_right_link"/>
+  <child link="shoulder_elbow_right_link"/>
   <axis xyz="-1 0 0"/>
   <!-- Calculated lower: -0.899, adjusted it due to colision with gear-->
   <limit effort="30" velocity="1.0" lower="-0.800" upper="1.979" />
@@ -513,8 +517,8 @@
 
 <joint name="elbow_right" type="revolute">
   <origin xyz="0.0205 0.0 -0.201075" rpy="0 0 0"/>
-  <parent link="shoulder_elbow_right_1"/>
-  <child link="elbow_wrist_right_1"/>
+  <parent link="shoulder_elbow_right_link"/>
+  <child link="elbow_wrist_right_link"/>
   <axis xyz="1 0 0"/>
   <!-- Calculated lower: -2.879 upper: 2.879, adjusted due to collisions-->
   <!-- Safe values, might be some room for increase -->
@@ -523,45 +527,45 @@
 
 <joint name="wrist_right" type="revolute">
   <origin xyz="-0.046854 0.0 -0.129842" rpy="0 0 0"/>
-  <parent link="elbow_wrist_right_1"/>
-  <child link="wrist_right_1"/>
+  <parent link="elbow_wrist_right_link"/>
+  <child link="wrist_right_link"/>
   <axis xyz="-1 0 0"/>
   <limit effort="30" velocity="1.0" lower="-1.994" upper="1.146" />
 </joint>
 
 <joint name="gripper_twist_right" type="revolute">
   <origin xyz="0.024719 -7.3e-05 -0.058792" rpy="0 0 0"/>
-  <parent link="wrist_right_1"/>
-  <child link="gripper_right_1"/>
+  <parent link="wrist_right_link"/>
+  <child link="gripper_right_link"/>
   <axis xyz="0 0 -1"/>
   <limit effort="30" velocity="1.0" lower="-1.570" upper="1.570" />
 </joint>
 
 <joint name="gripper_finger_r_right" type="prismatic">
   <origin xyz="-0.00275 -0.030262 -0.057107" rpy="0 0 0"/>
-  <parent link="gripper_right_1"/>
-  <child link="gripper_finger_1_right_1"/>
+  <parent link="gripper_right_link"/>
+  <child link="gripper_finger_r_right_link"/>
   <axis xyz="0 1 0"/>
   <limit effort="100" velocity="100" lower="-0.0045" upper="0.015"/>
 </joint>
 
 <joint name="gripper_finger_l_right" type="prismatic">
   <origin xyz="-0.00275 0.029467 -0.057107" rpy="0 0 0"/>
-  <parent link="gripper_right_1"/>
-  <child link="gripper_finger_2_right_1"/>
+  <parent link="gripper_right_link"/>
+  <child link="gripper_finger_l_right_link"/>
   <axis xyz="0 1 0"/>
   <limit effort="100" velocity="100" lower="-0.015" upper="0.0045"/>
 </joint>
 
 <joint name="right_grip" type="fixed">
   <origin rpy="0 0 0" xyz="0.0 0.0 -0.085"/>
-  <parent link="gripper_right_1"/>
-  <child link="gripper_right_grip"/>
+  <parent link="gripper_right_link"/>
+  <child link="gripping_right_link"/>
 </joint>
 
 <!-- LEFT ARM -->
 
-<link name="shoulder_left_1">
+<link name="shoulder_left_link">
   <inertial>
     <origin xyz="-0.004560577392501555 0.012787335699410651 0.007714466394341812" rpy="0 0 0"/>
     <mass value="2.380776527200545"/>
@@ -570,19 +574,19 @@
   <visual>
     <origin xyz="0.1135 -0.175021 -0.9345" rpy="0 0 0"/>
     <geometry>
-      <mesh filename="package://roomac_description/meshes/shoulder_left_1.stl" scale="0.001 0.001 0.001"/>
+      <mesh filename="package://roomac_description/meshes/shoulder_left_link.stl" scale="0.001 0.001 0.001"/>
     </geometry>
     <material name="black"/>
   </visual>
   <collision>
     <origin xyz="0.1135 -0.175021 -0.9345" rpy="0 0 0"/>
     <geometry>
-      <mesh filename="package://roomac_description/meshes/shoulder_left_1.stl" scale="0.001 0.001 0.001"/>
+      <mesh filename="package://roomac_description/meshes/shoulder_left_link.stl" scale="0.001 0.001 0.001"/>
     </geometry>
   </collision>
 </link>
 
-<link name="shoulder_elbow_left_1">
+<link name="shoulder_elbow_left_link">
   <inertial>
     <origin xyz="-1.814433713719088e-05 -6.981540309758394e-08 -0.08491558344283501" rpy="0 0 0"/>
     <mass value="1.000745128308775"/>
@@ -591,18 +595,18 @@
   <visual>
     <origin xyz="0.113 -0.244021 -0.9345" rpy="0 0 0"/>
     <geometry>
-      <mesh filename="package://roomac_description/meshes/shoulder_elbow_left_1.dae" scale="0.001 0.001 0.001"/>
+      <mesh filename="package://roomac_description/meshes/shoulder_elbow_left_link.dae" scale="0.001 0.001 0.001"/>
     </geometry>
   </visual>
   <collision>
     <origin xyz="0.113 -0.244021 -0.9345" rpy="0 0 0"/>
     <geometry>
-      <mesh filename="package://roomac_description/meshes/shoulder_elbow_left_1.stl" scale="0.001 0.001 0.001"/>
+      <mesh filename="package://roomac_description/meshes/shoulder_elbow_left_link.stl" scale="0.001 0.001 0.001"/>
     </geometry>
   </collision>
 </link>
 
-<link name="elbow_wrist_left_1">
+<link name="elbow_wrist_left_link">
   <inertial>
     <origin xyz="-0.019371169403424968 0.0012026708698118505 -0.09242900740153548" rpy="0 0 0"/>
     <mass value="0.610199848603108"/>
@@ -611,19 +615,19 @@
   <visual>
     <origin xyz="0.0925 -0.244021 -0.733443" rpy="0 0 0"/>
     <geometry>
-      <mesh filename="package://roomac_description/meshes/elbow_wrist_left_1.stl" scale="0.001 0.001 0.001"/>
+      <mesh filename="package://roomac_description/meshes/elbow_wrist_left_link.stl" scale="0.001 0.001 0.001"/>
     </geometry>
     <material name="black"/>
   </visual>
   <collision>
     <origin xyz="0.0925 -0.244021 -0.733443" rpy="0 0 0"/>
     <geometry>
-      <mesh filename="package://roomac_description/meshes/elbow_wrist_left_1.stl" scale="0.001 0.001 0.001"/>
+      <mesh filename="package://roomac_description/meshes/elbow_wrist_left_link.stl" scale="0.001 0.001 0.001"/>
     </geometry>
   </collision>
 </link>
 
-<link name="wrist_left_1">
+<link name="wrist_left_link">
   <inertial>
     <origin xyz="0.02427263159088741 0.000894761301925201 -0.023520440865037795" rpy="0 0 0"/>
     <mass value="0.15933052176634832"/>
@@ -632,19 +636,19 @@
   <visual>
     <origin xyz="0.139354 -0.244021 -0.603601" rpy="0 0 0"/>
     <geometry>
-      <mesh filename="package://roomac_description/meshes/wrist_left_1.stl" scale="0.001 0.001 0.001"/>
+      <mesh filename="package://roomac_description/meshes/wrist_left_link.stl" scale="0.001 0.001 0.001"/>
     </geometry>
     <material name="black"/>
   </visual>
   <collision>
     <origin xyz="0.139354 -0.244021 -0.603601" rpy="0 0 0"/>
     <geometry>
-      <mesh filename="package://roomac_description/meshes/wrist_left_1.stl" scale="0.001 0.001 0.001"/>
+      <mesh filename="package://roomac_description/meshes/wrist_left_link.stl" scale="0.001 0.001 0.001"/>
     </geometry>
   </collision>
 </link>
 
-<link name="gripper_left_1">
+<link name="gripper_left_link">
   <inertial>
     <origin xyz="-0.0002416356126049013 -0.0010341021686912366 -0.0240058852394609" rpy="0 0 0"/>
     <mass value="0.20788263258393214"/>
@@ -653,19 +657,19 @@
   <visual>
     <origin xyz="0.114635 -0.244094 -0.544809" rpy="0 0 0"/>
     <geometry>
-      <mesh filename="package://roomac_description/meshes/gripper_left_1.stl" scale="0.001 0.001 0.001"/>
+      <mesh filename="package://roomac_description/meshes/gripper_left_link.stl" scale="0.001 0.001 0.001"/>
     </geometry>
     <material name="black"/>
   </visual>
   <collision>
     <origin xyz="0.114635 -0.244094 -0.544809" rpy="0 0 0"/>
     <geometry>
-      <mesh filename="package://roomac_description/meshes/gripper_left_1.stl" scale="0.001 0.001 0.001"/>
+      <mesh filename="package://roomac_description/meshes/gripper_left_link.stl" scale="0.001 0.001 0.001"/>
     </geometry>
   </collision>
 </link>
 
-<link name="gripper_finger_1_left_1">
+<link name="gripper_finger_l_left_link">
   <inertial>
     <origin xyz="0.004500248654850533 -0.005687660173556985 -0.011016059068434336" rpy="0 0 0"/>
     <mass value="0.03746064390066084"/>
@@ -674,19 +678,19 @@
   <visual>
     <origin xyz="0.117385 -0.274357 -0.487702" rpy="0 0 0"/>
     <geometry>
-      <mesh filename="package://roomac_description/meshes/gripper_finger_1_left_1.stl" scale="0.001 0.001 0.001"/>
+      <mesh filename="package://roomac_description/meshes/gripper_finger_l_left_link.stl" scale="0.001 0.001 0.001"/>
     </geometry>
     <material name="black"/>
   </visual>
   <collision>
     <origin xyz="0.117385 -0.274357 -0.487702" rpy="0 0 0"/>
     <geometry>
-      <mesh filename="package://roomac_description/meshes/gripper_finger_1_left_1.stl" scale="0.001 0.001 0.001"/>
+      <mesh filename="package://roomac_description/meshes/gripper_finger_l_left_link.stl" scale="0.001 0.001 0.001"/>
     </geometry>
   </collision>
 </link>
 
-<link name="gripper_finger_2_left_1">
+<link name="gripper_finger_r_left_link">
   <inertial>
     <origin xyz="0.0045002486085398 0.0054945366962241005 -0.011113636950655759" rpy="0 0 0"/>
     <mass value="0.03746064390060757"/>
@@ -695,14 +699,14 @@
   <visual>
     <origin xyz="0.117385 -0.214627 -0.487702" rpy="0 0 0"/>
     <geometry>
-      <mesh filename="package://roomac_description/meshes/gripper_finger_2_left_1.stl" scale="0.001 0.001 0.001"/>
+      <mesh filename="package://roomac_description/meshes/gripper_finger_r_left_link.stl" scale="0.001 0.001 0.001"/>
     </geometry>
     <material name="black"/>
   </visual>
   <collision>
     <origin xyz="0.117385 -0.214627 -0.487702" rpy="0 0 0"/>
     <geometry>
-      <mesh filename="package://roomac_description/meshes/gripper_finger_2_left_1.stl" scale="0.001 0.001 0.001"/>
+      <mesh filename="package://roomac_description/meshes/gripper_finger_r_left_link.stl" scale="0.001 0.001 0.001"/>
     </geometry>
   </collision>
 </link>
@@ -710,48 +714,48 @@
 <joint name="shoulder_pitch_left" type="continuous">
   <origin xyz="-0.1135 0.175021 0.9345" rpy="0 0 0"/>
   <parent link="base_link"/>
-  <child link="shoulder_left_1"/>
+  <child link="shoulder_left_link"/>
   <axis xyz="0 1 0"/>
 </joint>
 
 <joint name="shoulder_roll_left" type="continuous">
   <origin xyz="0.0005 0.069 0.0" rpy="0 0 0"/>
-  <parent link="shoulder_left_1"/>
-  <child link="shoulder_elbow_left_1"/>
+  <parent link="shoulder_left_link"/>
+  <child link="shoulder_elbow_left_link"/>
   <axis xyz="1 0 0"/>
 </joint>
 
 <joint name="elbow_left" type="continuous">
   <origin xyz="0.0205 0.0 -0.201057" rpy="0 0 0"/>
-  <parent link="shoulder_elbow_left_1"/>
-  <child link="elbow_wrist_left_1"/>
+  <parent link="shoulder_elbow_left_link"/>
+  <child link="elbow_wrist_left_link"/>
   <axis xyz="1 0 0"/>
 </joint>
 
 <joint name="wrist_left" type="continuous">
   <origin xyz="-0.046854 0.0 -0.129842" rpy="0 0 0"/>
-  <parent link="elbow_wrist_left_1"/>
-  <child link="wrist_left_1"/>
+  <parent link="elbow_wrist_left_link"/>
+  <child link="wrist_left_link"/>
   <axis xyz="1 0 0"/>
 </joint>
 
 <joint name="gripper_twist_left" type="continuous">
   <origin xyz="0.024719 7.3e-05 -0.058792" rpy="0 0 0"/>
-  <parent link="wrist_left_1"/>
-  <child link="gripper_left_1"/>
+  <parent link="wrist_left_link"/>
+  <child link="gripper_left_link"/>
   <axis xyz="0 0 -1"/>
 </joint>
 
 <joint name="gripper_finger_r_left" type="fixed">
   <origin xyz="-0.00275 -0.029467 -0.057107" rpy="0 0 0"/>
-  <parent link="gripper_left_1"/>
-  <child link="gripper_finger_2_left_1"/>
+  <parent link="gripper_left_link"/>
+  <child link="gripper_finger_r_left_link"/>
 </joint>
 
 <joint name="gripper_finger_l_left" type="fixed">
   <origin xyz="-0.00275 0.030263 -0.057107" rpy="0 0 0"/>
-  <parent link="gripper_left_1"/>
-  <child link="gripper_finger_1_left_1"/>
+  <parent link="gripper_left_link"/>
+  <child link="gripper_finger_l_left_link"/>
 </joint>
 
 </robot>

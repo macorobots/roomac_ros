@@ -96,13 +96,13 @@ Visualization Manager:
         All Enabled: false
         artag_link:
           Value: false
-        artag_link_bundle:
+        artag_bundle_link:
           Value: false
         base_link:
           Value: true
         base_up_1:
           Value: false
-        body_precision_test_tip:
+        body_precision_test_tip_link:
           Value: false
         camera_depth_frame:
           Value: false
@@ -116,19 +116,19 @@ Visualization Manager:
           Value: false
         gazebo_camera_link:
           Value: false
-        gripper_right_1:
+        gripper_right_link:
           Value: false
-        gripper_right_grip:
+        gripping_right_link:
           Value: false
-        gripper_right_precision_test_tip:
+        gripper_right_precision_test_tip_link:
           Value: false
-        head_1:
+        head_link:
           Value: false
-        imu:
+        imu_link:
           Value: false
-        caster_left_1:
+        caster_left_link:
           Value: false
-        wheel_left_1:
+        wheel_left_link:
           Value: false
         hub_left_1:
           Value: false
@@ -136,9 +136,9 @@ Visualization Manager:
           Value: true
         odom:
           Value: true
-        caster_right_1:
+        caster_right_link:
           Value: false
-        wheel_right_1:
+        wheel_right_link:
           Value: false
         hub_right_1:
           Value: false
@@ -152,19 +152,19 @@ Visualization Manager:
           odom:
             base_link:
               artag_link:
-                artag_link_bundle: {}
+                artag_bundle_link: {}
               base_up_1:
-                head_1: {}
-              body_precision_test_tip: {}
+                head_link: {}
+              body_precision_test_tip_link: {}
               camera_link:
                 camera_depth_frame:
                   camera_depth_optical_frame: {}
                 camera_rgb_frame:
                   camera_rgb_optical_frame: {}
                 gazebo_camera_link: {}
-              imu: {}
-              caster_left_1: {}
-              caster_right_1: {}
+              imu_link: {}
+              caster_left_link: {}
+              caster_right_link: {}
       Update Interval: 0
       Value: true
     - Angle Tolerance: 0.0010000000474974513

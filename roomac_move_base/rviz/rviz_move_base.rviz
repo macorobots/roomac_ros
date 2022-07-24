@@ -305,11 +305,11 @@ Visualization Manager:
           Alpha: 1
           Show Axes: false
           Show Trail: false
-        artag_link_bundle:
+        artag_bundle_link:
           Alpha: 1
           Show Axes: false
           Show Trail: false
-        artag_link_bundle_visual:
+        artag_bundle_visual_link:
           Alpha: 1
           Show Axes: false
           Show Trail: false
@@ -322,12 +322,12 @@ Visualization Manager:
           Alpha: 1
           Show Axes: false
           Show Trail: false
-        base_link_frames_1:
+        robot_body_frames_link:
           Alpha: 1
           Show Axes: false
           Show Trail: false
           Value: true
-        body_precision_test_tip:
+        body_precision_test_tip_link:
           Alpha: 1
           Show Axes: false
           Show Trail: false
@@ -335,12 +335,12 @@ Visualization Manager:
           Alpha: 1
           Show Axes: false
           Show Trail: false
-        caster_left_1:
+        caster_left_link:
           Alpha: 1
           Show Axes: false
           Show Trail: false
           Value: true
-        caster_right_1:
+        caster_right_link:
           Alpha: 1
           Show Axes: false
           Show Trail: false
@@ -365,27 +365,27 @@ Visualization Manager:
           Show Axes: false
           Show Trail: false
           Value: true
-        elbow_wrist_left_1:
+        elbow_wrist_left_link:
           Alpha: 1
           Show Axes: false
           Show Trail: false
           Value: true
-        elbow_wrist_right_1:
+        elbow_wrist_right_link:
           Alpha: 1
           Show Axes: false
           Show Trail: false
           Value: true
-        eye_left_1:
+        eye_left_link:
           Alpha: 1
           Show Axes: false
           Show Trail: false
           Value: true
-        eye_right_1:
+        eye_right_link:
           Alpha: 1
           Show Axes: false
           Show Trail: false
           Value: true
-        frame_1:
+        frame_link:
           Alpha: 1
           Show Axes: false
           Show Trail: false
@@ -394,45 +394,45 @@ Visualization Manager:
           Alpha: 1
           Show Axes: false
           Show Trail: false
-        gripper_finger_1_left_1:
+        gripper_finger_l_left_link:
           Alpha: 1
           Show Axes: false
           Show Trail: false
           Value: true
-        gripper_finger_1_right_1:
+        gripper_finger_r_right_link:
           Alpha: 1
           Show Axes: false
           Show Trail: false
           Value: true
-        gripper_finger_2_left_1:
+        gripper_finger_r_left_link:
           Alpha: 1
           Show Axes: false
           Show Trail: false
           Value: true
-        gripper_finger_2_right_1:
+        gripper_finger_l_right_link:
           Alpha: 1
           Show Axes: false
           Show Trail: false
           Value: true
-        gripper_left_1:
+        gripper_left_link:
           Alpha: 1
           Show Axes: false
           Show Trail: false
           Value: true
-        gripper_right_1:
+        gripper_right_link:
           Alpha: 1
           Show Axes: false
           Show Trail: false
           Value: true
-        gripper_right_grip:
+        gripping_right_link:
           Alpha: 1
           Show Axes: false
           Show Trail: false
-        gripper_right_precision_test_tip:
+        gripper_right_precision_test_tip_link:
           Alpha: 1
           Show Axes: false
           Show Trail: false
-        head_1:
+        head_link:
           Alpha: 1
           Show Axes: false
           Show Trail: false
@@ -447,11 +447,11 @@ Visualization Manager:
           Show Axes: false
           Show Trail: false
           Value: true
-        imu:
+        imu_link:
           Alpha: 1
           Show Axes: false
           Show Trail: false
-        robot_body_1:
+        robot_body_link:
           Alpha: 1
           Show Axes: false
           Show Trail: false
@@ -476,32 +476,32 @@ Visualization Manager:
           Show Axes: false
           Show Trail: false
           Value: true
-        shoulder_elbow_left_1:
+        shoulder_elbow_left_link:
           Alpha: 1
           Show Axes: false
           Show Trail: false
           Value: true
-        shoulder_elbow_right_1:
+        shoulder_elbow_right_link:
           Alpha: 1
           Show Axes: false
           Show Trail: false
           Value: true
-        shoulder_left_1:
+        shoulder_left_link:
           Alpha: 1
           Show Axes: false
           Show Trail: false
           Value: true
-        shoulder_right_1:
+        shoulder_right_link:
           Alpha: 1
           Show Axes: false
           Show Trail: false
           Value: true
-        wheel_left_1:
+        wheel_left_link:
           Alpha: 1
           Show Axes: false
           Show Trail: false
           Value: true
-        wheel_right_1:
+        wheel_right_link:
           Alpha: 1
           Show Axes: false
           Show Trail: false
@@ -516,12 +516,12 @@ Visualization Manager:
           Show Axes: false
           Show Trail: false
           Value: true
-        wrist_left_1:
+        wrist_left_link:
           Alpha: 1
           Show Axes: false
           Show Trail: false
           Value: true
-        wrist_right_1:
+        wrist_right_link:
           Alpha: 1
           Show Axes: false
           Show Trail: false
