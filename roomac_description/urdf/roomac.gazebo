@@ -32,31 +32,17 @@
   <selfCollide>true</selfCollide>
 </gazebo>
 
-<gazebo reference="hub_right_1">
-  <material>${black}</material>
-  <mu1>${standard_friction}</mu1>
-  <mu2>${standard_friction}</mu2>
-  <selfCollide>true</selfCollide>
-</gazebo>
-
-<gazebo reference="hub_left_1">
-  <material>${black}</material>
-  <mu1>${standard_friction}</mu1>
-  <mu2>${standard_friction}</mu2>
-  <selfCollide>true</selfCollide>
-</gazebo>
-
 <gazebo reference="wheel_right_1">
   <material>${grey}</material>
-  <mu1>${standard_friction}</mu1>
-  <mu2>${standard_friction}</mu2>
+  <mu1>${wheel_friction}</mu1>
+  <mu2>${wheel_friction}</mu2>
   <selfCollide>true</selfCollide>
 </gazebo>
 
 <gazebo reference="wheel_left_1">
   <material>${grey}</material>
-  <mu1>${standard_friction}</mu1>
-  <mu2>${standard_friction}</mu2>
+  <mu1>${wheel_friction}</mu1>
+  <mu2>${wheel_friction}</mu2>
   <selfCollide>true</selfCollide>
 </gazebo>
 
@@ -74,13 +60,6 @@
   <selfCollide>true</selfCollide>
 </gazebo>
 
-<gazebo reference="elbow_right_1">
-  <material>${black}</material>
-  <mu1>${standard_friction}</mu1>
-  <mu2>${standard_friction}</mu2>
-  <selfCollide>true</selfCollide>
-</gazebo>
-
 <gazebo reference="elbow_wrist_right_1">
   <material>${black}</material>
   <mu1>${standard_friction}</mu1>
@@ -88,43 +67,8 @@
   <selfCollide>true</selfCollide>
 </gazebo>
 
-<gazebo reference="caster_tire_right_1">
-  <material>${black}</material>
-  <mu1>${caster_friction}</mu1>
-  <mu2>${caster_friction}</mu2>
-  <selfCollide>true</selfCollide>
-</gazebo>
-
-<gazebo reference="caster_tire_left_1">
-  <material>${black}</material>
-  <mu1>${caster_friction}</mu1>
-  <mu2>${caster_friction}</mu2>
-  <selfCollide>true</selfCollide>
-</gazebo>
-
-<gazebo reference="wheel_tire_right_1">
-  <material>${black}</material>
-  <mu1>${wheel_friction}</mu1>
-  <mu2>${wheel_friction}</mu2>
-  <selfCollide>true</selfCollide>
-</gazebo>
-
-<gazebo reference="wheel_tire_left_1">
-  <material>${black}</material>
-  <mu1>${wheel_friction}</mu1>
-  <mu2>${wheel_friction}</mu2>
-  <selfCollide>true</selfCollide>
-</gazebo>
-
 <gazebo reference="base_link_frames_1">
   <material>${white}</material>
-  <mu1>${standard_friction}</mu1>
-  <mu2>${standard_friction}</mu2>
-  <selfCollide>true</selfCollide>
-</gazebo>
-
-<gazebo reference="shoulder_elbow_gear_right_1">
-  <material>${black}</material>
   <mu1>${standard_friction}</mu1>
   <mu2>${standard_friction}</mu2>
   <selfCollide>true</selfCollide>
@@ -159,13 +103,6 @@
   <selfCollide>true</selfCollide>
 </gazebo>
 
-<gazebo reference="shoulder_base_right_1">
-  <material>${black}</material>
-  <mu1>${standard_friction}</mu1>
-  <mu2>${standard_friction}</mu2>
-  <selfCollide>true</selfCollide>
-</gazebo>
-
 <gazebo reference="head_1">
   <material>${black}</material>
   <mu1>${standard_friction}</mu1>
@@ -175,13 +112,6 @@
 
 <gazebo reference="eye_right_1">
   <material>${white}</material>
-  <mu1>${standard_friction}</mu1>
-  <mu2>${standard_friction}</mu2>
-  <selfCollide>true</selfCollide>
-</gazebo>
-
-<gazebo reference="shoulder_base_left_1">
-  <material>${black}</material>
   <mu1>${standard_friction}</mu1>
   <mu2>${standard_friction}</mu2>
   <selfCollide>true</selfCollide>
@@ -229,13 +159,6 @@
   <selfCollide>true</selfCollide>
 </gazebo>
 
-<gazebo reference="elbow_left_1">
-  <material>${black}</material>
-  <mu1>${standard_friction}</mu1>
-  <mu2>${standard_friction}</mu2>
-  <selfCollide>true</selfCollide>
-</gazebo>
-
 <gazebo reference="shoulder_elbow_left_1">
   <material>${grey}</material>
   <mu1>${standard_friction}</mu1>
@@ -243,12 +166,6 @@
   <selfCollide>true</selfCollide>
 </gazebo>
 
-<gazebo reference="shoulder_elbow_gear_left_1">
-  <material>${black}</material>
-  <mu1>${standard_friction}</mu1>
-  <mu2>${standard_friction}</mu2>
-  <selfCollide>true</selfCollide>
-</gazebo>
 
 <!-- gripper settings from https://github.com/martinandrovich/rb-rovi/blob/master/ws/src/ur5_description/robots/wsg.gazebo.xacro -->
 <!-- Disable collision between gripper and fingers, otherwise it causes oscillations of fingers -->
