@@ -46,7 +46,7 @@
     <disable_collisions link1="artag_link_bundle_visual" link2="head_1" reason="Never" />
     <disable_collisions link1="artag_link_bundle_visual" link2="hub_left_1" reason="Never" />
     <disable_collisions link1="artag_link_bundle_visual" link2="hub_right_1" reason="Never" />
-    <disable_collisions link1="artag_link_bundle_visual" link2="robot_base_1" reason="Adjacent" />
+    <disable_collisions link1="artag_link_bundle_visual" link2="robot_body_1" reason="Adjacent" />
     <disable_collisions link1="artag_link_bundle_visual" link2="shoulder_base_left_1" reason="Never" />
     <disable_collisions link1="artag_link_bundle_visual" link2="shoulder_base_right_1" reason="Never" />
     <disable_collisions link1="artag_link_bundle_visual" link2="shoulder_elbow_gear_left_1" reason="Never" />
@@ -68,7 +68,7 @@
     <disable_collisions link1="base_link_frames_1" link2="head_1" reason="Never" />
     <disable_collisions link1="base_link_frames_1" link2="hub_left_1" reason="Never" />
     <disable_collisions link1="base_link_frames_1" link2="hub_right_1" reason="Never" />
-    <disable_collisions link1="base_link_frames_1" link2="robot_base_1" reason="Adjacent" />
+    <disable_collisions link1="base_link_frames_1" link2="robot_body_1" reason="Adjacent" />
     <disable_collisions link1="base_link_frames_1" link2="shoulder_base_left_1" reason="Never" />
     <disable_collisions link1="base_link_frames_1" link2="shoulder_base_right_1" reason="Never" />
     <disable_collisions link1="base_link_frames_1" link2="shoulder_elbow_gear_left_1" reason="Never" />
@@ -98,7 +98,7 @@
     <disable_collisions link1="caster_left_1" link2="head_1" reason="Never" />
     <disable_collisions link1="caster_left_1" link2="hub_left_1" reason="Never" />
     <disable_collisions link1="caster_left_1" link2="hub_right_1" reason="Never" />
-    <disable_collisions link1="caster_left_1" link2="robot_base_1" reason="Adjacent" />
+    <disable_collisions link1="caster_left_1" link2="robot_body_1" reason="Adjacent" />
     <disable_collisions link1="caster_left_1" link2="shoulder_base_left_1" reason="Never" />
     <disable_collisions link1="caster_left_1" link2="shoulder_base_right_1" reason="Never" />
     <disable_collisions link1="caster_left_1" link2="shoulder_elbow_gear_left_1" reason="Never" />
@@ -131,7 +131,7 @@
     <disable_collisions link1="caster_right_1" link2="head_1" reason="Never" />
     <disable_collisions link1="caster_right_1" link2="hub_left_1" reason="Never" />
     <disable_collisions link1="caster_right_1" link2="hub_right_1" reason="Never" />
-    <disable_collisions link1="caster_right_1" link2="robot_base_1" reason="Adjacent" />
+    <disable_collisions link1="caster_right_1" link2="robot_body_1" reason="Adjacent" />
     <disable_collisions link1="caster_right_1" link2="shoulder_base_left_1" reason="Never" />
     <disable_collisions link1="caster_right_1" link2="shoulder_base_right_1" reason="Never" />
     <disable_collisions link1="caster_right_1" link2="shoulder_elbow_gear_left_1" reason="Never" />
@@ -163,7 +163,7 @@
     <disable_collisions link1="caster_tire_left_1" link2="head_1" reason="Never" />
     <disable_collisions link1="caster_tire_left_1" link2="hub_left_1" reason="Never" />
     <disable_collisions link1="caster_tire_left_1" link2="hub_right_1" reason="Never" />
-    <disable_collisions link1="caster_tire_left_1" link2="robot_base_1" reason="Never" />
+    <disable_collisions link1="caster_tire_left_1" link2="robot_body_1" reason="Never" />
     <disable_collisions link1="caster_tire_left_1" link2="shoulder_base_left_1" reason="Never" />
     <disable_collisions link1="caster_tire_left_1" link2="shoulder_base_right_1" reason="Never" />
     <disable_collisions link1="caster_tire_left_1" link2="shoulder_elbow_gear_left_1" reason="Never" />
@@ -194,7 +194,7 @@
     <disable_collisions link1="caster_tire_right_1" link2="head_1" reason="Never" />
     <disable_collisions link1="caster_tire_right_1" link2="hub_left_1" reason="Never" />
     <disable_collisions link1="caster_tire_right_1" link2="hub_right_1" reason="Never" />
-    <disable_collisions link1="caster_tire_right_1" link2="robot_base_1" reason="Never" />
+    <disable_collisions link1="caster_tire_right_1" link2="robot_body_1" reason="Never" />
     <disable_collisions link1="caster_tire_right_1" link2="shoulder_base_left_1" reason="Never" />
     <disable_collisions link1="caster_tire_right_1" link2="shoulder_base_right_1" reason="Never" />
     <disable_collisions link1="caster_tire_right_1" link2="shoulder_elbow_gear_left_1" reason="Never" />
@@ -288,7 +288,7 @@
     <disable_collisions link1="eye_left_1" link2="head_1" reason="Adjacent" />
     <disable_collisions link1="eye_left_1" link2="hub_left_1" reason="Never" />
     <disable_collisions link1="eye_left_1" link2="hub_right_1" reason="Never" />
-    <disable_collisions link1="eye_left_1" link2="robot_base_1" reason="Never" />
+    <disable_collisions link1="eye_left_1" link2="robot_body_1" reason="Never" />
     <disable_collisions link1="eye_left_1" link2="shoulder_base_left_1" reason="Never" />
     <disable_collisions link1="eye_left_1" link2="shoulder_base_right_1" reason="Never" />
     <disable_collisions link1="eye_left_1" link2="shoulder_elbow_gear_left_1" reason="Never" />
@@ -307,7 +307,7 @@
     <disable_collisions link1="eye_right_1" link2="head_1" reason="Adjacent" />
     <disable_collisions link1="eye_right_1" link2="hub_left_1" reason="Never" />
     <disable_collisions link1="eye_right_1" link2="hub_right_1" reason="Never" />
-    <disable_collisions link1="eye_right_1" link2="robot_base_1" reason="Never" />
+    <disable_collisions link1="eye_right_1" link2="robot_body_1" reason="Never" />
     <disable_collisions link1="eye_right_1" link2="shoulder_base_left_1" reason="Never" />
     <disable_collisions link1="eye_right_1" link2="shoulder_base_right_1" reason="Never" />
     <disable_collisions link1="eye_right_1" link2="shoulder_elbow_gear_left_1" reason="Never" />
@@ -324,7 +324,7 @@
     <disable_collisions link1="frame_1" link2="head_1" reason="Adjacent" />
     <disable_collisions link1="frame_1" link2="hub_left_1" reason="Never" />
     <disable_collisions link1="frame_1" link2="hub_right_1" reason="Never" />
-    <disable_collisions link1="frame_1" link2="robot_base_1" reason="Adjacent" />
+    <disable_collisions link1="frame_1" link2="robot_body_1" reason="Adjacent" />
     <disable_collisions link1="frame_1" link2="shoulder_base_left_1" reason="Adjacent" />
     <disable_collisions link1="frame_1" link2="shoulder_base_right_1" reason="Adjacent" />
     <disable_collisions link1="frame_1" link2="shoulder_elbow_gear_left_1" reason="Never" />
@@ -390,7 +390,7 @@
     <disable_collisions link1="gripper_right_1" link2="wrist_right_1" reason="Adjacent" />
     <disable_collisions link1="head_1" link2="hub_left_1" reason="Never" />
     <disable_collisions link1="head_1" link2="hub_right_1" reason="Never" />
-    <disable_collisions link1="head_1" link2="robot_base_1" reason="Default" />
+    <disable_collisions link1="head_1" link2="robot_body_1" reason="Default" />
     <disable_collisions link1="head_1" link2="shoulder_base_left_1" reason="Never" />
     <disable_collisions link1="head_1" link2="shoulder_base_right_1" reason="Never" />
     <disable_collisions link1="head_1" link2="shoulder_elbow_gear_left_1" reason="Never" />
@@ -404,7 +404,7 @@
     <disable_collisions link1="head_1" link2="wheel_tire_left_1" reason="Never" />
     <disable_collisions link1="head_1" link2="wheel_tire_right_1" reason="Never" />
     <disable_collisions link1="hub_left_1" link2="hub_right_1" reason="Never" />
-    <disable_collisions link1="hub_left_1" link2="robot_base_1" reason="Never" />
+    <disable_collisions link1="hub_left_1" link2="robot_body_1" reason="Never" />
     <disable_collisions link1="hub_left_1" link2="shoulder_base_left_1" reason="Never" />
     <disable_collisions link1="hub_left_1" link2="shoulder_base_right_1" reason="Never" />
     <disable_collisions link1="hub_left_1" link2="shoulder_elbow_gear_left_1" reason="Never" />
@@ -419,7 +419,7 @@
     <disable_collisions link1="hub_left_1" link2="wheel_tire_right_1" reason="Never" />
     <disable_collisions link1="hub_left_1" link2="wrist_left_1" reason="Never" />
     <disable_collisions link1="hub_left_1" link2="wrist_right_1" reason="Never" />
-    <disable_collisions link1="hub_right_1" link2="robot_base_1" reason="Never" />
+    <disable_collisions link1="hub_right_1" link2="robot_body_1" reason="Never" />
     <disable_collisions link1="hub_right_1" link2="shoulder_base_left_1" reason="Never" />
     <disable_collisions link1="hub_right_1" link2="shoulder_base_right_1" reason="Never" />
     <disable_collisions link1="hub_right_1" link2="shoulder_elbow_gear_left_1" reason="Never" />
@@ -434,16 +434,16 @@
     <disable_collisions link1="hub_right_1" link2="wheel_tire_right_1" reason="Never" />
     <disable_collisions link1="hub_right_1" link2="wrist_left_1" reason="Never" />
     <disable_collisions link1="hub_right_1" link2="wrist_right_1" reason="Never" />
-    <disable_collisions link1="robot_base_1" link2="shoulder_base_left_1" reason="Never" />
-    <disable_collisions link1="robot_base_1" link2="shoulder_base_right_1" reason="Never" />
-    <disable_collisions link1="robot_base_1" link2="shoulder_elbow_gear_left_1" reason="Never" />
-    <disable_collisions link1="robot_base_1" link2="shoulder_elbow_gear_right_1" reason="Never" />
-    <disable_collisions link1="robot_base_1" link2="shoulder_left_1" reason="Never" />
-    <disable_collisions link1="robot_base_1" link2="shoulder_right_1" reason="Never" />
-    <disable_collisions link1="robot_base_1" link2="wheel_left_1" reason="Adjacent" />
-    <disable_collisions link1="robot_base_1" link2="wheel_right_1" reason="Adjacent" />
-    <disable_collisions link1="robot_base_1" link2="wheel_tire_left_1" reason="Never" />
-    <disable_collisions link1="robot_base_1" link2="wheel_tire_right_1" reason="Never" />
+    <disable_collisions link1="robot_body_1" link2="shoulder_base_left_1" reason="Never" />
+    <disable_collisions link1="robot_body_1" link2="shoulder_base_right_1" reason="Never" />
+    <disable_collisions link1="robot_body_1" link2="shoulder_elbow_gear_left_1" reason="Never" />
+    <disable_collisions link1="robot_body_1" link2="shoulder_elbow_gear_right_1" reason="Never" />
+    <disable_collisions link1="robot_body_1" link2="shoulder_left_1" reason="Never" />
+    <disable_collisions link1="robot_body_1" link2="shoulder_right_1" reason="Never" />
+    <disable_collisions link1="robot_body_1" link2="wheel_left_1" reason="Adjacent" />
+    <disable_collisions link1="robot_body_1" link2="wheel_right_1" reason="Adjacent" />
+    <disable_collisions link1="robot_body_1" link2="wheel_tire_left_1" reason="Never" />
+    <disable_collisions link1="robot_body_1" link2="wheel_tire_right_1" reason="Never" />
     <disable_collisions link1="shoulder_base_left_1" link2="shoulder_base_right_1" reason="Never" />
     <disable_collisions link1="shoulder_base_left_1" link2="shoulder_elbow_gear_left_1" reason="Never" />
     <disable_collisions link1="shoulder_base_left_1" link2="shoulder_elbow_gear_right_1" reason="Never" />

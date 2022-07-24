@@ -8,7 +8,7 @@
 
 <!-- Additional link needed to solve moveit warning (as far as I know it shouldn't cause any issue as I'm not using KDL, but still better to solve it): -->
 <!-- The root link base_link has an inertia specified in the URDF, but KDL does not support a root link with an inertia.  As a workaround, you can add an extra dummy link to your URDF. -->
-<link name="robot_base_1">
+<link name="robot_body_1">
   <inertial>
     <origin xyz="-0.14414593948878596 0.007272292388517288 0.4790557350675238" rpy="0 0 0"/>
     <mass value="7.356876734373038"/>
@@ -77,9 +77,9 @@
   <child link="base_link"/>
 </joint>
 
-<joint name="robot_base" type="fixed">
+<joint name="robot_body" type="fixed">
   <parent link="base_link"/>
-  <child link="robot_base_1"/>
+  <child link="robot_body_1"/>
 </joint>
 
 <joint name="base_link_frames" type="fixed">

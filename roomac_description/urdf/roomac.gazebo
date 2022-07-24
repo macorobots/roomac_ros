@@ -10,7 +10,7 @@
 <xacro:property name="wheel_friction" value="100.0" />
 <xacro:property name="finger_friction" value="100.0" />
 
-<gazebo reference="robot_base_1">
+<gazebo reference="robot_body_1">
   <material>${black}</material>
   <mu1>${standard_friction}</mu1>
   <mu2>${standard_friction}</mu2>
