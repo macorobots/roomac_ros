@@ -217,7 +217,7 @@
     <inertia ixx="0.01649" iyy="0.031597" izz="0.01649" ixy="-0.0" iyz="0.0" ixz="0.0"/>
   </inertial>
   <visual>
-    <origin xyz="0.0 -0.21664 0.0" rpy="0 0 0"/>
+    <origin xyz="0.0 -0.21064 0.0" rpy="0 0 0"/>
     <geometry>
       <mesh filename="package://roomac_description/meshes/wheel.dae" scale="0.001 0.001 0.001"/>
     </geometry>
@@ -239,7 +239,7 @@
 </joint>
 
 <joint name="wheel_left" type="continuous">
-  <origin xyz="0.0 0.21664 0.0" rpy="0 0 0"/>
+  <origin xyz="0.0 0.21064 0.0" rpy="0 0 0"/>
   <parent link="base_link"/>
   <child link="wheel_left_link"/>
   <axis xyz="0 1 0"/>
