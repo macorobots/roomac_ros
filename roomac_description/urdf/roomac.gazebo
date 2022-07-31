@@ -11,7 +11,6 @@
 <xacro:property name="finger_friction" value="100.0" />
 
 <gazebo reference="robot_body_link">
-  <material>${black}</material>
   <mu1>${standard_friction}</mu1>
   <mu2>${standard_friction}</mu2>
   <selfCollide>true</selfCollide>
@@ -19,37 +18,26 @@
 </gazebo>
 
 <gazebo reference="caster_right_link">
-  <material>${grey}</material>
-  <mu1>${standard_friction}</mu1>
-  <mu2>${standard_friction}</mu2>
+  <mu1>${caster_friction}</mu1>
+  <mu2>${caster_friction}</mu2>
   <selfCollide>true</selfCollide>
 </gazebo>
 
 <gazebo reference="caster_left_link">
-  <material>${grey}</material>
-  <mu1>${standard_friction}</mu1>
-  <mu2>${standard_friction}</mu2>
+  <mu1>${caster_friction}</mu1>
+  <mu2>${caster_friction}</mu2>
   <selfCollide>true</selfCollide>
 </gazebo>
 
 <gazebo reference="wheel_right_link">
-  <material>${grey}</material>
   <mu1>${wheel_friction}</mu1>
   <mu2>${wheel_friction}</mu2>
   <selfCollide>true</selfCollide>
 </gazebo>
 
 <gazebo reference="wheel_left_link">
-  <material>${grey}</material>
   <mu1>${wheel_friction}</mu1>
   <mu2>${wheel_friction}</mu2>
-  <selfCollide>true</selfCollide>
-</gazebo>
-
-<gazebo reference="frame_link">
-  <material>${grey}</material>
-  <mu1>${standard_friction}</mu1>
-  <mu2>${standard_friction}</mu2>
   <selfCollide>true</selfCollide>
 </gazebo>
 
@@ -90,7 +78,6 @@
 </gazebo>
 
 <gazebo reference="shoulder_elbow_right_link">
-  <material>${grey}</material>
   <mu1>${standard_friction}</mu1>
   <mu2>${standard_friction}</mu2>
   <selfCollide>true</selfCollide>
@@ -160,7 +147,6 @@
 </gazebo>
 
 <gazebo reference="shoulder_elbow_left_link">
-  <material>${grey}</material>
   <mu1>${standard_friction}</mu1>
   <mu2>${standard_friction}</mu2>
   <selfCollide>true</selfCollide>
