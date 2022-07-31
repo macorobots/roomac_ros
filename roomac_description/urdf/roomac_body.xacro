@@ -16,14 +16,14 @@
 <!-- The root link base_link has an inertia specified in the URDF, but KDL does not support a root link with an inertia.  As a workaround, you can add an extra dummy link to your URDF. -->
 <link name="robot_body_link">
   <inertial>
-    <origin xyz="-0.14414593948878596 0.007272292388517288 0.4790557350675238" rpy="0 0 0"/>
-    <mass value="7.356876734373038"/>
-    <inertia ixx="0.055113" iyy="0.026097" izz="0.045184" ixy="-0.000286" iyz="-0.000998" ixz="0.003045"/>
+    <origin xyz="-0.13821660856078213 0.0043835143674895525 0.42578889973861744" rpy="0 0 0"/>
+    <mass value="12.267858710704742"/>
+    <inertia ixx="0.720301" iyy="0.677932" izz="0.200987" ixy="4.5e-05" iyz="-0.003874" ixz="0.025748"/>
   </inertial>
   <visual>
     <origin xyz="0 0 0" rpy="0 0 0"/>
     <geometry>
-      <mesh filename="package://roomac_description/meshes/robot_body.stl" scale="0.001 0.001 0.001"/>
+      <mesh filename="package://roomac_description/meshes/robot_body.dae" scale="0.001 0.001 0.001"/>
     </geometry>
     <material name="black"/>
   </visual>
@@ -45,16 +45,6 @@
   </visual>
 </link>
 
-<link name="frame_link">
-  <visual>
-    <origin xyz="0.06485 -0.10315 -0.52765" rpy="0 0 0"/>
-    <geometry>
-      <mesh filename="package://roomac_description/meshes/frame.dae" scale="0.001 0.001 0.001"/>
-    </geometry>
-    <material name="silver"/>
-  </visual>
-</link>
-
 <joint name="base_joint" type="fixed">
   <origin rpy="0 0 0" xyz="0 0 0.145"/>
   <parent link="base_footprint"/>
@@ -70,12 +60,6 @@
   <origin xyz="-0.223282 -0.099058 -0.0075" rpy="0 0 0"/>
   <parent link="base_link"/>
   <child link="robot_body_frames_link"/>
-</joint>
-
-<joint name="frame" type="fixed">
-  <origin xyz="-0.06485 0.10315 0.52765" rpy="0 0 0"/>
-  <parent link="base_link"/>
-  <child link="frame_link"/>
 </joint>
 
 <!-- KINECT -->
@@ -289,8 +273,8 @@
 </link>
 
 <joint name="head" type="fixed">
-  <origin xyz="-0.01515 -0.103129 0.441495" rpy="0 0 0"/>
-  <parent link="frame_link"/>
+  <origin xyz="-0.08 2.1e-05 0.969145" rpy="0 0 0"/>
+  <parent link="base_link"/>
   <child link="head_link"/>
 </joint>
 
