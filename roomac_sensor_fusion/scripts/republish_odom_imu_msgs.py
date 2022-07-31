@@ -51,7 +51,7 @@ class ImuAngularVelocityRepublisher:
         )
 
         self.imuMsg = Imu()
-        self.imu_linkMsg.header.frame_id = "imu_link"
+        self.imuMsg.header.frame_id = "imu_link"
 
         # Disable, as in msg description
         self.imuMsg.orientation_covariance[0] = -1
