@@ -39,7 +39,7 @@
   <visual>
     <origin xyz="0.223282 0.099058 0.0075" rpy="0 0 0"/>
     <geometry>
-      <mesh filename="package://roomac_description/meshes/robot_body_frames.stl" scale="0.001 0.001 0.001"/>
+      <mesh filename="package://roomac_description/meshes/robot_body_frames.dae" scale="0.001 0.001 0.001"/>
     </geometry>
     <material name="white"/>
   </visual>
@@ -240,7 +240,7 @@
   <visual>
     <origin xyz="0.08 -2.1e-05 -0.969145" rpy="0 0 0"/>
     <geometry>
-      <mesh filename="package://roomac_description/meshes/head.stl" scale="0.001 0.001 0.001"/>
+      <mesh filename="package://roomac_description/meshes/head.dae" scale="0.001 0.001 0.001"/>
     </geometry>
     <material name="black"/>
   </visual>
@@ -256,7 +256,7 @@
   <visual>
     <origin xyz="0.0825 0.055979 -1.083347" rpy="0 0 0"/>
     <geometry>
-      <mesh filename="package://roomac_description/meshes/eye_right.stl" scale="0.001 0.001 0.001"/>
+      <mesh filename="package://roomac_description/meshes/eye_right.dae" scale="0.001 0.001 0.001"/>
     </geometry>
     <material name="white"/>
   </visual>
@@ -266,7 +266,7 @@
   <visual>
     <origin xyz="0.0825 -0.056021 -1.083347" rpy="0 0 0"/>
     <geometry>
-      <mesh filename="package://roomac_description/meshes/eye_left.stl" scale="0.001 0.001 0.001"/>
+      <mesh filename="package://roomac_description/meshes/eye_left.dae" scale="0.001 0.001 0.001"/>
     </geometry>
     <material name="white"/>
   </visual>
@@ -301,7 +301,7 @@
   <visual>
     <origin xyz="0.1135 0.174979 -0.9345" rpy="0 0 0"/>
     <geometry>
-      <mesh filename="package://roomac_description/meshes/shoulder_right.stl" scale="0.001 0.001 0.001"/>
+      <mesh filename="package://roomac_description/meshes/shoulder_right.dae" scale="0.001 0.001 0.001"/>
     </geometry>
     <material name="black"/>
   </visual>
@@ -343,7 +343,7 @@
   <visual>
     <origin xyz="0.0925 0.243979 -0.733425" rpy="0 0 0"/>
     <geometry>
-      <mesh filename="package://roomac_description/meshes/elbow_wrist_right.stl" scale="0.001 0.001 0.001"/>
+      <mesh filename="package://roomac_description/meshes/elbow_wrist_right.dae" scale="0.001 0.001 0.001"/>
     </geometry>
     <material name="black"/>
   </visual>
@@ -364,7 +364,7 @@
   <visual>
     <origin xyz="0.139354 0.243979 -0.603583" rpy="0 0 0"/>
     <geometry>
-      <mesh filename="package://roomac_description/meshes/wrist_right.stl" scale="0.001 0.001 0.001"/>
+      <mesh filename="package://roomac_description/meshes/wrist_right.dae" scale="0.001 0.001 0.001"/>
     </geometry>
     <material name="black"/>
   </visual>
@@ -385,7 +385,7 @@
   <visual>
     <origin xyz="0.114635 0.244052 -0.544791" rpy="0 0 0"/>
     <geometry>
-      <mesh filename="package://roomac_description/meshes/gripper_right.stl" scale="0.001 0.001 0.001"/>
+      <mesh filename="package://roomac_description/meshes/gripper_right.dae" scale="0.001 0.001 0.001"/>
     </geometry>
     <material name="black"/>
   </visual>
@@ -410,7 +410,7 @@
   <visual>
     <origin xyz="0.117385 0.274314 -0.487684" rpy="0 0 0"/>
     <geometry>
-      <mesh filename="package://roomac_description/meshes/gripper_finger_r_right.stl" scale="0.001 0.001 0.001"/>
+      <mesh filename="package://roomac_description/meshes/gripper_finger_r_right.dae" scale="0.001 0.001 0.001"/>
     </geometry>
     <material name="black"/>
   </visual>
@@ -431,7 +431,7 @@
   <visual>
     <origin xyz="0.117385 0.214585 -0.487684" rpy="0 0 0"/>
     <geometry>
-      <mesh filename="package://roomac_description/meshes/gripper_finger_l_right.stl" scale="0.001 0.001 0.001"/>
+      <mesh filename="package://roomac_description/meshes/gripper_finger_l_right.dae" scale="0.001 0.001 0.001"/>
     </geometry>
     <material name="black"/>
   </visual>
@@ -521,7 +521,7 @@
   <visual>
     <origin xyz="0.1135 -0.175021 -0.9345" rpy="0 0 0"/>
     <geometry>
-      <mesh filename="package://roomac_description/meshes/shoulder_left.stl" scale="0.001 0.001 0.001"/>
+      <mesh filename="package://roomac_description/meshes/shoulder_left.dae" scale="0.001 0.001 0.001"/>
     </geometry>
     <material name="black"/>
   </visual>
@@ -563,7 +563,7 @@
   <visual>
     <origin xyz="0.0925 -0.244021 -0.733443" rpy="0 0 0"/>
     <geometry>
-      <mesh filename="package://roomac_description/meshes/elbow_wrist_left.stl" scale="0.001 0.001 0.001"/>
+      <mesh filename="package://roomac_description/meshes/elbow_wrist_left.dae" scale="0.001 0.001 0.001"/>
     </geometry>
     <material name="black"/>
   </visual>
@@ -584,7 +584,7 @@
   <visual>
     <origin xyz="0.139354 -0.244021 -0.603601" rpy="0 0 0"/>
     <geometry>
-      <mesh filename="package://roomac_description/meshes/wrist_left.stl" scale="0.001 0.001 0.001"/>
+      <mesh filename="package://roomac_description/meshes/wrist_left.dae" scale="0.001 0.001 0.001"/>
     </geometry>
     <material name="black"/>
   </visual>
@@ -605,7 +605,7 @@
   <visual>
     <origin xyz="0.114635 -0.244094 -0.544809" rpy="0 0 0"/>
     <geometry>
-      <mesh filename="package://roomac_description/meshes/gripper_left.stl" scale="0.001 0.001 0.001"/>
+      <mesh filename="package://roomac_description/meshes/gripper_left.dae" scale="0.001 0.001 0.001"/>
     </geometry>
     <material name="black"/>
   </visual>
@@ -626,7 +626,7 @@
   <visual>
     <origin xyz="0.117385 -0.274357 -0.487702" rpy="0 0 0"/>
     <geometry>
-      <mesh filename="package://roomac_description/meshes/gripper_finger_l_left.stl" scale="0.001 0.001 0.001"/>
+      <mesh filename="package://roomac_description/meshes/gripper_finger_l_left.dae" scale="0.001 0.001 0.001"/>
     </geometry>
     <material name="black"/>
   </visual>
@@ -647,7 +647,7 @@
   <visual>
     <origin xyz="0.117385 -0.214627 -0.487702" rpy="0 0 0"/>
     <geometry>
-      <mesh filename="package://roomac_description/meshes/gripper_finger_r_left.stl" scale="0.001 0.001 0.001"/>
+      <mesh filename="package://roomac_description/meshes/gripper_finger_r_left.dae" scale="0.001 0.001 0.001"/>
     </geometry>
     <material name="black"/>
   </visual>
