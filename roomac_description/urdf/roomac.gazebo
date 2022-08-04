@@ -13,6 +13,15 @@
   <gravity>true</gravity>
 </gazebo>
 
+<!-- TODO: collision to false? -->
+<gazebo reference="robot_body_frames_link">
+  <mu1>${standard_friction}</mu1>
+  <mu2>${standard_friction}</mu2>
+  <selfCollide>true</selfCollide>
+</gazebo>
+
+<!-- WHEELS -->
+
 <gazebo reference="caster_right_link">
   <mu1>${caster_friction}</mu1>
   <mu2>${caster_friction}</mu2>
@@ -37,48 +46,7 @@
   <selfCollide>true</selfCollide>
 </gazebo>
 
-<gazebo reference="eye_left_link">
-  <mu1>${standard_friction}</mu1>
-  <mu2>${standard_friction}</mu2>
-  <selfCollide>true</selfCollide>
-</gazebo>
-
-<gazebo reference="elbow_wrist_right_link">
-  <mu1>${standard_friction}</mu1>
-  <mu2>${standard_friction}</mu2>
-  <selfCollide>true</selfCollide>
-</gazebo>
-
-<gazebo reference="robot_body_frames_link">
-  <mu1>${standard_friction}</mu1>
-  <mu2>${standard_friction}</mu2>
-  <selfCollide>true</selfCollide>
-</gazebo>
-
-<!-- Disable collision between gripper and fingers, otherwise it causes oscillations of fingers -->
-<gazebo reference="gripper_right_link">
-  <mu1>${standard_friction}</mu1>
-  <mu2>${standard_friction}</mu2>
-  <selfCollide>false</selfCollide>
-</gazebo>
-
-<gazebo reference="wrist_right_link">
-  <mu1>${standard_friction}</mu1>
-  <mu2>${standard_friction}</mu2>
-  <selfCollide>true</selfCollide>
-</gazebo>
-
-<gazebo reference="shoulder_elbow_right_link">
-  <mu1>${standard_friction}</mu1>
-  <mu2>${standard_friction}</mu2>
-  <selfCollide>true</selfCollide>
-</gazebo>
-
-<gazebo reference="shoulder_right_link">
-  <mu1>${standard_friction}</mu1>
-  <mu2>${standard_friction}</mu2>
-  <selfCollide>true</selfCollide>
-</gazebo>
+<!-- HEAD -->
 
 <gazebo reference="head_link">
   <mu1>${standard_friction}</mu1>
@@ -92,48 +60,44 @@
   <selfCollide>true</selfCollide>
 </gazebo>
 
-<gazebo reference="shoulder_left_link">
+<gazebo reference="eye_left_link">
   <mu1>${standard_friction}</mu1>
   <mu2>${standard_friction}</mu2>
   <selfCollide>true</selfCollide>
 </gazebo>
 
-<gazebo reference="gripper_finger_r_left_link">
-  <mu1>${finger_friction}</mu1>
-  <mu2>${finger_friction}</mu2>
-  <selfCollide>true</selfCollide>
-</gazebo>
+<!-- RIGHT ARM -->
 
-<gazebo reference="gripper_finger_l_left_link">
-  <mu1>${finger_friction}</mu1>
-  <mu2>${finger_friction}</mu2>
-  <selfCollide>true</selfCollide>
-</gazebo>
-
-<gazebo reference="gripper_left_link">
+<gazebo reference="shoulder_right_link">
   <mu1>${standard_friction}</mu1>
   <mu2>${standard_friction}</mu2>
   <selfCollide>true</selfCollide>
 </gazebo>
 
-<gazebo reference="wrist_left_link">
+<gazebo reference="shoulder_elbow_right_link">
   <mu1>${standard_friction}</mu1>
   <mu2>${standard_friction}</mu2>
   <selfCollide>true</selfCollide>
 </gazebo>
 
-<gazebo reference="elbow_wrist_left_link">
+<gazebo reference="elbow_wrist_right_link">
   <mu1>${standard_friction}</mu1>
   <mu2>${standard_friction}</mu2>
   <selfCollide>true</selfCollide>
 </gazebo>
 
-<gazebo reference="shoulder_elbow_left_link">
+<gazebo reference="wrist_right_link">
   <mu1>${standard_friction}</mu1>
   <mu2>${standard_friction}</mu2>
   <selfCollide>true</selfCollide>
 </gazebo>
 
+<!-- Disable collision between gripper and fingers, otherwise it causes oscillations of fingers -->
+<gazebo reference="gripper_right_link">
+  <mu1>${standard_friction}</mu1>
+  <mu2>${standard_friction}</mu2>
+  <selfCollide>false</selfCollide>
+</gazebo>
 
 <!-- gripper settings from https://github.com/martinandrovich/rb-rovi/blob/master/ws/src/ur5_description/robots/wsg.gazebo.xacro -->
 <!-- Disable collision between gripper and fingers, otherwise it causes oscillations of fingers -->
@@ -195,6 +159,50 @@
   <fdir1>0 0 1</fdir1>
   <minDepth>0.0</minDepth>
   <maxContacts>100</maxContacts>
+</gazebo>
+
+<!-- ARM LEFT -->
+
+<gazebo reference="shoulder_left_link">
+  <mu1>${standard_friction}</mu1>
+  <mu2>${standard_friction}</mu2>
+  <selfCollide>true</selfCollide>
+</gazebo>
+
+<gazebo reference="shoulder_elbow_left_link">
+  <mu1>${standard_friction}</mu1>
+  <mu2>${standard_friction}</mu2>
+  <selfCollide>true</selfCollide>
+</gazebo>
+
+<gazebo reference="elbow_wrist_left_link">
+  <mu1>${standard_friction}</mu1>
+  <mu2>${standard_friction}</mu2>
+  <selfCollide>true</selfCollide>
+</gazebo>
+
+<gazebo reference="wrist_left_link">
+  <mu1>${standard_friction}</mu1>
+  <mu2>${standard_friction}</mu2>
+  <selfCollide>true</selfCollide>
+</gazebo>
+
+<gazebo reference="gripper_left_link">
+  <mu1>${standard_friction}</mu1>
+  <mu2>${standard_friction}</mu2>
+  <selfCollide>true</selfCollide>
+</gazebo>
+
+<gazebo reference="gripper_finger_r_left_link">
+  <mu1>${finger_friction}</mu1>
+  <mu2>${finger_friction}</mu2>
+  <selfCollide>true</selfCollide>
+</gazebo>
+
+<gazebo reference="gripper_finger_l_left_link">
+  <mu1>${finger_friction}</mu1>
+  <mu2>${finger_friction}</mu2>
+  <selfCollide>true</selfCollide>
 </gazebo>
 
 <!-- Pointcloud in gazebo is published in different coordinates than in reality, real frame has to be rotated -->
@@ -312,12 +320,6 @@
   </sensor>
 </gazebo>
 
-<gazebo>
-  <plugin filename="libgazebo_ros_control.so" name="control">
-    <robotNamespace>/roomac</robotNamespace>
-  </plugin>
-</gazebo>
-
 <!-- Use special extension for grasping - once it detects force acting upon object it atteches it to gripper.
 I wasn't able to make grasping work in Gazebo alone, it will be more realistic and better to do it in Gazebo alone, 
 so probably it will be good to try again someday. -->
@@ -338,6 +340,12 @@ so probably it will be good to try again someday. -->
        <disable_collisions_on_attach>false</disable_collisions_on_attach>
        <contact_topic>__default_topic__</contact_topic>
     </plugin>
+</gazebo>
+
+<gazebo>
+  <plugin filename="libgazebo_ros_control.so" name="control">
+    <robotNamespace>/roomac</robotNamespace>
+  </plugin>
 </gazebo>
 
 </robot>
