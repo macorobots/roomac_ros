@@ -13,11 +13,10 @@
   <gravity>true</gravity>
 </gazebo>
 
-<!-- TODO: collision to false? -->
 <gazebo reference="robot_body_frames_link">
   <mu1>${standard_friction}</mu1>
   <mu2>${standard_friction}</mu2>
-  <selfCollide>true</selfCollide>
+  <selfCollide>false</selfCollide>
 </gazebo>
 
 <!-- WHEELS -->
@@ -57,13 +56,13 @@
 <gazebo reference="eye_right_link">
   <mu1>${standard_friction}</mu1>
   <mu2>${standard_friction}</mu2>
-  <selfCollide>true</selfCollide>
+  <selfCollide>false</selfCollide>
 </gazebo>
 
 <gazebo reference="eye_left_link">
   <mu1>${standard_friction}</mu1>
   <mu2>${standard_friction}</mu2>
-  <selfCollide>true</selfCollide>
+  <selfCollide>false</selfCollide>
 </gazebo>
 
 <!-- RIGHT ARM -->
@@ -92,19 +91,16 @@
   <selfCollide>true</selfCollide>
 </gazebo>
 
-<!-- Disable collision between gripper and fingers, otherwise it causes oscillations of fingers -->
 <gazebo reference="gripper_right_link">
   <mu1>${standard_friction}</mu1>
   <mu2>${standard_friction}</mu2>
-  <selfCollide>false</selfCollide>
+  <selfCollide>true</selfCollide>
 </gazebo>
 
 <!-- gripper settings from https://github.com/martinandrovich/rb-rovi/blob/master/ws/src/ur5_description/robots/wsg.gazebo.xacro -->
-<!-- Disable collision between gripper and fingers, otherwise it causes oscillations of fingers -->
-<!-- TODO change gripper so that it doesn't collide -->
 
 <gazebo reference="gripper_finger_r_right_link">
-  <selfCollide>false</selfCollide>
+  <selfCollide>true</selfCollide>
   <gravity>0</gravity>
   <turnGravityOff>true</turnGravityOff>
   <collision>
@@ -133,7 +129,7 @@
 </gazebo>
 
 <gazebo reference="gripper_finger_l_right_link">
-  <selfCollide>false</selfCollide>
+  <selfCollide>true</selfCollide>
   <gravity>0</gravity>
   <turnGravityOff>true</turnGravityOff>
   <collision>
