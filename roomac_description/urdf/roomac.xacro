@@ -4,7 +4,6 @@
 <xacro:include filename="$(find roomac_description)/urdf/roomac.trans" />
 <xacro:include filename="$(find roomac_description)/urdf/roomac.gazebo" />
 <xacro:include filename="$(find roomac_description)/urdf/roomac_body.xacro" />
-<xacro:include filename="$(find roomac_description)/urdf/roomac_arm_precision_test.xacro" />
 
 <link name="artag_bundle_link"/>
 <joint name="artag_joint_bundle" type="fixed">
