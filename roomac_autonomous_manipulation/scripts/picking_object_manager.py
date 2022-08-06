@@ -95,6 +95,9 @@ class PickingObjectManager(object):
         self.bottle_height = rospy.get_param("~bottle_height", 0.1)
         self.bottle_radius = rospy.get_param("~bottle_radius", 0.04)
 
+        self.open_gripper_value = rospy.get_param("~open_gripper_value", 0.0)
+        self.closed_gripper_value = rospy.get_param("~closed_gripper_value", 0.02)
+
         # Moveit stuff
 
         moveit_commander.roscpp_initialize(sys.argv)
@@ -335,11 +338,19 @@ class PickingObjectManager(object):
         aco_bottle_cap.object.id = self.bottle_cap_name
         self.scene.attach_object(aco_bottle_cap)
 
+    def move_gripper(self, position):
+        getattr(self.robot, self.grasping_group_name).go(
+            [position, -position], wait=True
+        )
+        getattr(self.robot, self.grasping_group_name).stop()
+
     def close_gripper(self, delay=1.0):
-        raise NotImplementedError()
+        rospy.loginfo("Sending close gripper command")
+        self.move_gripper(self.closed_gripper_value)
 
     def open_gripper(self, delay=1.0):
-        raise NotImplementedError()
+        rospy.loginfo("Sending open gripper command")
+        self.move_gripper(self.open_gripper_value)
 
     def close_gripper_with_delay(self):
         self.close_gripper(self.close_gripper_wait_time)
