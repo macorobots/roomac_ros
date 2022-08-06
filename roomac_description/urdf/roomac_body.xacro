@@ -102,7 +102,7 @@
   <visual>
     <origin rpy="0 0 0" xyz="0 0 0"/>
     <geometry>
-      <mesh filename="package://roomac_description/materials/artag_bundle.dae" scale="3.142857143 1.2 0.001"/>
+      <mesh filename="package://roomac_description/materials/artag_bundle.dae" scale="1 1 1"/>
     </geometry>
   </visual>
   <!-- No collision, visual mesh will be used for collision in moveit in melodic 
