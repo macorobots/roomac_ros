@@ -6,41 +6,41 @@ roomac:
   # Position Controllers --------------------------------------
   shoulder_pitch_right_position_controller:
     type: position_controllers/JointTrajectoryController
-    joints: [shoulder_pitch_right]
+    joints: [shoulder_pitch_right_joint]
     pid: { p: 10.0, i: 0.01, d: 0.0 }
   shoulder_roll_right_position_controller:
     type: position_controllers/JointTrajectoryController
-    joints: [shoulder_roll_right]
+    joints: [shoulder_roll_right_joint]
     pid: { p: 10.0, i: 0.01, d: 0.0 }
   elbow_right_position_controller:
     type: position_controllers/JointTrajectoryController
-    joints: [elbow_right]
+    joints: [elbow_right_joint]
     pid: { p: 10.0, i: 0.01, d: 0.0 }
   wrist_right_position_controller:
     type: position_controllers/JointTrajectoryController
-    joints: [wrist_right]
+    joints: [wrist_right_joint]
     pid: { p: 10.0, i: 0.01, d: 0.0 }
   gripper_twist_right_position_controller:
     type: position_controllers/JointTrajectoryController
-    joints: [gripper_twist_right]
+    joints: [gripper_twist_right_joint]
     pid: { p: 10.0, i: 0.01, d: 0.0 }
   shoulder_pitch_left_position_controller:
     type: position_controllers/JointTrajectoryController
-    joints: [shoulder_pitch_left]
+    joints: [shoulder_pitch_left_joint]
     pid: { p: 10.0, i: 0.01, d: 0.0 }
   shoulder_roll_left_position_controller:
     type: position_controllers/JointTrajectoryController
-    joints: [shoulder_roll_left]
+    joints: [shoulder_roll_left_joint]
     pid: { p: 10.0, i: 0.01, d: 0.0 }
   elbow_left_position_controller:
     type: position_controllers/JointTrajectoryController
-    joints: [elbow_left]
+    joints: [elbow_left_joint]
     pid: { p: 10.0, i: 0.01, d: 0.0 }
   wrist_left_position_controller:
     type: position_controllers/JointTrajectoryController
-    joints: [wrist_left]
+    joints: [wrist_left_joint]
     pid: { p: 10.0, i: 0.01, d: 0.0 }
   gripper_twist_left_position_controller:
     type: position_controllers/JointTrajectoryController
-    joints: [gripper_twist_left]
+    joints: [gripper_twist_left_joint]
     pid: { p: 10.0, i: 0.01, d: 0.0 }

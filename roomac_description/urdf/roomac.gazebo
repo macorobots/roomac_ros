@@ -239,9 +239,9 @@
   <plugin name="differential_drive_controller" filename="libgazebo_ros_diff_drive.so">
     <updateRate>10</updateRate>
     <!-- Name of left joint, defaults to `left_joint` -->
-    <leftJoint>wheel_left</leftJoint>
+    <leftJoint>wheel_left_joint</leftJoint>
     <!-- Name of right joint, defaults to `right_joint` -->
-    <rightJoint>wheel_right</rightJoint>
+    <rightJoint>wheel_right_joint</rightJoint>
     <!-- The distance from the center of one wheel to the other, in meters, defaults to 0.34 m -->
     <wheelSeparation>0.507</wheelSeparation>
     <!-- Diameter of the wheels, in meters, defaults to 0.15 m -->

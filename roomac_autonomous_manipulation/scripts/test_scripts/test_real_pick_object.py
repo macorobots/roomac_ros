@@ -75,7 +75,7 @@ class Grasp:
 
     def move_gripper(self, position):
         gripper_msg = JointState()
-        gripper_msg.name = ["right_gripper"]
+        gripper_msg.name = ["right_gripper_joint"]
         gripper_msg.position = [position]
         self.gripper_command.publish(gripper_msg)
 

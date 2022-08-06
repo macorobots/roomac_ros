@@ -7,21 +7,21 @@
 
 # Position limits should be loaded from urdf, I added them here when checking chomp, but they doesn't seem to be necessary.
 joint_limits:
-  gripper_finger_r_right:
+  gripper_finger_r_right_joint:
     has_velocity_limits: true
     max_velocity: 100
     has_acceleration_limits: false
     max_acceleration: 0
     # min_position: -0.05
     # max_position: 0.0
-  gripper_finger_l_right:
+  gripper_finger_l_right_joint:
     has_velocity_limits: true
     max_velocity: 100
     has_acceleration_limits: false
     max_acceleration: 0
     # min_position: 0.0
     # max_position: 0.05
-  elbow_right:
+  elbow_right_joint:
     has_velocity_limits: true
     max_velocity: 0.5
     has_acceleration_limits: true
@@ -30,28 +30,28 @@ joint_limits:
     # without bending elbow in opposite direction
     min_position: 0
     max_position: 2.1
-  gripper_twist_right:
+  gripper_twist_right_joint:
     has_velocity_limits: true
     max_velocity: 0.5
     has_acceleration_limits: true
     max_acceleration: 1.0
     # min_position: -1.570
     # max_position: 1.570
-  shoulder_roll_right:
+  shoulder_roll_right_joint:
     has_velocity_limits: true
     max_velocity: 0.5
     has_acceleration_limits: true
     max_acceleration: 1.0
     # min_position: -0.800
     # max_position: 1.979
-  shoulder_pitch_right:
+  shoulder_pitch_right_joint:
     has_velocity_limits: true
     max_velocity: 0.5
     has_acceleration_limits: true
     max_acceleration: 1.0
     # min_position: -2.390
     # max_position: 0.489
-  wrist_right:
+  wrist_right_joint:
     has_velocity_limits: true
     max_velocity: 0.5
     has_acceleration_limits: true

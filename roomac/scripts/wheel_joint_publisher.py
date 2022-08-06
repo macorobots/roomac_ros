@@ -44,7 +44,7 @@ class WheelJointPublisher:
 
         joint_state_msg = JointState()
         joint_state_msg.header.stamp = rospy.Time.now()
-        joint_state_msg.name = ["wheel_right", "wheel_left"]
+        joint_state_msg.name = ["wheel_right_joint", "wheel_left_joint"]
         joint_state_msg.position = [self.r_motor_angle, self.l_motor_angle]
         self._joint_state_pub.publish(joint_state_msg)
 

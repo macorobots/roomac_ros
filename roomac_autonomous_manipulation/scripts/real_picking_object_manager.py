@@ -23,7 +23,7 @@ class RealPickingObjectManager(PickingObjectManager):
         # Parameters
         object_type = rospy.get_param("~object_type", "bottle")
         self.gripper_joint_name = rospy.get_param(
-            "~gripper_joint_name", "right_gripper"
+            "~gripper_joint_name", "right_gripper_joint"
         )
         self.opened_gripper_value = rospy.get_param("~opened_gripper_value", 1.0)
         self.bottle_closed_gripper_value = rospy.get_param(

@@ -62,12 +62,12 @@
   <child link="base_link"/>
 </joint>
 
-<joint name="robot_body" type="fixed">
+<joint name="robot_body_joint" type="fixed">
   <parent link="base_link"/>
   <child link="robot_body_link"/>
 </joint>
 
-<joint name="head" type="fixed">
+<joint name="head_joint" type="fixed">
   <origin xyz="-0.08 2.1e-05 0.969145" rpy="0 0 0"/>
   <parent link="base_link"/>
   <child link="head_link"/>
@@ -114,7 +114,7 @@
   <child link="artag_link"/>
 </joint>
 
-<joint name="artag_joint_bundle_visual" type="fixed">
+<joint name="artag_bundle_visual_joint" type="fixed">
   <origin rpy="0 0 0" xyz="0.01 0.0 0.0"/>
   <parent link="artag_link"/>
   <child link="artag_bundle_visual_link"/>
@@ -167,13 +167,13 @@
   </collision>
 </link>
 
-<joint name="caster_right" type="fixed">
+<joint name="caster_right_joint" type="fixed">
   <origin xyz="-0.324 -0.133 -0.00465" rpy="0 0 0"/>
   <parent link="base_link"/>
   <child link="caster_right_link"/>
 </joint>
 
-<joint name="caster_left" type="fixed">
+<joint name="caster_left_joint" type="fixed">
   <origin xyz="-0.324 0.139 -0.00465" rpy="0 0 0"/>
   <parent link="base_link"/>
   <child link="caster_left_link"/>
@@ -227,14 +227,14 @@
   </collision>
 </link>
 
-<joint name="wheel_right" type="continuous">
+<joint name="wheel_right_joint" type="continuous">
   <origin xyz="0.0 -0.21064 0.0" rpy="0 0 0"/>
   <parent link="base_link"/>
   <child link="wheel_right_link"/>
   <axis xyz="0 1 0"/>
 </joint>
 
-<joint name="wheel_left" type="continuous">
+<joint name="wheel_left_joint" type="continuous">
   <origin xyz="0.0 0.21064 0.0" rpy="0 0 0"/>
   <parent link="base_link"/>
   <child link="wheel_left_link"/>
@@ -396,7 +396,7 @@
 
 <!-- Values for effort and velocity are from example (they are required)
   not sure if correct, may need to change them -->
-<joint name="shoulder_pitch_right" type="revolute">
+<joint name="shoulder_pitch_right_joint" type="revolute">
   <origin xyz="-0.1135 -0.174979 0.9345" rpy="0 0 0"/>
   <parent link="base_link"/>
   <child link="shoulder_right_link"/>
@@ -404,7 +404,7 @@
   <limit effort="30" velocity="1.0" lower="-2.390" upper="0.489" />
 </joint>
 
-<joint name="shoulder_roll_right" type="revolute">
+<joint name="shoulder_roll_right_joint" type="revolute">
   <origin xyz="0.0005 -0.069 0.0" rpy="0 0 0"/>
   <parent link="shoulder_right_link"/>
   <child link="shoulder_elbow_right_link"/>
@@ -413,7 +413,7 @@
   <limit effort="30" velocity="1.0" lower="-0.800" upper="1.979" />
 </joint>
 
-<joint name="elbow_right" type="revolute">
+<joint name="elbow_right_joint" type="revolute">
   <origin xyz="0.0205 0.0 -0.201075" rpy="0 0 0"/>
   <parent link="shoulder_elbow_right_link"/>
   <child link="elbow_wrist_right_link"/>
@@ -423,7 +423,7 @@
   <limit effort="30" velocity="1.0" lower="-2.1" upper="2.1" />
 </joint>
 
-<joint name="wrist_right" type="revolute">
+<joint name="wrist_right_joint" type="revolute">
   <origin xyz="-0.046854 0.0 -0.129842" rpy="0 0 0"/>
   <parent link="elbow_wrist_right_link"/>
   <child link="wrist_right_link"/>
@@ -431,7 +431,7 @@
   <limit effort="30" velocity="1.0" lower="-1.994" upper="1.146" />
 </joint>
 
-<joint name="gripper_twist_right" type="revolute">
+<joint name="gripper_twist_right_joint" type="revolute">
   <origin xyz="0.024719 -7.3e-05 -0.058792" rpy="0 0 0"/>
   <parent link="wrist_right_link"/>
   <child link="gripper_right_link"/>
@@ -439,7 +439,7 @@
   <limit effort="30" velocity="1.0" lower="-1.570" upper="1.570" />
 </joint>
 
-<joint name="gripper_finger_r_right" type="prismatic">
+<joint name="gripper_finger_r_right_joint" type="prismatic">
   <origin xyz="-0.00275 -0.030262 -0.057107" rpy="0 0 0"/>
   <parent link="gripper_right_link"/>
   <child link="gripper_finger_r_right_link"/>
@@ -447,7 +447,7 @@
   <limit effort="100" velocity="100" lower="-0.0045" upper="0.015"/>
 </joint>
 
-<joint name="gripper_finger_l_right" type="prismatic">
+<joint name="gripper_finger_l_right_joint" type="prismatic">
   <origin xyz="-0.00275 0.029467 -0.057107" rpy="0 0 0"/>
   <parent link="gripper_right_link"/>
   <child link="gripper_finger_l_right_link"/>
@@ -455,7 +455,8 @@
   <limit effort="100" velocity="100" lower="-0.015" upper="0.0045"/>
 </joint>
 
-<joint name="right_grip" type="fixed">
+<!-- todo: change it -->
+<joint name="right_grip_joint" type="fixed">
   <origin rpy="0 0 0" xyz="0.0 0.0 -0.085"/>
   <parent link="gripper_right_link"/>
   <child link="gripping_right_link"/>
@@ -610,48 +611,48 @@
   </collision>
 </link>
 
-<joint name="shoulder_pitch_left" type="continuous">
+<joint name="shoulder_pitch_left_joint" type="continuous">
   <origin xyz="-0.1135 0.175021 0.9345" rpy="0 0 0"/>
   <parent link="base_link"/>
   <child link="shoulder_left_link"/>
   <axis xyz="0 1 0"/>
 </joint>
 
-<joint name="shoulder_roll_left" type="continuous">
+<joint name="shoulder_roll_left_joint" type="continuous">
   <origin xyz="0.0005 0.069 0.0" rpy="0 0 0"/>
   <parent link="shoulder_left_link"/>
   <child link="shoulder_elbow_left_link"/>
   <axis xyz="1 0 0"/>
 </joint>
 
-<joint name="elbow_left" type="continuous">
+<joint name="elbow_left_joint" type="continuous">
   <origin xyz="0.0205 0.0 -0.201057" rpy="0 0 0"/>
   <parent link="shoulder_elbow_left_link"/>
   <child link="elbow_wrist_left_link"/>
   <axis xyz="1 0 0"/>
 </joint>
 
-<joint name="wrist_left" type="continuous">
+<joint name="wrist_left_joint" type="continuous">
   <origin xyz="-0.046854 0.0 -0.129842" rpy="0 0 0"/>
   <parent link="elbow_wrist_left_link"/>
   <child link="wrist_left_link"/>
   <axis xyz="1 0 0"/>
 </joint>
 
-<joint name="gripper_twist_left" type="continuous">
+<joint name="gripper_twist_left_joint" type="continuous">
   <origin xyz="0.024719 7.3e-05 -0.058792" rpy="0 0 0"/>
   <parent link="wrist_left_link"/>
   <child link="gripper_left_link"/>
   <axis xyz="0 0 -1"/>
 </joint>
 
-<joint name="gripper_finger_r_left" type="fixed">
+<joint name="gripper_finger_r_left_joint" type="fixed">
   <origin xyz="-0.00275 -0.029467 -0.057107" rpy="0 0 0"/>
   <parent link="gripper_left_link"/>
   <child link="gripper_finger_r_left_link"/>
 </joint>
 
-<joint name="gripper_finger_l_left" type="fixed">
+<joint name="gripper_finger_l_left_joint" type="fixed">
   <origin xyz="-0.00275 0.030263 -0.057107" rpy="0 0 0"/>
   <parent link="gripper_left_link"/>
   <child link="gripper_finger_l_left_link"/>

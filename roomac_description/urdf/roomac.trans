@@ -5,7 +5,7 @@
 
 <transmission name="wheel_right_tran">
   <type>transmission_interface/SimpleTransmission</type>
-  <joint name="wheel_right">
+  <joint name="wheel_right_joint">
     <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
   </joint>
   <actuator name="wheel_right_actr">
@@ -16,7 +16,7 @@
 
 <transmission name="wheel_left_tran">
   <type>transmission_interface/SimpleTransmission</type>
-  <joint name="wheel_left">
+  <joint name="wheel_left_joint">
     <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
   </joint>
   <actuator name="wheel_left_actr">
@@ -29,7 +29,7 @@
 
 <transmission name="shoulder_pitch_right_tran">
   <type>transmission_interface/SimpleTransmission</type>
-  <joint name="shoulder_pitch_right">
+  <joint name="shoulder_pitch_right_joint">
     <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
   </joint>
   <actuator name="shoulder_pitch_right_actr">
@@ -40,7 +40,7 @@
 
 <transmission name="shoulder_roll_right_tran">
   <type>transmission_interface/SimpleTransmission</type>
-  <joint name="shoulder_roll_right">
+  <joint name="shoulder_roll_right_joint">
     <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
   </joint>
   <actuator name="shoulder_roll_right_actr">
@@ -51,7 +51,7 @@
 
 <transmission name="elbow_right_tran">
   <type>transmission_interface/SimpleTransmission</type>
-  <joint name="elbow_right">
+  <joint name="elbow_right_joint">
     <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
   </joint>
   <actuator name="elbow_right_actr">
@@ -62,7 +62,7 @@
 
 <transmission name="wrist_right_tran">
   <type>transmission_interface/SimpleTransmission</type>
-  <joint name="wrist_right">
+  <joint name="wrist_right_joint">
     <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
   </joint>
   <actuator name="wrist_right_actr">
@@ -73,7 +73,7 @@
 
 <transmission name="gripper_twist_right_tran">
   <type>transmission_interface/SimpleTransmission</type>
-  <joint name="gripper_twist_right">
+  <joint name="gripper_twist_right_joint">
     <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
   </joint>
   <actuator name="gripper_twist_right_actr">
@@ -84,7 +84,7 @@
 
 <transmission name="gripper_finger_r_right_tran">
   <type>transmission_interface/SimpleTransmission</type>
-  <joint name="gripper_finger_r_right">
+  <joint name="gripper_finger_r_right_joint">
     <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
   </joint>
   <actuator name="gripper_finger_r_right_actr">
@@ -93,12 +93,12 @@
   </actuator>
 </transmission>
 
-<transmission name="gripper_finger_l_right_1_tran">
+<transmission name="gripper_finger_l_right_tran">
   <type>transmission_interface/SimpleTransmission</type>
-  <joint name="gripper_finger_l_right">
+  <joint name="gripper_finger_l_right_joint">
     <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
   </joint>
-  <actuator name="gripper_finger_l_right_1_actr">
+  <actuator name="gripper_finger_l_right_actr">
     <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
     <mechanicalReduction>1</mechanicalReduction>
   </actuator>
@@ -108,7 +108,7 @@
 
 <transmission name="shoulder_pitch_left_tran">
   <type>transmission_interface/SimpleTransmission</type>
-  <joint name="shoulder_pitch_left">
+  <joint name="shoulder_pitch_left_joint">
     <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
   </joint>
   <actuator name="shoulder_pitch_left_actr">
@@ -119,7 +119,7 @@
 
 <transmission name="shoulder_roll_left_tran">
   <type>transmission_interface/SimpleTransmission</type>
-  <joint name="shoulder_roll_left">
+  <joint name="shoulder_roll_left_joint">
     <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
   </joint>
   <actuator name="shoulder_roll_left_actr">
@@ -130,7 +130,7 @@
 
 <transmission name="elbow_left_tran">
   <type>transmission_interface/SimpleTransmission</type>
-  <joint name="elbow_left">
+  <joint name="elbow_left_joint">
     <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
   </joint>
   <actuator name="elbow_left_actr">
@@ -141,7 +141,7 @@
 
 <transmission name="wrist_left_tran">
   <type>transmission_interface/SimpleTransmission</type>
-  <joint name="wrist_left">
+  <joint name="wrist_left_joint">
     <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
   </joint>
   <actuator name="wrist_left_actr">
@@ -152,7 +152,7 @@
 
 <transmission name="gripper_twist_left_tran">
   <type>transmission_interface/SimpleTransmission</type>
-  <joint name="gripper_twist_left">
+  <joint name="gripper_twist_left_joint">
     <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
   </joint>
   <actuator name="gripper_twist_left_actr">

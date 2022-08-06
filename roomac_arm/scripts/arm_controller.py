@@ -61,7 +61,7 @@ class ArmController(object):
         initial_playtime = 255
         initial_analog_speed = 2.0
 
-        self._servos["shoulder_pitch_right"] = DigitalServo(
+        self._servos["shoulder_pitch_right_joint"] = DigitalServo(
             "shoulder_pan",
             zero_angle_signal[0],
             digital_lower_signal_bound,
@@ -69,7 +69,7 @@ class ArmController(object):
             digital_scale_factor,
             max_speed,
         )
-        self._servos["shoulder_roll_right"] = DigitalServo(
+        self._servos["shoulder_roll_right_joint"] = DigitalServo(
             "shoulder_lift",
             zero_angle_signal[1],
             digital_lower_signal_bound,
@@ -77,7 +77,7 @@ class ArmController(object):
             digital_scale_factor,
             max_speed,
         )
-        self._servos["elbow_right"] = DigitalServo(
+        self._servos["elbow_right_joint"] = DigitalServo(
             "elbow",
             zero_angle_signal[2],
             digital_lower_signal_bound,
@@ -86,7 +86,7 @@ class ArmController(object):
             max_speed,
         )
 
-        self._servos["wrist_right"] = AnalogServo(
+        self._servos["wrist_right_joint"] = AnalogServo(
             "wrist",
             zero_angle_signal[3],
             analog_lower_signal_bound_wrist,
@@ -95,7 +95,7 @@ class ArmController(object):
             max_speed,
             analog_update_delay,
         )
-        self._servos["gripper_twist_right"] = AnalogServo(
+        self._servos["gripper_twist_right_joint"] = AnalogServo(
             "wrist_twist",
             zero_angle_signal[4],
             analog_lower_signal_bound,
@@ -104,7 +104,7 @@ class ArmController(object):
             max_speed,
             analog_update_delay,
         )
-        self._servos["right_gripper"] = AnalogServo(
+        self._servos["right_gripper_joint"] = AnalogServo(
             "gripper",
             zero_angle_signal[5],
             analog_lower_signal_bound,
@@ -114,10 +114,18 @@ class ArmController(object):
             analog_update_delay,
         )
 
-        for x in ["shoulder_pitch_right", "shoulder_roll_right", "elbow_right"]:
+        for x in [
+            "shoulder_pitch_right_joint",
+            "shoulder_roll_right_joint",
+            "elbow_right_joint",
+        ]:
             self._servos[x].init_servo(0.0, initial_playtime)
 
-        for x in ["wrist_right", "gripper_twist_right", "right_gripper"]:
+        for x in [
+            "wrist_right_joint",
+            "gripper_twist_right_joint",
+            "right_gripper_joint",
+        ]:
             self._servos[x].init_servo(0.0, initial_analog_speed)
 
         self._publish_joint_states = rospy.get_param("~publish_joint_states", True)
@@ -191,13 +199,14 @@ class ArmController(object):
             self._joint_state_pub.publish(joint_state_msg)
 
         # TODO: refactor
+        # todo: change right gripper joint
         for joint_name, angle in itertools.izip(joint_names, angles):
-            if joint_name == "right_gripper":
+            if joint_name == "right_gripper_joint":
                 joint_state_msg = JointState()
                 joint_state_msg.header.stamp = rospy.Time.now()
                 joint_state_msg.name = [
-                    "gripper_finger_r_right",
-                    "gripper_finger_l_right",
+                    "gripper_finger_r_right_joint",
+                    "gripper_finger_l_right_joint",
                 ]
                 # Linear approximation using these two points
                 # 0.2 -> 0.005m
