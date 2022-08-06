@@ -466,7 +466,8 @@
   <parent link="gripper_right_link"/>
   <child link="gripper_finger_r_right_link"/>
   <axis xyz="0 1 0"/>
-  <limit effort="100" velocity="100" lower="-0.0045" upper="0.015"/>
+  <limit effort="10" velocity="100" lower="-0.0045" upper="0.013"/>
+  <mimic joint="gripper_finger_l_right_joint" multiplier="-1" offset="0" />
 </joint>
 
 <joint name="gripper_finger_l_right_joint" type="prismatic">
@@ -474,7 +475,7 @@
   <parent link="gripper_right_link"/>
   <child link="gripper_finger_l_right_link"/>
   <axis xyz="0 1 0"/>
-  <limit effort="100" velocity="100" lower="-0.015" upper="0.0045"/>
+  <limit effort="10" velocity="100" lower="-0.013" upper="0.0045"/>
 </joint>
 
 <!-- todo: change it -->

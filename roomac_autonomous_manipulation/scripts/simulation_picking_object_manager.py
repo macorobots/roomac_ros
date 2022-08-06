@@ -25,20 +25,19 @@ class SimulationPickingObjectManager(PickingObjectManager):
             latch=True,
         )
 
-    def move_gripper(self, position1, position2, delay=1.0):
+    def move_gripper(self, position, delay=1.0):
         msg = Float64MultiArray()
-        msg.data.append(position1)
-        msg.data.append(position2)
+        msg.data.append(position)
         self.effort_controller_command_pub.publish(msg)
         rospy.sleep(delay)
 
     def close_gripper(self, delay=1.0):
         rospy.loginfo("Sending close gripper command")
-        self.move_gripper(-self.closed_gripper_value, self.closed_gripper_value, delay)
+        self.move_gripper(self.closed_gripper_value, delay)
 
     def open_gripper(self, delay=1.0):
         rospy.loginfo("Sending open gripper command")
-        self.move_gripper(-self.open_gripper_value, self.open_gripper_value, delay)
+        self.move_gripper(self.open_gripper_value, delay)
 
 
 if __name__ == "__main__":

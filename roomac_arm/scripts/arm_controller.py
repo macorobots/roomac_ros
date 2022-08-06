@@ -205,7 +205,6 @@ class ArmController(object):
                 joint_state_msg = JointState()
                 joint_state_msg.header.stamp = rospy.Time.now()
                 joint_state_msg.name = [
-                    "gripper_finger_r_right_joint",
                     "gripper_finger_l_right_joint",
                 ]
                 # Linear approximation using these two points
@@ -214,7 +213,7 @@ class ArmController(object):
                 m = -0.011875
                 b = 0.007375
                 dist = m * angle + b
-                joint_state_msg.position = [dist, -dist]
+                joint_state_msg.position = [-dist]
                 self._joint_state_pub.publish(joint_state_msg)
 
         rospy.sleep(rospy.Duration(movement_duration))

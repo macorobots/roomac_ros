@@ -46,14 +46,8 @@ roomac:
   gripper_effort_controller:
     type: effort_controllers/JointGroupPositionController
     joints:
-      - gripper_finger_r_right_joint
+      # only left finger, right is mimicing
       - gripper_finger_l_right_joint
-    gripper_finger_r_right_joint:
-      pid:
-        p: 100
-        d: 0
-        i: 0.01
-        i_clamp: 1
 
     gripper_finger_l_right_joint:
       pid:
