@@ -77,64 +77,16 @@
   <selfCollide>true</selfCollide>
 </gazebo>
 
-<!-- gripper settings from https://github.com/martinandrovich/rb-rovi/blob/master/ws/src/ur5_description/robots/wsg.gazebo.xacro -->
-
 <gazebo reference="gripper_finger_r_right_link">
-  <selfCollide>true</selfCollide>
-  <gravity>0</gravity>
-  <turnGravityOff>true</turnGravityOff>
-  <collision>
-  <surface>
-    <friction>
-      <torsional>
-        <coefficient>10.0</coefficient>
-        <use_patch_radius>true</use_patch_radius>
-        <patch_radius>0.05</patch_radius>
-      </torsional>
-    </friction>
-    <contact>
-      <poissons_ratio>0.5</poissons_ratio>
-      <elastic_modulus>1e8</elastic_modulus>
-    </contact>
-  </surface>
-  </collision>
   <mu1>${finger_friction}</mu1>
   <mu2>${finger_friction}</mu2>
-  <maxVel>1</maxVel>
-  <kp>1000000.0</kp>
-  <kd>100.0</kd> 
-  <fdir1>0 0 1</fdir1>
-  <minDepth>0.0</minDepth>
-  <maxContacts>100</maxContacts>
+  <selfCollide>true</selfCollide>
 </gazebo>
 
 <gazebo reference="gripper_finger_l_right_link">
-  <selfCollide>true</selfCollide>
-  <gravity>0</gravity>
-  <turnGravityOff>true</turnGravityOff>
-  <collision>
-  <surface>
-    <friction>
-      <torsional>
-        <coefficient>10.0</coefficient>
-        <use_patch_radius>true</use_patch_radius>
-        <patch_radius>0.05</patch_radius>
-      </torsional>
-    </friction>
-    <contact>
-      <poissons_ratio>0.5</poissons_ratio>
-      <elastic_modulus>1e8</elastic_modulus>
-    </contact>
-  </surface>
-  </collision>
   <mu1>${finger_friction}</mu1>
   <mu2>${finger_friction}</mu2>
-  <maxVel>1</maxVel>
-  <kp>1000000.0</kp>
-  <kd>100.0</kd> 
-  <fdir1>0 0 1</fdir1>
-  <minDepth>0.0</minDepth>
-  <maxContacts>100</maxContacts>
+  <selfCollide>true</selfCollide>
 </gazebo>
 
 <!-- ARM LEFT -->

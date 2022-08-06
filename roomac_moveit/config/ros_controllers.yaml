@@ -29,6 +29,7 @@ roomac:
     type: joint_state_controller/JointStateController
     publish_rate: 50
 
+  # todo: rename to arm_controller
   arm_position_controller:
     type: position_controllers/JointTrajectoryController
     joints:
@@ -83,15 +84,21 @@ roomac:
     state_publish_rate: 25
     allow_partial_joints_goal: True
 
-  gripper_effort_controller:
-    type: effort_controllers/JointGroupPositionController
+  gripper_controller:
+    type: effort_controllers/JointTrajectoryController
     joints:
       # only left finger, right is mimicing
       - gripper_finger_l_right_joint
 
-    gripper_finger_l_right_joint:
-      pid:
-        p: 100
+    gains:
+      gripper_finger_l_right_joint:
+        p: 1000
         d: 0
         i: 0.01
         i_clamp: 1
+    constraints:
+      goal_time: 10.0
+      gripper_finger_l_right_joint:
+        goal: 0.01
+        trajectory: 0.01
+    state_publish_rate: 25

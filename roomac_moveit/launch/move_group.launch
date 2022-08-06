@@ -92,6 +92,7 @@
     <!-- For simulation: -->
     <remap if="$(arg gazebo)" from="/joint_states" to="/roomac/joint_states"/>
     <remap if="$(arg gazebo)" from="arm_position_controller/follow_joint_trajectory" to="/roomac/arm_position_controller/follow_joint_trajectory" />
+    <remap if="$(arg gazebo)" from="gripper_controller/follow_joint_trajectory" to="/roomac/gripper_controller/follow_joint_trajectory" />
 
     <!-- For real robot: -->
     <!-- Can't change fake execution for now, as I don't have controller defined for real robot -->

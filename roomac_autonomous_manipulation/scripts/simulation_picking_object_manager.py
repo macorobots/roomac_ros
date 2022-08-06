@@ -19,7 +19,7 @@ class SimulationPickingObjectManager(PickingObjectManager):
         self.closed_gripper_value = rospy.get_param("~closed_gripper_value", 0.02)
 
         self.effort_controller_command_pub = rospy.Publisher(
-            "/roomac/gripper_effort_controller/command",
+            "/roomac/gripper_controller/command",
             Float64MultiArray,
             queue_size=10,
             latch=True,

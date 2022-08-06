@@ -9,3 +9,10 @@ controller_list:
       - elbow_right_joint
       - wrist_right_joint
       - gripper_twist_right_joint
+
+  - name: gripper_controller
+    action_ns: follow_joint_trajectory
+    type: FollowJointTrajectory
+    default: true
+    joints:
+      - gripper_finger_l_right_joint
