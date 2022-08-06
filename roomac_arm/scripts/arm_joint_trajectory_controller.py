@@ -12,11 +12,9 @@ from control_msgs.msg import (
 from arm_controller import ArmController
 
 
-class ArmJointTrajectoryController(ArmController):
+class ArmJointTrajectoryController:
     def __init__(self):
-        # python3
-        # super().__init__()
-        super(ArmJointTrajectoryController, self).__init__()
+        self._arm_controller = ArmController()
 
         self._action_server = actionlib.SimpleActionServer(
             "follow_joint_trajectory",
@@ -48,7 +46,7 @@ class ArmJointTrajectoryController(ArmController):
                 trajectory_point.time_from_start - last_time
             ).to_sec()
 
-            movement_time = self.go_to_point(
+            movement_time = self._arm_controller.go_to_point(
                 goal.trajectory.joint_names,
                 trajectory_point.positions,
                 movement_time_from_msg,
