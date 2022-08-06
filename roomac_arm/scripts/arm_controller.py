@@ -15,9 +15,21 @@ from servo_controller import AnalogServo, DigitalServo
 
 class ArmController(object):
     def __init__(self):
-        zero_angle_signal = rospy.get_param(
-            "~zero_angle_signal", [850, 320, 512, 1509, 1500, 650]
+        zero_angle_signal_shoulder_pitch = rospy.get_param(
+            "~zero_angle_signal_shoulder_pitch", 860
         )
+        zero_angle_signal_sholder_roll = rospy.get_param(
+            "~zero_angle_signal_sholder_roll", 280
+        )
+        zero_angle_signal_elbow = rospy.get_param("~zero_angle_signal_elbow", 512)
+        zero_angle_signal_wrist = rospy.get_param("~zero_angle_signal_wrist", 1450)
+        zero_angle_signal_gripper_twist = rospy.get_param(
+            "~zero_angle_signal_gripper_twist", 1590
+        )
+        zero_angle_signal_gripper_finger = rospy.get_param(
+            "~zero_angle_signal_gripper_finger", 650
+        )
+
         analog_lower_signal_bound = rospy.get_param("~analog_lower_signal_bound", 500)
         analog_upper_signal_bound = rospy.get_param("~analog_upper_signal_bound", 2500)
         analog_lower_signal_bound_wrist = rospy.get_param(
@@ -63,7 +75,7 @@ class ArmController(object):
 
         self._servos["shoulder_pitch_right_joint"] = DigitalServo(
             "shoulder_pan",
-            zero_angle_signal[0],
+            zero_angle_signal_shoulder_pitch,
             digital_lower_signal_bound,
             digital_upper_signal_bound,
             digital_scale_factor,
@@ -71,7 +83,7 @@ class ArmController(object):
         )
         self._servos["shoulder_roll_right_joint"] = DigitalServo(
             "shoulder_lift",
-            zero_angle_signal[1],
+            zero_angle_signal_sholder_roll,
             digital_lower_signal_bound,
             digital_upper_signal_bound,
             digital_scale_factor,
@@ -79,7 +91,7 @@ class ArmController(object):
         )
         self._servos["elbow_right_joint"] = DigitalServo(
             "elbow",
-            zero_angle_signal[2],
+            zero_angle_signal_elbow,
             digital_lower_signal_bound,
             digital_upper_signal_bound,
             digital_scale_factor / 2.0,  # no gear reduction
@@ -88,7 +100,7 @@ class ArmController(object):
 
         self._servos["wrist_right_joint"] = AnalogServo(
             "wrist",
-            zero_angle_signal[3],
+            zero_angle_signal_wrist,
             analog_lower_signal_bound_wrist,
             analog_upper_signal_bound_wrist,
             analog_scale_factor_wrist,
@@ -97,7 +109,7 @@ class ArmController(object):
         )
         self._servos["gripper_twist_right_joint"] = AnalogServo(
             "wrist_twist",
-            zero_angle_signal[4],
+            zero_angle_signal_gripper_twist,
             analog_lower_signal_bound,
             analog_upper_signal_bound,
             analog_scale_factor,
@@ -106,7 +118,7 @@ class ArmController(object):
         )
         self._servos["right_gripper_joint"] = AnalogServo(
             "gripper",
-            zero_angle_signal[5],
+            zero_angle_signal_gripper_finger,
             analog_lower_signal_bound,
             analog_upper_signal_bound,
             analog_scale_factor,

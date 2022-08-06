@@ -38,9 +38,21 @@ class Servo:
 class ArmStub:
     def __init__(self):
 
-        zero_angle_signal = rospy.get_param(
-            "~zero_angle_signal", [850, 320, 512, 1509, 1500, 650]
+        zero_angle_signal_shoulder_pitch = rospy.get_param(
+            "~zero_angle_signal_shoulder_pitch", 860
         )
+        zero_angle_signal_sholder_roll = rospy.get_param(
+            "~zero_angle_signal_sholder_roll", 280
+        )
+        zero_angle_signal_elbow = rospy.get_param("~zero_angle_signal_elbow", 512)
+        zero_angle_signal_wrist = rospy.get_param("~zero_angle_signal_wrist", 1450)
+        zero_angle_signal_gripper_twist = rospy.get_param(
+            "~zero_angle_signal_gripper_twist", 1590
+        )
+        zero_angle_signal_gripper_finger = rospy.get_param(
+            "~zero_angle_signal_gripper_finger", 650
+        )
+
         analog_lower_signal_bound = rospy.get_param("~analog_lower_signal_bound", 500)
         analog_upper_signal_bound = rospy.get_param("~analog_upper_signal_bound", 2500)
         digital_lower_signal_bound = rospy.get_param("~digital_lower_signal_bound", 0)
@@ -67,7 +79,7 @@ class ArmStub:
         self._servos.append(
             Servo(
                 "shoulder_pan",
-                zero_angle_signal[0],
+                zero_angle_signal_shoulder_pitch,
                 digital_scale_factor,
                 DigitalServoCmd,
             )
@@ -75,7 +87,7 @@ class ArmStub:
         self._servos.append(
             Servo(
                 "shoulder_lift",
-                zero_angle_signal[1],
+                zero_angle_signal_sholder_roll,
                 digital_scale_factor,
                 DigitalServoCmd,
             )
@@ -83,23 +95,34 @@ class ArmStub:
         self._servos.append(
             Servo(
                 "elbow",
-                zero_angle_signal[2],
+                zero_angle_signal_elbow,
                 digital_scale_factor / 2.0,  # no gear reduction
                 DigitalServoCmd,
             )
         )
         self._servos.append(
             Servo(
-                "wrist", zero_angle_signal[3], analog_scale_factor_wrist, AnalogServoCmd
+                "wrist",
+                zero_angle_signal_wrist,
+                analog_scale_factor_wrist,
+                AnalogServoCmd,
             )
         )
         self._servos.append(
             Servo(
-                "wrist_twist", zero_angle_signal[4], analog_scale_factor, AnalogServoCmd
+                "wrist_twist",
+                zero_angle_signal_gripper_twist,
+                analog_scale_factor,
+                AnalogServoCmd,
             )
         )
         self._servos.append(
-            Servo("gripper", zero_angle_signal[5], analog_scale_factor, AnalogServoCmd)
+            Servo(
+                "gripper",
+                zero_angle_signal_gripper_finger,
+                analog_scale_factor,
+                AnalogServoCmd,
+            )
         )
 
         self._joint_state_pub = rospy.Publisher(

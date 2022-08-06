@@ -3,7 +3,12 @@ max_speed: 0.6 # [rad/s]
 
 analog_update_delay: 0.007 # [s]
 
-zero_angle_signal: [860, 280, 512, 1450, 1590, 650]
+zero_angle_signal_shoulder_pitch: 860
+zero_angle_signal_sholder_roll: 280
+zero_angle_signal_elbow: 512
+zero_angle_signal_wrist: 1450
+zero_angle_signal_gripper_twist: 1590
+zero_angle_signal_gripper_finger: 650
 
 analog_lower_signal_bound: 500
 analog_upper_signal_bound: 2500
