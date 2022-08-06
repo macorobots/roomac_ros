@@ -478,8 +478,7 @@
   <limit effort="10" velocity="100" lower="-0.013" upper="0.0045"/>
 </joint>
 
-<!-- todo: change it -->
-<joint name="right_grip_joint" type="fixed">
+<joint name="right_gripping_joint" type="fixed">
   <origin rpy="0 0 0" xyz="0.0 0.0 -0.085"/>
   <parent link="gripper_right_link"/>
   <child link="gripping_right_link"/>

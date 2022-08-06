@@ -17,7 +17,7 @@
         <joint name="wrist_right_joint" />
     </group>
     <group name="hand">
-        <joint name="right_grip_joint" />
+        <joint name="right_gripping_joint" />
         <joint name="gripper_finger_l_right_joint" />
         <joint name="gripper_finger_r_right_joint" />
     </group>
