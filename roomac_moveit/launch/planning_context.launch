@@ -9,7 +9,7 @@
 
   <!-- Load universal robot description format (URDF) -->
   <group if="$(arg load_robot_description)">
-    <param if="$(arg simulation_description)" name="$(arg robot_description)" command="xacro --inorder  '$(find roomac_description)/urdf/roomac_simulation.xacro'"/>
+    <param if="$(arg simulation_description)" name="$(arg robot_description)" command="xacro --inorder  '$(find roomac_description)/urdf/roomac.xacro simulation:=true'"/>
     <param unless="$(arg simulation_description)" name="$(arg robot_description)" command="xacro --inorder  '$(find roomac_description)/urdf/roomac.xacro'"/>
   </group>
 
