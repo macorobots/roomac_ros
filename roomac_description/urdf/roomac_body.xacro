@@ -7,10 +7,6 @@
   <color rgba="0.15 0.15 0.15 1.0"/>
 </material>
 
-<!-- Some links are used only for visuals: 
-  - robot_body_frames_link and artag_bundle_visual_link - collision model in robot_body_link takes them into account, and also there is no point in inertial attribute for them (again robot_body_link should be enough)
-  - eye_right_link and eye_left_link - similar to previous example collision model in head is enough -->
-
 <!-- BODY -->
 
 <link name="base_link" />
@@ -39,13 +35,25 @@
   </collision>
 </link>
 
-<link name="robot_body_frames_link">
+<link name="head_link">
+  <inertial>
+    <origin xyz="-0.057525587412925475 -6.228687900878637e-07 0.06845033639955778" rpy="0 0 0"/>
+    <mass value="4.300223439076428"/>
+    <inertia ixx="0.025424" iyy="0.022772" izz="0.013755" ixy="0.0" iyz="-0.0" ixz="-0.001476"/>
+  </inertial>
   <visual>
-    <origin xyz="0.223282 0.099058 0.0075" rpy="0 0 0"/>
+    <origin xyz="0.08 -2.1e-05 -0.969145" rpy="0 0 0"/>
     <geometry>
-      <mesh filename="package://roomac_description/meshes/robot_body_frames.dae" scale="0.001 0.001 0.001"/>
+      <mesh filename="package://roomac_description/meshes/head.dae" scale="0.001 0.001 0.001"/>
     </geometry>
+    <material name="black"/>
   </visual>
+  <collision>
+    <origin xyz="0.08 -2.1e-05 -0.969145" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://roomac_description/meshes/head_collision.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
 </link>
 
 <joint name="base_joint" type="fixed">
@@ -59,10 +67,10 @@
   <child link="robot_body_link"/>
 </joint>
 
-<joint name="robot_body_frames" type="fixed">
-  <origin xyz="-0.223282 -0.099058 -0.0075" rpy="0 0 0"/>
+<joint name="head" type="fixed">
+  <origin xyz="-0.08 2.1e-05 0.969145" rpy="0 0 0"/>
   <parent link="base_link"/>
-  <child link="robot_body_frames_link"/>
+  <child link="head_link"/>
 </joint>
 
 <!-- KINECT -->
@@ -97,6 +105,9 @@
       <mesh filename="package://roomac_description/materials/artag_bundle.dae" scale="3.142857143 1.2 0.001"/>
     </geometry>
   </visual>
+  <!-- No collision, visual mesh will be used for collision in moveit in melodic 
+  (important, in noetic behaviour changed and it will be ignored, either case is alright, this collision is not important)
+  in gazebo collision will be ignored without collision tag -->
 </link>
 
 <joint name="artag_joint" type="fixed">
@@ -230,65 +241,6 @@
   <parent link="base_link"/>
   <child link="wheel_left_link"/>
   <axis xyz="0 1 0"/>
-</joint>
-
-<!-- HEAD -->
-
-<link name="head_link">
-  <inertial>
-    <origin xyz="-0.057525587412925475 -6.228687900878637e-07 0.06845033639955778" rpy="0 0 0"/>
-    <mass value="4.300223439076428"/>
-    <inertia ixx="0.025424" iyy="0.022772" izz="0.013755" ixy="0.0" iyz="-0.0" ixz="-0.001476"/>
-  </inertial>
-  <visual>
-    <origin xyz="0.08 -2.1e-05 -0.969145" rpy="0 0 0"/>
-    <geometry>
-      <mesh filename="package://roomac_description/meshes/head.dae" scale="0.001 0.001 0.001"/>
-    </geometry>
-    <material name="black"/>
-  </visual>
-  <collision>
-    <origin xyz="0.08 -2.1e-05 -0.969145" rpy="0 0 0"/>
-    <geometry>
-      <mesh filename="package://roomac_description/meshes/head_collision.stl" scale="0.001 0.001 0.001"/>
-    </geometry>
-  </collision>
-</link>
-
-<link name="eye_right_link">
-  <visual>
-    <origin xyz="0.0825 0.055979 -1.083347" rpy="0 0 0"/>
-    <geometry>
-      <mesh filename="package://roomac_description/meshes/eye_right.dae" scale="0.001 0.001 0.001"/>
-    </geometry>
-  </visual>
-</link>
-
-<link name="eye_left_link">
-  <visual>
-    <origin xyz="0.0825 -0.056021 -1.083347" rpy="0 0 0"/>
-    <geometry>
-      <mesh filename="package://roomac_description/meshes/eye_left.dae" scale="0.001 0.001 0.001"/>
-    </geometry>
-  </visual>
-</link>
-
-<joint name="head" type="fixed">
-  <origin xyz="-0.08 2.1e-05 0.969145" rpy="0 0 0"/>
-  <parent link="base_link"/>
-  <child link="head_link"/>
-</joint>
-
-<joint name="eye_right" type="fixed">
-  <origin xyz="-0.0025 -0.056 0.114202" rpy="0 0 0"/>
-  <parent link="head_link"/>
-  <child link="eye_right_link"/>
-</joint>
-
-<joint name="eye_left" type="fixed">
-  <origin xyz="-0.0025 0.056 0.114202" rpy="0 0 0"/>
-  <parent link="head_link"/>
-  <child link="eye_left_link"/>
 </joint>
 
 <!-- RIGHT ARM -->

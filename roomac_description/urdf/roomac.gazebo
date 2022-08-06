@@ -13,10 +13,10 @@
   <gravity>true</gravity>
 </gazebo>
 
-<gazebo reference="robot_body_frames_link">
+<gazebo reference="head_link">
   <mu1>${standard_friction}</mu1>
   <mu2>${standard_friction}</mu2>
-  <selfCollide>false</selfCollide>
+  <selfCollide>true</selfCollide>
 </gazebo>
 
 <!-- WHEELS -->
@@ -43,26 +43,6 @@
   <mu1>${wheel_friction}</mu1>
   <mu2>${wheel_friction}</mu2>
   <selfCollide>true</selfCollide>
-</gazebo>
-
-<!-- HEAD -->
-
-<gazebo reference="head_link">
-  <mu1>${standard_friction}</mu1>
-  <mu2>${standard_friction}</mu2>
-  <selfCollide>true</selfCollide>
-</gazebo>
-
-<gazebo reference="eye_right_link">
-  <mu1>${standard_friction}</mu1>
-  <mu2>${standard_friction}</mu2>
-  <selfCollide>false</selfCollide>
-</gazebo>
-
-<gazebo reference="eye_left_link">
-  <mu1>${standard_friction}</mu1>
-  <mu2>${standard_friction}</mu2>
-  <selfCollide>false</selfCollide>
 </gazebo>
 
 <!-- RIGHT ARM -->
