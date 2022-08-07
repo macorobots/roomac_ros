@@ -41,6 +41,7 @@ class ServoController:
         joint_names, angles = self._get_valid_joints(joint_names, angles)
 
         if not self._angle_change_above_min_threshold(joint_names, angles):
+            rospy.logwarn("Change below threshold")
             return
 
         min_movement_duration = self._calculate_min_movement_duration(
