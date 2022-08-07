@@ -7,8 +7,8 @@ from sensor_msgs.msg import JointState
 
 from roomac_msgs.msg import DigitalServoCmd, AnalogServoCmd
 
-import roomac_arm.utils
-from roomac_arm.servo_stub import ServoStub, GripperServoStub
+import roomac_arm_controller.utils
+from roomac_arm_controller.servo_stub import ServoStub, GripperServoStub
 
 
 class ServoJointStatePublisher:
@@ -103,25 +103,29 @@ class ServoJointStatePublisher:
         )
 
     def _calculate_scale_factors(self):
-        self._analog_scale_factor = roomac_arm.utils.calculate_scale_factor(
+        self._analog_scale_factor = roomac_arm_controller.utils.calculate_scale_factor(
             self._analog_upper_signal_bound,
             self._analog_lower_signal_bound,
             math.radians(self._analog_angle_diff),
         )
-        self._wrist_analog_scale_factor = roomac_arm.utils.calculate_scale_factor(
-            self._wrist_signal_zero_position,
-            self._wrist_signal_90_degrees,
-            math.radians(self._wrist_analog_angle_diff),
+        self._wrist_analog_scale_factor = (
+            roomac_arm_controller.utils.calculate_scale_factor(
+                self._wrist_signal_zero_position,
+                self._wrist_signal_90_degrees,
+                math.radians(self._wrist_analog_angle_diff),
+            )
         )
-        self._digital_scale_factor = roomac_arm.utils.calculate_scale_factor(
+        self._digital_scale_factor = roomac_arm_controller.utils.calculate_scale_factor(
             self._digital_upper_signal_bound,
             self._digital_lower_signal_bound,
             math.radians(self._digital_angle_diff),
         )
-        self._digital_scale_factor_geared = roomac_arm.utils.calculate_scale_factor(
-            self._digital_upper_signal_bound,
-            self._digital_lower_signal_bound,
-            math.radians(self._digital_angle_diff_geared),
+        self._digital_scale_factor_geared = (
+            roomac_arm_controller.utils.calculate_scale_factor(
+                self._digital_upper_signal_bound,
+                self._digital_lower_signal_bound,
+                math.radians(self._digital_angle_diff_geared),
+            )
         )
 
     def _load_parameters(self):

@@ -1,5 +1,5 @@
 import rospy
-import roomac_arm.utils
+import utils
 
 
 class ServoStub(object):
@@ -45,4 +45,4 @@ class GripperServoStub(ServoStub):
 
     def calculate_position(self):
         angle = super(GripperServoStub, self).calculate_position()
-        return roomac_arm.utils.linear_transform_angle_to_dist(self.a, self.b, angle)
+        return utils.linear_transform_angle_to_dist(self.a, self.b, angle)

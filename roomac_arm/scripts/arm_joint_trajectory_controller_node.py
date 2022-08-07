@@ -2,8 +2,8 @@
 
 import rospy
 
-from roomac_arm.joint_trajectory_controller import JointTrajectoryController
-from roomac_arm.arm_controller import ArmController
+from roomac_arm_controller.joint_trajectory_controller import JointTrajectoryController
+from roomac_arm_controller.arm_controller import ArmController
 
 if __name__ == "__main__":
     rospy.init_node("arm_controller")
