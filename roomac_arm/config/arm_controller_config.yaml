@@ -22,7 +22,7 @@ digital_upper_signal_bound: 1024
 wrist_signal_zero_position: 1509
 wrist_signal_90_degrees: 697
 
-publish_joint_states: true
+publish_joint_states: false
 
 interpolate_movement: true
 interpolation_frequency: 15.0
