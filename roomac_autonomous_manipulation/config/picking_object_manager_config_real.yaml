@@ -6,13 +6,12 @@ object_position_correction_z: 0.0
 # Real picking object manager settings
 # Currently supported "bottle" and "cardbox_object"
 object_type: bottle
-gripper_joint_name: right_gripper_joint
 
 # Almost maximum, if needed can go to 1.2
-opened_gripper_value: 1.0
+opened_gripper_value: 0.0045
 
-bottle_closed_gripper_value: 0.2
-cardbox_object_closed_gripper_value: 0.1
+bottle_closed_gripper_value: -0.013
+cardbox_object_closed_gripper_value: -0.013
 
 # Bottle size
 bottle_cap_height: 0.03
