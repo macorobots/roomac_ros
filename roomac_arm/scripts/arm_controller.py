@@ -5,8 +5,8 @@ import math
 import rospy
 
 import utils
-from servo_controller import AnalogServo, DigitalServo, ServoController
-
+from servo import AnalogServo, DigitalServo
+from servo_controller import ServoController
 
 class ArmController:
     def __init__(self):

@@ -5,7 +5,8 @@ import math
 import rospy
 
 import utils
-from servo_controller import AnalogServo, ServoController
+from servo import AnalogServo
+from servo_controller import ServoController
 
 
 class GripperController:
