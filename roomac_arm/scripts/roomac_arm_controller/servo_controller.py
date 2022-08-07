@@ -39,6 +39,10 @@ class ServoController:
     def go_to_point(self, joint_names, angles, duration=0.0):
         joint_names, angles = self._get_valid_joints(joint_names, angles)
 
+        if not joint_names:
+            rospy.logwarn("No valid joints found, aborting go_to_point execution")
+            return
+
         if not self._angle_change_above_min_threshold(joint_names, angles):
             rospy.logwarn("Change below threshold")
             return
