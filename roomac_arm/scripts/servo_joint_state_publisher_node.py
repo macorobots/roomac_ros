@@ -58,7 +58,7 @@ class GripperServo(Servo):
         return self._transform_angle_to_dist(angle)
 
 
-class ArmStub:
+class ServoJointStatePublisher:
     def __init__(self):
 
         zero_angle_signal_shoulder_pitch = rospy.get_param(
@@ -183,6 +183,6 @@ class ArmStub:
 
 
 if __name__ == "__main__":
-    rospy.init_node("servo_joint_publisher")
-    arm_stub = ArmStub()
-    arm_stub.run()
+    rospy.init_node("servo_joint_state_publisher")
+    servo_joint_state_publisher = ServoJointStatePublisher()
+    servo_joint_state_publisher.run()
