@@ -20,6 +20,9 @@ class GripperController:
         analog_update_delay = rospy.get_param("~analog_update_delay", 0.7)
         max_speed = rospy.get_param("~max_speed", 0.005)
 
+        self.a = rospy.get_param("~gripper_angle_to_distance_a", -0.011875)
+        self.b = rospy.get_param("~gripper_angle_to_distance_b", 0.007375)
+
         analog_scale_factor = utils.calculate_scale_factor(
             analog_upper_signal_bound,
             analog_lower_signal_bound,
@@ -42,12 +45,6 @@ class GripperController:
 
         servos["gripper_finger_l_right_joint"].init_servo(0.0, initial_analog_speed)
         self._servo_controller = ServoController(servos)
-
-        # Linear approximation using these two points
-        # 0.2 -> 0.005m
-        # 1.0 -> -0.0045m
-        self.a = -0.011875
-        self.b = 0.007375
 
     def go_to_point(self, joint_names, dists, duration=0.0):
         angles = []

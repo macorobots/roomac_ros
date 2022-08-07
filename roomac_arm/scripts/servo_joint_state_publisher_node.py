@@ -48,11 +48,8 @@ class GripperServo(Servo):
             name, cmd_topic, zero_angle_signal, angle_to_signal_scale_factor, cmd_type
         )
 
-        # Linear approximation using these two points
-        # 0.2 -> 0.005m
-        # 1.0 -> -0.0045m
-        self.a = -0.011875
-        self.b = 0.007375
+        self.a = rospy.get_param("~gripper_angle_to_distance_a", -0.011875)
+        self.b = rospy.get_param("~gripper_angle_to_distance_b", 0.007375)
 
     def calculate_angle(self):
         angle = super(GripperServo, self).calculate_angle()

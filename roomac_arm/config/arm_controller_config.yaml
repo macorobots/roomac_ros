@@ -31,3 +31,9 @@ interpolation_frequency: 15.0
 # exact - movement duration will be exactly as requested, but interpolation frequency will vary
 # approximated - interpolation frequency will be exactly as requested, but movement duration will vary
 interpolation_duration_type: exact
+
+# Linear approximate angle to finger distance using these two points
+# 0.2rad -> 0.005m
+# 1.0rad -> -0.0045m
+gripper_angle_to_distance_a: -0.011875
+gripper_angle_to_distance_b: 0.007375
