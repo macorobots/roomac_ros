@@ -3,7 +3,7 @@
 import rospy
 from sensor_msgs.msg import JointState
 
-from arm_controller import ArmController
+from roomac_arm.arm_controller import ArmController
 
 
 class ArmJointTrajectoryController:

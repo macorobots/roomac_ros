@@ -7,10 +7,10 @@ from sensor_msgs.msg import JointState
 
 from roomac_msgs.msg import DigitalServoCmd, AnalogServoCmd
 
-import utils
+from roomac_arm.utils import utils
 
 
-class Servo(object):
+class ServoStub(object):
     def __init__(
         self, name, cmd_topic, zero_angle_signal, angle_to_signal_scale_factor, cmd_type
     ):
@@ -40,11 +40,11 @@ class Servo(object):
         self.signal = msg.signal
 
 
-class GripperServo(Servo):
+class GripperServoStub(ServoStub):
     def __init__(
         self, name, cmd_topic, zero_angle_signal, angle_to_signal_scale_factor, cmd_type
     ):
-        super(GripperServo, self).__init__(
+        super(GripperServoStub, self).__init__(
             name, cmd_topic, zero_angle_signal, angle_to_signal_scale_factor, cmd_type
         )
 
@@ -52,7 +52,7 @@ class GripperServo(Servo):
         self.b = rospy.get_param("~gripper_angle_to_distance_b", 0.007375)
 
     def calculate_angle(self):
-        angle = super(GripperServo, self).calculate_angle()
+        angle = super(GripperServoStub, self).calculate_angle()
         return utils.linear_transform_angle_to_dist(self.a, self.b, angle)
 
 
@@ -93,7 +93,7 @@ class ServoJointStatePublisher:
 
     def _add_servos(self):
         self._servos.append(
-            Servo(
+            ServoStub(
                 "shoulder_pitch_right_joint",
                 "shoulder_pan_cmd",
                 self._zero_angle_signal_shoulder_pitch,
@@ -102,7 +102,7 @@ class ServoJointStatePublisher:
             )
         )
         self._servos.append(
-            Servo(
+            ServoStub(
                 "shoulder_roll_right_joint",
                 "shoulder_lift_cmd",
                 self._zero_angle_signal_sholder_roll,
@@ -111,7 +111,7 @@ class ServoJointStatePublisher:
             )
         )
         self._servos.append(
-            Servo(
+            ServoStub(
                 "elbow_right_joint",
                 "elbow_cmd",
                 self._zero_angle_signal_elbow,
@@ -120,7 +120,7 @@ class ServoJointStatePublisher:
             )
         )
         self._servos.append(
-            Servo(
+            ServoStub(
                 "wrist_right_joint",
                 "wrist_cmd",
                 self._zero_angle_signal_wrist,
@@ -129,7 +129,7 @@ class ServoJointStatePublisher:
             )
         )
         self._servos.append(
-            Servo(
+            ServoStub(
                 "gripper_twist_right_joint",
                 "wrist_twist_cmd",
                 self._zero_angle_signal_gripper_twist,
@@ -138,7 +138,7 @@ class ServoJointStatePublisher:
             )
         )
         self._servos.append(
-            GripperServo(
+            GripperServoStub(
                 "gripper_finger_l_right_joint",
                 "gripper_cmd",
                 self._zero_angle_signal_gripper_finger,
