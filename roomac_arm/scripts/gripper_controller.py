@@ -4,6 +4,7 @@ import math
 
 import rospy
 
+import utils
 from servo_controller import AnalogServo, ServoController
 
 
@@ -19,9 +20,11 @@ class GripperController:
         analog_update_delay = rospy.get_param("~analog_update_delay", 0.7)
         max_speed = rospy.get_param("~max_speed", 0.005)
 
-        analog_scale_factor = (
-            analog_upper_signal_bound - analog_lower_signal_bound
-        ) / (180.0 * math.pi / 180.0)
+        analog_scale_factor = utils.calculate_scale_factor(
+            analog_upper_signal_bound,
+            analog_lower_signal_bound,
+            math.radians(180.0),
+        )
 
         servos = {}
 
@@ -40,25 +43,15 @@ class GripperController:
         servos["gripper_finger_l_right_joint"].init_servo(0.0, initial_analog_speed)
         self._servo_controller = ServoController(servos)
 
+        # Linear approximation using these two points
+        # 0.2 -> 0.005m
+        # 1.0 -> -0.0045m
+        self.a = -0.011875
+        self.b = 0.007375
+
     def go_to_point(self, joint_names, dists, duration=0.0):
         angles = []
         for dist in dists:
-            angles.append(self._transform_dist_to_angle(dist))
+            angles.append(utils.linear_transform_dist_to_angle(self.a, self.b, dist))
 
         return self._servo_controller.go_to_point(joint_names, angles, duration)
-
-    def _transform_angle_to_dist(self, angle):
-        # Linear approximation using these two points
-        # 0.2 -> 0.005m
-        # 1.0 -> -0.0045m
-        m = -0.011875
-        b = 0.007375
-        return -(m * angle + b)
-
-    def _transform_dist_to_angle(self, dist):
-        # Linear approximation using these two points
-        # 0.2 -> 0.005m
-        # 1.0 -> -0.0045m
-        m = -0.011875
-        b = 0.007375
-        return (-dist - b) / m

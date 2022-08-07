@@ -3,8 +3,11 @@
 import math
 
 import rospy
-from roomac_msgs.msg import DigitalServoCmd, AnalogServoCmd
 from sensor_msgs.msg import JointState
+
+from roomac_msgs.msg import DigitalServoCmd, AnalogServoCmd
+
+import utils
 
 
 class Servo(object):
@@ -45,17 +48,15 @@ class GripperServo(Servo):
             name, cmd_topic, zero_angle_signal, angle_to_signal_scale_factor, cmd_type
         )
 
-    def _transform_angle_to_dist(self, angle):
         # Linear approximation using these two points
         # 0.2 -> 0.005m
         # 1.0 -> -0.0045m
-        m = -0.011875
-        b = 0.007375
-        return -(m * angle + b)
+        self.a = -0.011875
+        self.b = 0.007375
 
     def calculate_angle(self):
         angle = super(GripperServo, self).calculate_angle()
-        return self._transform_angle_to_dist(angle)
+        return utils.linear_transform_angle_to_dist(self.a, self.b, angle)
 
 
 class ServoJointStatePublisher:
@@ -87,15 +88,21 @@ class ServoJointStatePublisher:
         )
         wrist_signal_90_degrees = rospy.get_param("~wrist_signal_90_degrees", 697)
 
-        analog_scale_factor_wrist = (
-            wrist_signal_zero_position - wrist_signal_90_degrees
-        ) / (90.0 * math.pi / 180.0)
-        digital_scale_factor = (
-            digital_upper_signal_bound - digital_lower_signal_bound
-        ) / ((330.0 / 2.0) * math.pi / 180.0)
-        analog_scale_factor = (
-            analog_upper_signal_bound - analog_lower_signal_bound
-        ) / (180.0 * math.pi / 180.0)
+        analog_scale_factor_wrist = utils.calculate_scale_factor(
+            wrist_signal_zero_position,
+            wrist_signal_90_degrees,
+            math.radians(90.0),
+        )
+        digital_scale_factor = utils.calculate_scale_factor(
+            digital_upper_signal_bound,
+            digital_lower_signal_bound,
+            math.radians(330.0 / 2.0),
+        )
+        analog_scale_factor = utils.calculate_scale_factor(
+            analog_upper_signal_bound,
+            analog_lower_signal_bound,
+            math.radians(180.0),
+        )
 
         self._servos = []
 

@@ -4,6 +4,7 @@ import math
 
 import rospy
 
+import utils
 from servo_controller import AnalogServo, DigitalServo, ServoController
 
 
@@ -41,15 +42,21 @@ class ArmController:
         analog_update_delay = rospy.get_param("~analog_update_delay", 0.7)
         max_speed = rospy.get_param("~max_speed", 0.005)
 
-        analog_scale_factor_wrist = (
-            wrist_signal_zero_position - wrist_signal_90_degrees
-        ) / (90.0 * math.pi / 180.0)
-        digital_scale_factor = (
-            digital_upper_signal_bound - digital_lower_signal_bound
-        ) / ((330.0 / 2.0) * math.pi / 180.0)
-        analog_scale_factor = (
-            analog_upper_signal_bound - analog_lower_signal_bound
-        ) / (180.0 * math.pi / 180.0)
+        analog_scale_factor_wrist = utils.calculate_scale_factor(
+            wrist_signal_zero_position,
+            wrist_signal_90_degrees,
+            math.radians(90.0),
+        )
+        digital_scale_factor = utils.calculate_scale_factor(
+            digital_upper_signal_bound,
+            digital_lower_signal_bound,
+            math.radians(330.0 / 2.0),
+        )
+        analog_scale_factor = utils.calculate_scale_factor(
+            analog_upper_signal_bound,
+            analog_lower_signal_bound,
+            math.radians(180.0),
+        )
 
         servos = {}
 
