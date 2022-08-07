@@ -16,3 +16,23 @@ controller_list:
     default: true
     joints:
       - gripper_finger_l_right_joint
+
+  # It is also possible to use GripperCommand instead of FollowJointTrajectory
+  # It is simpler - it sends only one command - desired position
+  # I wasn't able to solve following problems
+  # - moveit sends 0 effort and controller doesn't work in gazebo
+  # - effort_controllers/GripperActionController oscillated in gazebo
+  # (effort controller instead of position is necessary for grasping objects)
+
+  # - name: gripper_controller
+  #   action_ns: gripper_action_controller
+  #   type: GripperCommand
+  #   default: true
+  #   joints:
+  #     - gripper_finger_l_right_joint
+  #   max_effort: 100.0
+
+  #   # other parameters:
+  #   # parallel:
+  #   # command_joint:
+  #   # allow_failure:

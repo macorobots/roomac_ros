@@ -102,3 +102,29 @@ roomac:
         goal: 0.01
         trajectory: 0.01
     state_publish_rate: 25
+
+  # It is also possible to use GripperCommand instead of FollowJointTrajectory
+  # It is simpler - it sends only one command - desired position
+  # I wasn't able to solve following problems
+  # - moveit sends 0 effort and controller doesn't work in gazebo
+  # - effort_controllers/GripperActionController oscillated in gazebo
+  # (effort controller instead of position is necessary for grasping objects)
+
+  # gripper_controller:
+  #   # parameters confirmed with code
+  #   type: effort_controllers/GripperActionController
+  #   joint: gripper_finger_l_right_joint
+  #   # only left finger, right is mimicing
+  #   # - gripper_finger_l_right_joint
+
+  #   gains:
+  #     gripper_finger_l_right_joint:
+  #       p: 5
+  #       d: 0
+  #       i: 0.01
+  #       i_clamp: 1
+
+  #   goal_tolerance: 0.0005
+  #   max_effort: 100.0
+  #   stall_velocity_threshold: 0.001
+  #   stall_timeout: 1.0
