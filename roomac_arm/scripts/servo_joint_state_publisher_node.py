@@ -58,117 +58,11 @@ class GripperServo(Servo):
 
 class ServoJointStatePublisher:
     def __init__(self):
-        zero_angle_signal_shoulder_pitch = rospy.get_param(
-            "~zero_angle_signal_shoulder_pitch", 860
-        )
-        zero_angle_signal_sholder_roll = rospy.get_param(
-            "~zero_angle_signal_sholder_roll", 280
-        )
-        zero_angle_signal_elbow = rospy.get_param("~zero_angle_signal_elbow", 512)
-        zero_angle_signal_wrist = rospy.get_param("~zero_angle_signal_wrist", 1450)
-        zero_angle_signal_gripper_twist = rospy.get_param(
-            "~zero_angle_signal_gripper_twist", 1590
-        )
-        zero_angle_signal_gripper_finger = rospy.get_param(
-            "~zero_angle_signal_gripper_finger", 650
-        )
-
-        analog_lower_signal_bound = rospy.get_param("~analog_lower_signal_bound", 500)
-        analog_upper_signal_bound = rospy.get_param("~analog_upper_signal_bound", 2500)
-        analog_angle_diff = rospy.get_param("~analog_angle_diff", 180.0)
-
-        digital_lower_signal_bound = rospy.get_param("~digital_lower_signal_bound", 0)
-        digital_upper_signal_bound = rospy.get_param(
-            "~digital_upper_signal_bound", 1024
-        )
-        digital_angle_diff = rospy.get_param("~digital_upper_signal_bound", 330.0)
-        digital_angle_diff_geared = rospy.get_param(
-            "~digital_upper_signal_bound", 165.0
-        )
-
-        wrist_signal_zero_position = rospy.get_param(
-            "~wrist_signal_zero_position", 1509
-        )
-        wrist_signal_90_degrees = rospy.get_param("~wrist_signal_90_degrees", 697)
-        wrist_analog_angle_diff = rospy.get_param("~wrist_analog_angle_diff", 90.0)
-
-        analog_scale_factor = utils.calculate_scale_factor(
-            analog_upper_signal_bound,
-            analog_lower_signal_bound,
-            math.radians(analog_angle_diff),
-        )
-        wrist_analog_scale_factor = utils.calculate_scale_factor(
-            wrist_signal_zero_position,
-            wrist_signal_90_degrees,
-            math.radians(wrist_analog_angle_diff),
-        )
-        digital_scale_factor = utils.calculate_scale_factor(
-            digital_upper_signal_bound,
-            digital_lower_signal_bound,
-            math.radians(digital_angle_diff),
-        )
-        digital_scale_factor_geared = utils.calculate_scale_factor(
-            digital_upper_signal_bound,
-            digital_lower_signal_bound,
-            math.radians(digital_angle_diff_geared),
-        )
+        self._load_parameters()
+        self._calculate_scale_factors()
 
         self._servos = []
-
-        self._servos.append(
-            Servo(
-                "shoulder_pitch_right_joint",
-                "shoulder_pan_cmd",
-                zero_angle_signal_shoulder_pitch,
-                digital_scale_factor_geared,
-                DigitalServoCmd,
-            )
-        )
-        self._servos.append(
-            Servo(
-                "shoulder_roll_right_joint",
-                "shoulder_lift_cmd",
-                zero_angle_signal_sholder_roll,
-                digital_scale_factor_geared,
-                DigitalServoCmd,
-            )
-        )
-        self._servos.append(
-            Servo(
-                "elbow_right_joint",
-                "elbow_cmd",
-                zero_angle_signal_elbow,
-                digital_scale_factor,
-                DigitalServoCmd,
-            )
-        )
-        self._servos.append(
-            Servo(
-                "wrist_right_joint",
-                "wrist_cmd",
-                zero_angle_signal_wrist,
-                wrist_analog_scale_factor,
-                AnalogServoCmd,
-            )
-        )
-        self._servos.append(
-            Servo(
-                "gripper_twist_right_joint",
-                "wrist_twist_cmd",
-                zero_angle_signal_gripper_twist,
-                analog_scale_factor,
-                AnalogServoCmd,
-            )
-        )
-        self._servos.append(
-            GripperServo(
-                "gripper_finger_l_right_joint",
-                "gripper_cmd",
-                zero_angle_signal_gripper_finger,
-                analog_scale_factor,
-                AnalogServoCmd,
-            )
-        )
+        self._add_servos()
 
         self._joint_state_pub = rospy.Publisher(
             "joint_states_arm_stub", JointState, queue_size=10
@@ -196,6 +90,129 @@ class ServoJointStatePublisher:
                 rospy.logerr_throttle(1.0, e)
 
             rate.sleep()
+
+    def _add_servos(self):
+        self._servos.append(
+            Servo(
+                "shoulder_pitch_right_joint",
+                "shoulder_pan_cmd",
+                self._zero_angle_signal_shoulder_pitch,
+                self._digital_scale_factor_geared,
+                DigitalServoCmd,
+            )
+        )
+        self._servos.append(
+            Servo(
+                "shoulder_roll_right_joint",
+                "shoulder_lift_cmd",
+                self._zero_angle_signal_sholder_roll,
+                self._digital_scale_factor_geared,
+                DigitalServoCmd,
+            )
+        )
+        self._servos.append(
+            Servo(
+                "elbow_right_joint",
+                "elbow_cmd",
+                self._zero_angle_signal_elbow,
+                self._digital_scale_factor,
+                DigitalServoCmd,
+            )
+        )
+        self._servos.append(
+            Servo(
+                "wrist_right_joint",
+                "wrist_cmd",
+                self._zero_angle_signal_wrist,
+                self._wrist_analog_scale_factor,
+                AnalogServoCmd,
+            )
+        )
+        self._servos.append(
+            Servo(
+                "gripper_twist_right_joint",
+                "wrist_twist_cmd",
+                self._zero_angle_signal_gripper_twist,
+                self._analog_scale_factor,
+                AnalogServoCmd,
+            )
+        )
+        self._servos.append(
+            GripperServo(
+                "gripper_finger_l_right_joint",
+                "gripper_cmd",
+                self._zero_angle_signal_gripper_finger,
+                self._analog_scale_factor,
+                AnalogServoCmd,
+            )
+        )
+
+    def _calculate_scale_factors(self):
+        self._analog_scale_factor = utils.calculate_scale_factor(
+            self._analog_upper_signal_bound,
+            self._analog_lower_signal_bound,
+            math.radians(self._analog_angle_diff),
+        )
+        self._wrist_analog_scale_factor = utils.calculate_scale_factor(
+            self._wrist_signal_zero_position,
+            self._wrist_signal_90_degrees,
+            math.radians(self._wrist_analog_angle_diff),
+        )
+        self._digital_scale_factor = utils.calculate_scale_factor(
+            self._digital_upper_signal_bound,
+            self._digital_lower_signal_bound,
+            math.radians(self._digital_angle_diff),
+        )
+        self._digital_scale_factor_geared = utils.calculate_scale_factor(
+            self._digital_upper_signal_bound,
+            self._digital_lower_signal_bound,
+            math.radians(self._digital_angle_diff_geared),
+        )
+
+    def _load_parameters(self):
+        self._zero_angle_signal_shoulder_pitch = rospy.get_param(
+            "~zero_angle_signal_shoulder_pitch", 860
+        )
+        self._zero_angle_signal_sholder_roll = rospy.get_param(
+            "~zero_angle_signal_sholder_roll", 280
+        )
+        self._zero_angle_signal_elbow = rospy.get_param("~zero_angle_signal_elbow", 512)
+        self._zero_angle_signal_wrist = rospy.get_param(
+            "~zero_angle_signal_wrist", 1450
+        )
+        self._zero_angle_signal_gripper_twist = rospy.get_param(
+            "~zero_angle_signal_gripper_twist", 1590
+        )
+        self._zero_angle_signal_gripper_finger = rospy.get_param(
+            "~zero_angle_signal_gripper_finger", 650
+        )
+
+        self._analog_lower_signal_bound = rospy.get_param(
+            "~analog_lower_signal_bound", 500
+        )
+        self._analog_upper_signal_bound = rospy.get_param(
+            "~analog_upper_signal_bound", 2500
+        )
+        self._analog_angle_diff = rospy.get_param("~analog_angle_diff", 180.0)
+
+        self._digital_lower_signal_bound = rospy.get_param(
+            "~digital_lower_signal_bound", 0
+        )
+        self._digital_upper_signal_bound = rospy.get_param(
+            "~digital_upper_signal_bound", 1024
+        )
+        self._digital_angle_diff = rospy.get_param("~digital_upper_signal_bound", 330.0)
+        self._digital_angle_diff_geared = rospy.get_param(
+            "~digital_upper_signal_bound", 165.0
+        )
+
+        self._wrist_signal_zero_position = rospy.get_param(
+            "~wrist_signal_zero_position", 1509
+        )
+        self._wrist_signal_90_degrees = rospy.get_param("~wrist_signal_90_degrees", 697)
+        self._wrist_analog_angle_diff = rospy.get_param(
+            "~wrist_analog_angle_diff", 90.0
+        )
 
 
 if __name__ == "__main__":
