@@ -8,6 +8,7 @@ import utils
 from servo import AnalogServo, DigitalServo
 from servo_controller import ServoController
 
+
 class ArmController:
     def __init__(self):
         self._load_parameters()
@@ -106,8 +107,8 @@ class ArmController:
             math.radians(self._analog_angle_diff),
         )
         self._wrist_analog_scale_factor = utils.calculate_scale_factor(
-            self._wrist_signal_zero_position,
-            self._wrist_signal_90_degrees,
+            self._zero_angle_signal_wrist,
+            self._90_degrees_angle_signal_wrist,
             math.radians(self._wrist_analog_angle_diff),
         )
         self._digital_scale_factor = utils.calculate_scale_factor(
@@ -165,10 +166,9 @@ class ArmController:
             "~digital_upper_signal_bound", 165.0
         )
 
-        self._wrist_signal_zero_position = rospy.get_param(
-            "~wrist_signal_zero_position", 1509
+        self._90_degrees_angle_signal_wrist = rospy.get_param(
+            "~90_degrees_angle_signal_wrist", 697
         )
-        self._wrist_signal_90_degrees = rospy.get_param("~wrist_signal_90_degrees", 697)
 
         self._analog_update_delay = rospy.get_param("~analog_update_delay", 0.7)
         self._max_speed = rospy.get_param("~max_speed", 0.005)

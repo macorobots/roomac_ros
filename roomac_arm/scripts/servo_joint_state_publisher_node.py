@@ -110,8 +110,8 @@ class ServoJointStatePublisher:
         )
         self._wrist_analog_scale_factor = (
             roomac_arm_controller.utils.calculate_scale_factor(
-                self._wrist_signal_zero_position,
-                self._wrist_signal_90_degrees,
+                self._zero_angle_signal_wrist,
+                self._90_degrees_angle_signal_wrist,
                 math.radians(self._wrist_analog_angle_diff),
             )
         )
@@ -169,10 +169,9 @@ class ServoJointStatePublisher:
             "~digital_upper_signal_bound", 165.0
         )
 
-        self._wrist_signal_zero_position = rospy.get_param(
-            "~wrist_signal_zero_position", 1509
+        self._90_degrees_angle_signal_wrist = rospy.get_param(
+            "~90_degrees_angle_signal_wrist", 697
         )
-        self._wrist_signal_90_degrees = rospy.get_param("~wrist_signal_90_degrees", 697)
         self._wrist_analog_angle_diff = rospy.get_param(
             "~wrist_analog_angle_diff", 90.0
         )
