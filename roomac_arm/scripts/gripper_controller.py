@@ -16,6 +16,7 @@ class GripperController:
 
         analog_lower_signal_bound = rospy.get_param("~analog_lower_signal_bound", 500)
         analog_upper_signal_bound = rospy.get_param("~analog_upper_signal_bound", 2500)
+        analog_angle_diff = rospy.get_param("~analog_angle_diff", 180.0)
 
         analog_update_delay = rospy.get_param("~analog_update_delay", 0.7)
         max_speed = rospy.get_param("~max_speed", 0.005)
@@ -26,7 +27,7 @@ class GripperController:
         analog_scale_factor = utils.calculate_scale_factor(
             analog_upper_signal_bound,
             analog_lower_signal_bound,
-            math.radians(180.0),
+            math.radians(analog_angle_diff),
         )
 
         servos = {}

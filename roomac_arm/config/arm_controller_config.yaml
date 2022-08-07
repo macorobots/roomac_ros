@@ -12,12 +12,16 @@ zero_angle_signal_gripper_finger: 650
 
 analog_lower_signal_bound: 500
 analog_upper_signal_bound: 2500
+analog_angle_diff: 180.0
 
-analog_lower_signal_bound_wrist: 600
-analog_upper_signal_bound_wrist: 2400
+wrist_analog_lower_signal_bound: 600
+wrist_analog_upper_signal_bound: 2400
+wrist_analog_angle_diff: 90.0
 
 digital_lower_signal_bound: 0
 digital_upper_signal_bound: 1024
+digital_angle_diff: 330.0
+digital_angle_diff_geared: 165.0
 
 wrist_signal_zero_position: 1509
 wrist_signal_90_degrees: 697

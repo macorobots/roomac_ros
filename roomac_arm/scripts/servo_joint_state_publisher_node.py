@@ -58,7 +58,6 @@ class GripperServo(Servo):
 
 class ServoJointStatePublisher:
     def __init__(self):
-
         zero_angle_signal_shoulder_pitch = rospy.get_param(
             "~zero_angle_signal_shoulder_pitch", 860
         )
@@ -76,29 +75,42 @@ class ServoJointStatePublisher:
 
         analog_lower_signal_bound = rospy.get_param("~analog_lower_signal_bound", 500)
         analog_upper_signal_bound = rospy.get_param("~analog_upper_signal_bound", 2500)
+        analog_angle_diff = rospy.get_param("~analog_angle_diff", 180.0)
+
         digital_lower_signal_bound = rospy.get_param("~digital_lower_signal_bound", 0)
         digital_upper_signal_bound = rospy.get_param(
             "~digital_upper_signal_bound", 1024
         )
+        digital_angle_diff = rospy.get_param("~digital_upper_signal_bound", 330.0)
+        digital_angle_diff_geared = rospy.get_param(
+            "~digital_upper_signal_bound", 165.0
+        )
+
         wrist_signal_zero_position = rospy.get_param(
             "~wrist_signal_zero_position", 1509
         )
         wrist_signal_90_degrees = rospy.get_param("~wrist_signal_90_degrees", 697)
+        wrist_analog_angle_diff = rospy.get_param("~wrist_analog_angle_diff", 90.0)
 
-        analog_scale_factor_wrist = utils.calculate_scale_factor(
+        analog_scale_factor = utils.calculate_scale_factor(
+            analog_upper_signal_bound,
+            analog_lower_signal_bound,
+            math.radians(analog_angle_diff),
+        )
+        wrist_analog_scale_factor = utils.calculate_scale_factor(
             wrist_signal_zero_position,
             wrist_signal_90_degrees,
-            math.radians(90.0),
+            math.radians(wrist_analog_angle_diff),
         )
         digital_scale_factor = utils.calculate_scale_factor(
             digital_upper_signal_bound,
             digital_lower_signal_bound,
-            math.radians(330.0 / 2.0),
+            math.radians(digital_angle_diff),
         )
-        analog_scale_factor = utils.calculate_scale_factor(
-            analog_upper_signal_bound,
-            analog_lower_signal_bound,
-            math.radians(180.0),
+        digital_scale_factor_geared = utils.calculate_scale_factor(
+            digital_upper_signal_bound,
+            digital_lower_signal_bound,
+            math.radians(digital_angle_diff_geared),
         )
 
         self._servos = []
@@ -108,7 +120,7 @@ class ServoJointStatePublisher:
                 "shoulder_pitch_right_joint",
                 "shoulder_pan_cmd",
                 zero_angle_signal_shoulder_pitch,
-                digital_scale_factor,
+                digital_scale_factor_geared,
                 DigitalServoCmd,
             )
         )
@@ -117,7 +129,7 @@ class ServoJointStatePublisher:
                 "shoulder_roll_right_joint",
                 "shoulder_lift_cmd",
                 zero_angle_signal_sholder_roll,
-                digital_scale_factor,
+                digital_scale_factor_geared,
                 DigitalServoCmd,
             )
         )
@@ -126,7 +138,7 @@ class ServoJointStatePublisher:
                 "elbow_right_joint",
                 "elbow_cmd",
                 zero_angle_signal_elbow,
-                digital_scale_factor / 2.0,  # no gear reduction
+                digital_scale_factor,
                 DigitalServoCmd,
             )
         )
@@ -135,7 +147,7 @@ class ServoJointStatePublisher:
                 "wrist_right_joint",
                 "wrist_cmd",
                 zero_angle_signal_wrist,
-                analog_scale_factor_wrist,
+                wrist_analog_scale_factor,
                 AnalogServoCmd,
             )
         )
