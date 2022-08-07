@@ -7,53 +7,8 @@ from sensor_msgs.msg import JointState
 
 from roomac_msgs.msg import DigitalServoCmd, AnalogServoCmd
 
-from roomac_arm.utils import utils
-
-
-class ServoStub(object):
-    def __init__(
-        self, name, cmd_topic, zero_angle_signal, angle_to_signal_scale_factor, cmd_type
-    ):
-        self._cmd_sub = rospy.Subscriber(
-            cmd_topic,
-            cmd_type,
-            self._cmd_cb,
-        )
-        self.name = name
-
-        self.signal = zero_angle_signal
-
-        self._zero_angle_signal = zero_angle_signal
-        self._angle_to_signal_scale_factor = angle_to_signal_scale_factor
-
-    def calculate_angle(self):
-        if not self.signal:
-            raise RuntimeError(
-                "Servo " + self.name + " not initialized (signal wasn't yet received)"
-            )
-
-        return (
-            self.signal - self._zero_angle_signal
-        ) / self._angle_to_signal_scale_factor
-
-    def _cmd_cb(self, msg):
-        self.signal = msg.signal
-
-
-class GripperServoStub(ServoStub):
-    def __init__(
-        self, name, cmd_topic, zero_angle_signal, angle_to_signal_scale_factor, cmd_type
-    ):
-        super(GripperServoStub, self).__init__(
-            name, cmd_topic, zero_angle_signal, angle_to_signal_scale_factor, cmd_type
-        )
-
-        self.a = rospy.get_param("~gripper_angle_to_distance_a", -0.011875)
-        self.b = rospy.get_param("~gripper_angle_to_distance_b", 0.007375)
-
-    def calculate_angle(self):
-        angle = super(GripperServoStub, self).calculate_angle()
-        return utils.linear_transform_angle_to_dist(self.a, self.b, angle)
+import roomac_arm.utils
+from roomac_arm.servo_stub import ServoStub, GripperServoStub
 
 
 class ServoJointStatePublisher:
@@ -81,7 +36,7 @@ class ServoJointStatePublisher:
                     rospy.loginfo("Servo: " + x.name + " Signal: " + str(x.signal))
 
                     joint_state_msg.name.append(x.name)
-                    joint_state_msg.position.append(x.calculate_angle())
+                    joint_state_msg.position.append(x.calculate_position())
 
                 rospy.loginfo("--------")
 
@@ -148,22 +103,22 @@ class ServoJointStatePublisher:
         )
 
     def _calculate_scale_factors(self):
-        self._analog_scale_factor = utils.calculate_scale_factor(
+        self._analog_scale_factor = roomac_arm.utils.calculate_scale_factor(
             self._analog_upper_signal_bound,
             self._analog_lower_signal_bound,
             math.radians(self._analog_angle_diff),
         )
-        self._wrist_analog_scale_factor = utils.calculate_scale_factor(
+        self._wrist_analog_scale_factor = roomac_arm.utils.calculate_scale_factor(
             self._wrist_signal_zero_position,
             self._wrist_signal_90_degrees,
             math.radians(self._wrist_analog_angle_diff),
         )
-        self._digital_scale_factor = utils.calculate_scale_factor(
+        self._digital_scale_factor = roomac_arm.utils.calculate_scale_factor(
             self._digital_upper_signal_bound,
             self._digital_lower_signal_bound,
             math.radians(self._digital_angle_diff),
         )
-        self._digital_scale_factor_geared = utils.calculate_scale_factor(
+        self._digital_scale_factor_geared = roomac_arm.utils.calculate_scale_factor(
             self._digital_upper_signal_bound,
             self._digital_lower_signal_bound,
             math.radians(self._digital_angle_diff_geared),
