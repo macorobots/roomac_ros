@@ -20,9 +20,6 @@ class ArmController:
         zero_angle_signal_gripper_twist = rospy.get_param(
             "~zero_angle_signal_gripper_twist", 1590
         )
-        zero_angle_signal_gripper_finger = rospy.get_param(
-            "~zero_angle_signal_gripper_finger", 650
-        )
 
         analog_lower_signal_bound = rospy.get_param("~analog_lower_signal_bound", 500)
         analog_upper_signal_bound = rospy.get_param("~analog_upper_signal_bound", 2500)
@@ -102,16 +99,6 @@ class ArmController:
             max_speed,
             analog_update_delay,
         )
-        servos["right_gripper_joint"] = AnalogServo(
-            "gripper",
-            zero_angle_signal_gripper_finger,
-            analog_lower_signal_bound,
-            analog_upper_signal_bound,
-            analog_scale_factor,
-            max_speed,
-            analog_update_delay,
-        )
-
         for x in [
             "shoulder_pitch_right_joint",
             "shoulder_roll_right_joint",
@@ -122,7 +109,6 @@ class ArmController:
         for x in [
             "wrist_right_joint",
             "gripper_twist_right_joint",
-            "right_gripper_joint",
         ]:
             servos[x].init_servo(0.0, initial_analog_speed)
 
