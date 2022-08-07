@@ -41,3 +41,6 @@ interpolation_duration_type: exact
 # 1.0rad -> -0.0045m
 gripper_angle_to_distance_a: -0.011875
 gripper_angle_to_distance_b: 0.007375
+
+# Parmater for servo_joint_state_publisher_node
+joint_state_publishing_frequency: 10.0

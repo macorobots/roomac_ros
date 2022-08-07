@@ -24,7 +24,7 @@ class ServoJointStatePublisher:
         )
 
     def run(self):
-        rate = rospy.Rate(10.0)
+        rate = rospy.Rate(self._joint_state_publishing_frequency)
         while not rospy.is_shutdown():
             try:
                 joint_state_msg = JointState()
@@ -125,6 +125,10 @@ class ServoJointStatePublisher:
         )
 
     def _load_parameters(self):
+        self._joint_state_publishing_frequency = rospy.get_param(
+            "~joint_state_publishing_frequency", 10
+        )
+
         self._zero_angle_signal_shoulder_pitch = rospy.get_param(
             "~zero_angle_signal_shoulder_pitch", 860
         )
