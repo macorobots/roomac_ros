@@ -3,27 +3,93 @@ max_speed: 0.6 # [rad/s]
 
 analog_update_delay: 0.007 # [s]
 
-zero_angle_signal_shoulder_pitch: 860
-zero_angle_signal_sholder_roll: 280
-zero_angle_signal_elbow: 512
-zero_angle_signal_wrist: 1450
-zero_angle_signal_gripper_twist: 1590
-zero_angle_signal_gripper_finger: 650
+initial_angle: 0.0
+initial_digital_playtime: 255
+initial_analog_speed: 2.0
 
-90_degrees_angle_signal_wrist: 697
+arm_controller:
+  arm_servo_joints:
+    - shoulder_pitch_right_joint
+    - shoulder_roll_right_joint
+    - elbow_right_joint
+    - wrist_right_joint
+    - gripper_twist_right_joint
 
-analog_lower_signal_bound: 500
-analog_upper_signal_bound: 2500
-analog_angle_diff: 180.0
+  shoulder_pitch_right_joint:
+    servo_type: digital
+    command_topic_name: shoulder_pan_cmd
 
-wrist_analog_lower_signal_bound: 600
-wrist_analog_upper_signal_bound: 2400
-wrist_analog_angle_diff: 90.0
+    zero_angle_signal: 860
+    lower_signal_bound: 0
+    upper_signal_bound: 1024
 
-digital_lower_signal_bound: 0
-digital_upper_signal_bound: 1024
-digital_angle_diff: 330.0
-digital_angle_diff_geared: 165.0
+    use_signal_bounds_for_scaling: true
+    angle_diff: 165.0
+
+  shoulder_roll_right_joint:
+    servo_type: digital
+    command_topic_name: shoulder_lift_cmd
+
+    zero_angle_signal: 280
+    lower_signal_bound: 0
+    upper_signal_bound: 1024
+
+    use_signal_bounds_for_scaling: true
+    angle_diff: 165.0
+
+  elbow_right_joint:
+    servo_type: digital
+    command_topic_name: elbow_cmd
+
+    zero_angle_signal: 512
+    lower_signal_bound: 0
+    upper_signal_bound: 1024
+
+    use_signal_bounds_for_scaling: true
+    angle_diff: 330.0
+
+  wrist_right_joint:
+    servo_type: analog
+    command_topic_name: wrist_cmd
+
+    zero_angle_signal: 1450
+    lower_signal_bound: 600
+    upper_signal_bound: 2400
+
+    use_signal_bounds_for_scaling: false
+    scaling_lower_signal: 697
+    scaling_upper_signal: 1450
+    angle_diff: 90.0
+
+  gripper_twist_right_joint:
+    servo_type: analog
+    command_topic_name: wrist_twist_cmd
+
+    zero_angle_signal: 1590
+    lower_signal_bound: 500
+    upper_signal_bound: 2500
+
+    use_signal_bounds_for_scaling: true
+    angle_diff: 180.0
+
+gripper_controller:
+  gripper_servo_joint: gripper_finger_l_right_joint
+  gripper_finger_l_right_joint:
+    servo_type: analog
+    command_topic_name: gripper_cmd
+
+    zero_angle_signal: 650
+    lower_signal_bound: 500
+    upper_signal_bound: 2500
+
+    use_signal_bounds_for_scaling: true
+    angle_diff: 180.0
+
+  # Linear approximate angle to finger distance using these two points
+  # 0.2rad -> 0.005m
+  # 1.0rad -> -0.0045m
+  gripper_angle_to_distance_a: -0.011875
+  gripper_angle_to_distance_b: 0.007375
 
 publish_joint_states: false
 
@@ -34,12 +100,6 @@ interpolation_frequency: 15.0
 # exact - movement duration will be exactly as requested, but interpolation frequency will vary
 # approximated - interpolation frequency will be exactly as requested, but movement duration will vary
 interpolation_duration_type: exact
-
-# Linear approximate angle to finger distance using these two points
-# 0.2rad -> 0.005m
-# 1.0rad -> -0.0045m
-gripper_angle_to_distance_a: -0.011875
-gripper_angle_to_distance_b: 0.007375
 
 # Parmater for servo_joint_state_publisher_node
 joint_state_publishing_frequency: 10.0
