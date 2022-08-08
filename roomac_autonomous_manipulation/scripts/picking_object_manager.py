@@ -95,7 +95,7 @@ class PickingObjectManager(object):
         self.bottle_height = rospy.get_param("~bottle_height", 0.1)
         self.bottle_radius = rospy.get_param("~bottle_radius", 0.04)
 
-        self.open_gripper_value = rospy.get_param("~open_gripper_value", 0.0)
+        self.opened_gripper_value = rospy.get_param("~opened_gripper_value", 0.0)
         self.closed_gripper_value = rospy.get_param("~closed_gripper_value", 0.02)
 
         # Moveit stuff
@@ -350,7 +350,7 @@ class PickingObjectManager(object):
 
     def open_gripper(self, delay=1.0):
         rospy.loginfo("Sending open gripper command")
-        self.move_gripper(self.open_gripper_value)
+        self.move_gripper(self.opened_gripper_value)
 
     def close_gripper_with_delay(self):
         self.close_gripper(self.close_gripper_wait_time)
@@ -514,3 +514,9 @@ class PickingObjectManager(object):
         self.procedure_retry_threshold = config.procedure_retry_threshold
 
         return config
+
+
+if __name__ == "__main__":
+    rospy.init_node("picking_object_manager")
+    manager = PickingObjectManager()
+    rospy.spin()
