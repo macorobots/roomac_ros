@@ -2,8 +2,8 @@
 Changelog for package roomac_kinect
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+1.11.0 (2022-08-16)
+-------------------
 * Merge branch 'master' into new-description
 * Contributors: Maciej Stepien
 
