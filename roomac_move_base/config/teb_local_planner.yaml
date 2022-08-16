@@ -86,7 +86,7 @@ max_global_plan_lookahead_dist: 1.2
 # (double, default: 3.0)
 # Specify the maximum length (cumulative Euclidean distances) of the subset of the global plan taken into account for optimization. The actual length is than determined by the logical conjunction of the local costmap size and this maximum bound. Set to zero or negative in order to deactivate this limitation. 
 
-force_reinit_new_goal_dist: 1.0
+force_reinit_new_goal_dist: 0.001
 # (double, default: 1.0)
 # Reinitialize the trajectory if a previous goal is updated with a separation of more than the specified value in meters (skip hot-starting) 
 
