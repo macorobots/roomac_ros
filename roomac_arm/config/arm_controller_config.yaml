@@ -72,25 +72,6 @@ arm_controller:
     use_signal_bounds_for_scaling: true
     angle_diff: 180.0
 
-gripper_controller:
-  gripper_servo_joint: gripper_finger_l_right_joint
-  gripper_finger_l_right_joint:
-    servo_type: analog
-    command_topic_name: gripper_cmd
-
-    zero_angle_signal: 650
-    lower_signal_bound: 500
-    upper_signal_bound: 2500
-
-    use_signal_bounds_for_scaling: true
-    angle_diff: 180.0
-
-  # Linear approximate angle to finger distance using these two points
-  # 0.2rad -> 0.005m
-  # 1.0rad -> -0.0045m
-  gripper_angle_to_distance_a: -0.011875
-  gripper_angle_to_distance_b: 0.007375
-
 publish_joint_states: false
 
 interpolate_movement: true

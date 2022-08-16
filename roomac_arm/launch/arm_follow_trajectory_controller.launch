@@ -6,7 +6,7 @@
   </node>
 
   <node name="gripper_joint_trajectory_controller" pkg="roomac_arm" type="gripper_joint_trajectory_controller_node.py" output="screen" ns="gripper_controller">
-    <rosparam command="load" file="$(find roomac_arm)/config/arm_controller_config.yaml" />
+    <rosparam command="load" file="$(find roomac_arm)/config/gripper_controller_config.yaml" />
     <remap from="/gripper_controller/gripper_cmd" to="/arm_position_controller/gripper_cmd" />
   </node>
 
