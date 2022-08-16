@@ -33,7 +33,7 @@
   <collision>
     <origin xyz="0 0 0" rpy="0 0 0"/>
     <geometry>
-      <mesh filename="package://roomac_description/meshes/robot_body_collision.stl" scale="0.001 0.001 0.001"/>
+      <mesh filename="package://roomac_description/meshes/robot_body_collision.stl" scale="0.001 0.00105 0.001"/>
     </geometry>
   </collision>
 </link>
@@ -436,7 +436,7 @@
 </joint>
 
 <joint name="elbow_right_joint" type="revolute">
-  <origin xyz="0.0205 0.0 -0.201075" rpy="0 0 0"/>
+  <origin xyz="0.0205 0.0 -0.201075" rpy="0.0 0 0"/>
   <parent link="shoulder_elbow_right_link"/>
   <child link="elbow_wrist_right_link"/>
   <axis xyz="1 0 0"/>
@@ -462,7 +462,7 @@
 </joint>
 
 <joint name="gripper_finger_r_right_joint" type="prismatic">
-  <origin xyz="-0.00275 -0.030262 -0.057107" rpy="0 0 0"/>
+  <origin xyz="-0.00275 -0.030262 -0.071" rpy="0 0 0"/>
   <parent link="gripper_right_link"/>
   <child link="gripper_finger_r_right_link"/>
   <axis xyz="0 1 0"/>
@@ -471,7 +471,7 @@
 </joint>
 
 <joint name="gripper_finger_l_right_joint" type="prismatic">
-  <origin xyz="-0.00275 0.029467 -0.057107" rpy="0 0 0"/>
+  <origin xyz="-0.00275 0.029467 -0.071" rpy="0 0 0"/>
   <parent link="gripper_right_link"/>
   <child link="gripper_finger_l_right_link"/>
   <axis xyz="0 1 0"/>
@@ -479,7 +479,7 @@
 </joint>
 
 <joint name="right_gripping_joint" type="fixed">
-  <origin rpy="0 0 0" xyz="0.0 0.0 -0.085"/>
+  <origin rpy="0 0 0" xyz="0.0 0.0 -0.1"/>
   <parent link="gripper_right_link"/>
   <child link="gripping_right_link"/>
 </joint>
@@ -641,14 +641,14 @@
 </joint>
 
 <joint name="shoulder_roll_left_joint" type="continuous">
-  <origin xyz="0.0005 0.069 0.0" rpy="0 0 0"/>
+  <origin xyz="0.0005 0.069 0.0" rpy="0.4 0 0"/>
   <parent link="shoulder_left_link"/>
   <child link="shoulder_elbow_left_link"/>
   <axis xyz="1 0 0"/>
 </joint>
 
 <joint name="elbow_left_joint" type="continuous">
-  <origin xyz="0.0205 0.0 -0.201057" rpy="0 0 0"/>
+  <origin xyz="0.0205 0.0 -0.201057" rpy="-0.74 0 0"/>
   <parent link="shoulder_elbow_left_link"/>
   <child link="elbow_wrist_left_link"/>
   <axis xyz="1 0 0"/>
