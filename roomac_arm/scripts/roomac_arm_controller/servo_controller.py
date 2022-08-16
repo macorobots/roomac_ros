@@ -35,6 +35,8 @@ class ServoController:
         self._dynamic_reconfigure_srv = Server(
             ArmControllerConfig, self._dynamic_reconfigure_cb
         )
+        self._last_execution_finish_time = rospy.Time.now()
+        self._wait_time_scaling = 0.9
 
     def go_to_point(self, joint_names, angles, duration=0.0):
         joint_names, angles = self._get_valid_joints(joint_names, angles)
@@ -92,8 +94,28 @@ class ServoController:
         return interpolated_movement_duration
 
     def _execute_motion(self, joint_names, angles, movement_duration):
+        time_to_finish_last_command = (
+            self._last_execution_finish_time - rospy.Time.now()
+        )
+        if time_to_finish_last_command > rospy.Duration(0):
+            # wait time scaling isn't the best solution, but with it the movement is smoother
+            rospy.sleep(
+                rospy.Duration(
+                    time_to_finish_last_command.to_sec() * self._wait_time_scaling
+                )
+            )
+            # rospy.loginfo("Sleeping time: " + str(time_to_finish_last_command.to_sec()))
+
+        send_time_start = rospy.Time.now()
         for joint_name, angle in itertools.izip(joint_names, angles):
             self._servos[joint_name].execute_motion(angle, movement_duration)
+        sending_time_duration = rospy.Time.now() - send_time_start
+        # rospy.loginfo("Sending time duration: " + str(sending_time_duration.to_sec()))
+
+        self._last_execution_finish_time = (
+            rospy.Time.now() + rospy.Duration(movement_duration) - sending_time_duration
+        )
+        # rospy.loginfo("Movement duration: " + str(movement_duration))
 
         if self._publish_joint_states:
             joint_state_msg = JointState()
@@ -101,8 +123,6 @@ class ServoController:
             joint_state_msg.name = joint_names
             joint_state_msg.position = angles
             self._joint_state_pub.publish(joint_state_msg)
-
-        rospy.sleep(rospy.Duration(movement_duration))
 
     def _get_valid_joints(self, joint_names, angles):
         valid_joint_names = []
@@ -159,5 +179,6 @@ class ServoController:
 
         self._interpolate_movement = config.interpolate_movement
         self._interpolation_frequency = config.interpolation_frequency
+        self._wait_time_scaling = config.wait_time_scaling
 
         return config
