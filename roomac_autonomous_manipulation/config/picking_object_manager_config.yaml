@@ -14,7 +14,7 @@ move_group_goal_orientation_tolerance: 0.1
 move_group_goal_position_tolerance: 0.01
 
 arm_name: right_arm
-base_link_frame: base_link
-gripper_frame: gripper_right_grip
+base_link_frame: base_footprint
+gripper_frame: gripping_right_link
 grasping_group_name: hand
 home_position_target_name: Home

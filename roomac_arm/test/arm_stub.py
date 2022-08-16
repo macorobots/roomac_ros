@@ -107,12 +107,12 @@ class ArmStub:
         )
 
         self._joint_name_remap = {
-            "shoulder_pan": "right_shoulder_pan",
-            "shoulder_lift": "right_shoulder_lift",
-            "elbow": "right_elbow",
-            "wrist": "right_wrist",
-            "wrist_twist": "right_gripper_twist",
-            "gripper": "right_gripper",
+            "shoulder_pan": "shoulder_pitch_right_joint",
+            "shoulder_lift": "shoulder_roll_right_joint",
+            "elbow": "elbow_right_joint",
+            "wrist": "wrist_right_joint",
+            "wrist_twist": "gripper_twist_right_joint",
+            "gripper": "right_gripper_joint",
         }
 
     def run(self):

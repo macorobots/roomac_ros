@@ -92,7 +92,7 @@ Visualization Manager:
           Value: true
         artag_link:
           Value: true
-        artag_link_bundle:
+        artag_bundle_link:
           Value: true
         base_link:
           Value: true
@@ -112,45 +112,45 @@ Visualization Manager:
           Value: true
         detected_object:
           Value: true
-        elbow_wrist_left_1:
+        elbow_wrist_left_link:
           Value: true
-        elbow_wrist_right_1:
+        elbow_wrist_right_link:
           Value: true
         gazebo_camera_link:
           Value: true
-        gripper_left_1:
+        gripper_left_link:
           Value: true
-        gripper_right_1:
+        gripper_right_link:
           Value: true
-        gripper_right_grip:
+        gripping_right_link:
           Value: true
-        head_1:
+        head_link:
           Value: true
-        imu:
+        imu_link:
           Value: true
-        left_caster_1:
+        caster_left_link:
           Value: true
-        left_wheel_1:
+        wheel_left_link:
           Value: true
-        left_wheel_hub_1:
+        hub_left_1:
           Value: true
-        right_caster_1:
+        caster_right_link:
           Value: true
-        right_wheel_1:
+        wheel_right_link:
           Value: true
-        right_wheel_hub_1:
+        hub_right_1:
           Value: true
-        shoulder_elbow_left_1:
+        shoulder_elbow_left_link:
           Value: true
-        shoulder_elbow_right_1:
+        shoulder_elbow_right_link:
           Value: true
-        shoulder_left_1:
+        shoulder_left_link:
           Value: true
-        shoulder_right_1:
+        shoulder_right_link:
           Value: true
-        wrist_left_1:
+        wrist_left_link:
           Value: true
-        wrist_right_1:
+        wrist_right_link:
           Value: true
       Marker Scale: 0.20000000298023224
       Name: TF
@@ -160,7 +160,7 @@ Visualization Manager:
       Tree:
         base_link:
           artag_link:
-            artag_link_bundle:
+            artag_bundle_link:
               camera_up_link:
                 camera_up_depth_frame:
                   camera_up_depth_optical_frame: {}
@@ -170,27 +170,27 @@ Visualization Manager:
                     ar_marker_2: {}
                 detected_object: {}
           base_up_1:
-            head_1: {}
-            shoulder_left_1:
-              shoulder_elbow_left_1:
-                elbow_wrist_left_1:
-                  wrist_left_1:
-                    gripper_left_1: {}
-            shoulder_right_1:
-              shoulder_elbow_right_1:
-                elbow_wrist_right_1:
-                  wrist_right_1:
-                    gripper_right_1:
-                      gripper_right_grip: {}
+            head_link: {}
+            shoulder_left_link:
+              shoulder_elbow_left_link:
+                elbow_wrist_left_link:
+                  wrist_left_link:
+                    gripper_left_link: {}
+            shoulder_right_link:
+              shoulder_elbow_right_link:
+                elbow_wrist_right_link:
+                  wrist_right_link:
+                    gripper_right_link:
+                      gripping_right_link: {}
           camera_link:
             gazebo_camera_link: {}
-          imu: {}
-          left_caster_1: {}
-          left_wheel_1:
-            left_wheel_hub_1: {}
-          right_caster_1: {}
-          right_wheel_1:
-            right_wheel_hub_1: {}
+          imu_link: {}
+          caster_left_link: {}
+          wheel_left_link:
+            hub_left_1: {}
+          caster_right_link: {}
+          wheel_right_link:
+            hub_right_1: {}
       Update Interval: 0
       Value: true
     - Alpha: 1

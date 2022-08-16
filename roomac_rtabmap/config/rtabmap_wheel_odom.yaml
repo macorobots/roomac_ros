@@ -1,4 +1,4 @@
-frame_id: "base_link"
+frame_id: "base_footprint"
 subscribe_depth: false
 subscribe_rgbd: true
 subscribe_rgb: false
@@ -25,3 +25,9 @@ Rtabmap/DetectionRate: 4
 Kp/RoiRatios: "0 0 0 0.3"
 # Only add closer, more certain points to the map. Map is a lot cleaner that way
 Grid/RangeMax: 1.5
+
+# Detecting ground
+Grid/NormalsSegmentation: true
+
+# Otherwise it also detects higher planes and removes them (for example plane on the stair)
+Grid/MaxGroundHeight: 0.02

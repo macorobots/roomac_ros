@@ -1,15 +1,15 @@
 # Correction offset applied to object position [m]
 object_position_correction_x: 0.0
 object_position_correction_y: 0.0
-object_position_correction_z: 0.03
+object_position_correction_z: 0.02
 
 # Simulation picking object manager settings
-open_gripper_value: 0.0
-closed_gripper_value: 0.05
+open_gripper_value: 0.0045
+closed_gripper_value: -0.013
 
 # Bottle size
-bottle_cap_height: 0.03
-bottle_cap_radius: 0.025
+bottle_cap_height: 0.02
+bottle_cap_radius: 0.015
 
 # Lower than real height - otherwise it colides with table scene box and plan
 # to pick up bottle isn't good

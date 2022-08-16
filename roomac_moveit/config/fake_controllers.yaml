@@ -3,16 +3,16 @@ controller_list:
   - name: fake_right_arm_controller
     type: $(arg execution_type)
     joints:
-      - right_shoulder_pan
-      - right_shoulder_lift
-      - right_elbow
-      - right_wrist
-      - right_gripper_twist
+      - shoulder_pitch_right_joint
+      - shoulder_roll_right_joint
+      - elbow_right_joint
+      - wrist_right_joint
+      - gripper_twist_right_joint
   - name: fake_hand_controller
     type: $(arg execution_type)
     joints:
-      - finger1_joint
-      - finger2_joint
+      # only left finger, right is mimicing
+      - gripper_finger_l_right_joint
 initial: # Define initial robot poses.
   - group: right_arm
     pose: Home

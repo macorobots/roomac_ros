@@ -69,7 +69,7 @@ local_costmap:
       topic: camera/depth_registered/points
       marking: true
       clearing: false
-      min_obstacle_height: -0.1    # default 0, meters
+      min_obstacle_height: 0.045    # default 0, meters
       max_obstacle_height: 2.0     # default 3, meters
       expected_update_rate: 0.0    # default 0, if not updating at this rate at least, remove from buffer
       observation_persistence: 0.0 # default 0, use all measurements taken during now-value, 0=latest

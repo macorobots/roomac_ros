@@ -3,7 +3,8 @@
 
   <include file="$(find roomac_moveit)/launch/roomac.launch"/>
 
-  <node name="add_robot_body_collision_to_scene" pkg="roomac_autonomous_manipulation" type="add_robot_body_collision_to_scene.py" output="screen"/>
+  <!-- After adding new description should no longer be needed -->
+  <!-- <node name="add_robot_body_collision_to_scene" pkg="roomac_autonomous_manipulation" type="add_robot_body_collision_to_scene.py" output="screen"/> -->
 
 
 </launch>

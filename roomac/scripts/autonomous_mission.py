@@ -156,7 +156,7 @@ class RobotController:
         try:
             artag_pose = self.get_position("camera_up_link", "ar_marker_8")
             artag_pose_filtered = self.get_position(
-                "camera_up_link", "artag_link_bundle"
+                "camera_up_link", "artag_bundle_link"
             )
         except RuntimeError as e:
             rospy.logerr("Exception: " + str(e))

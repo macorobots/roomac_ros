@@ -9,7 +9,7 @@
 
   <!-- Load universal robot description format (URDF) -->
   <group if="$(arg load_robot_description)">
-    <param if="$(arg simulation_description)" name="$(arg robot_description)" command="xacro --inorder  '$(find roomac_description)/urdf/roomac_simulation_picking.xacro'"/>
+    <param if="$(arg simulation_description)" name="$(arg robot_description)" command="xacro --inorder  '$(find roomac_description)/urdf/roomac.xacro simulation:=true'"/>
     <param unless="$(arg simulation_description)" name="$(arg robot_description)" command="xacro --inorder  '$(find roomac_description)/urdf/roomac.xacro'"/>
   </group>
 
@@ -24,6 +24,12 @@
     <rosparam unless="$(arg simulation_description)" command="load" file="$(find roomac_moveit)/config/joint_limits.yaml"/>
 
     <rosparam command="load" file="$(find roomac_moveit)/config/cartesian_limits.yaml"/>
+  </group>
+
+  <!-- Load padding -->
+  <!-- TODO: doesn't appear to be working correctly -->
+  <group ns="$(arg robot_description)_planning">
+    <rosparam command="load" file="$(find roomac_moveit)/config/padding.yaml" />
   </group>
 
   <!-- Load default settings for kinematics; these settings are overridden by settings in a node's namespace -->

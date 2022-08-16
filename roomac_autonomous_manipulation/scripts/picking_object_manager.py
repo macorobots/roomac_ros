@@ -84,7 +84,7 @@ class PickingObjectManager(object):
 
         arm_name = rospy.get_param("~arm_name", "right_arm")
         self.base_link_frame = rospy.get_param("~base_link_frame", "base_link")
-        self.gripper_frame = rospy.get_param("~gripper_frame", "gripper_right_grip")
+        self.gripper_frame = rospy.get_param("~gripper_frame", "gripping_right_link")
         self.grasping_group_name = rospy.get_param("~grasping_group_name", "hand")
         self.home_position_target_name = rospy.get_param(
             "~home_position_target_name", "Home"

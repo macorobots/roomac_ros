@@ -17,5 +17,5 @@ max_cluster_size: 25000
 # Offset from end of elbow, at which arm pointcloud should be split to get just gripper
 elbow_gripper_offset: 0.2
 
-# Offset_planning_gripper_point", double_t, 0, "Offset from calculated center gripper poisition to point used for planning (gripper_right_grip)
+# Offset_planning_gripper_point", double_t, 0, "Offset from calculated center gripper poisition to point used for planning (gripping_right_link)
 offset_planning_gripper_point: -0.02

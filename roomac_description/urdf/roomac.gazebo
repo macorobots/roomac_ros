@@ -1,142 +1,183 @@
 <?xml version="1.0" ?>
 <robot name="roomac" xmlns:xacro="http://www.ros.org/wiki/xacro" >
 
-<xacro:property name="body_color" value="Gazebo/Silver" />
 <xacro:property name="standard_friction" value="1.0" />
 <xacro:property name="caster_friction" value="0.01" />
 <xacro:property name="wheel_friction" value="100.0" />
+<xacro:property name="finger_friction" value="100.0" />
 
-<gazebo reference="base_link">
-  <material>${body_color}</material>
+<gazebo reference="robot_body_link">
   <mu1>${standard_friction}</mu1>
   <mu2>${standard_friction}</mu2>
   <selfCollide>true</selfCollide>
   <gravity>true</gravity>
 </gazebo>
 
-<gazebo reference="right_wheel_hub_1">
-  <material>${body_color}</material>
+<gazebo reference="head_link">
   <mu1>${standard_friction}</mu1>
   <mu2>${standard_friction}</mu2>
   <selfCollide>true</selfCollide>
 </gazebo>
 
-<gazebo reference="shoulder_right_1">
-  <material>${body_color}</material>
-  <mu1>${standard_friction}</mu1>
-  <mu2>${standard_friction}</mu2>
-  <selfCollide>true</selfCollide>
-</gazebo>
+<!-- WHEELS -->
 
-<gazebo reference="shoulder_elbow_right_1">
-  <material>${body_color}</material>
-  <mu1>${standard_friction}</mu1>
-  <mu2>${standard_friction}</mu2>
-  <selfCollide>true</selfCollide>
-</gazebo>
-
-<gazebo reference="elbow_wrist_right_1">
-  <material>${body_color}</material>
-  <mu1>${standard_friction}</mu1>
-  <mu2>${standard_friction}</mu2>
-  <selfCollide>true</selfCollide>
-</gazebo>
-
-<gazebo reference="wrist_right_1">
-  <material>${body_color}</material>
-  <mu1>${standard_friction}</mu1>
-  <mu2>${standard_friction}</mu2>
-  <selfCollide>true</selfCollide>
-</gazebo>
-
-<gazebo reference="gripper_right_1">
-  <material>${body_color}</material>
-  <mu1>${standard_friction}</mu1>
-  <mu2>${standard_friction}</mu2>
-  <selfCollide>true</selfCollide>
-</gazebo>
-
-<gazebo reference="base_up_1">
-  <material>${body_color}</material>
-  <mu1>${standard_friction}</mu1>
-  <mu2>${standard_friction}</mu2>
-  <selfCollide>true</selfCollide>
-</gazebo>
-
-<gazebo reference="head_1">
-  <material>${body_color}</material>
-  <mu1>${standard_friction}</mu1>
-  <mu2>${standard_friction}</mu2>
-  <selfCollide>true</selfCollide>
-</gazebo>
-
-<gazebo reference="left_wheel_hub_1">
-  <material>${body_color}</material>
-  <mu1>${standard_friction}</mu1>
-  <mu2>${standard_friction}</mu2>
-  <selfCollide>true</selfCollide>
-</gazebo>
-
-<gazebo reference="shoulder_left_1">
-  <material>${body_color}</material>
-  <mu1>${standard_friction}</mu1>
-  <mu2>${standard_friction}</mu2>
-  <selfCollide>true</selfCollide>
-</gazebo>
-
-<gazebo reference="shoulder_elbow_left_1">
-  <material>${body_color}</material>
-  <mu1>${standard_friction}</mu1>
-  <mu2>${standard_friction}</mu2>
-  <selfCollide>true</selfCollide>
-</gazebo>
-
-<gazebo reference="elbow_wrist_left_1">
-  <material>${body_color}</material>
-  <mu1>${standard_friction}</mu1>
-  <mu2>${standard_friction}</mu2>
-  <selfCollide>true</selfCollide>
-</gazebo>
-
-<gazebo reference="wrist_left_1">
-  <material>${body_color}</material>
-  <mu1>${standard_friction}</mu1>
-  <mu2>${standard_friction}</mu2>
-  <selfCollide>true</selfCollide>
-</gazebo>
-
-<gazebo reference="gripper_left_1">
-  <material>${body_color}</material>
-  <mu1>${standard_friction}</mu1>
-  <mu2>${standard_friction}</mu2>
-  <selfCollide>true</selfCollide>
-</gazebo>
-
-<gazebo reference="right_wheel_1">
-  <material>${body_color}</material>
-  <mu1>${wheel_friction}</mu1>
-  <mu2>${wheel_friction}</mu2>
-  <selfCollide>true</selfCollide>
-</gazebo>
-
-<gazebo reference="left_wheel_1">
-  <material>${body_color}</material>
-  <mu1>${wheel_friction}</mu1>
-  <mu2>${wheel_friction}</mu2>
-  <selfCollide>true</selfCollide>
-</gazebo>
-
-<gazebo reference="right_caster_1">
-  <material>${body_color}</material>
+<gazebo reference="caster_right_link">
   <mu1>${caster_friction}</mu1>
   <mu2>${caster_friction}</mu2>
   <selfCollide>true</selfCollide>
 </gazebo>
 
-<gazebo reference="left_caster_1">
-  <material>${body_color}</material>
+<gazebo reference="caster_left_link">
   <mu1>${caster_friction}</mu1>
   <mu2>${caster_friction}</mu2>
+  <selfCollide>true</selfCollide>
+</gazebo>
+
+<gazebo reference="wheel_right_link">
+  <mu1>${wheel_friction}</mu1>
+  <mu2>${wheel_friction}</mu2>
+  <selfCollide>true</selfCollide>
+</gazebo>
+
+<gazebo reference="wheel_left_link">
+  <mu1>${wheel_friction}</mu1>
+  <mu2>${wheel_friction}</mu2>
+  <selfCollide>true</selfCollide>
+</gazebo>
+
+<!-- RIGHT ARM -->
+
+<gazebo reference="shoulder_right_link">
+  <mu1>${standard_friction}</mu1>
+  <mu2>${standard_friction}</mu2>
+  <selfCollide>true</selfCollide>
+</gazebo>
+
+<gazebo reference="shoulder_elbow_right_link">
+  <mu1>${standard_friction}</mu1>
+  <mu2>${standard_friction}</mu2>
+  <selfCollide>true</selfCollide>
+</gazebo>
+
+<gazebo reference="elbow_wrist_right_link">
+  <mu1>${standard_friction}</mu1>
+  <mu2>${standard_friction}</mu2>
+  <selfCollide>true</selfCollide>
+</gazebo>
+
+<gazebo reference="wrist_right_link">
+  <mu1>${standard_friction}</mu1>
+  <mu2>${standard_friction}</mu2>
+  <selfCollide>true</selfCollide>
+</gazebo>
+
+<gazebo reference="gripper_right_link">
+  <mu1>${standard_friction}</mu1>
+  <mu2>${standard_friction}</mu2>
+  <selfCollide>true</selfCollide>
+</gazebo>
+
+<!-- gripper settings from https://github.com/martinandrovich/rb-rovi/blob/master/ws/src/ur5_description/robots/wsg.gazebo.xacro -->
+
+<gazebo reference="gripper_finger_r_right_link">
+  <selfCollide>true</selfCollide>
+  <gravity>0</gravity>
+  <turnGravityOff>true</turnGravityOff>
+  <collision>
+  <surface>
+    <friction>
+      <torsional>
+        <coefficient>10.0</coefficient>
+        <use_patch_radius>true</use_patch_radius>
+        <patch_radius>0.05</patch_radius>
+      </torsional>
+    </friction>
+    <contact>
+      <poissons_ratio>0.5</poissons_ratio>
+      <elastic_modulus>1e8</elastic_modulus>
+    </contact>
+  </surface>
+  </collision>
+  <mu1>${finger_friction}</mu1>
+  <mu2>${finger_friction}</mu2>
+  <maxVel>1</maxVel>
+  <kp>1000000.0</kp>
+  <kd>100.0</kd> 
+  <fdir1>0 0 1</fdir1>
+  <minDepth>0.0</minDepth>
+  <maxContacts>100</maxContacts>
+</gazebo>
+
+<gazebo reference="gripper_finger_l_right_link">
+  <selfCollide>true</selfCollide>
+  <gravity>0</gravity>
+  <turnGravityOff>true</turnGravityOff>
+  <collision>
+  <surface>
+    <friction>
+      <torsional>
+        <coefficient>10.0</coefficient>
+        <use_patch_radius>true</use_patch_radius>
+        <patch_radius>0.05</patch_radius>
+      </torsional>
+    </friction>
+    <contact>
+      <poissons_ratio>0.5</poissons_ratio>
+      <elastic_modulus>1e8</elastic_modulus>
+    </contact>
+  </surface>
+  </collision>
+  <mu1>${finger_friction}</mu1>
+  <mu2>${finger_friction}</mu2>
+  <maxVel>1</maxVel>
+  <kp>1000000.0</kp>
+  <kd>100.0</kd> 
+  <fdir1>0 0 1</fdir1>
+  <minDepth>0.0</minDepth>
+  <maxContacts>100</maxContacts>
+</gazebo>
+
+<!-- ARM LEFT -->
+
+<gazebo reference="shoulder_left_link">
+  <mu1>${standard_friction}</mu1>
+  <mu2>${standard_friction}</mu2>
+  <selfCollide>true</selfCollide>
+</gazebo>
+
+<gazebo reference="shoulder_elbow_left_link">
+  <mu1>${standard_friction}</mu1>
+  <mu2>${standard_friction}</mu2>
+  <selfCollide>true</selfCollide>
+</gazebo>
+
+<gazebo reference="elbow_wrist_left_link">
+  <mu1>${standard_friction}</mu1>
+  <mu2>${standard_friction}</mu2>
+  <selfCollide>true</selfCollide>
+</gazebo>
+
+<gazebo reference="wrist_left_link">
+  <mu1>${standard_friction}</mu1>
+  <mu2>${standard_friction}</mu2>
+  <selfCollide>true</selfCollide>
+</gazebo>
+
+<gazebo reference="gripper_left_link">
+  <mu1>${standard_friction}</mu1>
+  <mu2>${standard_friction}</mu2>
+  <selfCollide>true</selfCollide>
+</gazebo>
+
+<gazebo reference="gripper_finger_r_left_link">
+  <mu1>${finger_friction}</mu1>
+  <mu2>${finger_friction}</mu2>
+  <selfCollide>true</selfCollide>
+</gazebo>
+
+<gazebo reference="gripper_finger_l_left_link">
+  <mu1>${finger_friction}</mu1>
+  <mu2>${finger_friction}</mu2>
   <selfCollide>true</selfCollide>
 </gazebo>
 
@@ -198,9 +239,9 @@
   <plugin name="differential_drive_controller" filename="libgazebo_ros_diff_drive.so">
     <updateRate>10</updateRate>
     <!-- Name of left joint, defaults to `left_joint` -->
-    <leftJoint>left_wheel</leftJoint>
+    <leftJoint>wheel_left_joint</leftJoint>
     <!-- Name of right joint, defaults to `right_joint` -->
-    <rightJoint>right_wheel</rightJoint>
+    <rightJoint>wheel_right_joint</rightJoint>
     <!-- The distance from the center of one wheel to the other, in meters, defaults to 0.34 m -->
     <wheelSeparation>0.507</wheelSeparation>
     <!-- Diameter of the wheels, in meters, defaults to 0.15 m -->
@@ -234,7 +275,7 @@
   </plugin>
 </gazebo>
 
-<gazebo reference="imu">
+<gazebo reference="imu_link">
   <gravity>true</gravity>
   <sensor name="imu_sensor" type="imu">
     <always_on>true</always_on>
@@ -243,16 +284,49 @@
     <topic>__default_topic__</topic>
     <plugin filename="libgazebo_ros_imu_sensor.so" name="imu_plugin">
       <topicName>/imu/orientation</topicName>
-      <bodyName>imu</bodyName>
+      <bodyName>imu_link</bodyName>
       <updateRateHZ>10.0</updateRateHZ>
       <gaussianNoise>0.0</gaussianNoise>
       <xyzOffset>0 0 0</xyzOffset>
       <rpyOffset>0 0 0</rpyOffset>
-      <frameName>imu</frameName>
+      <frameName>imu_link</frameName>
       <initialOrientationAsReference>false</initialOrientationAsReference>
     </plugin>
     <pose>0 0 0 0 0 0</pose>
   </sensor>
+</gazebo>
+
+<!-- Use special extension for grasping - once it detects force acting upon object it atteches it to gripper.
+I wasn't able to make grasping work in Gazebo alone, it will be more realistic and better to do it in Gazebo alone, 
+so probably it will be good to try again someday. -->
+<!-- plugin from https://github.com/JenniferBuehler/gazebo-pkgs -->
+<gazebo>
+   <plugin name="gazebo_grasp_fix" filename="libgazebo_grasp_fix.so">
+        <arm>
+           <arm_name>right_arm</arm_name>
+           <palm_link> gripper_right_link  </palm_link>
+           <gripper_link> gripper_finger_r_right_link </gripper_link>
+           <gripper_link> gripper_finger_l_right_link </gripper_link>
+        </arm>
+       <forces_angle_tolerance>100</forces_angle_tolerance>
+       <update_rate>16</update_rate>
+       <grip_count_threshold>4</grip_count_threshold>
+       <max_grip_count>8</max_grip_count>
+       <release_tolerance>0.005</release_tolerance>
+       <disable_collisions_on_attach>false</disable_collisions_on_attach>
+       <contact_topic>__default_topic__</contact_topic>
+    </plugin>
+</gazebo>
+
+<gazebo>
+  <plugin name="gripper_finger_r_right_joint_mimic_joint_plugin" filename="libroboticsgroup_upatras_gazebo_mimic_joint_plugin.so">
+    <joint>gripper_finger_l_right_joint</joint>
+    <mimicJoint>gripper_finger_r_right_joint</mimicJoint>
+    <multiplier>-1.0</multiplier>
+    <offset>0.0</offset>
+    <sensitiveness>0.0</sensitiveness> <!-- A double specifying the sensitiveness of the mimic joint. Defaults to 0.0. It basically is the threshold of the difference between the 2 angles (joint's and mimic's) before applying the "mimicness". -->
+    <robotNamespace>/roomac</robotNamespace>
+  </plugin>
 </gazebo>
 
 <gazebo>

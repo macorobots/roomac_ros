@@ -35,7 +35,7 @@ def filterRosbag(inputRosbag, outputRosbag):
                 if msg.transforms[0].header.frame_id != "map":
                     if save_odom_tf:
                         outbag.write(topic, msg, t)
-                    else: 
+                    else:
                         pass
 
                     if save_odom_topic:
@@ -47,15 +47,26 @@ def filterRosbag(inputRosbag, outputRosbag):
 
                         currentPosition.x = odomBaseTransform.transform.translation.x
                         currentPosition.y = odomBaseTransform.transform.translation.y
-                        quaternion = [odomBaseTransform.transform.rotation.x, odomBaseTransform.transform.rotation.y, odomBaseTransform.transform.rotation.z, odomBaseTransform.transform.rotation.w]
+                        quaternion = [
+                            odomBaseTransform.transform.rotation.x,
+                            odomBaseTransform.transform.rotation.y,
+                            odomBaseTransform.transform.rotation.z,
+                            odomBaseTransform.transform.rotation.w,
+                        ]
 
                         eulerAngles = euler_from_quaternion(quaternion)
                         currentPosition.theta = eulerAngles[2]
 
                         dt = (currentTime - lastTime).to_sec()
                         if dt > 0:
-                            vx = math.sqrt((currentPosition.x - lastPosition.x)**2 + (currentPosition.y - lastPosition.y)**2)/dt
-                            vth = (currentPosition.theta - lastPosition.theta)/dt
+                            vx = (
+                                math.sqrt(
+                                    (currentPosition.x - lastPosition.x) ** 2
+                                    + (currentPosition.y - lastPosition.y) ** 2
+                                )
+                                / dt
+                            )
+                            vth = (currentPosition.theta - lastPosition.theta) / dt
                         else:
                             vx = 0
                             vth = 0
@@ -66,17 +77,31 @@ def filterRosbag(inputRosbag, outputRosbag):
                         odomMsg.header.stamp = currentTime
                         odomMsg.header.frame_id = "odom"
                         odomMsg.child_frame_id = "base_link"
-                        odomMsg.pose.pose = Pose(Point(odomBaseTransform.transform.translation.x, odomBaseTransform.transform.translation.y, odomBaseTransform.transform.translation.z), Quaternion(quaternion[0], quaternion[1], quaternion[2], quaternion[3]))
-                        odomMsg.twist.twist = Twist(Vector3(vx, 0, 0), Vector3(0, 0, vth))
+                        odomMsg.pose.pose = Pose(
+                            Point(
+                                odomBaseTransform.transform.translation.x,
+                                odomBaseTransform.transform.translation.y,
+                                odomBaseTransform.transform.translation.z,
+                            ),
+                            Quaternion(
+                                quaternion[0],
+                                quaternion[1],
+                                quaternion[2],
+                                quaternion[3],
+                            ),
+                        )
+                        odomMsg.twist.twist = Twist(
+                            Vector3(vx, 0, 0), Vector3(0, 0, vth)
+                        )
 
                         lastTime = currentTime
 
                         outbag.write("/odom", odomMsg, t)
 
             elif topic == "/android/imu":
-                msg.header.frame_id = "imu"
+                msg.header.frame_id = "imu_link"
                 msg.header.stamp = t
-                msg.orientation_covariance  = list(msg.orientation_covariance)
+                msg.orientation_covariance = list(msg.orientation_covariance)
                 msg.orientation_covariance[0] = 0.001
                 msg.orientation_covariance[4] = 0.001
                 msg.orientation_covariance[8] = 0.001

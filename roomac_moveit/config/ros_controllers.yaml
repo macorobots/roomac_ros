@@ -10,18 +10,18 @@ roomac:
   # Settings for ros_control hardware interface
   hardware_interface:
     joints:
-      # - left_wheel
-      # - right_wheel
-      # - left_shoulder_pan
-      # - left_shoulder_lift
-      # - left_elbow
-      # - left_wrist
-      # - left_gripper_twist
-      - right_shoulder_pan
-      - right_shoulder_lift
-      - right_elbow
-      - right_wrist
-      - right_gripper_twist
+      # - wheel_left_joint
+      # - wheel_right_joint
+      # - shoulder_pitch_left_joint
+      # - shoulder_roll_left_joint
+      # - elbow_left_joint
+      # - wrist_left_joint
+      # - gripper_twist_left_joint
+      - shoulder_pitch_right_joint
+      - shoulder_roll_right_joint
+      - elbow_right_joint
+      - wrist_right_joint
+      - gripper_twist_right_joint
     sim_control_mode: 1 # 0: position, 1: velocity
   # Publish all joint states
   # Creates the /joint_states topic necessary in ROS
@@ -32,52 +32,52 @@ roomac:
   arm_position_controller:
     type: position_controllers/JointTrajectoryController
     joints:
-      - right_shoulder_pan
-      - right_shoulder_lift
-      - right_elbow
-      - right_wrist
-      - right_gripper_twist
+      - shoulder_pitch_right_joint
+      - shoulder_roll_right_joint
+      - elbow_right_joint
+      - wrist_right_joint
+      - gripper_twist_right_joint
     gains:
-      right_shoulder_pan:
+      shoulder_pitch_right_joint:
         p: 10
         d: 0
         i: 0.01
         i_clamp: 1
-      right_shoulder_lift:
+      shoulder_roll_right_joint:
         p: 10
         d: 0
         i: 0.01
         i_clamp: 1
-      right_elbow:
+      elbow_right_joint:
         p: 10
         d: 0
         i: 0.01
         i_clamp: 1
-      right_wrist:
+      wrist_right_joint:
         p: 10
         d: 0
         i: 0.01
         i_clamp: 1
-      right_gripper_twist:
+      gripper_twist_right_joint:
         p: 10
         d: 0
         i: 0.01
         i_clamp: 1
     constraints:
       goal_time: 30.0
-      right_shoulder_pan:
+      shoulder_pitch_right_joint:
         goal: 0.01
         trajectory: 0.01
-      right_shoulder_lift:
+      shoulder_roll_right_joint:
         goal: 0.01
         trajectory: 0.01
-      right_elbow:
+      elbow_right_joint:
         goal: 0.01
         trajectory: 0.01
-      right_wrist:
+      wrist_right_joint:
         goal: 0.01
         trajectory: 0.01
-      right_gripper_twist:
+      gripper_twist_right_joint:
         goal: 0.01
         trajectory: 0.01
     state_publish_rate: 25
@@ -86,16 +86,10 @@ roomac:
   gripper_effort_controller:
     type: effort_controllers/JointGroupPositionController
     joints:
-      - finger1_joint
-      - finger2_joint
-    finger1_joint:
-      pid:
-        p: 100
-        d: 0
-        i: 0.01
-        i_clamp: 1
+      # only left finger, right is mimicing
+      - gripper_finger_l_right_joint
 
-    finger2_joint:
+    gripper_finger_l_right_joint:
       pid:
         p: 100
         d: 0

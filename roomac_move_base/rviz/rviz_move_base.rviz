@@ -6,8 +6,9 @@ Panels:
       Expanded:
         - /Global Options1
         - /TF1/Frames1
+        - /cloud_map1
       Splitter Ratio: 0.5
-    Tree Height: 365
+    Tree Height: 793
   - Class: rviz/Selection
     Name: Selection
   - Class: rviz/Tool Properties
@@ -223,7 +224,7 @@ Visualization Manager:
       Size (Pixels): 3
       Size (m): 0.05000000074505806
       Style: Boxes
-      Topic: /rtabmap/cloud_map
+      Topic: /rtabmap/cloud_obstacles
       Unreliable: false
       Use Fixed Frame: true
       Use rainbow: true
@@ -304,8 +305,16 @@ Visualization Manager:
           Alpha: 1
           Show Axes: false
           Show Trail: false
+        artag_bundle_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+        artag_bundle_visual_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
           Value: true
-        artag_link_bundle:
+        base_footprint:
           Alpha: 1
           Show Axes: false
           Show Trail: false
@@ -313,13 +322,12 @@ Visualization Manager:
           Alpha: 1
           Show Axes: false
           Show Trail: false
-          Value: true
-        base_up_1:
+        robot_body_frames_link:
           Alpha: 1
           Show Axes: false
           Show Trail: false
           Value: true
-        body_precision_test_tip:
+        body_precision_test_tip_link:
           Alpha: 1
           Show Axes: false
           Show Trail: false
@@ -327,12 +335,57 @@ Visualization Manager:
           Alpha: 1
           Show Axes: false
           Show Trail: false
-        elbow_wrist_left_1:
+        caster_left_link:
           Alpha: 1
           Show Axes: false
           Show Trail: false
           Value: true
-        elbow_wrist_right_1:
+        caster_right_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        caster_tire_left_1:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        caster_tire_right_1:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        elbow_left_1:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        elbow_right_1:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        elbow_wrist_left_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        elbow_wrist_right_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        eye_left_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        eye_right_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        frame_link:
           Alpha: 1
           Show Axes: false
           Show Trail: false
@@ -341,89 +394,134 @@ Visualization Manager:
           Alpha: 1
           Show Axes: false
           Show Trail: false
-        gripper_left_1:
+        gripper_finger_l_left_link:
           Alpha: 1
           Show Axes: false
           Show Trail: false
           Value: true
-        gripper_right_1:
+        gripper_finger_r_right_link:
           Alpha: 1
           Show Axes: false
           Show Trail: false
           Value: true
-        gripper_right_grip:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-        gripper_right_precision_test_tip:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-        head_1:
+        gripper_finger_r_left_link:
           Alpha: 1
           Show Axes: false
           Show Trail: false
           Value: true
-        imu:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-        left_caster_1:
+        gripper_finger_l_right_link:
           Alpha: 1
           Show Axes: false
           Show Trail: false
           Value: true
-        left_wheel_1:
+        gripper_left_link:
           Alpha: 1
           Show Axes: false
           Show Trail: false
           Value: true
-        left_wheel_hub_1:
+        gripper_right_link:
           Alpha: 1
           Show Axes: false
           Show Trail: false
           Value: true
-        right_caster_1:
+        gripping_right_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+        gripper_right_precision_test_tip_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+        head_link:
           Alpha: 1
           Show Axes: false
           Show Trail: false
           Value: true
-        right_wheel_1:
+        hub_left_1:
           Alpha: 1
           Show Axes: false
           Show Trail: false
           Value: true
-        right_wheel_hub_1:
+        hub_right_1:
           Alpha: 1
           Show Axes: false
           Show Trail: false
           Value: true
-        shoulder_elbow_left_1:
+        imu_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+        robot_body_link:
           Alpha: 1
           Show Axes: false
           Show Trail: false
           Value: true
-        shoulder_elbow_right_1:
+        shoulder_base_left_1:
           Alpha: 1
           Show Axes: false
           Show Trail: false
           Value: true
-        shoulder_left_1:
+        shoulder_base_right_1:
           Alpha: 1
           Show Axes: false
           Show Trail: false
           Value: true
-        shoulder_right_1:
+        shoulder_elbow_gear_left_1:
           Alpha: 1
           Show Axes: false
           Show Trail: false
           Value: true
-        wrist_left_1:
+        shoulder_elbow_gear_right_1:
           Alpha: 1
           Show Axes: false
           Show Trail: false
           Value: true
-        wrist_right_1:
+        shoulder_elbow_left_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        shoulder_elbow_right_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        shoulder_left_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        shoulder_right_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        wheel_left_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        wheel_right_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        wheel_tire_left_1:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        wheel_tire_right_1:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        wrist_left_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        wrist_right_link:
           Alpha: 1
           Show Axes: false
           Show Trail: false
