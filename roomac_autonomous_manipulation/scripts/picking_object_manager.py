@@ -9,7 +9,7 @@ import moveit_commander
 
 import geometry_msgs.msg
 from geometry_msgs.msg import PoseStamped, PointStamped, Quaternion, Point
-from std_srvs.srv import Trigger, TriggerResponse, Empty
+from std_srvs.srv import Trigger, TriggerResponse, TriggerRequest, Empty
 
 import tf
 from tf.transformations import quaternion_from_euler
@@ -93,7 +93,12 @@ class PickingObjectManager(object):
         self.bottle_cap_height = rospy.get_param("~bottle_cap_height", 0.06)
         self.bottle_cap_radius = rospy.get_param("~bottle_cap_radius", 0.025)
         self.bottle_height = rospy.get_param("~bottle_height", 0.1)
-        self.bottle_radius = rospy.get_param("~bottle_radius", 0.04)
+        self.bottle_radius_pre_picking = rospy.get_param(
+            "~bottle_radius_pre_picking", 0.04
+        )
+        self.bottle_radius_post_picking = rospy.get_param(
+            "~bottle_radius_post_picking", 0.04
+        )
 
         self.opened_gripper_value = rospy.get_param("~opened_gripper_value", 0.0)
         self.closed_gripper_value = rospy.get_param("~closed_gripper_value", 0.02)
@@ -106,6 +111,10 @@ class PickingObjectManager(object):
         self.robot = moveit_commander.RobotCommander()
         self.move_group = moveit_commander.MoveGroupCommander(
             name=arm_name, wait_for_servers=wait_time_move_group_servers
+        )
+        # Using robot doesn't work due to longer connection times on wifi network
+        self.move_group_gripper = moveit_commander.MoveGroupCommander(
+            name=self.grasping_group_name, wait_for_servers=wait_time_move_group_servers
         )
         self.scene = moveit_commander.PlanningSceneInterface()
 
@@ -188,19 +197,19 @@ class PickingObjectManager(object):
                 preempted_action_function=lambda: None,
                 feedback_state=PickObjectFeedback.GRIPPING_POSITION,
             ),
-            # Close gripper
-            ActionProcedureStep(
-                start_procedure_function=self.close_gripper_with_delay,
-                get_procedure_state_function=lambda: GoalState.SUCCEEDED,
-                preempted_action_function=lambda: None,
-                feedback_state=PickObjectFeedback.CLOSING_GRIPPER,
-            ),
             # Attach object
             ActionProcedureStep(
                 start_procedure_function=self.attach_object,
                 get_procedure_state_function=lambda: GoalState.SUCCEEDED,
                 preempted_action_function=lambda: None,
                 feedback_state=PickObjectFeedback.GRIPPING_POSITION,
+            ),
+            # Close gripper
+            ActionProcedureStep(
+                start_procedure_function=self.close_gripper_with_delay,
+                get_procedure_state_function=lambda: GoalState.SUCCEEDED,
+                preempted_action_function=lambda: None,
+                feedback_state=PickObjectFeedback.CLOSING_GRIPPER,
             ),
             # Go to post point
             ActionProcedureStep(
@@ -230,6 +239,11 @@ class PickingObjectManager(object):
 
         self.clear_octomap_srv = rospy.ServiceProxy("/clear_octomap", Empty)
         self.clear_octomap_srv.wait_for_service()
+
+        self.add_detected_table_to_scene_srv = rospy.ServiceProxy(
+            "/add_detected_table_to_scene", Trigger
+        )
+        self.add_detected_table_to_scene_srv.wait_for_service()
 
     def open_gripper_cb(self, req):
         res = TriggerResponse()
@@ -265,6 +279,8 @@ class PickingObjectManager(object):
         # Clear octomap after adding objects to force clearing object points
         # This especially caused problems in simulation - object points weren't cleared and picking failed
         self.clear_octomap_srv.call()
+        self.add_detected_table_to_scene_srv.call(TriggerRequest())
+
         pre_point, post_point = self.calculate_pre_and_post_points(object_point.point)
 
         self.current_object_point = object_point.point
@@ -327,6 +343,15 @@ class PickingObjectManager(object):
         grasping_group = self.grasping_group_name
         touch_links = self.robot.get_link_names(group=grasping_group)
 
+        self.scene.remove_attached_object(self.gripper_frame, name=self.bottle_name)
+        self.scene.remove_world_object(self.bottle_name)
+        self.scene.add_cylinder(
+            self.bottle_name,
+            self.bottle_body_pose,
+            self.bottle_height,
+            self.bottle_radius_post_picking,
+        )
+
         aco_bottle = AttachedCollisionObject()
         aco_bottle.object = CollisionObject()
         aco_bottle.object.id = self.bottle_name
@@ -339,10 +364,8 @@ class PickingObjectManager(object):
         self.scene.attach_object(aco_bottle_cap)
 
     def move_gripper(self, position):
-        getattr(self.robot, self.grasping_group_name).go(
-            [position, -position], wait=True
-        )
-        getattr(self.robot, self.grasping_group_name).stop()
+        self.move_group_gripper.go([position, -position], wait=True)
+        self.move_group_gripper.stop()
 
     def close_gripper(self, delay=1.0):
         rospy.loginfo("Sending close gripper command")
@@ -419,8 +442,9 @@ class PickingObjectManager(object):
             self.bottle_name,
             body_pose,
             self.bottle_height,
-            self.bottle_radius,
+            self.bottle_radius_pre_picking,
         )
+        self.bottle_body_pose = body_pose
 
     def calculate_pre_and_post_points(self, point):
         pre_point = copy.deepcopy(point)
