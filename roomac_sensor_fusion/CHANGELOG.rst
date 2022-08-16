@@ -2,6 +2,13 @@
 Changelog for package roomac_sensor_fusion
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* Merge pull request `#55 <https://github.com/macstepien/roomac_ros/issues/55>`_ from macstepien/fetch-bottle-tests-and-improvements
+  New description and test improvements
+* Merge branch 'master' into new-description
+* Contributors: Maciej Stepien, Maciej Stępień
+
 1.10.3 (2022-07-16)
 -------------------
 
