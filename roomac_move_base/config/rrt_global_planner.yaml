@@ -1,0 +1,4 @@
+goal_tol: 0.05
+K_in: 4000
+d: 0.2
+viz_tree: true

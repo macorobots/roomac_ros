@@ -15,6 +15,18 @@
     <param name="base_global_planner" value="global_planner/GlobalPlanner" />
     <rosparam file="$(find roomac_move_base)/config/global_planner.yaml" command="load" ns="GlobalPlanner" />
     
+    <!-- <param name="base_global_planner" value="navfn/NavfnROS" />
+    <rosparam file="$(find roomac_move_base)/config/navfn_global_planner.yaml" command="load" ns="NavfnROS" /> -->
+    
+    <!-- <param name="base_global_planner" value="SBPLLatticePlanner" />
+    <rosparam file="$(find roomac_move_base)/config/sbpl_global_planner.yaml" subst_value="true" command="load" ns="SBPLLatticePlanner" /> -->
+
+    <!-- <param name="base_global_planner" value="rrt_star_global_planner/RRTStarPlanner"/>
+    <rosparam file="$(find roomac_move_base)/config/rrt_star_global_planner.yaml" command="load" ns="RRTStarPlanner" /> -->
+
+    <!-- <param name="base_global_planner" value="global_planner/RRTGlobalPlanner"/>
+    <rosparam file="$(find roomac_move_base)/config/rrt_global_planner.yaml" command="load" ns="RRTGlobalPlanner" /> -->
+
     <!-- Load common configuration files -->
     <rosparam file="$(find roomac_move_base)/config/move_base_params.yaml" command="load" />
 

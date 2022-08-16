@@ -1,0 +1,5 @@
+goal_tolerance: 0.05
+radius: 1.0
+epsilon: 0.2
+max_num_nodes: 1000
+min_num_nodes: 100
