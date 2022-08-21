@@ -2,6 +2,13 @@
 Changelog for package roomac_msgs
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* Merge branch 'master' into add-gripper-controller
+  Conflicts:
+  roomac_description/package.xml
+* Contributors: Maciej Stepien
+
 1.11.0 (2022-08-16)
 -------------------
 * Merge branch 'master' into new-description

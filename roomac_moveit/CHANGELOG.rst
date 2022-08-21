@@ -2,6 +2,15 @@
 Changelog for package roomac_moveit
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* Merge pull request `#56 <https://github.com/macstepien/roomac_ros/issues/56>`_ from macstepien/add-gripper-controller
+  Add gripper controller
+* Merge branch 'master' into add-gripper-controller
+  Conflicts:
+  roomac_description/package.xml
+* Contributors: Maciej Stepien, Maciej Stępień
+
 1.11.0 (2022-08-16)
 -------------------
 * Merge pull request `#55 <https://github.com/macstepien/roomac_ros/issues/55>`_ from macstepien/fetch-bottle-tests-and-improvements
