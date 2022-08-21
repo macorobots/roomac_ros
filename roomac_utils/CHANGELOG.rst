@@ -2,6 +2,11 @@
 Changelog for package roomac_utils
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+1.11.0 (2022-08-16)
+-------------------
+* Merge branch 'master' into new-description
+* Contributors: Maciej Stepien
+
 1.10.3 (2022-07-16)
 -------------------
 
