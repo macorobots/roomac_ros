@@ -2,8 +2,8 @@
 Changelog for package roomac_ar_tag
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+1.12.0 (2022-08-21)
+-------------------
 * Merge branch 'master' into add-gripper-controller
   Conflicts:
   roomac_description/package.xml
