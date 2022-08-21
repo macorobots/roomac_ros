@@ -9,14 +9,10 @@ from control_msgs.msg import (
     FollowJointTrajectoryFeedback,
 )
 
-from arm_controller import ArmController
 
-
-class ArmJointTrajectoryController(ArmController):
-    def __init__(self):
-        # python3
-        # super().__init__()
-        super(ArmJointTrajectoryController, self).__init__()
+class JointTrajectoryController:
+    def __init__(self, controller):
+        self._controller = controller
 
         self._action_server = actionlib.SimpleActionServer(
             "follow_joint_trajectory",
@@ -48,7 +44,7 @@ class ArmJointTrajectoryController(ArmController):
                 trajectory_point.time_from_start - last_time
             ).to_sec()
 
-            movement_time = self.go_to_point(
+            movement_time = self._controller.go_to_point(
                 goal.trajectory.joint_names,
                 trajectory_point.positions,
                 movement_time_from_msg,
@@ -74,9 +70,3 @@ class ArmJointTrajectoryController(ArmController):
         self._result.error_code = FollowJointTrajectoryResult.SUCCESSFUL
 
         self._action_server.set_succeeded(self._result)
-
-
-if __name__ == "__main__":
-    rospy.init_node("arm_controller")
-    controller = ArmJointTrajectoryController()
-    rospy.spin()

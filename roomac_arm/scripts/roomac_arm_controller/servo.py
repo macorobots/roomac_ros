@@ -1,21 +1,19 @@
 #!/usr/bin/env python
 
 import rospy
+
 from roomac_msgs.msg import DigitalServoCmd, AnalogServoCmd
 
 
 class Servo(object):
     def __init__(
         self,
-        name,
         zero_angle_signal,
         lower_signal_bound,
         upper_signal_bound,
         angle_to_signal_scale_factor,
         max_speed,
     ):
-        self._name = name
-
         self._zero_angle_signal = zero_angle_signal
         self._current_angle = None
 
@@ -56,7 +54,7 @@ class Servo(object):
 class AnalogServo(Servo):
     def __init__(
         self,
-        name,
+        command_topic_name,
         zero_angle_signal,
         lower_signal_bound,
         upper_signal_bound,
@@ -65,7 +63,6 @@ class AnalogServo(Servo):
         analog_update_delay,
     ):
         super(AnalogServo, self).__init__(
-            name,
             zero_angle_signal,
             lower_signal_bound,
             upper_signal_bound,
@@ -73,7 +70,7 @@ class AnalogServo(Servo):
             max_speed,
         )
         self._cmd_pub = rospy.Publisher(
-            self._name + "_cmd", AnalogServoCmd, queue_size=10
+            command_topic_name, AnalogServoCmd, queue_size=10
         )
 
         self._analog_update_delay = analog_update_delay
@@ -106,7 +103,7 @@ class AnalogServo(Servo):
 class DigitalServo(Servo):
     def __init__(
         self,
-        name,
+        command_topic_name,
         zero_angle_signal,
         lower_signal_bound,
         upper_signal_bound,
@@ -114,7 +111,6 @@ class DigitalServo(Servo):
         max_speed,
     ):
         super(DigitalServo, self).__init__(
-            name,
             zero_angle_signal,
             lower_signal_bound,
             upper_signal_bound,
@@ -123,7 +119,7 @@ class DigitalServo(Servo):
         )
 
         self._cmd_pub = rospy.Publisher(
-            self._name + "_cmd", DigitalServoCmd, queue_size=10
+            command_topic_name, DigitalServoCmd, queue_size=10
         )
 
     def execute_motion(self, new_angle, movement_duration):

@@ -14,7 +14,7 @@ class WheelJointPublisher:
         )
 
         self._joint_state_pub = rospy.Publisher(
-            "/arm_position_controller/joint_states_from_controller",
+            "~joint_states_wheels",
             JointState,
             queue_size=10,
         )

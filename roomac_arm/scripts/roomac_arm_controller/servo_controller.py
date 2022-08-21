@@ -5,38 +5,19 @@ import itertools
 import numpy as np
 
 import rospy
-from sensor_msgs.msg import JointState
 
 from dynamic_reconfigure.server import Server
+from sensor_msgs.msg import JointState
+
 from roomac_arm.cfg import ArmControllerConfig
 
-from servo_controller import AnalogServo, DigitalServo
 
+class ServoController:
+    def __init__(self, servos):
 
-class ArmController(object):
-    def __init__(self):
-        zero_angle_signal = rospy.get_param(
-            "~zero_angle_signal", [850, 320, 512, 1509, 1500, 650]
-        )
-        analog_lower_signal_bound = rospy.get_param("~analog_lower_signal_bound", 500)
-        analog_upper_signal_bound = rospy.get_param("~analog_upper_signal_bound", 2500)
-        analog_lower_signal_bound_wrist = rospy.get_param(
-            "~analog_lower_signal_bound_wrist", 600
-        )
-        analog_upper_signal_bound_wrist = rospy.get_param(
-            "~analog_upper_signal_bound_wrist", 2400
-        )
-        digital_lower_signal_bound = rospy.get_param("~digital_lower_signal_bound", 0)
-        digital_upper_signal_bound = rospy.get_param(
-            "~digital_upper_signal_bound", 1024
-        )
-        wrist_signal_zero_position = rospy.get_param(
-            "~wrist_signal_zero_position", 1509
-        )
-        wrist_signal_90_degrees = rospy.get_param("~wrist_signal_90_degrees", 697)
-        analog_update_delay = rospy.get_param("~analog_update_delay", 0.7)
+        self._servos = servos
+
         self._min_change_threshold = rospy.get_param("~min_change_threshold", 0.01)
-        max_speed = rospy.get_param("~max_speed", 0.005)
 
         self._interpolate_movement = rospy.get_param("~interpolate_movement", True)
         self._interpolation_frequency = rospy.get_param(
@@ -45,88 +26,6 @@ class ArmController(object):
         self._interpolation_duration_type = rospy.get_param(
             "~interpolation_duration_type", "exact"
         )
-
-        analog_scale_factor_wrist = (
-            wrist_signal_zero_position - wrist_signal_90_degrees
-        ) / (90.0 * math.pi / 180.0)
-        digital_scale_factor = (
-            digital_upper_signal_bound - digital_lower_signal_bound
-        ) / ((330.0 / 2.0) * math.pi / 180.0)
-        analog_scale_factor = (
-            analog_upper_signal_bound - analog_lower_signal_bound
-        ) / (180.0 * math.pi / 180.0)
-
-        self._servos = {}
-
-        initial_playtime = 255
-        initial_analog_speed = 2.0
-
-        self._servos["shoulder_pitch_right_joint"] = DigitalServo(
-            "shoulder_pan",
-            zero_angle_signal[0],
-            digital_lower_signal_bound,
-            digital_upper_signal_bound,
-            digital_scale_factor,
-            max_speed,
-        )
-        self._servos["shoulder_roll_right_joint"] = DigitalServo(
-            "shoulder_lift",
-            zero_angle_signal[1],
-            digital_lower_signal_bound,
-            digital_upper_signal_bound,
-            digital_scale_factor,
-            max_speed,
-        )
-        self._servos["elbow_right_joint"] = DigitalServo(
-            "elbow",
-            zero_angle_signal[2],
-            digital_lower_signal_bound,
-            digital_upper_signal_bound,
-            digital_scale_factor / 2.0,  # no gear reduction
-            max_speed,
-        )
-
-        self._servos["wrist_right_joint"] = AnalogServo(
-            "wrist",
-            zero_angle_signal[3],
-            analog_lower_signal_bound_wrist,
-            analog_upper_signal_bound_wrist,
-            analog_scale_factor_wrist,
-            max_speed,
-            analog_update_delay,
-        )
-        self._servos["gripper_twist_right_joint"] = AnalogServo(
-            "wrist_twist",
-            zero_angle_signal[4],
-            analog_lower_signal_bound,
-            analog_upper_signal_bound,
-            analog_scale_factor,
-            max_speed,
-            analog_update_delay,
-        )
-        self._servos["right_gripper_joint"] = AnalogServo(
-            "gripper",
-            zero_angle_signal[5],
-            analog_lower_signal_bound,
-            analog_upper_signal_bound,
-            analog_scale_factor,
-            max_speed,
-            analog_update_delay,
-        )
-
-        for x in [
-            "shoulder_pitch_right_joint",
-            "shoulder_roll_right_joint",
-            "elbow_right_joint",
-        ]:
-            self._servos[x].init_servo(0.0, initial_playtime)
-
-        for x in [
-            "wrist_right_joint",
-            "gripper_twist_right_joint",
-            "right_gripper_joint",
-        ]:
-            self._servos[x].init_servo(0.0, initial_analog_speed)
 
         self._publish_joint_states = rospy.get_param("~publish_joint_states", True)
         self._joint_state_pub = rospy.Publisher(
@@ -140,7 +39,12 @@ class ArmController(object):
     def go_to_point(self, joint_names, angles, duration=0.0):
         joint_names, angles = self._get_valid_joints(joint_names, angles)
 
+        if not joint_names:
+            rospy.logwarn("No valid joints found, aborting go_to_point execution")
+            return
+
         if not self._angle_change_above_min_threshold(joint_names, angles):
+            rospy.logwarn("Change below threshold")
             return
 
         min_movement_duration = self._calculate_min_movement_duration(
@@ -197,24 +101,6 @@ class ArmController(object):
             joint_state_msg.name = joint_names
             joint_state_msg.position = angles
             self._joint_state_pub.publish(joint_state_msg)
-
-        # TODO: refactor
-        # todo: change right gripper joint
-        for joint_name, angle in itertools.izip(joint_names, angles):
-            if joint_name == "right_gripper_joint":
-                joint_state_msg = JointState()
-                joint_state_msg.header.stamp = rospy.Time.now()
-                joint_state_msg.name = [
-                    "gripper_finger_l_right_joint",
-                ]
-                # Linear approximation using these two points
-                # 0.2 -> 0.005m
-                # 1.0 -> -0.0045m
-                m = -0.011875
-                b = 0.007375
-                dist = m * angle + b
-                joint_state_msg.position = [-dist]
-                self._joint_state_pub.publish(joint_state_msg)
 
         rospy.sleep(rospy.Duration(movement_duration))
 

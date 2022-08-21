@@ -18,3 +18,15 @@ base_link_frame: base_footprint
 gripper_frame: gripping_right_link
 grasping_group_name: hand
 home_position_target_name: Home
+
+opened_gripper_value: 0.0045
+closed_gripper_value: -0.013
+
+# Bottle size
+bottle_cap_height: 0.03
+bottle_cap_radius: 0.012
+
+# Lower than real height - otherwise it colides with table scene box and plan
+# to pick up bottle isn't good
+bottle_height: 0.1
+bottle_radius: 0.04

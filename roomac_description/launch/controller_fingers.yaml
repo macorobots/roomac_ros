@@ -43,7 +43,7 @@ roomac:
     action_monitor_rate: 10
     allow_partial_joints_goal: True
 
-  gripper_effort_controller:
+  gripper_controller:
     type: effort_controllers/JointGroupPositionController
     joints:
       # only left finger, right is mimicing

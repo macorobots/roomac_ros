@@ -1,14 +1,18 @@
 <launch>
-  <arg name="fake_joint_state_publisher" default="true"/>
+  <arg name="fake_joint_state_publisher" default="true" />
 
-  <node name="arm_joint_trajectory_controller" pkg="roomac_arm" type="arm_joint_trajectory_controller.py" 
-    output="screen" ns="arm_position_controller">
+  <node name="arm_joint_trajectory_controller" pkg="roomac_arm" type="arm_joint_trajectory_controller_node.py" output="screen" ns="arm_position_controller">
     <rosparam command="load" file="$(find roomac_arm)/config/arm_controller_config.yaml" />
   </node>
 
-  <include if="$(arg fake_joint_state_publisher)" file="$(find roomac_arm)/launch/fake_joint_state_publisher.launch"/>
+  <node name="gripper_joint_trajectory_controller" pkg="roomac_arm" type="gripper_joint_trajectory_controller_node.py" output="screen" ns="gripper_controller">
+    <rosparam command="load" file="$(find roomac_arm)/config/arm_controller_config.yaml" />
+    <remap from="/gripper_controller/gripper_cmd" to="/arm_position_controller/gripper_cmd" />
+  </node>
+
+  <include if="$(arg fake_joint_state_publisher)" file="$(find roomac_arm)/launch/fake_joint_state_publisher.launch" />
   <node unless="$(arg fake_joint_state_publisher)" name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher">
-    <rosparam param="source_list">["/arm_position_controller/joint_states_from_controller"]</rosparam>
+    <rosparam param="source_list">["/arm_position_controller/joint_states_arm_stub", "/wheel_joint_publisher/joint_states_wheels"]</rosparam>
     <param name="rate" type="double" value="10.0" />
   </node>
 </launch>
