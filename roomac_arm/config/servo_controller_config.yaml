@@ -1,0 +1,11 @@
+# Common parameters for arm and gripper controller
+
+min_change_threshold: 0.01 # [rad]
+
+analog_update_delay: 0.007 # [s]
+
+initial_angle: 0.0
+initial_digital_playtime: 255
+initial_analog_speed: 2.0
+
+publish_joint_states: false
