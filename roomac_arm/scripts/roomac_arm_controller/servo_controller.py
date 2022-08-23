@@ -99,6 +99,7 @@ class ServoController:
         )
         if time_to_finish_last_command > rospy.Duration(0):
             # wait time scaling isn't the best solution, but with it the movement is smoother
+            # todo: maybe change it to flat wait time
             rospy.sleep(
                 rospy.Duration(
                     time_to_finish_last_command.to_sec() * self._wait_time_scaling
