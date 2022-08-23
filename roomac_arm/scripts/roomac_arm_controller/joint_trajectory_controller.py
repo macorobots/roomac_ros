@@ -37,7 +37,7 @@ class JointTrajectoryController:
 
         last_time = rospy.Duration(0.0)
         for trajectory_point in goal.trajectory.points:
-            rospy.loginfo("Executing point " + str(i))
+            # rospy.loginfo("Executing point " + str(i))
             i += 1
 
             movement_time_from_msg = (
@@ -50,8 +50,8 @@ class JointTrajectoryController:
                 movement_time_from_msg,
             )
 
-            rospy.loginfo("Movement time from msg: " + str(movement_time_from_msg))
-            rospy.loginfo("Movement time used for execution: " + str(movement_time))
+            # rospy.loginfo("Movement time from msg: " + str(movement_time_from_msg))
+            # rospy.loginfo("Movement time used for execution: " + str(movement_time))
 
             last_time = trajectory_point.time_from_start
 

@@ -1,0 +1,39 @@
+planner_type: ARAPlanner
+# (string, default: "ARAPlanner")
+# Specifies which planner to use. It can either be "ARAPlanner" for ARA* or "ADPlanner" for AD*.
+
+allocated_time: 5
+# (double, default: 10)
+# The amount of time given to the planner to find a solution. If there is still time remaining after the planner finds its sub-optimal initial solution (specified by "initial_epsilon"), the planner will use up remaining time improving solution until it is optimal or until time runs out (which ever comes first).
+
+initial_epsilon: 3.0
+# (double, default: 3.0)
+# The value the heuristic is scaled by for the first search. This value must be greater or equal to 1. The larger this value is the faster the search tends to find a solution (likely sub-optimal if epsilon is larger than 1). After the first search, the planner will continue to reduce the epsilon value until it is 1 (optimal search).
+
+environment_type: XYThetaLattice
+# (string, default: "XYThetaLattice")
+# The type of environment being searched. Currently, XYThetaLattice is the only supported environment.
+
+forward_search: false
+# (bool, default: false)
+# The direction the search is done in. If you are using AD* you should use backward search for fast replanning times. For ARA* it doesn't matter too much which direction you use.
+
+primitive_filename: "$(find roomac_move_base)/config/pr2.mprim"
+# (string, default: "")
+# The path to a motion primitive file. This MUST be specified by the user for the planner to work. There is an example motion primitive file that can be used in matlab/mprim/pr2.mprim in the SBPL package. If you want to generate your own motion primitive file to match the kinematics of your robot or your map resolution, there is are several genmprim*.m scripts in matlab/mprim/ in the SBPL package to help you.
+
+force_scratch_limit: 500
+# (int, default: 500)
+# The parameter only matters if you are using AD*. If at least this many map cells have changed since the last plan was generated, the planner will not reuse previous search information and instead plan from scratch.
+
+nominalvel_mpersecs: 0.4
+# (double, default: 0.4)
+# The linear velocity of the robot in meters/sec
+
+timetoturn45degsinplace_secs: 0.6
+# (double, default: 0.6)
+# The time it takes the robot to turn 45 degrees in place in seconds.
+
+lethal_obstacle: 20
+# (unsigned char, default: 20)
+# The cost of an obstacle in the planner's version of the costmap. All other values in the costmap are scaled accordingly. The obstacle cost is the largest in the costmap2d so by setting this parameter to something below its obstacle thresh, we can get obstacle padding that is less harsh and more reasonable. This will make the planner more likely to choose to go through more narrow areas such as doorways.

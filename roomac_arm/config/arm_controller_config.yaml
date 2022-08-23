@@ -1,11 +1,4 @@
-min_change_threshold: 0.01 # [rad]
 max_speed: 0.6 # [rad/s]
-
-analog_update_delay: 0.007 # [s]
-
-initial_angle: 0.0
-initial_digital_playtime: 255
-initial_analog_speed: 2.0
 
 arm_controller:
   arm_servo_joints:
@@ -72,27 +65,6 @@ arm_controller:
     use_signal_bounds_for_scaling: true
     angle_diff: 180.0
 
-gripper_controller:
-  gripper_servo_joint: gripper_finger_l_right_joint
-  gripper_finger_l_right_joint:
-    servo_type: analog
-    command_topic_name: gripper_cmd
-
-    zero_angle_signal: 650
-    lower_signal_bound: 500
-    upper_signal_bound: 2500
-
-    use_signal_bounds_for_scaling: true
-    angle_diff: 180.0
-
-  # Linear approximate angle to finger distance using these two points
-  # 0.2rad -> 0.005m
-  # 1.0rad -> -0.0045m
-  gripper_angle_to_distance_a: -0.011875
-  gripper_angle_to_distance_b: 0.007375
-
-publish_joint_states: false
-
 interpolate_movement: true
 interpolation_frequency: 15.0
 
@@ -100,6 +72,3 @@ interpolation_frequency: 15.0
 # exact - movement duration will be exactly as requested, but interpolation frequency will vary
 # approximated - interpolation frequency will be exactly as requested, but movement duration will vary
 interpolation_duration_type: exact
-
-# Parmater for servo_joint_state_publisher_node
-joint_state_publishing_frequency: 10.0

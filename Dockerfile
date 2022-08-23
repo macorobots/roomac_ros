@@ -21,6 +21,7 @@ RUN sudo apt-get update && \
 COPY --chown=${user}:${user} ./ /home/$user/catkin_ws/src/roomac_ros
 
 # todo build teb not in release
+# todo add custom stvl fork
 RUN git clone https://github.com/TAMS-Group/bio_ik.git catkin_ws/src/bio_ik && \
     git clone https://github.com/aws-robotics/aws-robomaker-small-house-world.git catkin_ws/src/aws-robomaker-small-house-world && \
     git clone https://github.com/JenniferBuehler/gazebo-pkgs.git catkin_ws/src/gazebo-pkgs && \

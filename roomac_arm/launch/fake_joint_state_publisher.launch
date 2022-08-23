@@ -1,6 +1,9 @@
 <launch>
   <node name="servo_joint_state_publisher" pkg="roomac_arm" type="servo_joint_state_publisher_node.py" output="log" ns="arm_position_controller">
     <rosparam command="load" file="$(find roomac_arm)/config/arm_controller_config.yaml" />
+    <rosparam command="load" file="$(find roomac_arm)/config/gripper_controller_config.yaml" />
+    
+    <param name="joint_state_publishing_frequency" type="double" value="10.0" />
   </node>
 
   <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher">
