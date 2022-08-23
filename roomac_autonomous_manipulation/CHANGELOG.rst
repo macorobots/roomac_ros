@@ -2,6 +2,12 @@
 Changelog for package roomac_autonomous_manipulation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* Merge pull request `#57 <https://github.com/macstepien/roomac_ros/issues/57>`_ from macstepien/test-improvements
+  Test improvements
+* Contributors: Maciej Stępień
+
 1.12.0 (2022-08-21)
 -------------------
 * Merge pull request `#56 <https://github.com/macstepien/roomac_ros/issues/56>`_ from macstepien/add-gripper-controller

@@ -2,6 +2,9 @@
 Changelog for package roomac_moveit
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+
 1.12.0 (2022-08-21)
 -------------------
 * Merge pull request `#56 <https://github.com/macstepien/roomac_ros/issues/56>`_ from macstepien/add-gripper-controller

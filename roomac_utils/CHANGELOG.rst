@@ -2,6 +2,9 @@
 Changelog for package roomac_utils
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+
 1.12.0 (2022-08-21)
 -------------------
 * Merge branch 'master' into add-gripper-controller
