@@ -38,6 +38,8 @@ from roomac_utils.action_procedure_executor import (
     GoalState,
 )
 
+import utils
+
 
 class PickingObjectManager(object):
     def __init__(self):
@@ -393,20 +395,11 @@ class PickingObjectManager(object):
             self.move_group.stop()
             self.move_group.clear_pose_targets()
 
-    def get_perpendicular_orientation(self):
-        orientation = Quaternion()
-        quat = quaternion_from_euler(-math.pi / 2, -math.pi / 2, math.pi)
-        orientation.x = quat[0]
-        orientation.y = quat[1]
-        orientation.z = quat[2]
-        orientation.w = quat[3]
-        return orientation
-
     def go_to_point(self, point):
         self.move_group.set_start_state_to_current_state()
 
         pose_goal = geometry_msgs.msg.Pose()
-        pose_goal.orientation = self.get_perpendicular_orientation()
+        pose_goal.orientation = utils.get_perpendicular_orientation()
         pose_goal.position = point
 
         # self.move_group.set_pose_target(pose_goal)
@@ -482,7 +475,7 @@ class PickingObjectManager(object):
             object_and_table.object_and_table.object.mass_center
         )
 
-        object_point_transformed = self.transform_point(
+        object_point_transformed = utils.transform_point(
             object_point_stamped, self.base_link_frame
         )
 
@@ -492,22 +485,6 @@ class PickingObjectManager(object):
 
         return object_point_transformed
 
-    def transform_point(self, point, target_frame):
-        listener = tf.TransformListener()
-        rate = rospy.Rate(10.0)
-
-        while not rospy.is_shutdown():
-            try:
-                point_transformed = listener.transformPoint(target_frame, point)
-                return point_transformed
-            except (
-                tf.LookupException,
-                tf.ConnectivityException,
-                tf.ExtrapolationException,
-            ) as err:
-                rospy.logerr(err)
-            rate.sleep()
-
     def print_error(self, goal_point):
         tip_point = PointStamped()
         tip_point.header.stamp = rospy.Time(0)
@@ -516,7 +493,7 @@ class PickingObjectManager(object):
         tip_point.point.y = 0.0
         tip_point.point.z = 0.0
 
-        gripper_point_transformed = self.transform_point(
+        gripper_point_transformed = utils.transform_point(
             tip_point, self.base_link_frame
         )
 
