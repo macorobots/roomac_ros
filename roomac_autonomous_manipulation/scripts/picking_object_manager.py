@@ -25,7 +25,7 @@ import picking_object_controller
 
 class PickingObjectManager(object):
     def __init__(self):
-        self._controller = picking_object_controller.PickingObjectManager()
+        self._controller = picking_object_controller.PickingObjectController()
 
         # Instead of retries it would be probably better to change planning attempts in moveit
         # as they are main reason

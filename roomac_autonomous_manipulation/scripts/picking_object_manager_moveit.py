@@ -92,7 +92,7 @@ class PickingObjectManagerMoveIt(object):
         self._scene.remove_world_object(object_name)
 
     def remove_table_from_scene(self, table_name):
-        self.scene.remove_world_object(table_name)
+        self._scene.remove_world_object(table_name)
 
     def add_cylinder_to_scene(self, frame, point, name, height, radius):
         body_pose = PoseStamped()
@@ -111,7 +111,7 @@ class PickingObjectManagerMoveIt(object):
     def add_box_to_scene(
         self, table_name, detected_table_body_pose, detected_table_body_size
     ):
-        self.scene.add_box(
+        self._scene.add_box(
             table_name, detected_table_body_pose, detected_table_body_size
         )
 
