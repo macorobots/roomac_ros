@@ -1,10 +1,4 @@
 <launch>
-  <include file="$(find roomac_autonomous_manipulation)/launch/real_ar_object_detection.launch"/>
-
-  <include file="$(find roomac_moveit)/launch/roomac.launch"/>
-
-  <!-- After adding new description should no longer be needed -->
-  <!-- <node name="add_robot_body_collision_to_scene" pkg="roomac_autonomous_manipulation" type="add_robot_body_collision_to_scene.py" output="screen"/> -->
-
-
+  <include file="$(find roomac_autonomous_manipulation)/launch/real_ar_object_detection.launch" />
+  <include file="$(find roomac_moveit)/launch/roomac.launch" />
 </launch>

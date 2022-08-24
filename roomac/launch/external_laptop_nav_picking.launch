@@ -1,17 +1,16 @@
 <launch>
   <arg name="picking_correction_enabled" default="false" />
 
-  <include file="$(find roomac_autonomous_manipulation)/launch/real_picking.launch"/>
+  <include file="$(find roomac_autonomous_manipulation)/launch/real_picking.launch" />
 
   <include file="$(find roomac_autonomous_manipulation)/launch/picking_object_manager.launch">
-    <arg name="simulation" value="false"/>
+    <arg name="simulation" value="false" />
   </include>
-  
+
   <include if="$(arg picking_correction_enabled)" file="$(find roomac_autonomous_manipulation)/launch/picking_correction.launch" />
 
-  <node name="add_table_body_collision_to_scene" pkg="roomac_autonomous_manipulation" type="add_table_body_collision_to_scene.py" output="screen"/>
-  <include file="$(find roomac_autonomous_manipulation)/launch/object_detection.launch"/>
+  <include file="$(find roomac_autonomous_manipulation)/launch/object_detection.launch" />
 
   <arg name="rvizconfig" default="$(find roomac_move_base)/rviz/rviz_move_base.rviz" />
-  <node  name="rviz_move_base" pkg="rviz" type="rviz" args="-d $(arg rvizconfig)" />
+  <node name="rviz_move_base" pkg="rviz" type="rviz" args="-d $(arg rvizconfig)" />
 </launch>
