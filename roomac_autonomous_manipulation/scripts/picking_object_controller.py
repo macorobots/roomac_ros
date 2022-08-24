@@ -4,7 +4,7 @@ import copy
 
 import rospy
 
-from geometry_msgs.msg import PointStamped, Point
+from geometry_msgs.msg import PointStamped, Point, PoseStamped
 
 from actionlib_msgs.msg import GoalStatus
 
@@ -64,6 +64,9 @@ class PickingObjectController(object):
 
         self._bottle_name = "bottle"
         self._bottle_cap_name = "bottle_cap"
+        self._table_name = "table"
+
+        self._safety_margin_table = rospy.get_param("~safety_margin_table", 0.05)
 
     # ----- OTHER -----
     def set_current_object_point(self, object_point):
@@ -127,6 +130,45 @@ class PickingObjectController(object):
         self._moveit_manager.return_to_home_position()
 
     # ----- SCENE MODIFICATION -----
+
+    def add_detected_table_to_scene(self, object_and_table):
+        # Remove leftover objects from a previous run
+        self._moveit_manager.remove_table_from_scene(self._table_name)
+
+        detected_table_min_point = (
+            object_and_table.object_and_table.table.min_point_bounding_box
+        )
+        detected_table_max_point = (
+            object_and_table.object_and_table.table.max_point_bounding_box
+        )
+
+        detected_table_body_pose = PoseStamped()
+        detected_table_body_pose.header = object_and_table.object_and_table.header
+        detected_table_body_pose.pose.position.x = (
+            detected_table_max_point.x + detected_table_min_point.x
+        ) / 2.0
+        detected_table_body_pose.pose.position.y = (
+            detected_table_max_point.y + detected_table_min_point.y
+        ) / 2.0
+        detected_table_body_pose.pose.position.z = (
+            detected_table_max_point.z + detected_table_min_point.z
+        ) / 2.0
+
+        detected_table_body_base_size = [
+            detected_table_max_point.x - detected_table_min_point.x,
+            detected_table_max_point.y - detected_table_min_point.y,
+            detected_table_max_point.z - detected_table_min_point.z,
+        ]
+
+        detected_table_body_size = [
+            detected_table_body_base_size[0] + 2 * self._safety_margin_table,
+            detected_table_body_base_size[1] + 2 * self._safety_margin_table,
+            detected_table_body_base_size[2] + 2 * self._safety_margin_table,
+        ]
+
+        self._moveit_manager.add_box_to_scene(
+            self._table_name, detected_table_body_pose, detected_table_body_size
+        )
 
     def remove_object_from_scene(self):
         self._moveit_manager.remove_object_from_scene(

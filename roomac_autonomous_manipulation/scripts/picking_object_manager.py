@@ -116,21 +116,17 @@ class PickingObjectManager(object):
         )
 
         self._clear_octomap_srv = rospy.ServiceProxy("/clear_octomap", Empty)
-        self._add_detected_table_to_scene_srv = rospy.ServiceProxy(
-            "/add_detected_table_to_scene", Trigger
-        )
         self._detect_table_and_object_srv = rospy.ServiceProxy(
             "/detect_table_and_object", DetectObjectAndTable
         )
 
         self._clear_octomap_srv.wait_for_service()
-        self._add_detected_table_to_scene_srv.wait_for_service()
         self._detect_table_and_object_srv.wait_for_service()
 
     def _prepare_picking(self):
         self._controller.remove_object_from_scene()
 
-        object_point_stamped = self._get_detected_object_point()
+        object_point_stamped, object_and_table = self._get_detected_object_point()
 
         object_point_transformed = utils.transform_point(
             object_point_stamped, self._controller.get_base_link_frame()
@@ -139,10 +135,11 @@ class PickingObjectManager(object):
         self._controller.set_current_object_point(object_point_transformed.point)
         self._controller.add_current_object_to_scene()
 
+        self._controller.add_detected_table_to_scene(object_and_table)
+
         # Clear octomap after adding objects to force clearing object points
         # This especially caused problems in simulation - object points weren't cleared and picking failed
         self._clear_octomap_srv.call()
-        self._add_detected_table_to_scene_srv.call(TriggerRequest())
 
     def _get_detected_object_point(self):
         object_and_table = self._detect_table_and_object_srv.call()
@@ -156,7 +153,7 @@ class PickingObjectManager(object):
             object_and_table.object_and_table.object.mass_center
         )
 
-        return object_point_stamped
+        return object_point_stamped, object_and_table
 
     def _return_to_home_position_cb(self, req):
         self._controller.return_to_home_position()
