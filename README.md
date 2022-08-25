@@ -84,7 +84,7 @@ goal: {}"
 ```
 And to return to home position:
 ```
-rosservice call /set_home_arm
+rosservice call /home_arm
 ```
 
 ### Real combined picking and autonomous navigation
@@ -131,7 +131,7 @@ goal_id:
     nsecs: 0
   id: ''
 goal: {}" 
-rosservice call /set_home_arm
+rosservice call /home_arm
 ```
 Services combined (go to table, pick object, go to home position):
 ```
@@ -212,7 +212,7 @@ roslaunch roomac external_laptop_test_arm_precision.launch
 Services:
 ```
 rosservice call /go_to_test_point
-rosservice call /set_home_arm
+rosservice call /home_arm
 ```
 
 #### Simulation

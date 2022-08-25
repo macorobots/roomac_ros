@@ -108,8 +108,8 @@ class PickingObjectManager(object):
             "close_gripper", Trigger, self._close_gripper_cb
         )
 
-        self._set_home_arm_srv = rospy.Service(
-            "set_home_arm", Trigger, self._return_to_home_position_cb
+        self._home_arm_srv = rospy.Service(
+            "home_arm", Trigger, self._return_to_home_position_cb
         )
         self._remove_object_from_scene_srv = rospy.Service(
             "remove_object_from_scene", Trigger, self._remove_object_from_scene_cb
