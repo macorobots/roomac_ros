@@ -33,3 +33,5 @@ bottle_cap_radius: 0.015
 bottle_height: 0.1
 bottle_radius_pre_picking: 0.06
 bottle_radius_post_picking: 0.03
+
+safety_margin_table: 0.05
