@@ -2,6 +2,9 @@
 Changelog for package roomac_arm
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+
 1.12.1 (2022-08-23)
 -------------------
 * Merge pull request `#57 <https://github.com/macstepien/roomac_ros/issues/57>`_ from macstepien/test-improvements
