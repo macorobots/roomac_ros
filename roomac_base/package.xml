@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <package format="2">
   <name>roomac_base</name>
-  <version>1.12.1</version>
+  <version>1.12.2</version>
   <description>The roomac_base package</description>
 
   <!-- One maintainer tag required, multiple allowed, one person per tag -->
