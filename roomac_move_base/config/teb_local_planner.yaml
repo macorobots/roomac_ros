@@ -62,11 +62,11 @@ theta_stopped_vel: 0.1
 
 #! Trajectory Configuration Parameters
 
-dt_ref: 0.16
+dt_ref: 0.22
 # (double, default: 0.3)
 # Desired temporal resolution of the trajectory (the trajectory is not fixed to dt_ref since the temporal resolution is part of the optimization, but the trajectory will be resized between iterations if dt_ref +-dt_hysteresis is violated. 
 
-dt_hysteresis: 0.032
+dt_hysteresis: 0.044
 # (double, default: 0.1)
 # Hysteresis for automatic resizing depending on the current temporal resolution, usually approx. 10% of dt_ref is recommended 
 
