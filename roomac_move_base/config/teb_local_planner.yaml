@@ -123,7 +123,7 @@ control_look_ahead_poses: 6
 # Important - it allowed smoother execution without stops
 # I think that when max velocities are higher it should also be increased
 
-prevent_look_ahead_poses_near_goal: 0
+prevent_look_ahead_poses_near_goal: 1
 # (int, default: 0)
 # Prevents control_look_ahead_poses to look within this many poses of the goal in order to prevent overshoot & oscillation when xy_goal_tolerance is very small
 
