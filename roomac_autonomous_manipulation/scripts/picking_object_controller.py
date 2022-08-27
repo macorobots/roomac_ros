@@ -62,7 +62,8 @@ class PickingObjectController(object):
 
         self._current_object_point = None
 
-        self._bottle_name = "bottle"
+        self._bottle_pre_picking_name = "bottle_with_safety_margin"
+        self._bottle_post_picking_name = "bottle"
         self._bottle_cap_name = "bottle_cap"
         self._table_name = "table"
 
@@ -172,7 +173,10 @@ class PickingObjectController(object):
 
     def remove_object_from_scene(self):
         self._moveit_manager.remove_object_from_scene(
-            self._bottle_name, self._gripper_frame
+            self._bottle_pre_picking_name, self._gripper_frame
+        )
+        self._moveit_manager.remove_object_from_scene(
+            self._bottle_post_picking_name, self._gripper_frame
         )
         self._moveit_manager.remove_object_from_scene(
             self._bottle_cap_name, self._gripper_frame
@@ -199,27 +203,29 @@ class PickingObjectController(object):
         self._moveit_manager.add_cylinder_to_scene(
             self._base_link_frame,
             object_point,
-            self._bottle_name,
+            self._bottle_pre_picking_name,
             self._bottle_height,
             self._bottle_radius_pre_picking,
         )
 
     def attach_object(self):
-        self._moveit_manager.remove_object_from_scene(
-            self._bottle_name, self._gripper_frame
-        )
         object_point = copy.deepcopy(self._current_object_point)
         object_point.z -= (self._bottle_cap_height + self._bottle_height) / 2.0
         self._moveit_manager.add_cylinder_to_scene(
             self._base_link_frame,
             object_point,
-            self._bottle_name,
+            self._bottle_post_picking_name,
             self._bottle_height,
             self._bottle_radius_post_picking,
         )
+        self._moveit_manager.remove_object_from_scene(
+            self._bottle_pre_picking_name, self._gripper_frame
+        )
 
-        self._moveit_manager.attach_object(self._bottle_name, self._gripper_frame)
         self._moveit_manager.attach_object(self._bottle_cap_name, self._gripper_frame)
+        self._moveit_manager.attach_object(
+            self._bottle_post_picking_name, self._gripper_frame
+        )
 
     # ----- MOVEIT EXECUTION -----
 
