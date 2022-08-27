@@ -80,8 +80,8 @@
 
 <link name="camera_link"/>
 <joint name="kinect_joint" type="fixed">
-  <!-- 0.03 comes from calibration - ground was slightly tilted and I calibrated it in rviz to be parallel  -->
-  <origin rpy="0 ${(31.513/180.)*pi - 0.03} 0" xyz="-0.108561 0.039543 0.467024"/>
+  <!-- 0.045 comes from calibration - ground was slightly tilted and I calibrated it in rviz to be parallel  -->
+  <origin rpy="0 ${(31.513/180.)*pi - 0.045} 0" xyz="-0.108561 0.039543 0.467024"/>
   <parent link="base_link"/>
   <child link="camera_link"/>
 </joint>
