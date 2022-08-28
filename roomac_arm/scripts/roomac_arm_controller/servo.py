@@ -69,8 +69,11 @@ class AnalogServo(Servo):
             angle_to_signal_scale_factor,
             max_speed,
         )
+        # latching is necessary to ensure that homming will be performed on the start
+        # todo: instead of latching it will be safer to implement eg homing service in
+        # the upper microcontroller
         self._cmd_pub = rospy.Publisher(
-            command_topic_name, AnalogServoCmd, queue_size=10
+            command_topic_name, AnalogServoCmd, queue_size=10, latch=True
         )
 
         self._analog_update_delay = analog_update_delay
@@ -118,8 +121,11 @@ class DigitalServo(Servo):
             max_speed,
         )
 
+        # latching is necessary to ensure that homming will be performed on the start
+        # todo: instead of latching it will be safer to implement eg homing service in
+        # the upper microcontroller
         self._cmd_pub = rospy.Publisher(
-            command_topic_name, DigitalServoCmd, queue_size=10
+            command_topic_name, DigitalServoCmd, queue_size=10, latch=True
         )
 
     def execute_motion(self, new_angle, movement_duration):

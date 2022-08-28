@@ -15,6 +15,7 @@
     /move_base_node/local_costmap/rgbd_obstacle_layer/voxel_grid
     /move_base_simple/goal
     /rtabmap/cloud_map
+    /rtabmap/cloud_obstacles
     /rtabmap/octomap_grid
     /rtabmap/octomap_grid_updates
     /tf

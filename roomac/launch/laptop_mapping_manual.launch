@@ -4,7 +4,13 @@
 
   <include file="$(find roomac_rtabmap)/launch/rtabmap_fusion.launch" />
   <include file="$(find roomac_kinect)/launch/kinect.launch" />
-  <include file="$(find roomac_sensor_fusion)/launch/robot_localization.launch"/>
-  <include file="$(find roomac)/launch/ros_mobile.launch"/>
-  <include file="$(find roomac_base)/launch/serial.launch"/>
+  <include file="$(find roomac_sensor_fusion)/launch/robot_localization.launch" />
+  <include file="$(find roomac)/launch/ros_mobile.launch" />
+  <include file="$(find roomac_base)/launch/serial.launch" />
+
+  <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher">
+    <rosparam param="source_list">["/arm_position_controller/joint_states_arm_stub", "/wheel_joint_publisher/joint_states_wheels"]</rosparam>
+    <param name="rate" type="double" value="10.0" />
+  </node>
+
 </launch>

@@ -1,6 +1,6 @@
 # Common parameters for arm and gripper controller
 
-min_change_threshold: 0.01 # [rad]
+min_change_threshold: 0.001 # [rad]
 
 analog_update_delay: 0.007 # [s]
 

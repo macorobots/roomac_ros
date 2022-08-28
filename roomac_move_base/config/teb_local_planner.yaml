@@ -62,11 +62,11 @@ theta_stopped_vel: 0.1
 
 #! Trajectory Configuration Parameters
 
-dt_ref: 0.16
+dt_ref: 0.22
 # (double, default: 0.3)
 # Desired temporal resolution of the trajectory (the trajectory is not fixed to dt_ref since the temporal resolution is part of the optimization, but the trajectory will be resized between iterations if dt_ref +-dt_hysteresis is violated. 
 
-dt_hysteresis: 0.032
+dt_hysteresis: 0.044
 # (double, default: 0.1)
 # Hysteresis for automatic resizing depending on the current temporal resolution, usually approx. 10% of dt_ref is recommended 
 
@@ -86,9 +86,10 @@ max_global_plan_lookahead_dist: 1.2
 # (double, default: 3.0)
 # Specify the maximum length (cumulative Euclidean distances) of the subset of the global plan taken into account for optimization. The actual length is than determined by the logical conjunction of the local costmap size and this maximum bound. Set to zero or negative in order to deactivate this limitation. 
 
-force_reinit_new_goal_dist: 0.001
+force_reinit_new_goal_dist: 1.0
 # (double, default: 1.0)
 # Reinitialize the trajectory if a previous goal is updated with a separation of more than the specified value in meters (skip hot-starting) 
+# Observation: it doesn't affect only when new goal is set, but it appears that when local goal of teb (sampled from global path) moves along the path. When I set it to really low value (0.001) often path was reinitialized when robot was moving to goal, which resulted in worse performance, as after some time local plan becomes better (it is optimized).
 
 feasibility_check_no_poses: 4
 # (int, default: 4)
@@ -122,7 +123,7 @@ control_look_ahead_poses: 6
 # Important - it allowed smoother execution without stops
 # I think that when max velocities are higher it should also be increased
 
-prevent_look_ahead_poses_near_goal: 0
+prevent_look_ahead_poses_near_goal: 1
 # (int, default: 0)
 # Prevents control_look_ahead_poses to look within this many poses of the goal in order to prevent overshoot & oscillation when xy_goal_tolerance is very small
 
