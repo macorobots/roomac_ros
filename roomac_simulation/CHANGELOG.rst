@@ -2,6 +2,9 @@
 Changelog for package roomac_simulation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+
 1.12.2 (2022-08-25)
 -------------------
 * Merge pull request `#58 <https://github.com/macstepien/roomac_ros/issues/58>`_ from macstepien/pickin-manager-refactor

@@ -2,6 +2,12 @@
 Changelog for package roomac
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* Merge pull request `#59 <https://github.com/macstepien/roomac_ros/issues/59>`_ from macstepien/fetch-bottle-tests
+  Fetch bottle test improvements
+* Contributors: Maciej Stępień
+
 1.12.2 (2022-08-25)
 -------------------
 * Merge pull request `#58 <https://github.com/macstepien/roomac_ros/issues/58>`_ from macstepien/pickin-manager-refactor
