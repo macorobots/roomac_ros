@@ -4,5 +4,3 @@ project(roomac_simulation)
 find_package(catkin REQUIRED)
 
 catkin_package()
-
-include_directories()

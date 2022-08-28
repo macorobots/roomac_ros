@@ -4,5 +4,3 @@ project(roomac_cartographer)
 find_package(catkin REQUIRED)
 
 catkin_package()
-
-include_directories()

@@ -10,8 +10,6 @@ generate_dynamic_reconfigure_options(
 
 catkin_package()
 
-include_directories()
-
 if(CATKIN_ENABLE_TESTING)
   find_package(rostest REQUIRED)
   add_rostest(test/pick_and_bring.test.launch)

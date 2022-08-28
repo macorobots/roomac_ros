@@ -4,5 +4,3 @@ project(roomac_rtabmap)
 find_package(catkin REQUIRED)
 
 catkin_package()
-
-include_directories()
