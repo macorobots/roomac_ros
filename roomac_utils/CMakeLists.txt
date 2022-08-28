@@ -1,5 +1,4 @@
-# todo: diffferent version?
-cmake_minimum_required(VERSION 3.0.2)
+cmake_minimum_required(VERSION 3.1.3)
 project(roomac_utils)
 
 find_package(catkin REQUIRED COMPONENTS

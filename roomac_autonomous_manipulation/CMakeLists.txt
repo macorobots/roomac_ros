@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.0.2)
+cmake_minimum_required(VERSION 3.1.3)
 project(roomac_autonomous_manipulation)
 
 find_package(catkin REQUIRED
