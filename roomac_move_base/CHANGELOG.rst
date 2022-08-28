@@ -2,8 +2,8 @@
 Changelog for package roomac_move_base
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+1.12.3 (2022-08-28)
+-------------------
 * Merge pull request `#59 <https://github.com/macstepien/roomac_ros/issues/59>`_ from macstepien/fetch-bottle-tests
   Fetch bottle test improvements
 * Contributors: Maciej Stępień
