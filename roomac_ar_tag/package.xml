@@ -14,5 +14,7 @@
 
   <buildtool_depend>catkin</buildtool_depend>
 
+  <exec_depend>rospy</exec_depend>
+
   <exec_depend>ar_track_alvar</exec_depend>
 </package>

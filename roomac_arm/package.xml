@@ -16,9 +16,11 @@
 
   <depend>dynamic_reconfigure</depend>
 
-  <exec_depend>joint_state_publisher_gui</exec_depend>
+  <exec_depend>rospy</exec_depend>
+
   <exec_depend>rosserial_python</exec_depend>
-  <exec_depend>robot_state_publisher</exec_depend>
+  <exec_depend>joint_state_publisher_gui</exec_depend>
   <exec_depend>joint_state_publisher</exec_depend>
+  <exec_depend>robot_state_publisher</exec_depend>
   <exec_depend>roomac_kinect</exec_depend>
 </package>

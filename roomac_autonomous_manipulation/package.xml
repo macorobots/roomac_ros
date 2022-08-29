@@ -19,5 +19,8 @@
 
   <depend>dynamic_reconfigure</depend>
 
+  <depend>roscpp</depend>
+  <exec_depend>rospy</exec_depend>
+
   <depend>roomac_msgs</depend>
 </package>

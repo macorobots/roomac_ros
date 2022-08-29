@@ -14,6 +14,8 @@
 
   <buildtool_depend>catkin</buildtool_depend>
 
+  <exec_depend>rospy</exec_depend>
+
   <exec_depend>cartographer_ros</exec_depend>
   <exec_depend>cartographer_rviz</exec_depend>
 </package>
