@@ -14,9 +14,22 @@
 
   <buildtool_depend>catkin</buildtool_depend>
 
-  <exec_depend>roomac_arm</exec_depend>
-  <exec_depend>roomac_base</exec_depend>
   <depend>dynamic_reconfigure</depend>
+
+  <exec_depend>rospy</exec_depend>
+
+  <exec_depend>roomac_ar_tag</exec_depend>
+  <exec_depend>roomac_arm</exec_depend>
+  <exec_depend>roomac_autonomous_manipulation</exec_depend>
+  <exec_depend>roomac_base</exec_depend>
+  <exec_depend>roomac_description</exec_depend>
+  <exec_depend>roomac_kinect</exec_depend>
+  <exec_depend>roomac_move_base</exec_depend>
+  <exec_depend>roomac_moveit</exec_depend>
+  <exec_depend>roomac_msgs</exec_depend>
+  <exec_depend>roomac_rtabmap</exec_depend>
+  <exec_depend>roomac_sensor_fusion</exec_depend>
+  <exec_depend>roomac_utils</exec_depend>
 
   <test_depend>rostest</test_depend>
 </package>
