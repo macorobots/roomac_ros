@@ -1,0 +1,12 @@
+<launch>
+  <arg name="picking_correction_enabled" default="false" />
+  <arg name="simulation" default="false" />
+
+  <include file="$(find roomac_autonomous_manipulation)/launch/picking_object_manager.launch">
+    <arg name="simulation" value="false" />
+  </include>
+
+  <include if="$(arg picking_correction_enabled)" file="$(find roomac_autonomous_manipulation)/launch/picking_correction.launch" />
+
+  <include file="$(find roomac_autonomous_manipulation)/launch/object_detection.launch" />
+</launch>

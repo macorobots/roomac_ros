@@ -14,14 +14,14 @@
 <!-- ARtag -->
   <!-- Difference in kinect frames (real vs simulation), so parallel isn't working correctly.
   There is no need for it though, in simulation detection accuracy is very good -->
-  <include file="$(find roomac_ar_tag)/launch/ar_tag.launch" />
+  <include file="$(find roomac_ar_tag)/launch/roomac_ar_tag.launch" />
 
 <!-- MoveIt -->
-  <include file="$(find roomac_moveit)/launch/roomac_simulation.launch" />
+  <include file="$(find roomac_moveit)/launch/roomac_moveit_simulation.launch" />
 
 <!-- RViz -->
   <include file="$(find roomac_moveit)/launch/moveit_rviz.launch">
-    <arg name="rviz_config" value="$(find roomac_moveit)/launch/moveit.rviz" />
+    <arg name="rviz_config" value="$(find roomac_moveit)/rviz/moveit.rviz" />
     <arg name="debug" value="false" />
   </include>
 

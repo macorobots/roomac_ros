@@ -23,10 +23,10 @@
 <!-- ARtag -->
   <!-- Difference in kinect frames (real vs simulation), so parallel isn't working correctly.
   There is no need for it though, in simulation detection accuracy is very good -->
-  <include file="$(find roomac_ar_tag)/launch/ar_tag.launch" />
+  <include file="$(find roomac_ar_tag)/launch/roomac_ar_tag.launch" />
 
 <!-- Rtabmap -->
-  <include file="$(find roomac_rtabmap)/launch/rtabmap_localization_fusion.launch">
+  <include file="$(find roomac_rtabmap)/launch/rtabmap_localization.launch">
     <arg name="rgb_image_topic" value="/camera/color/image_raw" />
     <arg name="depth_image_topic" value="/camera/depth/image_raw" />
     <arg name="rgb_camera_info_topic" value="/camera/color/camera_info" />
@@ -34,7 +34,7 @@
   </include>
 
 <!-- Move base -->
-  <include file="$(find roomac_move_base)/launch/move_base_fusion.launch" />
+  <include file="$(find roomac_move_base)/launch/move_base.launch" />
 
 <!-- Robot localization -->
   <node pkg="robot_localization" type="ekf_localization_node" name="ekf_se" clear_params="true">
@@ -42,11 +42,11 @@
   </node>
 
 <!-- MoveIt -->
-  <include file="$(find roomac_moveit)/launch/roomac_simulation.launch" />
+  <include file="$(find roomac_moveit)/launch/roomac_moveit_simulation.launch" />
 
 <!-- RViz -->
   <include if="$(arg gui)" file="$(find roomac_moveit)/launch/moveit_rviz.launch">
-    <arg name="rviz_config" value="$(find roomac_moveit)/launch/moveit.rviz" />
+    <arg name="rviz_config" value="$(find roomac_moveit)/rviz/moveit.rviz" />
     <arg name="debug" value="false" />
   </include>
 

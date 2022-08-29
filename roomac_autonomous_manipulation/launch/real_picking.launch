@@ -1,4 +1,0 @@
-<launch>
-  <include file="$(find roomac_autonomous_manipulation)/launch/real_ar_object_detection.launch" />
-  <include file="$(find roomac_moveit)/launch/roomac.launch" />
-</launch>

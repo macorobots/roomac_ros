@@ -16,8 +16,15 @@
     </node>
 
     <node name="rtabmap" pkg="rtabmap_ros" type="rtabmap" output="screen" args="--delete_db_on_start">
-      <remap from="odom" to="/odom" />
+      <param name="database_path" type="string" value="/home/roomac/roomac_data/rtabmap.db" />
+
+      <remap from="odom" to="/odometry/filtered" />
       <param name="queue_size" type="int" value="10" />
+
+      <!-- Set parameters for mapping just in case they were changed in localization and rosparam server wasn't reloaded -->
+      <param name="Mem/IncrementalMemory" type="string" value="true" />
+      <param name="Mem/InitWMWithAllNodes" type="string" value="false" />
+      <param name="RGBD/StartAtOrigin" type="bool" value="false" />
 
       <rosparam file="$(find roomac_rtabmap)/config/rtabmap.yaml" command="load" />
     </node>

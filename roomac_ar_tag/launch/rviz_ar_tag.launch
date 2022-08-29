@@ -1,0 +1,4 @@
+<launch>
+  <arg name="rvizconfig" default="$(find roomac_ar_tag)/rviz/roomac_kinect_ar_tag.rviz" />
+  <node name="rviz_artag_detection" pkg="rviz" type="rviz" args="-d $(arg rvizconfig)" />
+</launch>

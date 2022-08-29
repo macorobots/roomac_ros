@@ -1,0 +1,7 @@
+<launch>
+  <include file="$(find roomac_ar_tag)/launch/tf_publishing.launch">
+    <arg name="filtration_enabled" value="false" />
+  </include>
+
+  <include file="$(find roomac_ar_tag)/launch/bundle_ar_tag.launch" />
+</launch>

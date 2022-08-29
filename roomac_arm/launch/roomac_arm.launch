@@ -1,0 +1,5 @@
+<launch>
+  <include file="$(find roomac_arm)/launch/serial.launch" />
+  <include file="$(find roomac_arm)/launch/arm_follow_trajectory_controller.launch" />
+  <include file="$(find roomac_arm)/launch/servo_joint_state_publisher.launch" />
+</launch>

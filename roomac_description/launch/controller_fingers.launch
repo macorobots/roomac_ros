@@ -1,11 +1,9 @@
 <launch>
+  <rosparam file="$(find roomac_description)/config/controller_fingers.yaml" command="load" />
 
-<rosparam file="$(find roomac_description)/launch/controller_fingers.yaml" command="load"/>
+  <node args="arm_position_controller joint_state_controller" name="controller_spawner" ns="/roomac" output="screen" pkg="controller_manager" respawn="false" type="spawner" />
 
-<node args="arm_position_controller joint_state_controller" name="controller_spawner" ns="/roomac" output="screen" pkg="controller_manager" respawn="false" type="spawner"/>
-
-<node name="robot_state_publisher" output="screen" pkg="robot_state_publisher" respawn="false" type="robot_state_publisher">
-  <remap from="/joint_states" to="/roomac/joint_states"/>
-</node>
-
+  <node name="robot_state_publisher" output="screen" pkg="robot_state_publisher" respawn="false" type="robot_state_publisher">
+    <remap from="/joint_states" to="/roomac/joint_states" />
+  </node>
 </launch>
