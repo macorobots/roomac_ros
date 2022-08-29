@@ -17,5 +17,4 @@
   <exec_depend>freenect_launch</exec_depend>
   <exec_depend>robot_state_publisher</exec_depend>
   <!-- <exec_depend>camera_pose_calibration</exec_depend> quite old, not present in melodic, isn't actually used -->
-  <exec_depend>rviz</exec_depend>
 </package>
