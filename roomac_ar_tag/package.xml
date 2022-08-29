@@ -13,6 +13,6 @@
   <license>TODO</license>
 
   <buildtool_depend>catkin</buildtool_depend>
-  <exec_depend>freenect_launch</exec_depend>
+
   <exec_depend>ar_track_alvar</exec_depend>
 </package>
