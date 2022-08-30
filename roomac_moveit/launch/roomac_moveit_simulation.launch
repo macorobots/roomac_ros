@@ -6,6 +6,7 @@
     <arg name="fake_execution" value="false" />
     <arg name="info" value="true" />
     <arg name="debug" value="false" />
+    <arg name="pipeline" value="ompl" />
     <arg name="load_robot_description" value="false" />
     <arg name="gazebo" value="true" />
     <arg name="simulation_description" value="true" />
