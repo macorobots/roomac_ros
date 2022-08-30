@@ -17,12 +17,15 @@
   <node pkg="pointcloud_to_laserscan" type="pointcloud_to_laserscan_node" name="pointcloud_to_laserscan_node">
     <remap from="cloud_in" to="/camera/depth_registered/points" />
     <remap from="scan" to="/kinect_scan" />
-    <param name="min_height" type="double" value="-0.05" />
-    <param name="max_height" type="double" value="0.0" />
+    <param name="min_height" type="double" value="0.0" />
+    <param name="max_height" type="double" value="1.0" />
     <param name="target_frame" type="string" value="base_link" />
     <param name="angle_increment" type="double" value="0.00174532923847" />
+
+
   </node>
 
+  <!-- SLAM -->
   <group ns="rtabmap">
     <node pkg="nodelet" type="nodelet" name="rgbd_sync" args="standalone rtabmap_ros/rgbd_sync" output="screen">
       <remap from="rgb/image" to="$(arg rgb_image_topic)" />
@@ -35,22 +38,15 @@
       <param name="approx_sync" value="true" />
     </node>
 
-    <node pkg="rtabmap_ros" type="rgbd_odometry" name="rgbd_odometry" output="screen">
-      <param name="subscribe_rgbd" type="bool" value="true" />
-      <param name="subscribe_rgb" type="bool" value="false" />
-      <param name="frame_id" type="string" value="base_link" />
-      <remap from="rgbd_image" to="rgbd_image" />
-      <remap from="odom" to="odom_vo" />
-      <rosparam file="$(find roomac_rtabmap)/dev_utils/alternative_rtabmap_configs/rtabmap_visual_odom.yaml" command="load" />
+    <node name="rtabmap" pkg="rtabmap_ros" type="rtabmap" output="screen" args="--delete_db_on_start">
+      <remap from="odom" to="/odom" />
+      <remap from="scan" to="/kinect_scan" />
+
+      <remap from="rgb/image" to="/camera/rgb/image_rect_color" />
+      <remap from="depth/image" to="/camera/depth_registered/image_raw" />
+      <remap from="rgb/camera_info" to="/camera/rgb/camera_info" />
+
+      <rosparam file="$(find roomac_rtabmap)/dev_utils/alternative_rtabmap_configs/rtabmap_laserscan_wheel_odom.yaml" command="load" />
     </node>
   </group>
-
-  <node name="cartographer_node" pkg="cartographer_ros" type="cartographer_node" args="
-        -configuration_directory $(find roomac_cartographer)/config
-        -configuration_basename roomac_cartographer.lua" output="screen">
-    <remap from="scan" to="kinect_scan" />
-    <remap from="odom" to="/rtabmap/odom_vo" />
-  </node>
-
-  <node name="cartographer_occupancy_grid_node" pkg="cartographer_ros" type="cartographer_occupancy_grid_node" args="-resolution 0.05" />
 </launch>
