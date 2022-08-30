@@ -5,6 +5,9 @@
     <arg name="world_name" value="$(find roomac_simulation)/worlds/pick_bottle.world" />
   </include>
 
+<!-- Description -->
+  <include file="$(find roomac_description)/launch/description_simulation.launch"/>
+
 <!-- Roomac scripts -->
   <include file="$(find roomac_autonomous_manipulation)/launch/picking_object_manager.launch">
     <arg name="simulation" value="true" />

@@ -7,9 +7,6 @@
   <arg name="load_robot_description" default="true" />
   <arg name="use_rviz" default="true" />
 
-  <!-- Given the published joint states, publish tf for the robot links -->
-  <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" respawn="true" output="screen" />
-
   <!-- Run the main MoveIt! executable without trajectory execution (we do not have controllers configured by default) -->
   <include file="$(find roomac_moveit)/launch/move_group.launch">
     <arg name="allow_trajectory_execution" value="true" />

@@ -22,7 +22,6 @@
 <!-- ROS Mobile -->
   <include file="$(find roomac)/launch/ros_mobile.launch"/>
 
-<!-- MoveIt -->
-  <!-- for transform publishing -->
-  <include file="$(find roomac_moveit)/launch/roomac_moveit_simulation.launch"/>
+<!-- Description -->
+  <include file="$(find roomac_description)/launch/description_simulation.launch"/>
 </launch>

@@ -1,6 +1,7 @@
 <launch>
   <arg name="picking_correction_enabled" default="false" />
 
+  <include file="$(find roomac_description)/launch/description.launch" />
   <include file="$(find roomac_kinect)/launch/upper_kinect.launch" />
   <include file="$(find roomac_ar_tag)/launch/roomac_ar_tag.launch" />
   <include file="$(find roomac_moveit)/launch/roomac_moveit.launch" />
@@ -11,9 +12,4 @@
 
   <arg name="rvizconfig" default="$(find roomac_move_base)/rviz/rviz_move_base.rviz" />
   <node name="rviz_move_base" pkg="rviz" type="rviz" args="-d $(arg rvizconfig)" />
-
-  <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher">
-    <rosparam param="source_list">["/arm_position_controller/joint_states_arm_stub", "/wheel_joint_publisher/joint_states_wheels"]</rosparam>
-    <param name="rate" type="double" value="10.0" />
-  </node>
 </launch>

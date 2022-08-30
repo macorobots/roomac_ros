@@ -9,6 +9,9 @@
     <arg name="world_name" value="$(find roomac_simulation)/worlds/small_house.world" />
   </include>
 
+<!-- Description -->
+  <include file="$(find roomac_description)/launch/description_simulation.launch"/>
+
 <!-- Roomac scripts -->
   <include file="$(find roomac)/launch/autonomous_mission.launch">
     <arg name="positions_file" value="$(arg positions_file)" />
