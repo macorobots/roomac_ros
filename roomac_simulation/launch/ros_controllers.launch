@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<launch>
+  <!-- Load joint controller configurations from YAML file to parameter server -->
+  <rosparam file="$(find roomac_simulation)/config/ros_controllers.yaml" command="load" />
+
+  <!-- Load the controllers -->
+  <node name="controller_spawner" pkg="controller_manager" type="spawner" respawn="false" output="screen" args="joint_state_controller arm_position_controller gripper_controller" ns="/roomac" launch-prefix="bash -c 'sleep 20; $0 $@' " />
+</launch>
