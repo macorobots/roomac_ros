@@ -1,4 +1,5 @@
 <launch>
+  <!-- todo: change to more recent simulation laucnch -->
   <include file="$(find roomac_moveit)/launch/demo_gazebo.launch" />
 
   <!-- Difference in kinect frames (real vs simulation), so parallel isn't working correctly.
