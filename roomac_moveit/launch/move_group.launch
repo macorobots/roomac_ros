@@ -3,27 +3,25 @@
   <!-- GDB Debug Option -->
   <arg name="debug" default="false" />
   <arg unless="$(arg debug)" name="launch_prefix" value="" />
-  <arg     if="$(arg debug)" name="launch_prefix"
-           value="gdb -x $(find roomac_moveit)/launch/gdb_settings.gdb --ex run --args" />
+  <arg if="$(arg debug)" name="launch_prefix" value="gdb -x $(find roomac_moveit)/launch/gdb_settings.gdb --ex run --args" />
 
   <!-- Verbose Mode Option -->
   <arg name="info" default="$(arg debug)" />
   <arg unless="$(arg info)" name="command_args" value="" />
-  <arg     if="$(arg info)" name="command_args" value="--debug" />
+  <arg if="$(arg info)" name="command_args" value="--debug" />
 
   <!-- move_group settings -->
   <arg name="pipeline" default="ompl" />
-  <arg name="allow_trajectory_execution" default="true"/>
-  <arg name="fake_execution" default="false"/>
-  <arg name="execution_type" default="interpolate"/> <!-- set to 'last point' to skip intermediate trajectory in fake execution -->
-  <arg name="max_safe_path_cost" default="1"/>
+  <arg name="allow_trajectory_execution" default="true" />
+  <arg name="execution_type" default="interpolate" /> <!-- set to 'last point' to skip intermediate trajectory in fake execution -->
+  <arg name="max_safe_path_cost" default="1" />
   <arg name="jiggle_fraction" default="0.05" />
-  <arg name="publish_monitored_planning_scene" default="true"/>
+  <arg name="publish_monitored_planning_scene" default="true" />
 
-  <arg name="capabilities" default=""/>
-  <arg name="disable_capabilities" default=""/>
+  <arg name="capabilities" default="" />
+  <arg name="disable_capabilities" default="" />
 
-  <arg name="gazebo" default="false"/>
+  <arg name="gazebo" default="false" />
 
   <!-- load these non-default MoveGroup capabilities (space seperated) -->
   <!--
@@ -53,23 +51,22 @@
   <!-- Planning Functionality -->
   <include ns="move_group" file="$(find roomac_moveit)/launch/planning_pipeline.launch.xml">
     <arg name="pipeline" value="$(arg pipeline)" />
-    <arg name="capabilities" value="$(arg capabilities)"/>
-    <arg name="disable_capabilities" value="$(arg disable_capabilities)"/>
+    <arg name="capabilities" value="$(arg capabilities)" />
+    <arg name="disable_capabilities" value="$(arg disable_capabilities)" />
   </include>
 
   <!-- Trajectory Execution Functionality -->
   <include ns="move_group" file="$(find roomac_moveit)/launch/trajectory_execution.launch.xml" if="$(arg allow_trajectory_execution)">
     <arg name="moveit_manage_controllers" value="true" />
-    <arg name="moveit_controller_manager" value="roomac" unless="$(arg fake_execution)"/>
-    <arg name="moveit_controller_manager" value="fake" if="$(arg fake_execution)"/>
+    <arg name="moveit_controller_manager" value="roomac" />
     <arg name="execution_type" value="$(arg execution_type)" />
-    <arg name="gazebo" value="$(arg gazebo)"/>
+    <arg name="gazebo" value="$(arg gazebo)" />
   </include>
 
   <!-- Sensors Functionality -->
   <include ns="move_group" file="$(find roomac_moveit)/launch/sensor_manager.launch.xml" if="$(arg allow_trajectory_execution)">
     <arg name="moveit_sensor_manager" value="roomac" />
-    <arg name="gazebo" value="$(arg gazebo)"/>
+    <arg name="gazebo" value="$(arg gazebo)" />
   </include>
 
   <!-- Start the actual move_group node/action server -->
@@ -77,8 +74,8 @@
     <!-- Set the display variable, in case OpenGL code is used internally -->
     <env name="DISPLAY" value="$(optenv DISPLAY :0)" />
 
-    <param name="allow_trajectory_execution" value="$(arg allow_trajectory_execution)"/>
-    <param name="max_safe_path_cost" value="$(arg max_safe_path_cost)"/>
+    <param name="allow_trajectory_execution" value="$(arg allow_trajectory_execution)" />
+    <param name="max_safe_path_cost" value="$(arg max_safe_path_cost)" />
     <param name="jiggle_fraction" value="$(arg jiggle_fraction)" />
 
 
@@ -90,14 +87,14 @@
     <param name="planning_scene_monitor/publish_transforms_updates" value="$(arg publish_monitored_planning_scene)" />
 
     <!-- For simulation: -->
-    <remap if="$(arg gazebo)" from="/joint_states" to="/roomac/joint_states"/>
+    <remap if="$(arg gazebo)" from="/joint_states" to="/roomac/joint_states" />
     <remap if="$(arg gazebo)" from="arm_position_controller/follow_joint_trajectory" to="/roomac/arm_position_controller/follow_joint_trajectory" />
     <remap if="$(arg gazebo)" from="gripper_controller/follow_joint_trajectory" to="/roomac/gripper_controller/follow_joint_trajectory" />
 
     <!-- For real robot: -->
     <!-- Can't change fake execution for now, as I don't have controller defined for real robot -->
     <!-- Probably would be nice to define controller eventually -->
-    <remap unless="$(arg gazebo)" from="/move_group/fake_controller_joint_states" to="/joint_states"/>
+    <remap unless="$(arg gazebo)" from="/move_group/fake_controller_joint_states" to="/joint_states" />
 
   </node>
 
