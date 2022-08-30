@@ -1,4 +1,8 @@
 <launch>
+  <arg name="load_robot_description" default="true" />
+  <arg name="simulation_description" default="false" />
+  <arg name="pipeline" default="ompl" />
+  <arg name="gazebo" default="false" />
 
   <!-- GDB Debug Option -->
   <arg name="debug" default="false" />
@@ -10,26 +14,16 @@
   <arg unless="$(arg info)" name="command_args" value="" />
   <arg if="$(arg info)" name="command_args" value="--debug" />
 
-  <!-- move_group settings -->
-  <arg name="pipeline" default="ompl" />
-  <arg name="execution_type" default="interpolate" /> <!-- set to 'last point' to skip intermediate trajectory in fake execution -->
-  <arg name="max_safe_path_cost" default="1" />
-  <arg name="jiggle_fraction" default="0.05" />
-  <arg name="publish_monitored_planning_scene" default="true" />
-
   <arg name="capabilities" default="" />
-  <arg name="disable_capabilities" default="" />
-
-  <arg name="gazebo" default="false" />
-
   <!-- load these non-default MoveGroup capabilities (space seperated) -->
   <!--
-  <arg name="capabilities" value="
-                a_package/AwsomeMotionPlanningCapability
-                another_package/GraspPlanningPipeline
-                " />
+    <arg name="capabilities" value="
+    a_package/AwsomeMotionPlanningCapability
+    another_package/GraspPlanningPipeline
+    " />
   -->
 
+  <arg name="disable_capabilities" default="" />
   <!-- inhibit these default MoveGroup capabilities (space seperated) -->
   <!--
   <arg name="disable_capabilities" value="
@@ -38,8 +32,6 @@
                 " />
   -->
 
-  <arg name="load_robot_description" default="true" />
-  <arg name="simulation_description" default="false" />
 
   <!-- load URDF, SRDF and joint_limits configuration -->
   <include file="$(find roomac_moveit)/launch/planning_context.launch">
@@ -58,7 +50,6 @@
   <include ns="move_group" file="$(find roomac_moveit)/launch/trajectory_execution.launch.xml">
     <arg name="moveit_manage_controllers" value="true" />
     <arg name="moveit_controller_manager" value="roomac" />
-    <arg name="execution_type" value="$(arg execution_type)" />
     <arg name="gazebo" value="$(arg gazebo)" />
   </include>
 
@@ -74,16 +65,15 @@
     <env name="DISPLAY" value="$(optenv DISPLAY :0)" />
 
     <param name="allow_trajectory_execution" value="true" />
-    <param name="max_safe_path_cost" value="$(arg max_safe_path_cost)" />
-    <param name="jiggle_fraction" value="$(arg jiggle_fraction)" />
-
+    <param name="max_safe_path_cost" value="1" />
+    <param name="jiggle_fraction" value="0.05" />
 
     <!-- Publish the planning scene of the physical robot so that rviz plugin can know actual robot -->
-    <param name="planning_scene_monitor/publish_planning_scene" value="$(arg publish_monitored_planning_scene)" />
+    <param name="planning_scene_monitor/publish_planning_scene" value="true" />
     <param name="planning_scene_monitor/publish_planning_scene_hz" value="10.0" />
-    <param name="planning_scene_monitor/publish_geometry_updates" value="$(arg publish_monitored_planning_scene)" />
-    <param name="planning_scene_monitor/publish_state_updates" value="$(arg publish_monitored_planning_scene)" />
-    <param name="planning_scene_monitor/publish_transforms_updates" value="$(arg publish_monitored_planning_scene)" />
+    <param name="planning_scene_monitor/publish_geometry_updates" value="true" />
+    <param name="planning_scene_monitor/publish_state_updates" value="true" />
+    <param name="planning_scene_monitor/publish_transforms_updates" value="true" />
 
     <!-- For simulation: -->
     <remap if="$(arg gazebo)" from="/joint_states" to="/roomac/joint_states" />
@@ -94,7 +84,5 @@
     <!-- Can't change fake execution for now, as I don't have controller defined for real robot -->
     <!-- Probably would be nice to define controller eventually -->
     <remap unless="$(arg gazebo)" from="/move_group/fake_controller_joint_states" to="/joint_states" />
-
   </node>
-
 </launch>
