@@ -1,5 +1,4 @@
 <launch>
-  <arg name="load_robot_description" default="true" />
   <arg name="simulation_description" default="false" />
   <arg name="pipeline" default="ompl" />
   <arg name="gazebo" default="false" />
@@ -35,7 +34,6 @@
 
   <!-- load URDF, SRDF and joint_limits configuration -->
   <include file="$(find roomac_moveit)/launch/planning_context.launch">
-    <arg name="load_robot_description" value="$(arg load_robot_description)" />
     <arg name="simulation_description" value="$(arg simulation_description)" />
   </include>
 

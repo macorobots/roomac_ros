@@ -3,7 +3,6 @@
     <arg name="info" value="true" />
     <arg name="debug" value="false" />
     <arg name="pipeline" value="ompl" />
-    <arg name="load_robot_description" value="true" />
     <arg name="gazebo" value="false" />
     <arg name="simulation_description" value="false" />
   </include>
