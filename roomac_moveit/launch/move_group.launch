@@ -50,10 +50,10 @@
   </include>
 
   <!-- Sensors Functionality -->
-  <include ns="move_group" file="$(find roomac_moveit)/launch/sensor_manager.launch.xml">
-    <arg name="moveit_sensor_manager" value="roomac" />
-    <arg name="gazebo" value="$(arg gazebo)" />
-  </include>
+  <!-- Don't load kinect sensor in simulation - it makes it run slower, there are issues with detecting bottle as an obstacle.
+  As there is separate table detection, octomap obstacles are not really needed, there aren't any additional 
+  obstacles in the workspace of the manipulator -->
+  <rosparam unless="$(arg gazebo)" ns="move_group" command="load" file="$(find roomac_moveit)/config/sensors_3d.yaml" />
 
   <!-- Start the actual move_group node/action server -->
   <node name="move_group" launch-prefix="$(arg launch_prefix)" pkg="moveit_ros_move_group" type="move_group" respawn="false" output="screen" args="$(arg command_args)">
@@ -76,6 +76,7 @@
     <remap if="$(arg gazebo)" from="arm_position_controller/follow_joint_trajectory" to="/roomac/arm_position_controller/follow_joint_trajectory" />
     <remap if="$(arg gazebo)" from="gripper_controller/follow_joint_trajectory" to="/roomac/gripper_controller/follow_joint_trajectory" />
 
+    <!-- todo: it may no longer be necessary -->
     <!-- For real robot: -->
     <!-- Can't change fake execution for now, as I don't have controller defined for real robot -->
     <!-- Probably would be nice to define controller eventually -->
