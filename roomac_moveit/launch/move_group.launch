@@ -46,7 +46,6 @@
   <!-- Trajectory Execution Functionality -->
   <include ns="move_group" file="$(find roomac_moveit)/launch/trajectory_execution.launch.xml">
     <arg name="moveit_manage_controllers" value="true" />
-    <arg name="moveit_controller_manager" value="roomac" />
     <arg name="gazebo" value="$(arg gazebo)" />
   </include>
 
