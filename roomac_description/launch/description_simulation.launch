@@ -1,4 +1,5 @@
 <launch>
+  <!-- no need for inorder, as it is default in melodic -->
   <param name="robot_description" command="$(find xacro)/xacro $(find roomac_description)/urdf/roomac.xacro simulation:=true" />
   <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher">
     <remap from="/joint_states" to="/roomac/joint_states" />
