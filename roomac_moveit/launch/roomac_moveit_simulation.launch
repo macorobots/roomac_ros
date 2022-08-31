@@ -6,6 +6,5 @@
     <arg name="debug" value="false" />
     <arg name="pipeline" value="ompl" />
     <arg name="gazebo" value="true" />
-    <arg name="simulation_description" value="true" />
   </include>
 </launch>

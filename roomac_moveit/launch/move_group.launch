@@ -1,5 +1,4 @@
 <launch>
-  <arg name="simulation_description" default="false" />
   <arg name="pipeline" default="ompl" />
   <arg name="gazebo" default="false" />
 
@@ -34,7 +33,7 @@
 
   <!-- load URDF, SRDF and joint_limits configuration -->
   <include file="$(find roomac_moveit)/launch/planning_context.launch">
-    <arg name="simulation_description" value="$(arg simulation_description)" />
+    <arg name="gazebo" value="$(arg gazebo)" />
   </include>
 
   <!-- Planning Functionality -->

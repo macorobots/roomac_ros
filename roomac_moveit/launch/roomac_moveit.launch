@@ -4,6 +4,5 @@
     <arg name="debug" value="false" />
     <arg name="pipeline" value="ompl" />
     <arg name="gazebo" value="false" />
-    <arg name="simulation_description" value="false" />
   </include>
 </launch>
