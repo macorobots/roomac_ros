@@ -20,7 +20,9 @@
   <include file="$(find roomac_ar_tag)/launch/roomac_ar_tag.launch" />
 
 <!-- MoveIt -->
-  <include file="$(find roomac_moveit)/launch/roomac_moveit_simulation.launch" />
+  <include file="$(find roomac_moveit)/launch/roomac_moveit.launch">
+    <arg name="gazebo" value="true" />
+  </include>
 
 <!-- RViz -->
   <include file="$(find roomac_moveit)/launch/moveit_rviz.launch">
