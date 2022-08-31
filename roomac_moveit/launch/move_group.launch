@@ -37,8 +37,8 @@
   </include>
 
   <!-- Planning Functionality -->
-  <include ns="move_group" file="$(find roomac_moveit)/launch/planning_pipeline.launch.xml">
-    <arg name="pipeline" value="$(arg pipeline)" />
+
+  <include ns="move_group" file="$(find roomac_moveit)/launch/$(arg pipeline)_planning_pipeline.launch.xml">
     <arg name="capabilities" value="$(arg capabilities)" />
     <arg name="disable_capabilities" value="$(arg disable_capabilities)" />
   </include>
