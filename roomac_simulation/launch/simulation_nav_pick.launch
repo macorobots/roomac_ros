@@ -50,7 +50,7 @@
   </include>
 
 <!-- RViz -->
-  <include if="$(arg gui)" file="$(find roomac_moveit)/launch/moveit_rviz.launch">
+  <include if="$(arg gui)" file="$(find roomac_moveit)/launch/rviz_moveit.launch">
     <arg name="rviz_config" value="$(find roomac_moveit)/rviz/moveit.rviz" />
     <arg name="debug" value="false" />
   </include>

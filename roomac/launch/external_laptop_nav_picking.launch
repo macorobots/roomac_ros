@@ -13,7 +13,7 @@
   <arg name="rvizconfig" default="$(find roomac_move_base)/rviz/rviz_move_base.rviz" />
   <node name="rviz_move_base" pkg="rviz" type="rviz" args="-d $(arg rvizconfig)" />
 
-  <include file="$(find roomac_moveit)/launch/moveit_rviz.launch">
+  <include file="$(find roomac_moveit)/launch/rviz_moveit.launch">
     <arg name="rviz_config" value="$(find roomac_moveit)/rviz/moveit.rviz" />
   </include>
 </launch>
