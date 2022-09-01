@@ -74,21 +74,11 @@
     <rosparam unless="$(arg gazebo)" command="load" file="$(find roomac_moveit)/config/sensors_3d.yaml" />
   </group>
 
-  <!-- Start the actual move_group node/action server -->
   <node name="move_group" launch-prefix="$(arg launch_prefix)" pkg="moveit_ros_move_group" type="move_group" respawn="false" output="screen" args="$(arg command_args)">
     <!-- Set the display variable, in case OpenGL code is used internally -->
     <env name="DISPLAY" value="$(optenv DISPLAY :0)" />
 
-    <param name="allow_trajectory_execution" value="true" />
-    <param name="max_safe_path_cost" value="1" />
-    <param name="jiggle_fraction" value="0.05" />
-
-    <!-- Publish the planning scene of the physical robot so that rviz plugin can know actual robot -->
-    <param name="planning_scene_monitor/publish_planning_scene" value="true" />
-    <param name="planning_scene_monitor/publish_planning_scene_hz" value="10.0" />
-    <param name="planning_scene_monitor/publish_geometry_updates" value="true" />
-    <param name="planning_scene_monitor/publish_state_updates" value="true" />
-    <param name="planning_scene_monitor/publish_transforms_updates" value="true" />
+    <rosparam command="load" file="$(find roomac_moveit)/config/move_group.yaml" />
 
     <!-- For simulation: -->
     <remap if="$(arg gazebo)" from="/joint_states" to="/roomac/joint_states" />
