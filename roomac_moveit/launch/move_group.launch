@@ -55,10 +55,7 @@
 
   <group ns="move_group">
     <!-- Planning Functionality -->
-    <include file="$(find roomac_moveit)/launch/planning_pipeline/$(arg pipeline)_planning_pipeline.launch.xml">
-      <arg name="capabilities" value="$(arg capabilities)" />
-      <arg name="disable_capabilities" value="$(arg disable_capabilities)" />
-    </include>
+    <rosparam command="load" file="$(find roomac_moveit)/config/$(arg pipeline)_planning.yaml" subst_value="true" />
 
     <!-- Trajectory Execution Functionality -->
     <rosparam file="$(find roomac_moveit)/config/trajectory_execution.yaml" />
