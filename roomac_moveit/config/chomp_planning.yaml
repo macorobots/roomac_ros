@@ -11,9 +11,9 @@ request_adapters: default_planner_request_adapters/AddTimeParameterization
 start_state_max_bounds_error: 0.1
 
 # define capabilites that are loaded on start (space seperated)
-capabilities: $(arg capabilities)
+capabilities: ""
 # inhibit capabilites (space seperated)
-disable_capabilities: $(arg disable_capabilities)
+disable_capabilities: ""
 
 planning_time_limit: 10.0
 max_iterations: 200

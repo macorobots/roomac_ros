@@ -12,12 +12,6 @@
   <arg unless="$(arg info)" name="command_args" value="" />
   <arg if="$(arg info)" name="command_args" value="--debug" />
 
-  <!-- load these non-default MoveGroup capabilities (space seperated) -->
-  <arg name="capabilities" default="" />
-
-  <!-- inhibit these default MoveGroup capabilities (space seperated) -->
-  <arg name="disable_capabilities" default="" />
-
   <!-- The semantic description that corresponds to the URDF -->
   <param name="robot_description_semantic" textfile="$(find roomac_moveit)/config/roomac.srdf" />
 
@@ -40,7 +34,7 @@
   <rosparam ns="robot_description_kinematics" command="load" file="$(find roomac_moveit)/config/kinematics.yaml" />
 
   <group ns="move_group">
-    <rosparam command="load" file="$(find roomac_moveit)/config/$(arg pipeline)_planning.yaml" subst_value="true" />
+    <rosparam command="load" file="$(find roomac_moveit)/config/$(arg pipeline)_planning.yaml" />
     <rosparam file="$(find roomac_moveit)/config/trajectory_execution.yaml" />
     <rosparam file="$(find roomac_moveit)/config/moveit_controllers.yaml" />
     <!-- todo is necessary? -->
