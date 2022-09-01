@@ -12,34 +12,20 @@
   <arg unless="$(arg info)" name="command_args" value="" />
   <arg if="$(arg info)" name="command_args" value="--debug" />
 
-  <arg name="capabilities" default="" />
   <!-- load these non-default MoveGroup capabilities (space seperated) -->
-  <!--
-    <arg name="capabilities" value="
-    a_package/AwsomeMotionPlanningCapability
-    another_package/GraspPlanningPipeline
-    " />
-  -->
+  <arg name="capabilities" default="" />
 
-  <arg name="disable_capabilities" default="" />
   <!-- inhibit these default MoveGroup capabilities (space seperated) -->
-  <!--
-  <arg name="disable_capabilities" value="
-                move_group/MoveGroupKinematicsService
-                move_group/ClearOctomapService
-                " />
-  -->
-
-
-  <!-- load URDF, SRDF and joint_limits configuration -->
+  <arg name="disable_capabilities" default="" />
 
   <!-- The semantic description that corresponds to the URDF -->
   <param name="robot_description_semantic" textfile="$(find roomac_moveit)/config/roomac.srdf" />
 
-  <!-- Load updated joint limits (override information from URDF) -->
   <group ns="robot_description_planning">
     <!-- increase wait time when looking up transform from camera to robot - artag sometimes isn't detected -->
     <param name="shape_transform_cache_lookup_wait_time" value="1.0" />
+
+    <!-- Load updated joint limits (override information from URDF) -->
     <rosparam if="$(arg gazebo)" command="load" file="$(find roomac_moveit)/config/joint_limits_simulation.yaml" />
     <rosparam unless="$(arg gazebo)" command="load" file="$(find roomac_moveit)/config/joint_limits.yaml" />
 
@@ -54,12 +40,8 @@
   <rosparam ns="robot_description_kinematics" command="load" file="$(find roomac_moveit)/config/kinematics.yaml" />
 
   <group ns="move_group">
-    <!-- Planning Functionality -->
     <rosparam command="load" file="$(find roomac_moveit)/config/$(arg pipeline)_planning.yaml" subst_value="true" />
-
-    <!-- Trajectory Execution Functionality -->
     <rosparam file="$(find roomac_moveit)/config/trajectory_execution.yaml" />
-    <!-- loads ros_controllers to the param server -->
     <rosparam file="$(find roomac_moveit)/config/moveit_controllers.yaml" />
     <!-- todo is necessary? -->
     <rosparam if="$(arg gazebo)" file="$(find roomac_simulation)/config/ros_controllers.yaml" />
