@@ -2,6 +2,12 @@
 Changelog for package roomac_cartographer
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* Merge pull request `#61 <https://github.com/macstepien/roomac_ros/issues/61>`_ from macstepien/cleanup-launch-files
+  Cleanup launch files and configs
+* Contributors: Maciej Stępień
+
 1.12.4 (2022-09-04)
 -------------------
 * Merge pull request `#60 <https://github.com/macstepien/roomac_ros/issues/60>`_ from macstepien/refactor-package-cmakelists
