@@ -6,134 +6,80 @@
 
 ## Usage
 
-### Running container on laptop
+### Mapping
 
-```
-docker-compose -f compose_laptop.yaml run roomac
-```
-
-### Real robot mapping
+#### Real robot setup
 
 On raspberry:
 ```
-roslaunch roomac_base joy.launch
+roslaunch roomac raspberry.launch
 ```
 
 On laptop: 
 ```
-rosrun rosserial_python serial_node.py
+docker-compose -f compose_laptop.yaml run roomac
+```
+```
 roslaunch roomac laptop_mapping_manual.launch
 ```
-After recent problems with connecting base STM to Raspberry, it is necessary to connect it to laptop instead (that's why serial_node has to be run on laptop).
 
-Visualization:
+External laptop (used for visualization):
 ```
 roslaunch roomac_rtabmap rviz_rtabmap_mapping.launch 
 ```
 
-### Real robot localization
+#### Simulation setup
+
+```
+roslaunch roomac_simulation simulation_mapping.launch
+```
+```
+roslaunch roomac_simulation teleop.launch
+```
+
+#### Usage
+
+Drive robot around, after area is mapped simply kill launch files with Ctrl+C and map will be saved.
+
+### Localization and manipulation
+
+#### Real robot setup
+
 
 On raspberry:
 ```
-roslaunch roomac_base joy.launch
+roslaunch roomac raspberry.launch
 ```
 
-On laptop: 
+On laptop:
 ```
-rosrun rosserial_python serial_node.py
-roslaunch roomac laptop_localization_autonomy.launch
+docker-compose -f compose_laptop.yaml run roomac
 ```
-
-Visualization:
 ```
-roslaunch roomac_move_base rviz_move_base.launch
-```
-
-Cancelling goal:
-```
-rostopic pub /move_base/cancel actionlib_msgs/GoalID "stamp:
-  secs: 0
-  nsecs: 0
-id: ''" 
-```
-
-### Real robot picking
-On raspberry:
-```
-rosrun rosserial_python serial_node.py
-```
-
-On laptop: 
-```
-roslaunch roomac external_laptop_nav_picking.launch
-```
-Then after everything launches to pick object:
-```
-rostopic pub /pick_object/goal roomac_msgs/PickObjectActionGoal "header:
-  seq: 0
-  stamp:
-    secs: 0
-    nsecs: 0
-  frame_id: ''
-goal_id:
-  stamp:
-    secs: 0
-    nsecs: 0
-  id: ''
-goal: {}" 
-```
-And to return to home position:
-```
-rosservice call /home_arm
-```
-
-### Real combined picking and autonomous navigation
-On raspberry:
-```
-roslaunch roomac_base joy.launch
-roslaunch roomac_arm serial.launch
-```
-
-On laptop: 
-```
-rosrun rosserial_python serial_node.py
 roslaunch roomac laptop_nav_picking.launch
 ```
 
-On external laptop: 
+External laptop:
 ```
 roslaunch roomac external_laptop_nav_picking.launch
 ```
 
-Visualization:
+
+#### Simulation setup
+
 ```
-roslaunch roomac_move_base rviz_move_base.launch
+roslaunch roomac_simulation simulation_nav_pick.launch
 ```
 
-Services navigation:
+#### Usage
+
+First it is necessary to save home and table position, drive robot to these locations and use services:
 ```
 rosservice call /save_table_position
 rosservice call /save_home_position
-rosservice call /go_to_table
-rosservice call /go_to_home
 ```
-Services picking:
-```
-rostopic pub /pick_object/goal roomac_msgs/PickObjectActionGoal "header:
-  seq: 0
-  stamp:
-    secs: 0
-    nsecs: 0
-  frame_id: ''
-goal_id:
-  stamp:
-    secs: 0
-    nsecs: 0
-  id: ''
-goal: {}" 
-rosservice call /home_arm
-```
-Services combined (go to table, pick object, go to home position):
+
+Then to start pick and bring action use:
 ```
 rostopic pub /pick_and_bring/goal roomac_msgs/PickAndBringActionGoal "header:
   seq: 0
@@ -148,27 +94,29 @@ goal_id:
   id: ''
 goal: {}" 
 ```
-
-### Simulation mapping
-
+It is possible to cancel goal using: 
 ```
-roslaunch roomac_simulation simulation_mapping.launch
-```
-```
-roslaunch roomac_simulation teleop.launch
+rostopic pub /pick_and_bring/cancel actionlib_msgs/GoalID "stamp:
+  secs: 0
+  nsecs: 0
+id: ''" 
 ```
 
-### Simulation localization
+It is also possible to use partial actions, only navigation using services: 
+```
+rosservice call /go_to_table
+rosservice call /go_to_home
+```
+or `2D Nav Goal` in RViz.
+Cancelling goal:
+```
+rostopic pub /move_base/cancel actionlib_msgs/GoalID "stamp:
+  secs: 0
+  nsecs: 0
+id: ''" 
+```
 
-```
-roslaunch roomac_simulation simulation_localization_autonomy.launch
-```
-
-### Simulation picking
-```
-roslaunch roomac_simulation simulation_only_picking.launch
-```
-Then after everything launches to pick object:
+Only picking object:
 ```
 rostopic pub /pick_object/goal roomac_msgs/PickObjectActionGoal "header:
   seq: 0
@@ -190,47 +138,9 @@ rostopic pub /pick_object/cancel actionlib_msgs/GoalID "stamp:
   nsecs: 0
 id: ''" 
 ```
-
-### Simulation combined picking and autonomous navigation
+And to return to home position:
 ```
-roslaunch roomac_simulation simulation_nav_pick.launch
-```
-
-### Arm precision testing
-
-#### Real
-On raspberry:
-```
-rosrun rosserial_python serial_node.py
-```
-
-On laptop: 
-```
-roslaunch roomac external_laptop_test_arm_precision.launch
-```
-
-Services:
-```
-rosservice call /go_to_test_point
 rosservice call /home_arm
-```
-
-#### Simulation
-
-```
-roslaunch roomac_simulation simulation_test_arm_precision.launch
-```
-
-### Testing arm
-
-On raspberry: 
-```
-roslaunch roomac_arm demo_arm_hardware.launch
-```
-
-On laptop:
-```
-roslaunch roomac_arm demo_arm_control_gui.launch
 ```
 
 ## Kinect in Docker
@@ -246,17 +156,10 @@ SUBSYSTEM=="usb", ATTR{idVendor}=="045e", ATTR{idProduct}=="02ae", MODE="0666"
 
 ## Building dockers
 
-### Docker for laptop
-
 ```
-./docker/build_docker_laptop.sh
+docker compose -f docker/compose.yaml build
 ```
-
-### Main Docker
-
-```
-./docker/build_docker.sh
-```
+To build image for laptop use `compose_laptop.yaml` instead.
 
 ## Troubleshooting
 
