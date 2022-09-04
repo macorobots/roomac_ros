@@ -2,7 +2,9 @@
 <!-- Gazebo -->
   <include file="$(find roomac_simulation)/launch/gazebo.launch">
     <arg name="gazebo_gui" value="true" />
-    <arg name="world_name" value="$(find roomac_simulation)/worlds/pick_bottle.world" />
+    <arg name="world_name" value="$(find roomac_simulation)/worlds/small_house.world" />
+    <arg name="start_x" value="4.33" />
+    <arg name="start_y" value="-2.12" />
   </include>
 
 <!-- Description -->
