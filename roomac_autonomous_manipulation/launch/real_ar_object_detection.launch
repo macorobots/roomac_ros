@@ -1,13 +1,8 @@
 <launch>
-  <include file="$(find roomac_ar_tag)/launch/ar_tag.launch"/>
-
-  <include file="$(find freenect_launch)/launch/freenect.launch">
-    <arg name="depth_registration" value="true" />
-    <arg name="camera" value="camera_up" />
-  </include>
+  <include file="$(find roomac_ar_tag)/launch/ar_tag.launch" />
 
   <!-- <arg name="rvizconfig" default="$(find roomac_autonomous_manipulation)/rviz/roomac_kinect_ar_tag.rviz" />
   <node name="rviz_artag_detection" pkg="rviz" type="rviz" args="-d $(arg rvizconfig)" /> -->
   <!-- <node name="rviz" pkg="rviz" type="rviz" /> -->
-    
+
 </launch>
