@@ -2,6 +2,9 @@
 Changelog for package roomac_autonomous_manipulation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+
 1.12.5 (2022-09-04)
 -------------------
 * Merge pull request `#61 <https://github.com/macstepien/roomac_ros/issues/61>`_ from macstepien/cleanup-launch-files
