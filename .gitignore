@@ -3,5 +3,6 @@ CMakeFiles/
 .vscode/
 .devcontainer/*
 !.devcontainer/devcontainer_template.json
+!.devcontainer/Dockerfile_template
 rosbags/
 *.pyc
