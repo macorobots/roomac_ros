@@ -1,6 +1,10 @@
 allow_trajectory_execution: true
 max_safe_path_cost: 1
 jiggle_fraction: 0.05
+start_state_max_bounds_error: 0.1
+default_workspace_bounds: 10
+start_state_max_dt: 0.5
+max_sampling_attempts: 100
 
 # Publish the planning scene of the physical robot so that rviz plugin can know actual robot
 planning_scene_monitor:
