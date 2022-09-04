@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <package format="2">
   <name>roomac_msgs</name>
-  <version>1.12.5</version>
+  <version>1.12.6</version>
   <description>The roomac_msgs package</description>
 
   <author email="macorobots@gmail.com">Maciej Stępień</author>
