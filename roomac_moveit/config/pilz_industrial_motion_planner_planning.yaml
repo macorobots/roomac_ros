@@ -1,0 +1,10 @@
+planning_plugin: pilz_industrial_motion_planner::CommandPlanner
+
+# The request adapters (plugins) used when planning, ORDER MATTERS
+request_adapters: ""
+
+# MoveGroup capabilities to load, append sequence capability
+capabilities: pilz_industrial_motion_planner/MoveGroupSequenceAction
+  pilz_industrial_motion_planner/MoveGroupSequenceService
+
+disable_capabilities: ""

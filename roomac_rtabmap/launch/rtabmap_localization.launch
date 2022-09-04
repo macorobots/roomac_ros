@@ -1,0 +1,39 @@
+<launch>
+  <arg name="map_file" default="/home/roomac/roomac_data/rtabmap.db" />
+
+  <arg name="rgb_image_topic" default="/camera/rgb/image_rect_color" />
+  <arg name="depth_image_topic" default="/camera/depth_registered/image_raw" />
+  <arg name="rgb_camera_info_topic" default="/camera/rgb/camera_info" />
+
+  <group ns="rtabmap">
+    <node pkg="nodelet" type="nodelet" name="rgbd_sync" args="standalone rtabmap_ros/rgbd_sync" output="screen">
+      <remap from="rgb/image" to="$(arg rgb_image_topic)" />
+      <remap from="depth/image" to="$(arg depth_image_topic)" />
+      <remap from="rgb/camera_info" to="$(arg rgb_camera_info_topic)" />
+      <remap from="rgbd_image" to="rgbd_image" /> <!-- output -->
+
+      <!-- Should be true for not synchronized camera topics 
+           (e.g., false for kinectv2, zed, realsense, true for xtion, kinect360)-->
+      <param name="approx_sync" value="true" />
+    </node>
+
+    <node name="rtabmap" pkg="rtabmap_ros" type="rtabmap" output="screen">
+      <param name="database_path" type="string" value="$(arg map_file)" />
+
+      <remap from="odom" to="/odometry/filtered" />
+      <param name="queue_size" type="int" value="10" />
+
+      <!-- When RGBD/SavedLocalizationIgnored is set to false, rtabmap assumes that the robot is starting from where it stopped mapping, providing the map on start. If the initial localization is wrong (kidnapped robot problem), RTAB-Map will still relocalize the robot on loop closure / global localization. When RGBD/SavedLocalizationIgnored is set to true, rtabmap won't publish the map until it can be localized against the map saved in the database. (from https://answers.ros.org/question/302694/rtabmap-localization/) -->
+      <!-- Parameter name changed: "RGBD/SavedLocalizationIgnored" -> "RGBD/StartAtOrigin" -->
+      <param name="RGBD/StartAtOrigin" type="bool" value="true" />
+
+      <!-- SLAM mode, otherwise it is Localization mode. -->
+      <param name="Mem/IncrementalMemory" type="string" value="false" />
+
+      <!-- Initialize the Working Memory with all nodes in Long-Term Memory. When false, it is initialized with nodes of the previous session. -->
+      <param name="Mem/InitWMWithAllNodes" type="string" value="true" />
+
+      <rosparam file="$(find roomac_rtabmap)/config/rtabmap.yaml" command="load" />
+    </node>
+  </group>
+</launch>

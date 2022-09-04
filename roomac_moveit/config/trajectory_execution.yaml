@@ -1,0 +1,21 @@
+# Flag indicating whether MoveIt! is allowed to load/unload or switch controllers
+moveit_manage_controllers: true
+
+# Load the robot specific controller manager
+moveit_controller_manager: moveit_simple_controller_manager/MoveItSimpleControllerManager
+
+trajectory_execution:
+  # When determining the expected duration of a trajectory, this multiplicative factor is applied to get the allowed duration of execution
+  # default 1.2
+  allowed_execution_duration_scaling: 1.2
+
+  # Allow more than the expected execution time before triggering a trajectory cancel (applied after scaling)
+  # default 0.5
+  allowed_goal_duration_margin: 0.5
+
+  # Allowed joint-value tolerance for validation that trajectory's first point matches current robot state
+  # default 0.01
+  allowed_start_tolerance: 0.0
+
+  execution_duration_monitoring: false
+  controller_connection_timeout: 60

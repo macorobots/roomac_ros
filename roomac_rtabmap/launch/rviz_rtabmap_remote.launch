@@ -1,12 +1,12 @@
 <launch>
-  <arg name="rvizconfig" default="$(find roomac_rtabmap)/rviz/roomac_rtabmap.rviz" />
-  <node  name="rviz" pkg="rviz" type="rviz" args="-d $(arg rvizconfig)" />
+  <arg name="rvizconfig" default="$(find roomac_rtabmap)/rviz/roomac_rtabmap_remote.rviz" />
+  <node name="rviz" pkg="rviz" type="rviz" args="-d $(arg rvizconfig)" />
   <!-- Construct and voxelize the point cloud (for fast visualization in rviz) -->
   <node pkg="nodelet" type="nodelet" name="points_xyzrgb" args="standalone rtabmap_ros/point_cloud_xyzrgb">
-    <remap from="rgbd_image"      to="/rtabmap/rgbd_image/compressed"/>
-    <remap from="cloud"           to="voxel_cloud" />
+    <remap from="rgbd_image" to="/rtabmap/rgbd_image/compressed" />
+    <remap from="cloud" to="voxel_cloud" />
 
-    <param name="queue_size" type="int" value="10"/>
-    <param name="voxel_size" type="double" value="0.01"/>
+    <param name="queue_size" type="int" value="10" />
+    <param name="voxel_size" type="double" value="0.01" />
   </node>
 </launch>

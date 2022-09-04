@@ -1,8 +1,0 @@
-<launch>
-  <include file="$(find roomac_ar_tag)/launch/ar_tag.launch" />
-
-  <!-- <arg name="rvizconfig" default="$(find roomac_autonomous_manipulation)/rviz/roomac_kinect_ar_tag.rviz" />
-  <node name="rviz_artag_detection" pkg="rviz" type="rviz" args="-d $(arg rvizconfig)" /> -->
-  <!-- <node name="rviz" pkg="rviz" type="rviz" /> -->
-
-</launch>

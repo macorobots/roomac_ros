@@ -1,3 +1,8 @@
+# Params for the octomap monitor
+# octomap_frame: some frame in which the robot moves
+octomap_resolution: 0.05
+max_range: 1.8
+
 # The name of this file shouldn't be changed, or else the Setup Assistant won't detect it
 sensors:
   # Cloud based detection - it is really slow and had impact on slowing down picking execution

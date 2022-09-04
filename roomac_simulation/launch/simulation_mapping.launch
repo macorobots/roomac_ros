@@ -6,7 +6,7 @@
   </include>
 
 <!-- Rtabmap -->
-  <include file="$(find roomac_rtabmap)/launch/rtabmap_fusion.launch">
+  <include file="$(find roomac_rtabmap)/launch/rtabmap.launch">
     <arg name="rgb_image_topic" value="/camera/color/image_raw"/>
     <arg name="depth_image_topic" value="/camera/depth/image_raw"/>
     <arg name="rgb_camera_info_topic" value="/camera/color/camera_info"/>
@@ -22,7 +22,6 @@
 <!-- ROS Mobile -->
   <include file="$(find roomac)/launch/ros_mobile.launch"/>
 
-<!-- MoveIt -->
-  <!-- for transform publishing -->
-  <include file="$(find roomac_moveit)/launch/roomac_simulation.launch"/>
+<!-- Description -->
+  <include file="$(find roomac_description)/launch/description_simulation.launch"/>
 </launch>

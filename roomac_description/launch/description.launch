@@ -1,4 +1,10 @@
 <launch>
+  <!-- no need for inorder, as it is default in melodic -->
   <param name="robot_description" command="$(find xacro)/xacro $(find roomac_description)/urdf/roomac.xacro" />
   <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" />
+
+  <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher">
+    <rosparam param="source_list">["/arm_position_controller/joint_states_arm_stub", "/wheel_joint_publisher/joint_states_wheels"]</rosparam>
+    <param name="rate" type="double" value="10.0" />
+  </node>
 </launch>

@@ -1,7 +1,0 @@
-<launch>
-  <include file="$(find roomac_ar_tag)/launch/filtration.launch">
-    <arg name="filtration_enabled" value="false" />
-  </include>
-
-  <include file="$(find roomac_ar_tag)/launch/bundle.launch"/>
-</launch>

@@ -7,5 +7,5 @@ moveit_setup_assistant_config:
     relative_path: config/roomac.srdf
   CONFIG:
     author_name: Maciej Stępień
-    author_email: maciek1284@outlook.com
+    author_email: macorobots@gmail.com
     generated_timestamp: 1636486825

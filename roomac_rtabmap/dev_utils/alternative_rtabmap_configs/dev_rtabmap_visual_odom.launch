@@ -1,0 +1,34 @@
+<launch>
+  <arg name="rgb_image_topic" default="/camera/rgb/image_rect_color" />
+  <arg name="depth_image_topic" default="/camera/depth_registered/image_raw" />
+  <arg name="rgb_camera_info_topic" default="/camera/rgb/camera_info" />
+
+  <group ns="rtabmap">
+    <node pkg="nodelet" type="nodelet" name="rgbd_sync" args="standalone rtabmap_ros/rgbd_sync" output="screen">
+      <remap from="rgb/image" to="$(arg rgb_image_topic)" />
+      <remap from="depth/image" to="$(arg depth_image_topic)" />
+      <remap from="rgb/camera_info" to="$(arg rgb_camera_info_topic)" />
+      <remap from="rgbd_image" to="rgbd_image" /> <!-- output -->
+
+      <!-- Should be true for not synchronized camera topics 
+           (e.g., false for kinectv2, zed, realsense, true for xtion, kinect360)-->
+      <param name="approx_sync" value="true" />
+    </node>
+
+    <node pkg="rtabmap_ros" type="rgbd_odometry" name="rgbd_odometry" output="screen">
+      <param name="subscribe_rgbd" type="bool" value="true" />
+      <param name="subscribe_rgb" type="bool" value="false" />
+      <param name="frame_id" type="string" value="base_link" />
+      <remap from="rgbd_image" to="rgbd_image" />
+      <remap from="odom" to="odom_vo" />
+      <rosparam file="$(find roomac_rtabmap)/dev_utils/alternative_rtabmap_configs/rtabmap_visual_odom.yaml" command="load" />
+    </node>
+
+    <node name="rtabmap" pkg="rtabmap_ros" type="rtabmap" output="screen" args="--delete_db_on_start">
+      <remap from="odom" to="odom_vo" />
+      <param name="queue_size" type="int" value="10" />
+
+      <rosparam file="$(find roomac_rtabmap)/dev_utils/alternative_rtabmap_configs/rtabmap_visual_odom.yaml" command="load" />
+    </node>
+  </group>
+</launch>

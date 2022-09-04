@@ -2,8 +2,13 @@
 <!-- Gazebo -->
   <include file="$(find roomac_simulation)/launch/gazebo.launch">
     <arg name="gazebo_gui" value="true" />
-    <arg name="world_name" value="$(find roomac_simulation)/worlds/pick_bottle.world" />
+    <arg name="world_name" value="$(find roomac_simulation)/worlds/small_house.world" />
+    <arg name="start_x" value="4.33" />
+    <arg name="start_y" value="-2.12" />
   </include>
+
+<!-- Description -->
+  <include file="$(find roomac_description)/launch/description_simulation.launch"/>
 
 <!-- Roomac scripts -->
   <include file="$(find roomac_autonomous_manipulation)/launch/picking_object_manager.launch">
@@ -14,14 +19,16 @@
 <!-- ARtag -->
   <!-- Difference in kinect frames (real vs simulation), so parallel isn't working correctly.
   There is no need for it though, in simulation detection accuracy is very good -->
-  <include file="$(find roomac_ar_tag)/launch/ar_tag.launch" />
+  <include file="$(find roomac_ar_tag)/launch/roomac_ar_tag.launch" />
 
 <!-- MoveIt -->
-  <include file="$(find roomac_moveit)/launch/roomac_simulation.launch" />
+  <include file="$(find roomac_moveit)/launch/roomac_moveit.launch">
+    <arg name="gazebo" value="true" />
+  </include>
 
 <!-- RViz -->
-  <include file="$(find roomac_moveit)/launch/moveit_rviz.launch">
-    <arg name="rviz_config" value="$(find roomac_moveit)/launch/moveit.rviz" />
+  <include file="$(find roomac_moveit)/launch/rviz_moveit.launch">
+    <arg name="rviz_config" value="$(find roomac_moveit)/rviz/moveit.rviz" />
     <arg name="debug" value="false" />
   </include>
 
