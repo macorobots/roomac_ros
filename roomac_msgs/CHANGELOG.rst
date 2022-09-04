@@ -2,8 +2,8 @@
 Changelog for package roomac_msgs
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+1.12.4 (2022-09-04)
+-------------------
 * Merge pull request `#60 <https://github.com/macstepien/roomac_ros/issues/60>`_ from macstepien/refactor-package-cmakelists
   Refactor package.xml and cmakelists
 * Contributors: Maciej Stępień
