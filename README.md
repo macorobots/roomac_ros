@@ -2,18 +2,71 @@
 
 [![Build and push docker image](https://github.com/macstepien/roomac_ros/actions/workflows/build_and_push_docker_image.yml/badge.svg)](https://github.com/macstepien/roomac_ros/actions/workflows/build_and_push_docker_image.yml)
 
-![roomac_logo](.github/logo.png)
+Roomac is a low-cost autonomous mobile manipulation robot. It consists of differential drive mobile base and 5-DoF manipulator with gripper. Whole construction costed around 550$ and using this platform I was able to prepare proof-of-concept application - bringing bottle to the user. In this repository you can find software and package configurations used to achieve this goal, as well as simulation in Gazebo, which you can use to test it yourself.
+
+<!-- ![roomac_logo](gihubreadme.jpg) -->
+<p align="center">
+  <img src="https://drive.google.com/uc?export=download&id=1ZuP4w7tW_VWIHfj-qy7BVNyVtaTG9-dw" height="400" />
+  <img src="https://drive.google.com/uc?export=download&id=1rTuLH-XS4gVUvIicEU5ieaAnlDPMW0UM" height="400" />
+</p>
+
+<a href="https://www.instagram.com/macorobots/">
+    <img height="50" src="https://www.vectorlogo.zone/logos/instagram/instagram-ar21.svg"/>
+</a>
 
 ## Usage
 
 ### Mapping
 
-#### Real robot setup
+<!-- TODO: add gif with mapping -->
 
+First for robot to navigate it is necessary to create map of the environment.
+
+> **Tip**
+> Simulation docker image comes with map and destinations of the environment, you just have to copy them to your docker volume.
+
+
+<!-- TODO describe creating volume -->
+
+Setup:
+<table>
+    <thead>
+        <tr>
+            <th>Simulation</th>
+            <th>Real robot</th>
+        </tr>
+    </thead>
+    <tbody>
+<tr>
+<td rowspan=4>
+
+First launch the docker container and run:
+```bash
+roslaunch roomac_simulation simulation_mapping.launch
+```
+
+On the other terminal launch `teleop` to control the robot:
+
+```
+roslaunch roomac_simulation teleop.launch
+```
+
+</td>
+
+<td>
+            
 On raspberry:
 ```
 roslaunch roomac raspberry.launch
 ```
+
+</td>
+</tr>
+
+<tr>
+</tr>
+<tr>
+<td>         
 
 On laptop: 
 ```
@@ -23,33 +76,67 @@ docker-compose -f compose_laptop.yaml run roomac
 roslaunch roomac laptop_mapping_manual.launch
 ```
 
+</td>
+</tr>
+<tr>
+<td>         
+
 External laptop (used for visualization):
 ```
 roslaunch roomac_rtabmap rviz_rtabmap_mapping.launch 
 ```
 
-#### Simulation setup
+</td>
+</tr>
+    </tbody>
+</table>
 
-```
-roslaunch roomac_simulation simulation_mapping.launch
-```
-```
-roslaunch roomac_simulation teleop.launch
-```
+After launching everything drive robot around. When area is mapped simply kill launch files with Ctrl+C and map will be saved to `roomac_data` volume.
 
-#### Usage
 
-Drive robot around, after area is mapped simply kill launch files with Ctrl+C and map will be saved.
 
 ### Localization and manipulation
 
-#### Real robot setup
+<p align="center">
+  <img src="https://drive.google.com/uc?export=download&id=11wK6m4Bh4eq2M2ojqPf-7_xQEN96VNbv" height="300" />
+</p>
+<p align="center">
+  <img src="https://drive.google.com/uc?export=download&id=1IGEbl0TIXq0ME5Tw5pBe4OOb-YrTq0e1" height="300" />
+</p>
 
+Setup:
+<table>
+    <thead>
+        <tr>
+            <th>Simulation</th>
+            <th>Real robot</th>
+        </tr>
+    </thead>
+    <tbody>
+<tr>
+<td rowspan=4>
 
+First launch the docker container and run:
+```
+roslaunch roomac_simulation simulation_nav_pick.launch
+```
+
+</td>
+
+<td>
+            
 On raspberry:
 ```
 roslaunch roomac raspberry.launch
 ```
+
+</td>
+</tr>
+
+<tr>
+</tr>
+<tr>
+<td>         
 
 On laptop:
 ```
@@ -59,47 +146,38 @@ docker-compose -f compose_laptop.yaml run roomac
 roslaunch roomac laptop_nav_picking.launch
 ```
 
+</td>
+</tr>
+<tr>
+<td>         
+
 External laptop:
 ```
 roslaunch roomac external_laptop_nav_picking.launch
 ```
 
+</td>
+</tr>
+    </tbody>
+</table>
 
-#### Simulation setup
 
-```
-roslaunch roomac_simulation simulation_nav_pick.launch
-```
-
-#### Usage
-
+> **Tip**
+> Simulation docker image comes with map and destinations of the environment, you can copy them and skip this step
 First it is necessary to save home and table position, drive robot to these locations and use services:
 ```
 rosservice call /save_table_position
 rosservice call /save_home_position
 ```
 
-Then to start pick and bring action use:
+To start pick and bring action use:
 ```
-rostopic pub /pick_and_bring/goal roomac_msgs/PickAndBringActionGoal "header:
-  seq: 0
-  stamp:
-    secs: 0
-    nsecs: 0
-  frame_id: ''
-goal_id:
-  stamp:
-    secs: 0
-    nsecs: 0
-  id: ''
-goal: {}" 
+rostopic pub /pick_and_bring/goal roomac_msgs/PickAndBringActionGoal {}
 ```
+
 It is possible to cancel goal using: 
 ```
-rostopic pub /pick_and_bring/cancel actionlib_msgs/GoalID "stamp:
-  secs: 0
-  nsecs: 0
-id: ''" 
+rostopic pub /pick_and_bring/cancel actionlib_msgs/GoalID {}
 ```
 
 It is also possible to use partial actions, only navigation using services: 
@@ -110,33 +188,16 @@ rosservice call /go_to_home
 or `2D Nav Goal` in RViz.
 Cancelling goal:
 ```
-rostopic pub /move_base/cancel actionlib_msgs/GoalID "stamp:
-  secs: 0
-  nsecs: 0
-id: ''" 
+rostopic pub /move_base/cancel actionlib_msgs/GoalID {}
 ```
 
 Only picking object:
 ```
-rostopic pub /pick_object/goal roomac_msgs/PickObjectActionGoal "header:
-  seq: 0
-  stamp:
-    secs: 0
-    nsecs: 0
-  frame_id: ''
-goal_id:
-  stamp:
-    secs: 0
-    nsecs: 0
-  id: ''
-goal: {}" 
+rostopic pub /pick_object/goal roomac_msgs/PickObjectActionGoal {}
 ```
 Cancelling:
 ```
-rostopic pub /pick_object/cancel actionlib_msgs/GoalID "stamp:
-  secs: 0
-  nsecs: 0
-id: ''" 
+rostopic pub /pick_object/cancel actionlib_msgs/GoalID {}
 ```
 And to return to home position:
 ```
@@ -173,3 +234,7 @@ After creating roomac volume it is necessary to change ownership (rtabmap return
 ```
 sudo chown -R roomac:roomac roomac_data/
 ```
+
+<p align="center">
+  <img src="https://drive.google.com/uc?export=download&id=1I-EGSHAIEw3VdLojSXji13o65ecbH_oV" height="300" />
+</p>
