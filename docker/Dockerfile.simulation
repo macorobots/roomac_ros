@@ -20,6 +20,7 @@ RUN sudo apt-get update && \
     sudo chown -R ${user}:${user} catkin_ws
 
 COPY --chown=${user}:${user} ./ /home/$user/catkin_ws/src/roomac_ros
+COPY --chown=${user}:${user} ./docker/ros_entrypoint.sh /ros_entrypoint.sh
 
 # Download example map and positions of gazebo environment
 RUN mkdir -p example_roomac_data && \
@@ -42,3 +43,5 @@ WORKDIR /home/${user}
 RUN echo "source /opt/ros/$ROS_DISTRO/setup.bash" >> /home/${user}/.bashrc && \
     echo "source /home/$user/catkin_ws/devel/setup.bash --extend" >> /home/${user}/.bashrc && \
     echo "export GAZEBO_MODEL_PATH=\$GAZEBO_MODEL_PATH:/home/roomac/catkin_ws/src/roomac_ros/roomac_simulation/models/" >> /home/${user}/.bashrc
+
+ENTRYPOINT ["/ros_entrypoint.sh"]
