@@ -4,7 +4,7 @@ services:
     image: roomac:latest
     build:
       context: ../
-      dockerfile: docker/Dockerfile
+      dockerfile: docker/Dockerfile.simulation
 
     stdin_open: true # docker run -i
     tty: true # docker run -t

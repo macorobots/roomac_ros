@@ -21,6 +21,6 @@ jobs:
       - name: Build and push
         uses: docker/build-push-action@v3
         with:
-          file: ./docker/Dockerfile
+          file: ./docker/Dockerfile.simulation
           push: true
-          tags: macstepien/roomac:latest
+          tags: macstepien/roomac:simulation
