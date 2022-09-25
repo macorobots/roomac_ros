@@ -3,6 +3,11 @@ repositories:
     type: git
     url: https://github.com/TAMS-Group/bio_ik.git
     version: master
+  # STVL fork that fixes voxel filter
+  spatio_temporal_voxel_layer:
+    type: git
+    url: https://github.com/macstepien/spatio_temporal_voxel_layer.git
+    version: melodic-devel
   # Necessary to build teb from source to get new features (control_look_ahead_poses)
   teb_local_planner:
     type: git

@@ -20,7 +20,6 @@ RUN sudo apt-get update && \
 
 COPY --chown=${user}:${user} ./ /home/$user/catkin_ws/src/roomac_ros
 
-# todo add custom stvl fork
 # todo add downloading default map
 
 WORKDIR /home/${user}/catkin_ws
