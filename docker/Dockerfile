@@ -13,14 +13,18 @@ WORKDIR /home/${user}
 # upgrade because melodic docker wasn't updated in quite long time
 RUN sudo apt-get update && \
     sudo apt-get upgrade -y && \
-    sudo apt-get install -y python-catkin-tools python3-setuptools python-pip python3-vcstool && \
+    sudo apt-get install -y python-catkin-tools python3-setuptools python-pip python3-vcstool curl && \
+    # todo: install it using rosdep
     pip install numpy && \
     mkdir -p catkin_ws/src && \
     sudo chown -R ${user}:${user} catkin_ws
 
 COPY --chown=${user}:${user} ./ /home/$user/catkin_ws/src/roomac_ros
 
-# todo add downloading default map
+# Download example map and positions of gazebo environment
+RUN mkdir -p example_roomac_data && \
+    curl -L "https://drive.google.com/uc?export=download&id=1ou8t9e6P6E_EBbSAz9ypjZNlKJi0fJ2K" > example_roomac_data/rtabmap.db && \
+    curl -L "https://drive.google.com/uc?export=download&id=1RENkEMJ5aNE3fq68uCzo9c_lkohD3slQ" > example_roomac_data/positions.yaml
 
 WORKDIR /home/${user}/catkin_ws
 
