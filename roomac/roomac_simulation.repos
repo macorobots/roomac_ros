@@ -1,0 +1,19 @@
+repositories:
+  aws_robomaker_small_house_world:
+    type: git
+    url: https://github.com/aws-robotics/aws-robomaker-small-house-world.git
+    version: ros1
+
+  # Repositories for fixing problems with grasping objects in gazebo
+  gazebo_pkgs:
+    type: git
+    url: https://github.com/JenniferBuehler/gazebo-pkgs.git
+    version: master
+  general_message_pkgs:
+    type: git
+    url: https://github.com/JenniferBuehler/general-message-pkgs.git
+    version: master
+  roboticsgroup_upatras_gazebo_plugins:
+    type: git
+    url: https://github.com/roboticsgroup/roboticsgroup_upatras_gazebo_plugins.git
+    version: master

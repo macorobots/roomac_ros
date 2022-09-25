@@ -13,26 +13,22 @@ WORKDIR /home/${user}
 # upgrade because melodic docker wasn't updated in quite long time
 RUN sudo apt-get update && \
     sudo apt-get upgrade -y && \
-    sudo apt-get install -y python-catkin-tools python3-setuptools python-pip && \
+    sudo apt-get install -y python-catkin-tools python3-setuptools python-pip python3-vcstool && \
     pip install numpy && \
     mkdir -p catkin_ws/src && \
     sudo chown -R ${user}:${user} catkin_ws
 
 COPY --chown=${user}:${user} ./ /home/$user/catkin_ws/src/roomac_ros
 
-# todo build teb not in release
 # todo add custom stvl fork
-RUN git clone https://github.com/TAMS-Group/bio_ik.git catkin_ws/src/bio_ik && \
-    git clone https://github.com/aws-robotics/aws-robomaker-small-house-world.git catkin_ws/src/aws-robomaker-small-house-world && \
-    git clone https://github.com/JenniferBuehler/gazebo-pkgs.git catkin_ws/src/gazebo-pkgs && \
-    git clone https://github.com/JenniferBuehler/general-message-pkgs.git catkin_ws/src/general-message-pkgs && \
-    git clone -b melodic-devel https://github.com/rst-tu-dortmund/teb_local_planner.git catkin_ws/src/teb-local-planner && \
-    git clone https://github.com/roboticsgroup/roboticsgroup_upatras_gazebo_plugins.git
+# todo add downloading default map
 
 WORKDIR /home/${user}/catkin_ws
 
 # update necessary - recently docker wasn't building without it 
 RUN sudo apt-get update && \
+    vcs import src < src/roomac_ros/roomac/roomac.repos && \
+    vcs import src < src/roomac_ros/roomac/roomac_simulation.repos && \
     rosdep update && \
     rosdep install --from-paths src --ignore-src -y && \
     catkin config --init --extend /opt/ros/melodic --cmake-args -DCMAKE_BUILD_TYPE=Release && \

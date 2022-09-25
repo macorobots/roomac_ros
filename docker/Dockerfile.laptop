@@ -15,7 +15,7 @@ WORKDIR /home/${user}
 # upgrade because melodic docker wasn't updated in quite long time
 RUN sudo apt-get update && \
     sudo apt-get upgrade -y && \
-    sudo apt-get install -y python-catkin-tools nano && \
+    sudo apt-get install -y python-catkin-tools python3-vcstool nano && \
     mkdir -p catkin_ws/src && \
     sudo chown -R ${user}:${user} catkin_ws
 
@@ -25,6 +25,7 @@ WORKDIR /home/${user}/catkin_ws
 
 # update necessary - recently docker wasn't building without it 
 RUN sudo apt-get update && \
+    vcs import src < src/roomac_ros/roomac/roomac.repos && \
     rosdep update && \
     rosdep install --from-paths src --ignore-src -y && \
     catkin config --init --extend /opt/ros/melodic && \
