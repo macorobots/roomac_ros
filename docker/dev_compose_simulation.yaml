@@ -1,7 +1,7 @@
 version: "3.9"
 services:
   roomac:
-    image: roomac:latest
+    image: roomac:simulation
     build:
       context: ../
       dockerfile: docker/Dockerfile.simulation
@@ -11,7 +11,7 @@ services:
     entrypoint: /bin/bash
 
     volumes:
-      - roomac_data:/home/roomac/roomac_data
+      - ./roomac_data:/home/roomac/roomac_data
       - type: bind
         source: ~/Documents/roomac/roomac_ws
         target: /home/roomac/catkin_ws
