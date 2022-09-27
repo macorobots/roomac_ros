@@ -633,35 +633,35 @@
   </collision>
 </link>
 
-<joint name="shoulder_pitch_left_joint" type="continuous">
+<joint name="shoulder_pitch_left_joint" type="fixed">
   <origin xyz="-0.1135 0.175021 0.9345" rpy="0 0 0"/>
   <parent link="base_link"/>
   <child link="shoulder_left_link"/>
   <axis xyz="0 1 0"/>
 </joint>
 
-<joint name="shoulder_roll_left_joint" type="continuous">
+<joint name="shoulder_roll_left_joint" type="fixed">
   <origin xyz="0.0005 0.069 0.0" rpy="0.4 0 0"/>
   <parent link="shoulder_left_link"/>
   <child link="shoulder_elbow_left_link"/>
   <axis xyz="1 0 0"/>
 </joint>
 
-<joint name="elbow_left_joint" type="continuous">
+<joint name="elbow_left_joint" type="fixed">
   <origin xyz="0.0205 0.0 -0.201057" rpy="-0.74 0 0"/>
   <parent link="shoulder_elbow_left_link"/>
   <child link="elbow_wrist_left_link"/>
   <axis xyz="1 0 0"/>
 </joint>
 
-<joint name="wrist_left_joint" type="continuous">
+<joint name="wrist_left_joint" type="fixed">
   <origin xyz="-0.046854 0.0 -0.129842" rpy="0 0 0"/>
   <parent link="elbow_wrist_left_link"/>
   <child link="wrist_left_link"/>
   <axis xyz="1 0 0"/>
 </joint>
 
-<joint name="gripper_twist_left_joint" type="continuous">
+<joint name="gripper_twist_left_joint" type="fixed">
   <origin xyz="0.024719 7.3e-05 -0.058792" rpy="0 0 0"/>
   <parent link="wrist_left_link"/>
   <child link="gripper_left_link"/>
