@@ -2,6 +2,7 @@ version: "3.9"
 services:
   roomac:
     image: roomac:simulation
+    container_name: dev_roomac_simulation
     build:
       context: ../
       dockerfile: docker/Dockerfile.simulation

@@ -2,6 +2,7 @@ version: "3.9"
 services:
   roomac:
     image: roomac-laptop:latest
+    container_name: dev_roomac_laptop
     build:
       context: ../
       dockerfile: docker/Dockerfile.laptop

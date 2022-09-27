@@ -2,6 +2,7 @@ version: "3.9"
 services:
   roomac:
     image: roomac:simulation
+    container_name: roomac_simulation
     volumes:
       - ./roomac_data:/home/roomac/roomac_data
       - /tmp/.X11-unix:/tmp/.X11-unix
@@ -14,4 +15,4 @@ services:
       - NVIDIA_DRIVER_CAPABILITIES=all
     command: roslaunch roomac_simulation simulation_nav_pick.launch
       map_file:="/home/roomac/example_roomac_data/rtabmap.db"
-      positions_file:="/home/roomac/example_roomac_data/positions.db"
+      positions_file:="/home/roomac/example_roomac_data/positions.yaml"

@@ -2,6 +2,7 @@ version: "3.9"
 services:
   roomac:
     image: roomac:simulation
+    container_name: roomac_simulation
     volumes:
       - ./roomac_data:/home/roomac/roomac_data
       - /tmp/.X11-unix:/tmp/.X11-unix
