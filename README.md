@@ -98,10 +98,10 @@ After launching everything drive robot around. When area is mapped simply kill l
 ### Localization and manipulation
 
 <p align="center">
-  <img src="https://drive.google.com/uc?export=download&id=11wK6m4Bh4eq2M2ojqPf-7_xQEN96VNbv" height="300" />
+  <img src="https://drive.google.com/uc?export=download&id=1QqZTh-4e_rQb-nHz5QIrDAGeiYUWy7WU" height="300" />
 </p>
 <p align="center">
-  <img src="https://drive.google.com/uc?export=download&id=1IGEbl0TIXq0ME5Tw5pBe4OOb-YrTq0e1" height="300" />
+  <img src="https://drive.google.com/uc?export=download&id=12h62AJevcnTrKnjP31EyKXX0_Lz6-4fP" height="300" />
 </p>
 
 Setup:
@@ -236,5 +236,5 @@ sudo chown -R roomac:roomac roomac_data/
 ```
 
 <p align="center">
-  <img src="https://drive.google.com/uc?export=download&id=1I-EGSHAIEw3VdLojSXji13o65ecbH_oV" height="300" />
+  <img src="https://drive.google.com/uc?export=download&id=1GaggM1wOW-irI4vqvEJq4knI8z77sjEJ" height="300" />
 </p>
