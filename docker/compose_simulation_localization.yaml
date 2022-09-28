@@ -12,8 +12,6 @@ services:
     network_mode: host
     privileged: true
     environment:
-      - DISPLAY=${DISPLAY:0}
+      - DISPLAY=${DISPLAY}
       - LIBGL_ALWAYS_SOFTWARE=1
     command: roslaunch roomac_simulation simulation_nav_pick.launch
-      map_file:="/home/roomac/example_roomac_data/rtabmap.db"
-      positions_file:="/home/roomac/example_roomac_data/positions.yaml"

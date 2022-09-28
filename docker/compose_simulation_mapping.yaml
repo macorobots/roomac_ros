@@ -12,6 +12,6 @@ services:
     network_mode: host
     privileged: true
     environment:
-      - DISPLAY=${DISPLAY:0}
+      - DISPLAY=${DISPLAY}
       - LIBGL_ALWAYS_SOFTWARE=1
     command: roslaunch roomac_simulation simulation_mapping.launch
