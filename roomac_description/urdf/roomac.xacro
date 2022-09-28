@@ -126,7 +126,7 @@
 </joint>
 
 <xacro:if value="$(arg simulation)">
-  <xacro:property name="artag_bundle_rpy" value="${-pi/2} 0 0"/>
+  <xacro:property name="artag_bundle_rpy" value="${-pi/2} 0 ${-pi/2}"/>
   <xacro:property name="artag_bundle_xyz" value="0.04857 0 0"/>
   <xacro:property name="artag_bundle_parent_link" value="artag_bundle_visual_link" />
 </xacro:if>
