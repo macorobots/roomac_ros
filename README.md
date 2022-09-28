@@ -14,17 +14,53 @@ Roomac is a low-cost autonomous mobile manipulation robot. It consists of differ
     <img height="50" src="https://www.vectorlogo.zone/logos/instagram/instagram-ar21.svg"/>
 </a>
 
+
+Recommended way of running simulation and real robot software is through docker containers, so first make sure that you have it installed.
+
+## Simulation demo
+
+If you would like to quickly run application of bringing bottle to defined location you can use already prepared map and config. 
+
+### Nvidia GPU config
+```
+docker compose -f docker/compose_simulation_demo_nvidia.yaml up
+```
+
+### Other GPU config
+First run:
+```
+xhost local:root
+```
+And then prepared compose: 
+```
+docker compose -f docker/compose_simulation_demo.yaml up
+```
+
+<!-- > **Tip**
+> If you have NVidia graphics card install nvidia runtime (todo: describe) and use `compose_simulation_demo_nvidia.yaml` instead for better performance. -->
+
+
+Then to execute fetching bottle run: 
+```
+docker exec roomac_simulation bash -c "source /home/roomac/catkin_ws/devel/setup.bash && rostopic pub /pick_and_bring/goal roomac_msgs/PickAndBringActionGoal {}"
+```
+
+<p align="center">
+  <img src="https://drive.google.com/uc?export=download&id=1QqZTh-4e_rQb-nHz5QIrDAGeiYUWy7WU" height="300" />
+</p>
+<p align="center">
+  <img src="https://drive.google.com/uc?export=download&id=12h62AJevcnTrKnjP31EyKXX0_Lz6-4fP" height="300" />
+</p>
+
 ## Usage
+
+In the following sections more details about running robot software will be described.
 
 ### Mapping
 
 <!-- TODO: add gif with mapping -->
 
 First for robot to navigate it is necessary to create map of the environment.
-
-> **Tip**
-> Simulation docker image comes with map and destinations of the environment, you just have to copy them to your docker volume.
-
 
 <!-- TODO describe creating volume -->
 
@@ -96,13 +132,6 @@ After launching everything drive robot around. When area is mapped simply kill l
 
 
 ### Localization and manipulation
-
-<p align="center">
-  <img src="https://drive.google.com/uc?export=download&id=1QqZTh-4e_rQb-nHz5QIrDAGeiYUWy7WU" height="300" />
-</p>
-<p align="center">
-  <img src="https://drive.google.com/uc?export=download&id=12h62AJevcnTrKnjP31EyKXX0_Lz6-4fP" height="300" />
-</p>
 
 Setup:
 <table>
