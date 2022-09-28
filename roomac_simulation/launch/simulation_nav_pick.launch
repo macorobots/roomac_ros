@@ -24,7 +24,9 @@
   <include file="$(find roomac_autonomous_manipulation)/launch/object_detection.launch" />
 
 <!-- ARtag -->
-  <include file="$(find roomac_ar_tag)/launch/roomac_ar_tag.launch" />
+  <include file="$(find roomac_ar_tag)/launch/roomac_ar_tag.launch">
+    <arg name="simulation" value="true" />
+  </include>
 
 <!-- Rtabmap -->
   <include file="$(find roomac_rtabmap)/launch/rtabmap_localization.launch">

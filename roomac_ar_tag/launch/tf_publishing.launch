@@ -1,6 +1,7 @@
 <launch>
   <arg name="filtration_enabled" default="false" />
   <arg name="object_artag_enabled" default="false" />
+  <arg name="simulation" default="false" />
 
   <group if="$(arg filtration_enabled)">
     <node if="$(arg object_artag_enabled)" pkg="robot_localization" type="ekf_localization_node" name="filtration_camera_object" clear_params="true">
@@ -12,14 +13,16 @@
     </node>
 
     <node name="artag_parallel_transform_publisher" pkg="roomac_ar_tag" type="artag_parallel_transform_publisher.py" output="screen">
-      <rosparam command="load" file="$(find roomac_ar_tag)/config/artag_odom_publisher_config.yaml" subst_value="true"/>
+      <rosparam command="load" file="$(find roomac_ar_tag)/config/artag_odom_publisher_config.yaml" subst_value="true" />
     </node>
 
     <node name="artag_odom_publisher" pkg="roomac_ar_tag" type="artag_odom_publisher.py" output="screen">
-      <rosparam command="load" file="$(find roomac_ar_tag)/config/artag_odom_publisher_config.yaml" subst_value="true"/>
+      <rosparam command="load" file="$(find roomac_ar_tag)/config/artag_odom_publisher_config.yaml" subst_value="true" />
     </node>
   </group>
 
-  <node unless="$(arg filtration_enabled)" name="tf_publisher_parallel" pkg="roomac_ar_tag" type="tf_publisher_parallel.py" output="screen"/>
+  <node unless="$(arg filtration_enabled)" name="tf_publisher_parallel" pkg="roomac_ar_tag" type="tf_publisher_parallel.py" output="screen">
+    <param name="simulation" type="bool" value="$(arg simulation)" />
+  </node>
 
 </launch>
