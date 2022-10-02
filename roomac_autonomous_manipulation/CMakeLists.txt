@@ -46,3 +46,22 @@ target_link_libraries(object_detection_node
   ${catkin_LIBRARIES}
   ${PCL_LIBRARIES}
 )
+
+if(CATKIN_ENABLE_TESTING)
+  find_package(rostest REQUIRED)
+  add_rostest(test/object_detection.test.launch)
+
+  catkin_download_test_data(
+    object_detection.bag
+    https://drive.google.com/uc?export=download&id=11ZYm22SqDvrZLV93Mk8w1_hYYJ704uD-
+    DESTINATION ${CATKIN_DEVEL_PREFIX}/${CATKIN_PACKAGE_SHARE_DESTINATION}/test
+    FILENAME object_detection.bag
+    MD5 df7dd49f633579e19f86939bb22710bd)
+
+  catkin_download_test_data(
+    object_detection_correct_values.yaml
+    https://drive.google.com/uc?export=download&id=1Y1BpCiKwLI53tSGplEXh6aXC6h_d_jLQ
+    DESTINATION ${CATKIN_DEVEL_PREFIX}/${CATKIN_PACKAGE_SHARE_DESTINATION}/test
+    FILENAME object_detection_correct_values.yaml
+    MD5 e6fe69060dc5942ebf50254b18ee2616)
+endif()
