@@ -10,7 +10,12 @@ generate_dynamic_reconfigure_options(
 
 catkin_package()
 
-if(CATKIN_ENABLE_TESTING)
+# Full integration test in gazebo is disabled by default - tests are mainly used in github action
+# and because of camera, gazebo tests require GPU, which isn't provided in github actions and in result
+# test doesn't work
+# It can be enabled by passing additional cmake argument: 
+# catkin run_tests --cmake-args -DENABLE_ROOMAC_SIMULATION_TESTS=True
+if(CATKIN_ENABLE_TESTING AND ENABLE_ROOMAC_SIMULATION_TESTS)
   find_package(rostest REQUIRED)
   add_rostest(test/pick_and_bring.test.launch)
 
