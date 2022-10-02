@@ -1,0 +1,21 @@
+# This config uses industrial_ci (https://github.com/ros-industrial/industrial_ci.git).
+# For troubleshooting, see README (https://github.com/ros-industrial/industrial_ci/blob/master/README.rst)
+# More detailed README (https://github.com/ros-industrial/industrial_ci/blob/master/doc/index.rst)
+
+name: CI
+
+on:
+  workflow_call:
+  workflow_dispatch:
+  pull_request:
+
+jobs:
+  industrial-ci:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - uses: "ros-industrial/industrial_ci@master"
+        env:
+          DOCKER_IMAGE: macstepien/roomac:simulation
+          BLACK_CHECK: true
+          CLANG_FORMAT_CHECK: file
