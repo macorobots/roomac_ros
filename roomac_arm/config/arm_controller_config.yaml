@@ -58,7 +58,7 @@ arm_controller:
     servo_type: analog
     command_topic_name: wrist_twist_cmd
 
-    zero_angle_signal: 1590
+    zero_angle_signal: 2275
     lower_signal_bound: 500
     upper_signal_bound: 2500
 
