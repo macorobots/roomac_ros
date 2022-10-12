@@ -89,6 +89,24 @@ class PickingObjectManager(object):
                 preempted_action_function=self._controller.moveit_abort,
                 feedback_state=PickObjectFeedback.GOING_TO_POST_GRIPPING_POSITION,
             ),
+            ActionProcedureStep(
+                start_procedure_function=self._controller.rotate_wrist_post_point,
+                get_procedure_state_function=self._controller.moveit_finished_execution,
+                preempted_action_function=self._controller.moveit_abort,
+                feedback_state=PickObjectFeedback.GOING_TO_POST_GRIPPING_POSITION,
+            ),
+            ActionProcedureStep(
+                start_procedure_function=self._controller.go_to_cup_point,
+                get_procedure_state_function=self._controller.moveit_finished_execution,
+                preempted_action_function=self._controller.moveit_abort,
+                feedback_state=PickObjectFeedback.GOING_TO_POST_GRIPPING_POSITION,
+            ),
+            ActionProcedureStep(
+                start_procedure_function=self._controller.rotate_wrist_pour,
+                get_procedure_state_function=self._controller.moveit_finished_execution,
+                preempted_action_function=self._controller.moveit_abort,
+                feedback_state=PickObjectFeedback.GOING_TO_POST_GRIPPING_POSITION,
+            ),
         ]
 
         self._pick_action_executor = SimpleActionExecutor(

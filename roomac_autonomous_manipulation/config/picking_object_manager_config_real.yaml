@@ -1,7 +1,7 @@
 # Correction offset applied to object position [m]
 object_position_correction_x: -0.01
 object_position_correction_y: 0.01
-object_position_correction_z: 0.005
+object_position_correction_z: 0.025
 
 # How long to wait for gripper to open/close [s]
 open_gripper_wait_time: 0.0

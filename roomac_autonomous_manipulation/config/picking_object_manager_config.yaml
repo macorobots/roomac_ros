@@ -1,7 +1,10 @@
 # Offset applied to object position as a pre/post gripping position [m]
 #! pre gripping position is currently disabled
 pre_goal_retraction_x: 0.1
-post_goal_retraction_z: 0.08
+post_goal_retraction_z: 0.04
+cup_retraction_y: 0.1
+cup_retraction_x: 0.1
+post_goal_retraction_pitch: -0.8
 
 # Number of retries of each procedure
 procedure_retry_threshold: 5
@@ -22,7 +25,7 @@ home_position_target_name: Home
 # 48mm
 opened_gripper_value: 0.0041
 # 25mm
-closed_gripper_value: -0.0035
+closed_gripper_value: -0.0038
 
 # Bottle size
 bottle_cap_height: 0.03
@@ -34,4 +37,5 @@ bottle_height: 0.1
 bottle_radius_pre_picking: 0.06
 bottle_radius_post_picking: 0.03
 
-safety_margin_table: 0.05
+safety_margin_table_up_down: 0.03
+safety_margin_table_sides: 0.04

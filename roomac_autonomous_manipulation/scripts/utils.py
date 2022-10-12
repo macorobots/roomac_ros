@@ -20,6 +20,16 @@ def get_perpendicular_orientation():
     return orientation
 
 
+def get_pitch_rotated_orientation(angle):
+    orientation = Quaternion()
+    quat = quaternion_from_euler(-math.pi / 2, -math.pi / 2 + angle, math.pi)
+    orientation.x = quat[0]
+    orientation.y = quat[1]
+    orientation.z = quat[2]
+    orientation.w = quat[3]
+    return orientation
+
+
 def transform_point(point, target_frame):
     listener = tf.TransformListener()
     rate = rospy.Rate(10.0)

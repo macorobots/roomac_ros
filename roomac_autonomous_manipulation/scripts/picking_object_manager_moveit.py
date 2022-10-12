@@ -150,18 +150,25 @@ class PickingObjectManagerMoveIt(object):
         self._move_group.set_named_target(self._home_position_target_name)
         self._find_and_execute_plan()
 
-    def go_to_point(self, point, gripper_frame):
+    def rotate_wrist(self, angle):
+        group_variable_values = self._move_group.get_current_joint_values()
+        group_variable_values[4] = angle
+        self._move_group.set_joint_value_target(group_variable_values)
+        self._find_and_execute_plan(wait=False)
+
+    def go_to_pose(self, pose, gripper_frame):
         self._move_group.set_start_state_to_current_state()
-
-        pose_goal = geometry_msgs.msg.Pose()
-        pose_goal.orientation = utils.get_perpendicular_orientation()
-        pose_goal.position = point
-
         # self.move_group.set_pose_target(pose_goal)
 
         # Allow approximate solutions (True)
-        self._move_group.set_joint_value_target(pose_goal, gripper_frame, True)
+        self._move_group.set_joint_value_target(pose, gripper_frame, True)
         self._find_and_execute_plan(wait=False)
+
+    def go_to_point(self, point, gripper_frame):
+        pose_goal = geometry_msgs.msg.Pose()
+        pose_goal.orientation = utils.get_perpendicular_orientation()
+        pose_goal.position = point
+        self.go_to_pose(pose_goal, gripper_frame)
 
     # ----- UTILITY PRIVATE FUNCTIONS -----
 

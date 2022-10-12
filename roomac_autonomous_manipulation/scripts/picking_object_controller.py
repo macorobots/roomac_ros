@@ -4,7 +4,7 @@ import copy
 
 import rospy
 
-from geometry_msgs.msg import PointStamped, Point, PoseStamped
+from geometry_msgs.msg import PointStamped, Point, PoseStamped, Pose
 
 from actionlib_msgs.msg import GoalStatus
 
@@ -40,7 +40,12 @@ class PickingObjectController(object):
             "~object_position_correction_z", 0.0
         )
         self._pre_goal_retraction_x = rospy.get_param("~pre_goal_retraction_x", 0.1)
-        self._post_goal_retraction_z = rospy.get_param("~post_goal_retraction_z", 0.08)
+        self._post_goal_retraction_z = rospy.get_param("~post_goal_retraction_z", 0.04)
+        self._post_goal_retraction_pitch = rospy.get_param(
+            "~post_goal_retraction_pitch", -0.8
+        )
+        self._cup_retraction_y = rospy.get_param("~cup_retraction_y", 0.1)
+        self._cup_retraction_x = rospy.get_param("~cup_retraction_x", 0.04)
         self._open_gripper_wait_time = rospy.get_param("~open_gripper_wait_time", 0.0)
         self._close_gripper_wait_time = rospy.get_param("~close_gripper_wait_time", 1.0)
 
@@ -67,7 +72,12 @@ class PickingObjectController(object):
         self._bottle_cap_name = "bottle_cap"
         self._table_name = "table"
 
-        self._safety_margin_table = rospy.get_param("~safety_margin_table", 0.05)
+        self._safety_margin_table_up_down = rospy.get_param(
+            "~safety_margin_table_up_down", 0.05
+        )
+        self._safety_margin_table_sides = rospy.get_param(
+            "~safety_margin_table_sides", 0.05
+        )
 
     # ----- OTHER -----
     def set_current_object_point(self, object_point):
@@ -112,6 +122,12 @@ class PickingObjectController(object):
         # self._close_gripper_wait_time
         self._moveit_manager.move_gripper(self._closed_gripper_value)
 
+    def rotate_wrist_pour(self):
+        self._moveit_manager.rotate_wrist(-3.14)
+
+    def rotate_wrist_post_point(self):
+        self._moveit_manager.rotate_wrist(self._post_goal_retraction_pitch)
+
     def go_to_current_object_point(self):
         self._moveit_manager.go_to_point(
             self._current_object_point, self._gripper_frame
@@ -126,6 +142,18 @@ class PickingObjectController(object):
         current_post_object_point = copy.deepcopy(self._current_object_point)
         current_post_object_point.z += self._post_goal_retraction_z
         self._moveit_manager.go_to_point(current_post_object_point, self._gripper_frame)
+
+    def go_to_cup_point(self):
+        cup_point = copy.deepcopy(self._current_object_point)
+        cup_point.z += self._post_goal_retraction_z
+        cup_point.y += self._cup_retraction_y
+        cup_point.x += self._cup_retraction_x
+        pose_goal = Pose()
+        pose_goal.orientation = utils.get_pitch_rotated_orientation(
+            -self._post_goal_retraction_pitch
+        )
+        pose_goal.position = cup_point
+        self._moveit_manager.go_to_pose(pose_goal, self._gripper_frame)
 
     def return_to_home_position(self):
         self._moveit_manager.return_to_home_position()
@@ -162,9 +190,9 @@ class PickingObjectController(object):
         ]
 
         detected_table_body_size = [
-            detected_table_body_base_size[0] + 2 * self._safety_margin_table,
-            detected_table_body_base_size[1] + 2 * self._safety_margin_table,
-            detected_table_body_base_size[2] + 2 * self._safety_margin_table,
+            detected_table_body_base_size[0] + 2 * self._safety_margin_table_sides,
+            detected_table_body_base_size[1] + 2 * self._safety_margin_table_sides,
+            detected_table_body_base_size[2] + 2 * self._safety_margin_table_up_down,
         ]
 
         self._moveit_manager.add_box_to_scene(
@@ -263,6 +291,9 @@ class PickingObjectController(object):
         self._object_position_correction_z = config.object_position_correction_z
         self._pre_goal_retraction_x = config.pre_goal_retraction_x
         self._post_goal_retraction_z = config.post_goal_retraction_z
+        self._post_goal_retraction_pitch = config.post_goal_retraction_pitch
+        self._cup_retraction_y = config.cup_retraction_y
+        self._cup_retraction_x = config.cup_retraction_x
         self._open_gripper_wait_time = config.open_gripper_wait_time
         self._close_gripper_wait_time = config.close_gripper_wait_time
         self.procedure_retry_threshold = config.procedure_retry_threshold
