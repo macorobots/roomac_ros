@@ -10,40 +10,7 @@ Roomac is a low-cost autonomous mobile manipulation robot. It consists of differ
   <img src="https://drive.google.com/uc?export=download&id=1rTuLH-XS4gVUvIicEU5ieaAnlDPMW0UM" height="400" />
 </p>
 
-<a href="https://www.instagram.com/macorobots/">
-    <img height="50" src="https://www.vectorlogo.zone/logos/instagram/instagram-ar21.svg"/>
-</a>
-
-
-Recommended way of running simulation and real robot software is through docker containers, so first make sure that you have it installed.
-
-## Simulation demo
-
-If you would like to quickly run application of bringing bottle to defined location you can use already prepared map and config. 
-
-### Nvidia GPU config
-```
-docker compose -f docker/compose_simulation_demo_nvidia.yaml up
-```
-
-### Other GPU config
-First run:
-```
-xhost local:root
-```
-And then prepared compose: 
-```
-docker compose -f docker/compose_simulation_demo.yaml up
-```
-
-<!-- > **Tip**
-> If you have NVidia graphics card install nvidia runtime (todo: describe) and use `compose_simulation_demo_nvidia.yaml` instead for better performance. -->
-
-
-Then to execute fetching bottle run: 
-```
-docker exec roomac_simulation bash -c "source /home/roomac/catkin_ws/devel/setup.bash && rostopic pub /pick_and_bring/goal roomac_msgs/PickAndBringActionGoal {}"
-```
+Here you can see some gifs demonstrating robot's capabilities (for more you can visit my [instagram page](https://www.instagram.com/macorobots/))
 
 <p align="center">
   <img src="https://drive.google.com/uc?export=download&id=1QqZTh-4e_rQb-nHz5QIrDAGeiYUWy7WU" height="300" />
@@ -52,17 +19,48 @@ docker exec roomac_simulation bash -c "source /home/roomac/catkin_ws/devel/setup
   <img src="https://drive.google.com/uc?export=download&id=12h62AJevcnTrKnjP31EyKXX0_Lz6-4fP" height="300" />
 </p>
 
+Recommended way of running simulation and real robot software is through docker containers, so first make sure that you have it installed.
+
+## Simulation demo
+
+If you would like to quickly run application of bringing bottle to defined location you can use already prepared map and config. 
+First startup simulation container, there are two possiblities:
+
+* Nvidia GPU config (make sure that you have Nvidia Container Runtime installed)
+  ```
+  docker compose -f docker/compose_simulation_demo_nvidia.yaml up
+  ```
+
+* other GPUs
+  ```
+  xhost local:root
+  docker compose -f docker/compose_simulation_demo.yaml up
+  ```
+
+Nvidia configuration is recommended, as it has better performance.
+<!-- > **Tip**
+> If you have NVidia graphics card install nvidia runtime (todo: describe) and use `compose_simulation_demo_nvidia.yaml` instead for better performance. -->
+
+
+Then to execute fetching bottle run: 
+```
+docker exec roomac_simulation bash -c \
+ "source /home/roomac/catkin_ws/devel/setup.bash &&
+  rostopic pub /pick_and_bring/goal roomac_msgs/PickAndBringActionGoal {}"
+```
+
+And that's it! Robot should navigate to table, pick up bottle and return to starting position. Please note that accuracy of this operation isn't 100% and robot may fail (especially detecting robot's position in Kinect above table is prone to failure).
+
 ## Usage
 
 In the following sections more details about running robot software will be described.
 
 ### Mapping
 
-<!-- TODO: add gif with mapping -->
+> **Tip**
+> Simulation docker image comes with map and destinations of the environment, you can copy them (or pass as parameters just like in demo) and skip this step
 
 First for robot to navigate it is necessary to create map of the environment.
-
-<!-- TODO describe creating volume -->
 
 Setup:
 <table>
@@ -78,13 +76,16 @@ Setup:
 
 First launch the docker container and run:
 ```bash
-roslaunch roomac_simulation simulation_mapping.launch
+docker compose -f \
+ docker/compose_simulation_mapping_nvidia.yaml up
 ```
+Alternatively run `xhost local:root` and use `compose_simulation_mapping.yaml` config if you don't have Nvidia GPU.
 
 On the other terminal launch `teleop` to control the robot:
-
 ```
-roslaunch roomac_simulation teleop.launch
+docker exec -it roomac_simulation bash -c \
+ "source /home/roomac/catkin_ws/devel/setup.bash
+  && roslaunch roomac_simulation teleop.launch"
 ```
 
 </td>
@@ -106,10 +107,8 @@ roslaunch roomac raspberry.launch
 
 On laptop: 
 ```
-docker-compose -f compose_laptop.yaml run roomac
-```
-```
-roslaunch roomac laptop_mapping_manual.launch
+docker compose -f \
+ docker/compose_laptop_mapping.yaml up
 ```
 
 </td>
@@ -117,9 +116,11 @@ roslaunch roomac laptop_mapping_manual.launch
 <tr>
 <td>         
 
+
 External laptop (used for visualization):
 ```
-roslaunch roomac_rtabmap rviz_rtabmap_mapping.launch 
+docker compose -f \
+ docker/compose_external_laptop_localization.yaml up
 ```
 
 </td>
@@ -127,7 +128,7 @@ roslaunch roomac_rtabmap rviz_rtabmap_mapping.launch
     </tbody>
 </table>
 
-After launching everything drive robot around. When area is mapped simply kill launch files with Ctrl+C and map will be saved to `roomac_data` volume.
+After launching everything drive robot around. When area is mapped simply kill launch files with Ctrl+C and map will be saved to `roomac_data` directory.
 
 
 
@@ -147,8 +148,11 @@ Setup:
 
 First launch the docker container and run:
 ```
-roslaunch roomac_simulation simulation_nav_pick.launch
+docker compose -f \
+ docker/compose_simulation_localization_nvidia.yaml up
 ```
+
+Like in previous step there is a config for other GPUs (`compose_simulation_localization.yaml`). Remember to first run `xhost local:root`
 
 </td>
 
@@ -169,10 +173,8 @@ roslaunch roomac raspberry.launch
 
 On laptop:
 ```
-docker-compose -f compose_laptop.yaml run roomac
-```
-```
-roslaunch roomac laptop_nav_picking.launch
+docker compose -f \
+ docker/compose_laptop_localization.yaml up
 ```
 
 </td>
@@ -182,7 +184,8 @@ roslaunch roomac laptop_nav_picking.launch
 
 External laptop:
 ```
-roslaunch roomac external_laptop_nav_picking.launch
+docker compose -f \
+ docker/compose_external_laptop_localization.yaml up
 ```
 
 </td>
@@ -190,9 +193,14 @@ roslaunch roomac external_laptop_nav_picking.launch
     </tbody>
 </table>
 
-
 > **Tip**
-> Simulation docker image comes with map and destinations of the environment, you can copy them and skip this step
+> All steps here will be referenced just if you had ROS installed natively. If you want to use only dockers instead you can use instead:
+> ```
+> docker exec roomac_simulation bash -c \
+>  "source /home/roomac/catkin_ws/devel/setup.bash && HERE_COPY_COMMAND"
+> ```
+> Containers are run in network host mode, so you shouldn't have problem running `rosservice` and `rostopic` locally (although rememeber that in some cases custom message types are used, which require built `roomac_msgs` package)
+
 First it is necessary to save home and table position, drive robot to these locations and use services:
 ```
 rosservice call /save_table_position
@@ -215,6 +223,7 @@ rosservice call /go_to_table
 rosservice call /go_to_home
 ```
 or `2D Nav Goal` in RViz.
+
 Cancelling goal:
 ```
 rostopic pub /move_base/cancel actionlib_msgs/GoalID {}
