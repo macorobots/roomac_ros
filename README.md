@@ -242,29 +242,9 @@ And to return the arm to the home position:
 rosservice call /home_arm
 ```
 
-## Kinect in Docker
-To use Kinect in docker, additionally there is a need to create udev rules on the host machine. Create `/etc/udev/rules.d/51-kinect.rules` with:
-```
-# ATTR{product}=="Xbox NUI Motor"
-SUBSYSTEM=="usb", ATTR{idVendor}=="045e", ATTR{idProduct}=="02b0", MODE="0666"
-# ATTR{product}=="Xbox NUI Audio"
-SUBSYSTEM=="usb", ATTR{idVendor}=="045e", ATTR{idProduct}=="02ad", MODE="0666"
-# ATTR{product}=="Xbox NUI Camera"
-SUBSYSTEM=="usb", ATTR{idVendor}=="045e", ATTR{idProduct}=="02ae", MODE="0666"
-```
+## Further reading
 
-## Troubleshooting
-
-The date on Raspberry isn't synchronized:
-```
-sudo systemctl restart chrony.service
-```
-If it still doesn't work raspberry reboot may be necessary.
-
-After creating roomac volume it is necessary to change ownership (rtabmap returns problems with permissions for saving map):
-```
-sudo chown -R roomac:roomac roomac_data/
-```
+To find out more about this project you can check out my master thesis.
 
 <p align="center">
   <img src="https://drive.google.com/uc?export=download&id=1GaggM1wOW-irI4vqvEJq4knI8z77sjEJ" height="300" />
