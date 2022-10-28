@@ -4,7 +4,6 @@ services:
     image: roomac:simulation
     container_name: roomac_simulation
     volumes:
-      - ./roomac_data:/home/roomac/roomac_data
       - /tmp/.X11-unix:/tmp/.X11-unix
     network_mode: host
     privileged: true
