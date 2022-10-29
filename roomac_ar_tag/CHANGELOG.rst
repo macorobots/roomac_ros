@@ -2,8 +2,8 @@
 Changelog for package roomac_ar_tag
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+1.12.9 (2022-10-29)
+-------------------
 * Merge pull request `#65 <https://github.com/macstepien/roomac_ros/issues/65>`_ from macstepien/add-tests
   Add robot and object detection tests
 * Contributors: Maciej Stępień
