@@ -7,9 +7,8 @@ on:
 jobs:
   industrial-ci:
     if: ${{ github.event.pull_request.merged == true }}
-    uses: macstepien/roomac_ros/.github/workflows/industrial_ci_action.yml@master
-    with:
-      name: ${{ needs.get-bump.outputs.bump }}
+    uses: ./.github/workflows/industrial_ci_action.yml
+    secrets: inherit
 
   get-bump:
     needs: industrial-ci
@@ -20,18 +19,20 @@ jobs:
     steps:
       - name: Get version bump
         id: get-version-bump
-        uses: husarion-ci/action-get-version-bump@v0.2.0
+        uses: husarion-ci/action-get-version-bump@v0.3.0
 
   catkin-release:
     needs: get-bump
     if: ${{ needs.get-bump.outputs.bump != '' }}
-    uses: macstepien/roomac_ros/.github/workflows/catkin_release.yml@master
+    uses: ./.github/workflows/catkin_release.yml
+    secrets: inherit
     with:
       name: ${{ needs.get-bump.outputs.bump }}
 
   build-and-push-docker-image:
     needs: catkin-release
-    uses: macstepien/roomac_ros/.github/workflows/build_and_push_docker_image.yml@master
+    uses: ./.github/workflows/build_and_push_docker_image.yml
+    secrets: inherit
     with:
       postfix: ${{ needs.catkin-release.outputs.new_version }}
       tag_main_image: true
