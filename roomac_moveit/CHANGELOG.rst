@@ -2,8 +2,8 @@
 Changelog for package roomac_moveit
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+1.12.10 (2022-10-29)
+--------------------
 * Merge pull request `#66 <https://github.com/macstepien/roomac_ros/issues/66>`_ from macstepien/workflows-update
   Workflows update
 * Contributors: Maciej Stępień
