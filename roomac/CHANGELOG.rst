@@ -2,6 +2,12 @@
 Changelog for package roomac
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* Merge pull request `#66 <https://github.com/macstepien/roomac_ros/issues/66>`_ from macstepien/workflows-update
+  Workflows update
+* Contributors: Maciej Stępień
+
 1.12.9 (2022-10-29)
 -------------------
 * Merge pull request `#65 <https://github.com/macstepien/roomac_ros/issues/65>`_ from macstepien/add-tests
