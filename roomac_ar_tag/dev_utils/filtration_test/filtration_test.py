@@ -13,8 +13,8 @@ odomPub = rospy.Publisher("odom", Odometry, queue_size=50)
 rate = rospy.Rate(10.0)
 
 while not rospy.is_shutdown():
-    quat1 = quaternion_from_euler(0,0,0)
-    quat2 = quaternion_from_euler(0.5,0.5,0.5)
+    quat1 = quaternion_from_euler(0, 0, 0)
+    quat2 = quaternion_from_euler(0.5, 0.5, 0.5)
 
     pt1 = Point(0.5, 0.5, 0.5)
     pt2 = Point(0.6, 0.6, 0.6)
@@ -22,17 +22,17 @@ while not rospy.is_shutdown():
     r = randrange(4)
 
     if r == 2:
-      pt = pt1
+        pt = pt1
     else:
-      pt = pt2
-    
+        pt = pt2
+
     r = randrange(4)
 
     if r == 2:
-      quaternion = quat1
+        quaternion = quat1
     else:
-      quaternion = quat2
-    
+        quaternion = quat2
+
     quat = Quaternion(quaternion[0], quaternion[1], quaternion[2], quaternion[3])
 
     odomMsg = Odometry()
@@ -40,7 +40,7 @@ while not rospy.is_shutdown():
     odomMsg.header.frame_id = "odom"
     odomMsg.child_frame_id = "base_link"
     odomMsg.pose.pose = Pose(pt, quat)
-    
+
     odomMsg.pose.covariance[0] = 10
     odomMsg.pose.covariance[7] = 10
     odomMsg.pose.covariance[14] = 10
