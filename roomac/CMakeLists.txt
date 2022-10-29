@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.1.3)
 project(roomac)
 
 find_package(catkin REQUIRED
-dynamic_reconfigure)
+  dynamic_reconfigure)
 
 generate_dynamic_reconfigure_options(
   cfg/AutonomousMissionSettings.cfg
@@ -10,10 +10,12 @@ generate_dynamic_reconfigure_options(
 
 catkin_package()
 
+# todo: add install
+
 # Full integration test in gazebo is disabled by default - tests are mainly used in github action
 # and because of camera, gazebo tests require GPU, which isn't provided in github actions and in result
 # test doesn't work
-# It can be enabled by passing additional cmake argument: 
+# It can be enabled by passing additional cmake argument:
 # catkin run_tests --cmake-args -DENABLE_ROOMAC_SIMULATION_TESTS=True
 if(CATKIN_ENABLE_TESTING AND ENABLE_ROOMAC_SIMULATION_TESTS)
   find_package(rostest REQUIRED)
