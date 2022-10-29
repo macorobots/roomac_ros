@@ -2,6 +2,9 @@
 Changelog for package roomac_description
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+
 1.12.8 (2022-10-29)
 -------------------
 * Merge pull request `#64 <https://github.com/macstepien/roomac_ros/issues/64>`_ from macstepien/improve-simulation-docker-and-readme
