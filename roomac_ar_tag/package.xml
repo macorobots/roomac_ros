@@ -17,4 +17,8 @@
   <exec_depend>rospy</exec_depend>
 
   <exec_depend>ar_track_alvar</exec_depend>
+
+  <test_depend>rostest</test_depend>
+  <test_depend>roomac_description</test_depend>
+  <test_depend>rgbd_launch</test_depend>
 </package>

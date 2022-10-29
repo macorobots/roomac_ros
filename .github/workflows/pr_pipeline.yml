@@ -1,0 +1,38 @@
+name: PR pipeline
+on:
+  pull_request:
+    branches: master
+    types: [closed]
+
+jobs:
+  industrial-ci:
+    if: ${{ github.event.pull_request.merged == true }}
+    uses: ./.github/workflows/industrial_ci_action.yml
+    secrets: inherit
+
+  get-bump:
+    needs: industrial-ci
+    name: Get version bump
+    runs-on: ubuntu-latest
+    outputs:
+      bump: ${{ steps.get-version-bump.outputs.bump }}
+    steps:
+      - name: Get version bump
+        id: get-version-bump
+        uses: husarion-ci/action-get-version-bump@v0.3.0
+
+  catkin-release:
+    needs: get-bump
+    if: ${{ needs.get-bump.outputs.bump != '' }}
+    uses: ./.github/workflows/catkin_release.yml
+    secrets: inherit
+    with:
+      name: ${{ needs.get-bump.outputs.bump }}
+
+  build-and-push-docker-image:
+    needs: catkin-release
+    uses: ./.github/workflows/build_and_push_docker_image.yml
+    secrets: inherit
+    with:
+      postfix: ${{ needs.catkin-release.outputs.new_version }}
+      tag_main_image: true

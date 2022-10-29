@@ -1,0 +1,37 @@
+name: Catkin Release
+
+on:
+  workflow_call:
+    inputs:
+      name:
+        required: true
+        type: string
+    outputs:
+      new_version:
+        description: "Version after bumping"
+        value: ${{ jobs.catkin-release.outputs.new_version }}
+  workflow_dispatch:
+    inputs:
+      name:
+        description: "Version to bump (major, minor, patch)"
+        default: "patch"
+        required: true
+
+jobs:
+  catkin-release:
+    if: ${{ inputs.name != '' }}
+    name: Bump version
+    runs-on: ubuntu-latest
+    outputs:
+      new_version: ${{ steps.catkin-release.outputs.new_version }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Catkin release
+        id: catkin-release
+        uses: husarion-ci/action-catkin-release@v0.1.4
+        with:
+          bump: ${{ inputs.name }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          git_user: action-bot
+          git_email: action-bot@action-bot.com
