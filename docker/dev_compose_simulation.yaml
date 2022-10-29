@@ -1,17 +1,18 @@
 version: "3.9"
 services:
   roomac:
-    image: roomac:latest
+    image: roomac:simulation
+    container_name: dev_roomac_simulation
     build:
       context: ../
-      dockerfile: docker/Dockerfile
+      dockerfile: docker/Dockerfile.simulation
 
     stdin_open: true # docker run -i
     tty: true # docker run -t
     entrypoint: /bin/bash
 
     volumes:
-      - roomac_data:/home/roomac/roomac_data
+      - ./roomac_data:/home/roomac/roomac_data
       - type: bind
         source: ~/Documents/roomac/roomac_ws
         target: /home/roomac/catkin_ws

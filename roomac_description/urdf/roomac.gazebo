@@ -2,7 +2,8 @@
 <robot name="roomac" xmlns:xacro="http://www.ros.org/wiki/xacro" >
 
 <xacro:property name="standard_friction" value="1.0" />
-<xacro:property name="caster_friction" value="0.01" />
+<!-- 0 value for caster friction makes simulation run faster -->
+<xacro:property name="caster_friction" value="0.0" />
 <xacro:property name="wheel_friction" value="100.0" />
 <xacro:property name="finger_friction" value="100.0" />
 
@@ -10,7 +11,6 @@
   <mu1>${standard_friction}</mu1>
   <mu2>${standard_friction}</mu2>
   <selfCollide>true</selfCollide>
-  <gravity>true</gravity>
 </gazebo>
 
 <gazebo reference="head_link">
@@ -146,7 +146,7 @@
 
 <gazebo reference="camera_link">
   <sensor name="camera_plugin" type="depth">
-    <update_rate>20</update_rate>
+    <update_rate>10.0</update_rate>
     <camera>
       <horizontal_fov>1.047198</horizontal_fov>
       <image>
@@ -162,7 +162,7 @@
     <plugin name="camera_controller" filename="libgazebo_ros_openni_kinect.so">
       <baseline>0.2</baseline>
       <alwaysOn>true</alwaysOn>
-      <updateRate>1.0</updateRate>
+      <updateRate>10.0</updateRate>
       <cameraName>${camera_name}_ir</cameraName>
       <imageTopicName>/${camera_name}/color/image_raw</imageTopicName>
       <cameraInfoTopicName>/${camera_name}/color/camera_info</cameraInfoTopicName>
@@ -231,7 +231,7 @@
   <gravity>true</gravity>
   <sensor name="imu_sensor" type="imu">
     <always_on>true</always_on>
-    <update_rate>100</update_rate>
+    <update_rate>10</update_rate>
     <visualize>true</visualize>
     <topic>__default_topic__</topic>
     <plugin filename="libgazebo_ros_imu_sensor.so" name="imu_plugin">

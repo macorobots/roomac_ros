@@ -1,14 +1,15 @@
 #!/usr/bin/env python
 import rospy
 import tf
-from tf import transformations as t
 import math
 from tf.transformations import euler_from_quaternion, quaternion_from_euler
-from geometry_msgs.msg import Point, Pose, Quaternion, Twist, Vector3, Pose2D
 
 
 if __name__ == "__main__":
     rospy.init_node("artag_tf_republisher")
+
+    # todo: maybe it is possible to fix it without parameter, as it is not very nice
+    simulation = rospy.get_param("~simulation", False)
 
     listener = tf.TransformListener()
     br = tf.TransformBroadcaster()
@@ -27,9 +28,12 @@ if __name__ == "__main__":
             continue
 
         rpy_robot = euler_from_quaternion(rot)
-        rot_robot_only_yaw = quaternion_from_euler(
-            math.pi / 2, -rpy_robot[1], -math.pi / 2
-        )
+        if simulation:
+            rot_robot_only_yaw = quaternion_from_euler(math.pi / 2, 0.0, rpy_robot[2])
+        else:
+            rot_robot_only_yaw = quaternion_from_euler(
+                math.pi / 2, -rpy_robot[1], -math.pi / 2
+            )
 
         br.sendTransform(
             trans,

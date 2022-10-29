@@ -2,6 +2,7 @@ version: "3.9"
 services:
   roomac:
     image: roomac-laptop:latest
+    container_name: dev_roomac_laptop
     build:
       context: ../
       dockerfile: docker/Dockerfile.laptop
@@ -16,6 +17,10 @@ services:
         target: /home/roomac/catkin_ws
     network_mode: host
     privileged: true
+
+    stdin_open: true # docker run -i
+    tty: true # docker run -t
+    entrypoint: /bin/bash
 
 volumes:
   roomac_data:
