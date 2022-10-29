@@ -2,6 +2,12 @@
 Changelog for package roomac_move_base
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* Merge pull request `#64 <https://github.com/macstepien/roomac_ros/issues/64>`_ from macstepien/improve-simulation-docker-and-readme
+  Improve simulation docker and readme
+* Contributors: Maciej Stępień
+
 1.12.7 (2022-09-04)
 -------------------
 
