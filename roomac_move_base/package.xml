@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <package format="2">
   <name>roomac_move_base</name>
-  <version>1.12.3</version>
+  <version>1.12.10</version>
   <description>The roomac_move_base package</description>
 
   <author email="macorobots@gmail.com">Maciej Stępień</author>
@@ -17,6 +17,5 @@
   <exec_depend>move_base</exec_depend>
   <exec_depend>global_planner</exec_depend>
   <exec_depend>spatio_temporal_voxel_layer</exec_depend>
-  <exec_depend>dwa_local_planner</exec_depend>
   <exec_depend>teb_local_planner</exec_depend>
 </package>

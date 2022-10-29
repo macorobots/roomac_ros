@@ -1,0 +1,38 @@
+# This config uses industrial_ci (https://github.com/ros-industrial/industrial_ci.git).
+# For troubleshooting, see README (https://github.com/ros-industrial/industrial_ci/blob/master/README.rst)
+# More detailed README (https://github.com/ros-industrial/industrial_ci/blob/master/doc/index.rst)
+
+name: CI
+
+on:
+  workflow_call:
+  workflow_dispatch:
+  pull_request:
+
+jobs:
+  industrial-ci:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      # Image is private, todo: remove login after making image public
+      - name: Login to DockerHub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      - name: Clang check
+        # Specific commit is used, because after recent changes on industrial_ci it no longer works - I get error:
+        # /home/runner/work/_actions/ros-industrial/industrial_ci/master/industrial_ci/src/folding/github_actions.sh: line 29: /home/runner/work/_temp/_runner_file_commands/set_output_...: Permission denied
+        uses: "ros-industrial/industrial_ci@1b26c5ce19c2bccbf5ca8b220c7c29fb8daff941"
+        env:
+          DOCKER_IMAGE: macstepien/roomac:simulation
+          CLANG_FORMAT_CHECK: file
+      - name: Black check
+        uses: "ros-industrial/industrial_ci@1b26c5ce19c2bccbf5ca8b220c7c29fb8daff941"
+        env:
+          DOCKER_IMAGE: macstepien/roomac:simulation
+          BLACK_CHECK: true
+      - name: Build and test check
+        uses: "ros-industrial/industrial_ci@1b26c5ce19c2bccbf5ca8b220c7c29fb8daff941"
+        env:
+          DOCKER_IMAGE: macstepien/roomac:simulation

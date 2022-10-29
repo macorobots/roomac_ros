@@ -24,9 +24,9 @@
   <include file="$(find roomac_autonomous_manipulation)/launch/object_detection.launch" />
 
 <!-- ARtag -->
-  <!-- Difference in kinect frames (real vs simulation), so parallel isn't working correctly.
-  There is no need for it though, in simulation detection accuracy is very good -->
-  <include file="$(find roomac_ar_tag)/launch/roomac_ar_tag.launch" />
+  <include file="$(find roomac_ar_tag)/launch/roomac_ar_tag.launch">
+    <arg name="simulation" value="true" />
+  </include>
 
 <!-- Rtabmap -->
   <include file="$(find roomac_rtabmap)/launch/rtabmap_localization.launch">

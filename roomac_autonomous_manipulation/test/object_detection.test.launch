@@ -1,0 +1,10 @@
+<launch>
+  <include file="$(find roomac_autonomous_manipulation)/launch/object_detection.launch" />
+
+  <!-- delay playing rosbag to make sure that object detection is up -->
+  <node pkg="rosbag" type="play" name="player" output="screen" args="-d 1 $(find roomac_autonomous_manipulation)/test/object_detection.bag" launch-prefix="bash -c 'sleep 1; $0 $@' " />
+
+  <test test-name="object_detection_test" pkg="roomac_autonomous_manipulation" type="object_detection.test.py" time-limit="15.0">
+    <rosparam command="load" file="$(find roomac_autonomous_manipulation)/test/object_detection_correct_values.yaml" />
+  </test>
+</launch>

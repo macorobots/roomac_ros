@@ -65,22 +65,24 @@ roomac:
         i: 0.01
         i_clamp: 1
     constraints:
+      # Fixes GOAL_TOLERANCE_VIOLATED
+      stopped_velocity_tolerance: 0.0
       goal_time: 30.0
       shoulder_pitch_right_joint:
-        goal: 0.01
-        trajectory: 0.01
+        goal: 0.0
+        trajectory: 0.0
       shoulder_roll_right_joint:
-        goal: 0.01
-        trajectory: 0.01
+        goal: 0.0
+        trajectory: 0.0
       elbow_right_joint:
-        goal: 0.01
-        trajectory: 0.01
+        goal: 0.0
+        trajectory: 0.0
       wrist_right_joint:
-        goal: 0.01
-        trajectory: 0.01
+        goal: 0.0
+        trajectory: 0.0
       gripper_twist_right_joint:
-        goal: 0.01
-        trajectory: 0.01
+        goal: 0.0
+        trajectory: 0.0
     state_publish_rate: 25
     allow_partial_joints_goal: True
 
@@ -97,10 +99,11 @@ roomac:
         i: 0.01
         i_clamp: 1
     constraints:
+      stopped_velocity_tolerance: 0.0
       goal_time: 10.0
       gripper_finger_l_right_joint:
-        goal: 0.01
-        trajectory: 0.01
+        goal: 0.0
+        trajectory: 0.0
     state_publish_rate: 25
 
   # It is also possible to use GripperCommand instead of FollowJointTrajectory

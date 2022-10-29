@@ -3,44 +3,57 @@
 # base_local_planner
 # recovery_behaviors
 
-
 # width 57.5
 # 35.5 to back from base_link
 # 15 to front from base_link
-footprint: [[0.15, 0.2875], [-0.355, 0.2875], [-0.355, -0.2875], [0.15, -0.2875]]
+footprint:
+  [[0.15, 0.2875], [-0.355, 0.2875], [-0.355, -0.2875], [0.15, -0.2875]]
 
-# Footprint padding has to be quite low, because in the back of the robot there is quite big difference 
+# Footprint padding has to be quite low, because in the back of the robot there is quite big difference
 # between footprint and real robot and it has problems in navigating more narrow corridors.
 # Instead footprint can be changed to more complex shape to better approximate robot.
 footprint_padding: 0.02
 
 controller_frequency: 10.0
 # (double, default: 20.0)
-# The rate in Hz at which to run the control loop and send velocity commands to the base. 
+# The rate in Hz at which to run the control loop and send velocity commands to the base.
 
 planner_patience: 5.0
 # (double, default: 5.0)
-# How long the planner will wait in seconds in an attempt to find a valid plan before space-clearing operations are performed. 
+# How long the planner will wait in seconds in an attempt to find a valid plan before space-clearing operations are performed.
 
 controller_patience: 15.0
 # (double, default: 15.0)
-# How long the controller will wait in seconds without receiving a valid control before space-clearing operations are performed. 
+# How long the controller will wait in seconds without receiving a valid control before space-clearing operations are performed.
 
 conservative_reset_dist: 3.0
 # (double, default: 3.0)
-# The distance away from the robot in meters beyond which obstacles will be cleared from the costmap when attempting to clear space in the map. Note, this parameter is only used when the default recovery behaviors are used for move_base. 
+# The distance away from the robot in meters beyond which obstacles will be cleared from the costmap when attempting to clear space in the map. Note, this parameter is only used when the default recovery behaviors are used for move_base.
 
-recovery_behavior_enabled: false
+recovery_behavior_enabled: true
 # (bool, default: true)
-# Whether or not to enable the move_base recovery behaviors to attempt to clear out space. 
+# Whether or not to enable the move_base recovery behaviors to attempt to clear out space.
+
+recovery_behaviors:
+  [
+    {
+      name: conservative_reset,
+      type: clear_costmap_recovery/ClearCostmapRecovery,
+    },
+    { name: rotate_recovery, type: rotate_recovery/RotateRecovery },
+    {
+      name: aggressive_reset,
+      type: clear_costmap_recovery/ClearCostmapRecovery,
+    },
+  ]
 
 clearing_rotation_allowed: true
 # (bool, default: true)
-# Determines whether or not the robot will attempt an in-place rotation when attempting to clear out space. Note: This parameter is only used when the default recovery behaviors are in use, meaning the user has not set the recovery_behaviors parameter to anything custom. 
+# Determines whether or not the robot will attempt an in-place rotation when attempting to clear out space. Note: This parameter is only used when the default recovery behaviors are in use, meaning the user has not set the recovery_behaviors parameter to anything custom.
 
 shutdown_costmaps: false
 # (bool, default: false)
-# Determines whether or not to shutdown the costmaps of the node when move_base is in an inactive state 
+# Determines whether or not to shutdown the costmaps of the node when move_base is in an inactive state
 
 oscillation_timeout: 10.0
 # (double, default: 0.0)
@@ -56,4 +69,4 @@ planner_frequency: 0.0
 
 max_planning_retries: -1
 # (int32_t, default: -1)
-# How many times to allow for planning retries before executing recovery behaviors. A value of -1.0 corresponds to an infinite retries. 
+# How many times to allow for planning retries before executing recovery behaviors. A value of -1.0 corresponds to an infinite retries.

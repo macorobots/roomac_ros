@@ -4,7 +4,9 @@
 
   <!-- Difference in kinect frames (real vs simulation), so parallel isn't working correctly.
   There is no need for it though, in simulation detection accuracy is very good -->
-  <include file="$(find roomac_ar_tag)/launch/roomac_ar_tag.launch" />
+  <include file="$(find roomac_ar_tag)/launch/roomac_ar_tag.launch">
+    <arg name="simulation" value="true" />
+  </include>
 
   <node name="test_arm_precision_manager" pkg="roomac_autonomous_manipulation" type="test_arm_precision_manager.py" output="screen" />
 </launch>

@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <package format="2">
   <name>roomac_sensor_fusion</name>
-  <version>1.12.3</version>
+  <version>1.12.10</version>
   <description>The roomac_sensor_fusion package</description>
 
   <author email="macorobots@gmail.com">Maciej Stępień</author>

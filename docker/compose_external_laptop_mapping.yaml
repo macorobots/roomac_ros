@@ -1,0 +1,11 @@
+version: "3.9"
+services:
+  roomac:
+    image: roomac:simulation
+    container_name: roomac_external_laptop
+    environment:
+      - ROS_MASTER_URI=http://10.42.0.1:11311
+      - ROS_IP=10.42.0.160
+    network_mode: host
+    privileged: true
+    command: roslaunch roomac_rtabmap rviz_rtabmap_mapping.launch

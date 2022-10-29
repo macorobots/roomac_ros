@@ -1,9 +1,23 @@
 name: Build and push docker image
 on:
+  workflow_call:
+    inputs:
+      postfix:
+        required: true
+        type: string
+      tag_main_image:
+        required: true
+        type: boolean
   workflow_dispatch:
-  push:
-    branches:
-      - "master"
+    inputs:
+      postfix:
+        description: "Postfix added to docker image name"
+        required: true
+        type: string
+      tag_main_image:
+        description: "Additionally tag image with main tag roomac:simulation"
+        required: true
+        type: boolean
 
 jobs:
   docker:
@@ -18,9 +32,19 @@ jobs:
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
+      - name: Set docker image tags
+        env:
+          TAG_MAIN_IMAGE: ${{ inputs.tag_main_image }}
+          IMAGE_POSTFIX: ${{ inputs.postfix }}
+        run: |
+          if ${TAG_MAIN_IMAGE} == true; then
+            echo "TAGS=macstepien/roomac:simulation,macstepien/roomac:simulation-${IMAGE_POSTFIX}" >> $GITHUB_ENV
+          else
+            echo "TAGS=macstepien/roomac:simulation-${IMAGE_POSTFIX}" >> $GITHUB_ENV
+          fi
       - name: Build and push
         uses: docker/build-push-action@v3
         with:
-          file: ./Dockerfile
+          file: ./docker/Dockerfile.simulation
           push: true
-          tags: macstepien/roomac:latest
+          tags: ${{ env.TAGS }}
