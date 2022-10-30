@@ -9,7 +9,7 @@ from tf.transformations import euler_from_quaternion, quaternion_from_euler
 from geometry_msgs.msg import TransformStamped
 
 
-class ARTagParallerlTransformPublisher:
+class ARTagParallelTransformPublisher:
     def __init__(self):
         self.rate = rospy.Rate(rospy.get_param("~rate", 30.0))
 
@@ -70,7 +70,7 @@ class ARTagParallerlTransformPublisher:
         ]
 
         rot_rpy = euler_from_quaternion(rot_quat)
-        # Addin small value (0.001) is neccessary to prevent errors:
+        # Adding small value (0.001) is necessary to prevent errors:
         # TF_NAN_INPUT TF_DENORMALIZED_QUATERNION from robot localization
         rot_only_yaw = quaternion_from_euler(
             math.pi / 2 + 0.001, rot_rpy[1], -math.pi / 2 + 0.001
@@ -118,5 +118,5 @@ class ARTagParallerlTransformPublisher:
 
 if __name__ == "__main__":
     rospy.init_node("artag_parallel_transform_publisher")
-    odom_publisher = ARTagParallerlTransformPublisher()
+    odom_publisher = ARTagParallelTransformPublisher()
     odom_publisher.run()
