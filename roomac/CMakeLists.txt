@@ -5,7 +5,7 @@ find_package(catkin REQUIRED
   dynamic_reconfigure)
 
 generate_dynamic_reconfigure_options(
-  cfg/AutonomousMissionSettings.cfg
+  cfg/PickAndBringManagerSettings.cfg
 )
 
 catkin_package()

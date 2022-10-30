@@ -1,5 +1,8 @@
 #!/usr/bin/env python
 
+# Checks TF between map and base_link and publishes it as robot_pose
+# (for visualization in ROSMobile)
+
 import rospy
 import tf2_ros
 from geometry_msgs.msg import PoseWithCovarianceStamped
@@ -16,7 +19,7 @@ if __name__ == "__main__":
     while not rospy.is_shutdown():
         try:
             map_base_transform = tf_buffer.lookup_transform(
-                "odom", "base_link", rospy.Time(0)
+                "map", "base_link", rospy.Time(0)
             )
         except (
             tf2_ros.LookupException,
