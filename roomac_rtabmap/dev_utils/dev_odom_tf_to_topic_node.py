@@ -14,7 +14,6 @@ from geometry_msgs.msg import Point, Pose, Quaternion, Twist, Vector3, Pose2D
 
 class OdomTfToTopic:
     def __init__(self):
-
         self.odom_pub = rospy.Publisher("odom", Odometry, queue_size=50)
 
         self.last_time = rospy.Time.now()

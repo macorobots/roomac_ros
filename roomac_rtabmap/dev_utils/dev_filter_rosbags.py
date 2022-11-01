@@ -11,7 +11,7 @@ import math
 import copy
 
 
-def filterRosbag(inputRosbag, outputRosbag):
+def filter_rosbag(input_rosbag, output_rosbag):
     topics_to_save = [
         "/camera/depth_registered/camera_info",
         "/camera/depth_registered/image_raw",
@@ -23,14 +23,14 @@ def filterRosbag(inputRosbag, outputRosbag):
     save_odom_tf = False
     save_odom_topic = True
 
-    currentTime = 0
-    lastTime = 0
+    current_time = 0
+    last_time = 0
 
-    lastPosition = Pose2D()
-    currentPosition = Pose2D()
+    last_position = Pose2D()
+    current_position = Pose2D()
 
-    with rosbag.Bag(outputRosbag, "w") as outbag:
-        for topic, msg, t in rosbag.Bag(inputRosbag).read_messages():
+    with rosbag.Bag(output_rosbag, "w") as outbag:
+        for topic, msg, t in rosbag.Bag(input_rosbag).read_messages():
             if topic == "/tf":
                 if msg.transforms[0].header.frame_id != "map":
                     if save_odom_tf:
@@ -39,49 +39,49 @@ def filterRosbag(inputRosbag, outputRosbag):
                         pass
 
                     if save_odom_topic:
-                        odomBaseTransform = msg.transforms[0]
+                        odom_base_transform = msg.transforms[0]
 
-                        currentTime = odomBaseTransform.header.stamp
-                        if lastTime == 0:
-                            lastTime = currentTime
+                        current_time = odom_base_transform.header.stamp
+                        if last_time == 0:
+                            last_time = current_time
 
-                        currentPosition.x = odomBaseTransform.transform.translation.x
-                        currentPosition.y = odomBaseTransform.transform.translation.y
+                        current_position.x = odom_base_transform.transform.translation.x
+                        current_position.y = odom_base_transform.transform.translation.y
                         quaternion = [
-                            odomBaseTransform.transform.rotation.x,
-                            odomBaseTransform.transform.rotation.y,
-                            odomBaseTransform.transform.rotation.z,
-                            odomBaseTransform.transform.rotation.w,
+                            odom_base_transform.transform.rotation.x,
+                            odom_base_transform.transform.rotation.y,
+                            odom_base_transform.transform.rotation.z,
+                            odom_base_transform.transform.rotation.w,
                         ]
 
-                        eulerAngles = euler_from_quaternion(quaternion)
-                        currentPosition.theta = eulerAngles[2]
+                        euler_angles = euler_from_quaternion(quaternion)
+                        current_position.theta = euler_angles[2]
 
-                        dt = (currentTime - lastTime).to_sec()
+                        dt = (current_time - last_time).to_sec()
                         if dt > 0:
                             vx = (
                                 math.sqrt(
-                                    (currentPosition.x - lastPosition.x) ** 2
-                                    + (currentPosition.y - lastPosition.y) ** 2
+                                    (current_position.x - last_position.x) ** 2
+                                    + (current_position.y - last_position.y) ** 2
                                 )
                                 / dt
                             )
-                            vth = (currentPosition.theta - lastPosition.theta) / dt
+                            vth = (current_position.theta - last_position.theta) / dt
                         else:
                             vx = 0
                             vth = 0
 
-                        lastPosition = copy.deepcopy(currentPosition)
+                        last_position = copy.deepcopy(current_position)
 
-                        odomMsg = Odometry()
-                        odomMsg.header.stamp = currentTime
-                        odomMsg.header.frame_id = "odom"
-                        odomMsg.child_frame_id = "base_link"
-                        odomMsg.pose.pose = Pose(
+                        odom_msg = Odometry()
+                        odom_msg.header.stamp = current_time
+                        odom_msg.header.frame_id = "odom"
+                        odom_msg.child_frame_id = "base_link"
+                        odom_msg.pose.pose = Pose(
                             Point(
-                                odomBaseTransform.transform.translation.x,
-                                odomBaseTransform.transform.translation.y,
-                                odomBaseTransform.transform.translation.z,
+                                odom_base_transform.transform.translation.x,
+                                odom_base_transform.transform.translation.y,
+                                odom_base_transform.transform.translation.z,
                             ),
                             Quaternion(
                                 quaternion[0],
@@ -90,13 +90,13 @@ def filterRosbag(inputRosbag, outputRosbag):
                                 quaternion[3],
                             ),
                         )
-                        odomMsg.twist.twist = Twist(
+                        odom_msg.twist.twist = Twist(
                             Vector3(vx, 0, 0), Vector3(0, 0, vth)
                         )
 
-                        lastTime = currentTime
+                        last_time = current_time
 
-                        outbag.write("/odom", odomMsg, t)
+                        outbag.write("/odom", odom_msg, t)
 
             elif topic == "/android/imu":
                 msg.header.frame_id = "imu_link"
@@ -113,11 +113,11 @@ def filterRosbag(inputRosbag, outputRosbag):
 
 if __name__ == "__main__":
     if len(sys.argv) == 3:
-        filterRosbag(sys.argv[1], sys.argv[2])
+        filter_rosbag(sys.argv[1], sys.argv[2])
     elif len(sys.argv) == 2:
-        outputRosbag = str(sys.argv[1]) + "_filtered"
-        print("Output rosbag not specified. Defaulting to: " + outputRosbag)
-        filterRosbag(sys.argv[1], outputRosbag)
+        output_rosbag = str(sys.argv[1]) + "_filtered"
+        print("Output rosbag not specified. Defaulting to: " + output_rosbag)
+        filter_rosbag(sys.argv[1], output_rosbag)
     else:
         print(
             "Invalid number of arguments. Usage: rosrun ... filter_rosbag.py inputRosbag [ouputRosbag]"
