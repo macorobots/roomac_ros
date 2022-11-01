@@ -1,10 +1,10 @@
 <launch>
-  <arg name="rosbag" default="odometry_test_6.bag"/>
-  <arg name="rosbag_play_rate" default="1"/>
+  <arg name="rosbag" default="odometry_test_6.bag" />
+  <arg name="rosbag_play_rate" default="1" />
 
   <!-- wait few seconds before playing to ensure that robot localization started  -->
   <node pkg="rosbag" type="play" name="player" output="screen" args="--clock -r $(arg rosbag_play_rate) /home/roomac/rosbags/$(arg rosbag)"
-    launch-prefix="bash -c 'sleep 5; $0 $@' "/>
+    launch-prefix="bash -c 'sleep 5; $0 $@' " />
 
   <param name="robot_description" command="$(find xacro)/xacro $(find roomac_description)/urdf/roomac.xacro" />
   <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" />
@@ -13,7 +13,7 @@
 
   <include file="$(find roomac_sensor_fusion)/dev_utils/multiple_robot_localization.launch" />
 
-  <node name="path_stats" pkg="roomac_sensor_fusion" type="path_stats.py" output="screen" />
+  <node name="path_stats" pkg="roomac_sensor_fusion" type="dev_path_stats.py" output="screen" />
 
   <node name="wheel_odom_remapper" pkg="tf_remapper_cpp" type="tf_remap">
     <rosparam param="mappings">[{old: base_link, new: base_link_wheel_odom}]</rosparam>
@@ -21,10 +21,10 @@
   </node>
 
   <node name="wheel_odom_trajectory" pkg="hector_trajectory_server" type="hector_trajectory_server" ns="wheel_odom_trajectory">
-    <param name="target_frame_name" value="odom"/>
-    <param name="source_frame_name" value="base_link_wheel_odom"/>
-    <param name="trajectory_update_rate" value="10.0"/>
-    <param name="trajectory_publish_rate" value="10.0"/>
+    <param name="target_frame_name" value="odom" />
+    <param name="source_frame_name" value="base_link_wheel_odom" />
+    <param name="trajectory_update_rate" value="10.0" />
+    <param name="trajectory_publish_rate" value="10.0" />
   </node>
 
   <node name="wheel_odom_vel_remapper" pkg="tf_remapper_cpp" type="tf_remap">
@@ -33,10 +33,10 @@
   </node>
 
   <node name="wheel_odom_vel_trajectory" pkg="hector_trajectory_server" type="hector_trajectory_server" ns="wheel_odom_vel_trajectory">
-    <param name="target_frame_name" value="odom"/>
-    <param name="source_frame_name" value="base_link_wheel_odom_vel"/>
-    <param name="trajectory_update_rate" value="10.0"/>
-    <param name="trajectory_publish_rate" value="10.0"/>
+    <param name="target_frame_name" value="odom" />
+    <param name="source_frame_name" value="base_link_wheel_odom_vel" />
+    <param name="trajectory_update_rate" value="10.0" />
+    <param name="trajectory_publish_rate" value="10.0" />
   </node>
 
   <node name="imu_ang_vel_remapper" pkg="tf_remapper_cpp" type="tf_remap">
@@ -45,16 +45,16 @@
   </node>
 
   <node name="imu_ang_vel_trajectory" pkg="hector_trajectory_server" type="hector_trajectory_server" ns="imu_ang_vel_trajectory">
-    <param name="target_frame_name" value="odom"/>
-    <param name="source_frame_name" value="base_link_imu_ang_vel"/>
-    <param name="trajectory_update_rate" value="10.0"/>
-    <param name="trajectory_publish_rate" value="10.0"/>
+    <param name="target_frame_name" value="odom" />
+    <param name="source_frame_name" value="base_link_imu_ang_vel" />
+    <param name="trajectory_update_rate" value="10.0" />
+    <param name="trajectory_publish_rate" value="10.0" />
   </node>
 
   <node name="imu_orientation_trajectory" pkg="hector_trajectory_server" type="hector_trajectory_server" ns="imu_orientation_trajectory">
-    <param name="target_frame_name" value="odom"/>
-    <param name="source_frame_name" value="base_link"/>
-    <param name="trajectory_update_rate" value="10.0"/>
-    <param name="trajectory_publish_rate" value="10.0"/>
+    <param name="target_frame_name" value="odom" />
+    <param name="source_frame_name" value="base_link" />
+    <param name="trajectory_update_rate" value="10.0" />
+    <param name="trajectory_publish_rate" value="10.0" />
   </node>
 </launch>
