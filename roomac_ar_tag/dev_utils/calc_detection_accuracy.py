@@ -1,14 +1,16 @@
 #!/usr/bin/env python
-import rospy
-import tf
-import math
+
 import numpy as np
+
+import rospy
+
+import tf
 
 if __name__ == "__main__":
     rospy.init_node("calc_detection_accuracy")
 
     listener = tf.TransformListener()
-    br = tf.TransformBroadcaster()
+    broadcaster = tf.TransformBroadcaster()
 
     rate = rospy.Rate(10.0)
 
@@ -19,7 +21,6 @@ if __name__ == "__main__":
     while not rospy.is_shutdown():
         try:
             (trans, rot) = listener.lookupTransform(
-                # "base_link", "ar_marker_2", rospy.Time(0)
                 "base_link",
                 "detected_object",
                 rospy.Time(0),

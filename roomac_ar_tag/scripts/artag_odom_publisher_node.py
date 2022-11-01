@@ -7,7 +7,7 @@ from nav_msgs.msg import Odometry
 from geometry_msgs.msg import Point, Pose
 
 
-class ARTagOdomPublisher(object):
+class ARTagOdomPublisher:
     def __init__(self):
         self.translation_covariance = rospy.get_param("~translation_covariance", 10)
 

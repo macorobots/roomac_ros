@@ -1,0 +1,10 @@
+object_artag_enabled: $(arg object_artag_enabled)
+filtration_enabled: false
+simulation: $(arg simulation)
+
+rate: 20.0
+
+camera_link: "camera_up_link"
+ar_marker_robot_link: "ar_marker_8"
+parallel_transform_suffix: "_only_yaw"
+robot_link: "artag_bundle_link"
