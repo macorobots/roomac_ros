@@ -3,7 +3,7 @@
 import rospy
 
 from geometry_msgs.msg import PointStamped
-from std_srvs.srv import Trigger, TriggerResponse, TriggerRequest, Empty
+from std_srvs.srv import Trigger, TriggerResponse, Empty
 
 from roomac_msgs.msg import (
     PickObjectAction,
@@ -23,18 +23,25 @@ import utils
 import picking_object_controller
 
 
-class PickingObjectManager(object):
+class PickingObjectManager:
+    """Provides pick_object action - a sequence that consists of getting detected
+    object and table positions, opening gripper, moving arm to object's position, closing
+    gripper and moving to point above object. Additionally provides partial interfaces
+    for interacting with gripper (open, close), moving arm to home position and removing
+    object from MoveIt scene.
+    """
+
     def __init__(self):
         self._controller = picking_object_controller.PickingObjectController()
 
-        # Instead of retries it would be probably better to change planning attempts in moveit
+        # Instead of retries it would be probably better to change planning attempts in MoveIt
         # as they are main reason
         procedure_retry_threshold = rospy.get_param("~procedure_retry_threshold", 5)
 
         procedure_list = [
             # Prepare picking
             ActionProcedureStep(
-                start_procedure_function=self._prepare_picking,
+                start_procedure_function=self.prepare_picking,
                 get_procedure_state_function=lambda: GoalState.SUCCEEDED,
                 preempted_action_function=lambda: None,
                 feedback_state=PickObjectFeedback.PRE_GRIPPING_POSITION,
@@ -46,31 +53,31 @@ class PickingObjectManager(object):
                 preempted_action_function=lambda: None,
                 feedback_state=PickObjectFeedback.PRE_GRIPPING_POSITION,
             ),
-            # # Go to pre point, now disabled as picking is faster withtout it and after
+            # # Go to pre point, now disabled as picking is faster without it and after
             # # recent improvements it isn't really necessary
             # ActionProcedureStep(
-            #     start_procedure_function=self.go_to_current_pre_object_point,
+            #     start_procedure_function=self.go_to_pre_object_point,
             #     get_procedure_state_function=self.moveit_finished_execution,
-            #     preempted_action_function=self.moveit_abort,
+            #     preempted_action_function=self.abort_moveit_execution,
             #     feedback_state=PickObjectFeedback.GOING_TO_PRE_GRIPPING_POSITION,
             # ),
             # Go to object point
             ActionProcedureStep(
-                start_procedure_function=self._controller.go_to_current_object_point,
+                start_procedure_function=self._controller.go_to_object_point,
                 get_procedure_state_function=self._controller.moveit_finished_execution,
-                preempted_action_function=self._controller.moveit_abort,
+                preempted_action_function=self._controller.abort_moveit_execution,
                 feedback_state=PickObjectFeedback.GOING_TO_GRIPPING_POSITION,
             ),
             # Calculate error
             ActionProcedureStep(
-                start_procedure_function=self._controller.print_current_error,
+                start_procedure_function=self._controller.print_error,
                 get_procedure_state_function=lambda: GoalState.SUCCEEDED,
                 preempted_action_function=lambda: None,
                 feedback_state=PickObjectFeedback.GRIPPING_POSITION,
             ),
             # Attach object
             ActionProcedureStep(
-                start_procedure_function=self._controller.attach_object,
+                start_procedure_function=self._controller.attach_object_to_gripper,
                 get_procedure_state_function=lambda: GoalState.SUCCEEDED,
                 preempted_action_function=lambda: None,
                 feedback_state=PickObjectFeedback.GRIPPING_POSITION,
@@ -84,9 +91,9 @@ class PickingObjectManager(object):
             ),
             # Go to post point
             ActionProcedureStep(
-                start_procedure_function=self._controller.go_to_current_post_object_point,
+                start_procedure_function=self._controller.go_to_post_object_point,
                 get_procedure_state_function=self._controller.moveit_finished_execution,
-                preempted_action_function=self._controller.moveit_abort,
+                preempted_action_function=self._controller.abort_moveit_execution,
                 feedback_state=PickObjectFeedback.GOING_TO_POST_GRIPPING_POSITION,
             ),
         ]
@@ -123,7 +130,7 @@ class PickingObjectManager(object):
         self._clear_octomap_srv.wait_for_service()
         self._detect_table_and_object_srv.wait_for_service()
 
-    def _prepare_picking(self):
+    def prepare_picking(self):
         self._controller.remove_object_from_scene()
 
         object_point_stamped, object_and_table = self._get_detected_object_point()
@@ -132,8 +139,8 @@ class PickingObjectManager(object):
             object_point_stamped, self._controller.get_base_link_frame()
         )
 
-        self._controller.set_current_object_point(object_point_transformed.point)
-        self._controller.add_current_object_to_scene()
+        self._controller.set_object_point(object_point_transformed.point)
+        self._controller.add_object_to_scene()
 
         self._controller.add_detected_table_to_scene(object_and_table)
 
