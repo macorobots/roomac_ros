@@ -1,28 +1,28 @@
 #!/usr/bin/env python
 
-import math
 import copy
+import math
 
 import rospy
-
-from tf.transformations import euler_from_quaternion
-
-from nav_msgs.msg import Odometry
 from geometry_msgs.msg import (
     Point,
-    PoseStamped,
     Pose,
+    Pose2D,
+    PoseStamped,
     Quaternion,
+    QuaternionStamped,
     Twist,
     Vector3,
-    Pose2D,
-    QuaternionStamped,
     Vector3Stamped,
 )
+from nav_msgs.msg import Odometry
 from sensor_msgs.msg import Imu
+from tf.transformations import euler_from_quaternion
 
 
 class ImuOrientationRepublisher:
+    """Subscribes to QuaternionStamped msgs and republishes them as Imu msg"""
+
     def __init__(self):
         self.imu_pub = rospy.Publisher("imu/orientation", Imu, queue_size=50)
         self.imu_raw_sub = rospy.Subscriber(
@@ -45,6 +45,8 @@ class ImuOrientationRepublisher:
 
 
 class ImuAngularVelocityRepublisher:
+    """Subscribes to Vector3Stamped msgs and republishes them as Imu msg"""
+
     def __init__(self):
         self.imu_pub = rospy.Publisher("imu/angular_velocity", Imu, queue_size=50)
         self.imu_raw_sub = rospy.Subscriber(
@@ -67,6 +69,11 @@ class ImuAngularVelocityRepublisher:
 
 
 class OdomRepublisher:
+    """Subscribes to PoseStamped msgs and republishes them as Odometry msg
+    As PoseStamped includes only position information velocity is calculated using
+    difference quotient
+    """
+
     def __init__(self):
         self.odom_pub = rospy.Publisher("wheel_odom/odom", Odometry, queue_size=50)
 
@@ -147,7 +154,7 @@ class OdomRepublisher:
 
 if __name__ == "__main__":
     rospy.init_node("odom_imu_republisher")
-    odom_repub = OdomRepublisher()
-    imu_orient_repub = ImuOrientationRepublisher()
-    imu_ang_vel_rebup = ImuAngularVelocityRepublisher()
+    odometry_republisher = OdomRepublisher()
+    imu_orientation_republisher = ImuOrientationRepublisher()
+    imu_angular_velocity_republisher = ImuAngularVelocityRepublisher()
     rospy.spin()
