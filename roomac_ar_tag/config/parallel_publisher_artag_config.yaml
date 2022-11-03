@@ -1,17 +1,10 @@
 object_artag_enabled: $(arg object_artag_enabled)
-filtration_enabled: true
+filtration_enabled: false
 simulation: $(arg simulation)
 
-rate: 30.0
+rate: 20.0
 
 camera_link: "camera_up_link"
-ar_marker_robot_link: "ar_marker_0"
-ar_marker_object_link: "ar_marker_2"
+ar_marker_robot_link: "ar_marker_8"
 parallel_transform_suffix: "_only_yaw"
 robot_link: "artag_bundle_link"
-object_link: "detected_object"
-
-upper_kinect_mounted_parellel: true
-
-translation_covariance: 10
-rotation_covariance: 30

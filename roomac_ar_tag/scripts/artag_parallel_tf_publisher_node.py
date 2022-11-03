@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+
 import math
 
 import rospy
@@ -40,10 +41,10 @@ class ARTagParallelTransformPublisher:
         self.tf_listener = tf2_ros.TransformListener(self.tf_buffer)
         self.tf_broadcaster = tf2_ros.TransformBroadcaster()
 
-    def read_transform(self, camera_link, ar_marker_link):
+    def read_transform(self, camera_link, ar_marker_link, time):
         try:
             transform = self.tf_buffer.lookup_transform(
-                camera_link, ar_marker_link, rospy.Time.now(), rospy.Duration(5.0)
+                camera_link, ar_marker_link, time, rospy.Duration(5.0)
             )
         except (
             tf2_ros.LookupException,
@@ -69,7 +70,7 @@ class ARTagParallelTransformPublisher:
             robot_simulation (bool, optional): in simulation robot's artag axes are
                 rotated, so transform has to be read differently. Defaults to False.
         """
-        transform = self.read_transform(camera_link, ar_marker_link)
+        transform = self.read_transform(camera_link, ar_marker_link, rospy.Time.now())
 
         rot_quat = [
             transform.transform.rotation.x,
@@ -88,10 +89,10 @@ class ARTagParallelTransformPublisher:
             eps = 0.0
 
         if robot_simulation:
-            rot_only_yaw = quaternion_from_euler(math.pi / 2, 0.0, rot_rpy[2])
+            rot_only_yaw = quaternion_from_euler(math.pi / 2.0, 0.0, rot_rpy[2])
         else:
             rot_only_yaw = quaternion_from_euler(
-                math.pi / 2 + eps, rot_rpy[1], -math.pi / 2 + eps
+                math.pi / 2.0 + eps, rot_rpy[1], -math.pi / 2.0 + eps
             )
 
         parallel_transform = TransformStamped()
@@ -110,7 +111,7 @@ class ARTagParallelTransformPublisher:
         """Reads transform from camera_link to ar_marker_link and then sends
         transform from target_link to camera_link
         """
-        transform = self.read_transform(camera_link, ar_marker_link)
+        transform = self.read_transform(ar_marker_link, camera_link, rospy.Time(0))
 
         transform.header.stamp = rospy.Time.now()
         transform.header.frame_id = target_link
