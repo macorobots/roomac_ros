@@ -2,6 +2,15 @@
 Changelog for package roomac_ar_tag
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* Merge pull request `#67 <https://github.com/macstepien/roomac_ros/issues/67>`_ from macstepien/refactor-python-scripts
+  Refactor python scripts
+* Merge branch 'master' into refactor-python-scripts
+  Conflicts:
+  roomac_rtabmap/scripts/odom_tf_to_topic.py
+* Contributors: Maciej Stepien, Maciej Stępień
+
 1.12.10 (2022-10-29)
 --------------------
 * Merge pull request `#66 <https://github.com/macstepien/roomac_ros/issues/66>`_ from macstepien/workflows-update
