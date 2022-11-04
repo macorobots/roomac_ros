@@ -70,7 +70,7 @@ class ARTagParallelTransformPublisher:
             robot_simulation (bool, optional): in simulation robot's artag axes are
                 rotated, so transform has to be read differently. Defaults to False.
         """
-        transform = self.read_transform(camera_link, ar_marker_link, rospy.Time.now())
+        transform = self.read_transform(camera_link, ar_marker_link, rospy.Time(0))
 
         rot_quat = [
             transform.transform.rotation.x,
