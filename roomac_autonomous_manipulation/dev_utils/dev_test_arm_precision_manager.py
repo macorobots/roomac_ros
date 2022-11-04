@@ -1,17 +1,18 @@
 #!/usr/bin/env python
 
+import math
 
 import rospy
-from geometry_msgs.msg import PoseStamped, PointStamped, Quaternion, Point
-from std_srvs.srv import Trigger, TriggerResponse, TriggerRequest
-import geometry_msgs.msg
 
-from picking_object_manager import (
-    PickingObjectManager,
-)
 from tf.transformations import quaternion_from_euler
 
-import math
+from geometry_msgs.msg import PointStamped, Quaternion
+from std_srvs.srv import Trigger, TriggerResponse
+import geometry_msgs.msg
+
+from picking_object_manager_node import (
+    PickingObjectManager,
+)
 
 
 class TestArmPrecisionManager(PickingObjectManager):

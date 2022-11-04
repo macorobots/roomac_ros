@@ -15,7 +15,7 @@
 # limitations under the License.
 
 # https://github.com/gavanderhoorn/rosbag_fixer
-# rosrun roomac_rtabmap fix_bag_msg_def.py --use-local-defs in.bag out.bag
+# rosrun roomac_rtabmap dev_fix_bag_msg_def.py --use-local-defs in.bag out.bag
 
 import argparse
 import os

@@ -18,7 +18,11 @@ def check_if_point_within_threshold(point, correct_point, threshold):
     )
 
 
-def convert_param_to_pose(param):
+def convert_param_to_points(param):
+    """converts param (dictionary of x,y,z and roll,pitch,yaw) to
+    position and orientation points
+    """
+
     return Point(param["x"], param["y"], param["z"]), Point(
         param["roll"], param["pitch"], param["yaw"]
     )
@@ -26,7 +30,7 @@ def convert_param_to_pose(param):
 
 class TestRobotDetection(unittest.TestCase):
     def test_object_detection(self):
-        correct_robot_position, correct_robot_orientation = convert_param_to_pose(
+        correct_robot_position, correct_robot_orientation = convert_param_to_points(
             rospy.get_param("~robot_pose")
         )
 

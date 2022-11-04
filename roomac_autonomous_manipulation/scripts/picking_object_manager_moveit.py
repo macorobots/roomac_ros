@@ -18,9 +18,12 @@ from actionlib_msgs.msg import GoalID
 import utils
 
 
-class PickingObjectManagerMoveIt(object):
-    def __init__(self):
+class PickingObjectManagerMoveIt:
+    """This class wraps communication with MoveIt providing abstractions to interact
+    with scene and robot arm - going to point, controlling gripper, ...
+    """
 
+    def __init__(self):
         wait_time_move_group_servers = rospy.get_param(
             "~wait_time_move_group_servers", 60.0
         )
@@ -95,27 +98,27 @@ class PickingObjectManagerMoveIt(object):
         self._scene.remove_world_object(table_name)
 
     def add_cylinder_to_scene(self, frame, point, name, height, radius):
-        body_pose = PoseStamped()
-        body_pose.header.frame_id = frame
-        body_pose.pose.position.x = point.x
-        body_pose.pose.position.y = point.y
-        body_pose.pose.position.z = point.z
+        cylinder_pose = PoseStamped()
+        cylinder_pose.header.frame_id = frame
+        cylinder_pose.pose.position.x = point.x
+        cylinder_pose.pose.position.y = point.y
+        cylinder_pose.pose.position.z = point.z
 
         self._scene.add_cylinder(
             name,
-            body_pose,
+            cylinder_pose,
             height,
             radius,
         )
 
-    def add_box_to_scene(
+    def add_table_to_scene(
         self, table_name, detected_table_body_pose, detected_table_body_size
     ):
         self._scene.add_box(
             table_name, detected_table_body_pose, detected_table_body_size
         )
 
-    def attach_object(self, object_name, link_name):
+    def attach_object_to_gripper(self, object_name, link_name):
         touch_links = self._robot.get_link_names(group=self._grasping_group_name)
 
         aco = AttachedCollisionObject()
@@ -130,8 +133,8 @@ class PickingObjectManagerMoveIt(object):
     def get_moveit_feedback_state(self):
         return self._moveit_feedback_state
 
-    def moveit_abort(self):
-        # not woorking
+    def abort_moveit_execution(self):
+        # not working
         # self.moveit_client.cancel_all_goals()
 
         # not working

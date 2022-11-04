@@ -2,5 +2,5 @@
   <include file="$(find roomac_ar_tag)/launch/roomac_ar_tag.launch" />
   <include file="$(find roomac_moveit)/launch/roomac_moveit.launch" />
 
-  <node name="test_arm_precision_manager" pkg="roomac_autonomous_manipulation" type="test_arm_precision_manager.py" output="screen" />
+  <node name="test_arm_precision_manager" pkg="roomac_autonomous_manipulation" type="dev_test_arm_precision_manager.py" output="screen" />
 </launch>

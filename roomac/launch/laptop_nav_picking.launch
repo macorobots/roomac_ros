@@ -5,11 +5,11 @@
   <include file="$(find roomac_move_base)/launch/move_base.launch" />
   <include file="$(find roomac_base)/launch/serial.launch" />
 
-  <include file="$(find roomac)/launch/autonomous_mission.launch" />
+  <include file="$(find roomac)/launch/pick_and_bring_manager.launch" />
   <include file="$(find roomac)/launch/ros_mobile.launch" />
 
   <!-- Publishing wheel joints only for nicer visualization in rviz -->
-  <node name="wheel_joint_publisher" pkg="roomac" type="wheel_joint_publisher.py" output="screen" />
+  <node name="wheel_joint_publisher" pkg="roomac" type="wheel_joint_publisher_node.py" output="screen" />
 
   <!-- Temporal solution before making changes in firmware, then it should be removed -->
   <include file="$(find roomac)/launch/firmware_configurations.launch" />

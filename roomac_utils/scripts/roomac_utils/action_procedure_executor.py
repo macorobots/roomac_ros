@@ -1,8 +1,9 @@
 #!/usr/bin/env python
 
 from enum import Enum
-import rospy
+
 import actionlib
+import rospy
 
 
 class GoalState(Enum):
@@ -38,6 +39,8 @@ class ActionProcedureStep:
 
 
 class SimpleActionExecutor:
+    """Implements SimpleActionServer by executing defined list of ActionProcedureSteps"""
+
     def __init__(
         self,
         action_name,

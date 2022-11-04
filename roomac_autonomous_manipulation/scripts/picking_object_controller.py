@@ -20,7 +20,11 @@ import picking_object_manager_moveit
 import utils
 
 
-class PickingObjectController(object):
+class PickingObjectController:
+    """Provides interface to interact with Moveit manager (compatible with
+    action executor) to implement picking object behavior
+    """
+
     def __init__(self):
         self._moveit_manager = (
             picking_object_manager_moveit.PickingObjectManagerMoveIt()
@@ -60,7 +64,7 @@ class PickingObjectController(object):
         self._opened_gripper_value = rospy.get_param("~opened_gripper_value", 0.0)
         self._closed_gripper_value = rospy.get_param("~closed_gripper_value", 0.02)
 
-        self._current_object_point = None
+        self._object_point = None
 
         self._bottle_pre_picking_name = "bottle_with_safety_margin"
         self._bottle_post_picking_name = "bottle"
@@ -70,33 +74,33 @@ class PickingObjectController(object):
         self._safety_margin_table = rospy.get_param("~safety_margin_table", 0.05)
 
     # ----- OTHER -----
-    def set_current_object_point(self, object_point):
+    def set_object_point(self, object_point):
         object_point.x += self._object_position_correction_x
         object_point.y += self._object_position_correction_y
         object_point.z += self._object_position_correction_z
-        self._current_object_point = object_point
+        self._object_point = object_point
 
     def get_base_link_frame(self):
         return self._base_link_frame
 
-    def print_current_error(self):
-        tip_point = PointStamped()
-        tip_point.header.stamp = rospy.Time(0)
-        tip_point.header.frame_id = self._gripper_frame
-        tip_point.point.x = 0.0
-        tip_point.point.y = 0.0
-        tip_point.point.z = 0.0
+    def print_error(self):
+        """Prints difference between current gripper point and object point"""
+
+        gripper_point = PointStamped()
+        gripper_point.header.stamp = rospy.Time(0)
+        gripper_point.header.frame_id = self._gripper_frame
+        gripper_point.point = Point(0.0, 0.0, 0.0)
 
         gripper_point_transformed = utils.transform_point(
-            tip_point, self._base_link_frame
+            gripper_point, self._base_link_frame
         )
 
         diff = Point()
-        diff.x = gripper_point_transformed.point.x - self._current_object_point.x
-        diff.y = gripper_point_transformed.point.y - self._current_object_point.y
-        diff.z = gripper_point_transformed.point.z - self._current_object_point.z
+        diff.x = gripper_point_transformed.point.x - self._object_point.x
+        diff.y = gripper_point_transformed.point.y - self._object_point.y
+        diff.z = gripper_point_transformed.point.z - self._object_point.z
 
-        rospy.logwarn("Planner error: " + str(diff))
+        rospy.loginfo("Planner error: " + str(diff))
 
     # ----- MOVING ARM -----
 
@@ -112,20 +116,18 @@ class PickingObjectController(object):
         # self._close_gripper_wait_time
         self._moveit_manager.move_gripper(self._closed_gripper_value)
 
-    def go_to_current_object_point(self):
-        self._moveit_manager.go_to_point(
-            self._current_object_point, self._gripper_frame
-        )
+    def go_to_object_point(self):
+        self._moveit_manager.go_to_point(self._object_point, self._gripper_frame)
 
-    def go_to_current_pre_object_point(self):
-        current_pre_object_point = copy.deepcopy(self._current_object_point)
-        current_pre_object_point.y -= self._pre_goal_retraction_x
-        self._moveit_manager.go_to_point(current_pre_object_point, self._gripper_frame)
+    def go_to_pre_object_point(self):
+        pre_object_point = copy.deepcopy(self._object_point)
+        pre_object_point.y -= self._pre_goal_retraction_x
+        self._moveit_manager.go_to_point(pre_object_point, self._gripper_frame)
 
-    def go_to_current_post_object_point(self):
-        current_post_object_point = copy.deepcopy(self._current_object_point)
-        current_post_object_point.z += self._post_goal_retraction_z
-        self._moveit_manager.go_to_point(current_post_object_point, self._gripper_frame)
+    def go_to_post_object_point(self):
+        post_object_point = copy.deepcopy(self._object_point)
+        post_object_point.z += self._post_goal_retraction_z
+        self._moveit_manager.go_to_point(post_object_point, self._gripper_frame)
 
     def return_to_home_position(self):
         self._moveit_manager.return_to_home_position()
@@ -167,7 +169,7 @@ class PickingObjectController(object):
             detected_table_body_base_size[2] + 2 * self._safety_margin_table,
         ]
 
-        self._moveit_manager.add_box_to_scene(
+        self._moveit_manager.add_table_to_scene(
             self._table_name, detected_table_body_pose, detected_table_body_size
         )
 
@@ -182,8 +184,8 @@ class PickingObjectController(object):
             self._bottle_cap_name, self._gripper_frame
         )
 
-    def add_current_object_to_scene(self):
-        object_point = copy.deepcopy(self._current_object_point)
+    def add_object_to_scene(self):
+        object_point = copy.deepcopy(self._object_point)
 
         # Remove leftover objects from a previous run
         self.remove_object_from_scene()
@@ -208,8 +210,8 @@ class PickingObjectController(object):
             self._bottle_radius_pre_picking,
         )
 
-    def attach_object(self):
-        object_point = copy.deepcopy(self._current_object_point)
+    def attach_object_to_gripper(self):
+        object_point = copy.deepcopy(self._object_point)
         object_point.z -= (self._bottle_cap_height + self._bottle_height) / 2.0
         self._moveit_manager.add_cylinder_to_scene(
             self._base_link_frame,
@@ -222,8 +224,10 @@ class PickingObjectController(object):
             self._bottle_pre_picking_name, self._gripper_frame
         )
 
-        self._moveit_manager.attach_object(self._bottle_cap_name, self._gripper_frame)
-        self._moveit_manager.attach_object(
+        self._moveit_manager.attach_object_to_gripper(
+            self._bottle_cap_name, self._gripper_frame
+        )
+        self._moveit_manager.attach_object_to_gripper(
             self._bottle_post_picking_name, self._gripper_frame
         )
 
@@ -252,8 +256,8 @@ class PickingObjectController(object):
 
         return goal_state
 
-    def moveit_abort(self):
-        self._moveit_manager.moveit_abort()
+    def abort_moveit_execution(self):
+        self._moveit_manager.abort_moveit_execution()
 
     # ----- UTILITY PRIVATE FUNCTIONS -----
 

@@ -9,9 +9,9 @@ import geometry_msgs
 if __name__ == "__main__":
     rospy.init_node("camera_rpy_convertion")
 
-    tfBuffer = tf2_ros.Buffer()
-    listener = tf2_ros.TransformListener(tfBuffer)
-    brodcaster = tf2_ros.TransformBroadcaster()
+    tf_buffer = tf2_ros.Buffer()
+    listener = tf2_ros.TransformListener(tf_buffer)
+    broadcaster = tf2_ros.TransformBroadcaster()
 
     rate = rospy.Rate(10.0)
     while not rospy.is_shutdown():
@@ -21,9 +21,9 @@ if __name__ == "__main__":
             tf.transformations.translation_matrix(transl),
             tf.transformations.quaternion_matrix(rot),
         )
-        inversed_transform = tf.transformations.inverse_matrix(transform)
-        translation = tf.transformations.translation_from_matrix(inversed_transform)
-        q = tf.transformations.quaternion_from_matrix(inversed_transform)
+        inverted_transform = tf.transformations.inverse_matrix(transform)
+        translation = tf.transformations.translation_from_matrix(inverted_transform)
+        q = tf.transformations.quaternion_from_matrix(inverted_transform)
 
         t = geometry_msgs.msg.TransformStamped()
         t.header.stamp = rospy.Time.now()
@@ -37,10 +37,10 @@ if __name__ == "__main__":
         t.transform.rotation.z = q[2]
         t.transform.rotation.w = q[3]
 
-        brodcaster.sendTransform(t)
+        broadcaster.sendTransform(t)
 
         try:
-            trans = tfBuffer.lookup_transform("base_link", "camera_link", rospy.Time())
+            trans = tf_buffer.lookup_transform("base_link", "camera_link", rospy.Time())
         except (
             tf2_ros.LookupException,
             tf2_ros.ConnectivityException,

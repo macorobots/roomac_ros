@@ -1,88 +1,96 @@
 #!/usr/bin/env python
 
+import copy
+import math
+
 import rospy
-import tf2_ros
-from nav_msgs.msg import Odometry
 from geometry_msgs.msg import (
     Point,
-    PoseStamped,
     Pose,
+    Pose2D,
+    PoseStamped,
     Quaternion,
+    QuaternionStamped,
     Twist,
     Vector3,
-    Pose2D,
-    QuaternionStamped,
     Vector3Stamped,
 )
+from nav_msgs.msg import Odometry
 from sensor_msgs.msg import Imu
 from tf.transformations import euler_from_quaternion
 
-import math
-import copy
-
 
 class ImuOrientationRepublisher:
+    """Subscribes to QuaternionStamped msgs and republishes them as Imu msg"""
+
     def __init__(self):
-        self.imuPub = rospy.Publisher("/imu/orientation", Imu, queue_size=50)
-        self.imuRawSub = rospy.Subscriber(
-            "/imu/orientation_raw", QuaternionStamped, self.imuCb
+        self.imu_pub = rospy.Publisher("imu/orientation", Imu, queue_size=50)
+        self.imu_raw_sub = rospy.Subscriber(
+            "imu/orientation_raw", QuaternionStamped, self.imu_cb
         )
 
-        self.imuMsg = Imu()
-        self.imuMsg.header.frame_id = "imu_link"
+        self.imu_msg = Imu()
+        self.imu_msg.header.frame_id = "imu_link"
 
         # Disable, as in msg description
-        self.imuMsg.angular_velocity_covariance[0] = -1
+        self.imu_msg.angular_velocity_covariance[0] = -1
 
         # Disable, as in msg description
-        self.imuMsg.linear_acceleration_covariance[0] = -1
+        self.imu_msg.linear_acceleration_covariance[0] = -1
 
-    def imuCb(self, msg):
-        self.imuMsg.orientation = msg.quaternion
-        self.imuMsg.header.stamp = msg.header.stamp
-        self.imuPub.publish(self.imuMsg)
+    def imu_cb(self, msg):
+        self.imu_msg.orientation = msg.quaternion
+        self.imu_msg.header.stamp = msg.header.stamp
+        self.imu_pub.publish(self.imu_msg)
 
 
 class ImuAngularVelocityRepublisher:
+    """Subscribes to Vector3Stamped msgs and republishes them as Imu msg"""
+
     def __init__(self):
-        self.imuPub = rospy.Publisher("/imu/angular_velocity", Imu, queue_size=50)
-        self.imuRawSub = rospy.Subscriber(
-            "/imu/angular_velocity_raw", Vector3Stamped, self.imuCb
+        self.imu_pub = rospy.Publisher("imu/angular_velocity", Imu, queue_size=50)
+        self.imu_raw_sub = rospy.Subscriber(
+            "imu/angular_velocity_raw", Vector3Stamped, self.imu_cb
         )
 
-        self.imuMsg = Imu()
-        self.imuMsg.header.frame_id = "imu_link"
+        self.imu_msg = Imu()
+        self.imu_msg.header.frame_id = "imu_link"
 
         # Disable, as in msg description
-        self.imuMsg.orientation_covariance[0] = -1
+        self.imu_msg.orientation_covariance[0] = -1
 
         # Disable, as in msg description
-        self.imuMsg.linear_acceleration_covariance[0] = -1
+        self.imu_msg.linear_acceleration_covariance[0] = -1
 
-    def imuCb(self, msg):
-        self.imuMsg.angular_velocity = msg.vector
-        self.imuMsg.header.stamp = msg.header.stamp
-        self.imuPub.publish(self.imuMsg)
+    def imu_cb(self, msg):
+        self.imu_msg.angular_velocity = msg.vector
+        self.imu_msg.header.stamp = msg.header.stamp
+        self.imu_pub.publish(self.imu_msg)
 
 
 class OdomRepublisher:
+    """Subscribes to PoseStamped msgs and republishes them as Odometry msg
+    As PoseStamped includes only position information velocity is calculated using
+    difference quotient
+    """
+
     def __init__(self):
-        self.odomPub = rospy.Publisher("/wheel_odom/odom", Odometry, queue_size=50)
+        self.odom_pub = rospy.Publisher("wheel_odom/odom", Odometry, queue_size=50)
 
-        self.lastTime = rospy.Time.now()
-        self.lastPosition = Pose2D()
+        self.last_time = rospy.Time.now()
+        self.last_position = Pose2D()
 
-        self.odomRawSub = rospy.Subscriber(
-            "/wheel_odom/position_raw", PoseStamped, self.odomCb
+        self.odom_raw_sub = rospy.Subscriber(
+            "wheel_odom/position_raw", PoseStamped, self.odom_cb
         )
 
-    def odomCb(self, msg):
-        currentTime = msg.header.stamp
+    def odom_cb(self, msg):
+        current_time = msg.header.stamp
 
-        currentPosition = Pose2D()
+        current_position = Pose2D()
 
-        currentPosition.x = msg.pose.position.x
-        currentPosition.y = msg.pose.position.y
+        current_position.x = msg.pose.position.x
+        current_position.y = msg.pose.position.y
         quaternion = [
             msg.pose.orientation.x,
             msg.pose.orientation.y,
@@ -90,15 +98,15 @@ class OdomRepublisher:
             msg.pose.orientation.w,
         ]
 
-        eulerAngles = euler_from_quaternion(quaternion)
-        currentPosition.theta = eulerAngles[2]
+        euler_angles = euler_from_quaternion(quaternion)
+        current_position.theta = euler_angles[2]
 
-        dt = (currentTime - self.lastTime).to_sec()
+        dt = (current_time - self.last_time).to_sec()
         if dt > 0:
             vx = (
                 math.sqrt(
-                    (currentPosition.x - self.lastPosition.x) ** 2
-                    + (currentPosition.y - self.lastPosition.y) ** 2
+                    (current_position.x - self.last_position.x) ** 2
+                    + (current_position.y - self.last_position.y) ** 2
                 )
                 / dt
             )
@@ -106,47 +114,47 @@ class OdomRepublisher:
             # Calculate direction of vx
             # atan2 The returned value is between PI and -PI.
             angle = math.atan2(
-                (currentPosition.y - self.lastPosition.y),
-                (currentPosition.x - self.lastPosition.x),
+                (current_position.y - self.last_position.y),
+                (current_position.x - self.last_position.x),
             )
-            directionAngleDiff = abs(angle - self.lastPosition.theta)
+            direction_angle_diff = abs(angle - self.last_position.theta)
 
-            if directionAngleDiff > math.pi / 2:
+            if direction_angle_diff > math.pi / 2:
                 vx = -vx
 
-            angleDiff = math.fmod(
-                (currentPosition.theta - self.lastPosition.theta), 2 * math.pi
+            angle_diff = math.fmod(
+                (current_position.theta - self.last_position.theta), 2 * math.pi
             )
-            if angleDiff > math.pi:
-                angleDiff = 2 * math.pi - angleDiff
-            elif angleDiff < -math.pi:
-                angleDiff = 2 * math.pi + angleDiff
+            if angle_diff > math.pi:
+                angle_diff = 2 * math.pi - angle_diff
+            elif angle_diff < -math.pi:
+                angle_diff = 2 * math.pi + angle_diff
 
-            vth = angleDiff / dt
+            vth = angle_diff / dt
         else:
             vx = 0
             vth = 0
 
-        self.lastPosition = copy.deepcopy(currentPosition)
+        self.last_position = copy.deepcopy(current_position)
 
-        odomMsg = Odometry()
-        odomMsg.header.stamp = currentTime
-        odomMsg.header.frame_id = "odom"
-        odomMsg.child_frame_id = "base_link"
-        odomMsg.pose.pose = Pose(
+        odom_msg = Odometry()
+        odom_msg.header.stamp = current_time
+        odom_msg.header.frame_id = "odom"
+        odom_msg.child_frame_id = "base_link"
+        odom_msg.pose.pose = Pose(
             Point(msg.pose.position.x, msg.pose.position.y, msg.pose.position.z),
             Quaternion(quaternion[0], quaternion[1], quaternion[2], quaternion[3]),
         )
-        odomMsg.twist.twist = Twist(Vector3(vx, 0, 0), Vector3(0, 0, vth))
+        odom_msg.twist.twist = Twist(Vector3(vx, 0, 0), Vector3(0, 0, vth))
 
-        self.odomPub.publish(odomMsg)
+        self.odom_pub.publish(odom_msg)
 
-        self.lastTime = currentTime
+        self.last_time = current_time
 
 
 if __name__ == "__main__":
     rospy.init_node("odom_imu_republisher")
-    odomRepub = OdomRepublisher()
-    imuOrientRepub = ImuOrientationRepublisher()
-    imuAngVelRebup = ImuAngularVelocityRepublisher()
+    odometry_republisher = OdomRepublisher()
+    imu_orientation_republisher = ImuOrientationRepublisher()
+    imu_angular_velocity_republisher = ImuAngularVelocityRepublisher()
     rospy.spin()
