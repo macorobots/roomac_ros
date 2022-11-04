@@ -2,8 +2,8 @@
 Changelog for package roomac_moveit
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+1.12.11 (2022-11-04)
+--------------------
 * Merge pull request `#67 <https://github.com/macstepien/roomac_ros/issues/67>`_ from macstepien/refactor-python-scripts
   Refactor python scripts
 * Merge branch 'master' into refactor-python-scripts

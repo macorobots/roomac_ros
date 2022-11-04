@@ -2,8 +2,8 @@
 Changelog for package roomac_base
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+1.12.11 (2022-11-04)
+--------------------
 * Merge branch 'master' into refactor-python-scripts
   Conflicts:
   roomac_rtabmap/scripts/odom_tf_to_topic.py
