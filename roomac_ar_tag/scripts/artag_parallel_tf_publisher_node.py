@@ -92,7 +92,7 @@ class ARTagParallelTransformPublisher:
             rot_only_yaw = quaternion_from_euler(math.pi / 2.0, 0.0, rot_rpy[2])
         else:
             rot_only_yaw = quaternion_from_euler(
-                math.pi / 2.0 + eps, rot_rpy[1], -math.pi / 2.0 + eps
+                math.pi / 2.0 + eps, -rot_rpy[1], -math.pi / 2.0 + eps
             )
 
         parallel_transform = TransformStamped()
