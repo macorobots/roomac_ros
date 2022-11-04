@@ -1,0 +1,5 @@
+<launch>
+  <!-- Publishing pose to display in ros mobile application -->
+  <node name="pose_publisher" pkg="roomac_bringup" type="pose_publisher_node.py" output="screen" />
+  <node name="ros_mobile_bridge" pkg="roomac_bringup" type="ros_mobile_bridge_node.py" output="screen" />
+</launch>

@@ -6,7 +6,7 @@
   <arg if="$(arg simulation)" name="wait_time_before_picking_action" value="5.0" />
   <arg unless="$(arg simulation)" name="wait_time_before_picking_action" value="0.1" />
 
-  <node name="pick_and_bring_manager" pkg="roomac" type="pick_and_bring_manager_node.py" output="screen">
-    <rosparam command="load" file="$(find roomac)/config/pick_and_bring_manager_config.yaml" subst_value="true" />
+  <node name="pick_and_bring_manager" pkg="roomac_bringup" type="pick_and_bring_manager_node.py" output="screen">
+    <rosparam command="load" file="$(find roomac_bringup)/config/pick_and_bring_manager_config.yaml" subst_value="true" />
   </node>
 </launch>

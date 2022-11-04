@@ -1,9 +1,0 @@
-<launch>
-  <include file="$(find roomac_simulation)/launch/simulation_nav_pick.launch">
-    <arg name="gui" value="false" />
-    <arg name="map_file" value="$(find roomac)/test/rtabmap_test.db" />
-    <arg name="positions_file" value="$(find roomac)/test/positions_test.yaml" />
-  </include>
-
-  <test test-name="pick_and_bring_test" pkg="roomac" type="pick_and_bring.test.py" time-limit="360.0" />
-</launch>

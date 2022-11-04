@@ -114,7 +114,7 @@ class TestPickAndBring(unittest.TestCase):
 
 if __name__ == "__main__":
     NAME = "test_pick_and_bring"
-    PKG = "roomac"
+    PKG = "roomac_bringup"
 
     rospy.init_node(NAME, anonymous=True)
     rostest.rosrun(PKG, NAME, TestPickAndBring)
