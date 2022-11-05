@@ -26,4 +26,7 @@
   <exec_depend>roomac_bringup</exec_depend>
 
   <exec_depend>gazebo_ros</exec_depend>
+  <exec_depend>aws_robomaker_small_house_world</exec_depend>
+  <exec_depend>gazebo_grasp_plugin</exec_depend>
+  <exec_depend>roboticsgroup_upatras_gazebo_plugins</exec_depend>
 </package>
