@@ -45,6 +45,10 @@ class PickAndBringManager:
         self._artag_stable_position_threshold = rospy.get_param(
             "~artag_stable_position_threshold", 0.04
         )
+        self._artag_stable_time_threshold = rospy.Duration(
+            rospy.get_param("~artag_stable_time_threshold", 0.5)
+        )
+
         self._artag_stable_orientation_threshold = (
             rospy.get_param("~artag_stable_orientation_threshold", 5.0)
             / 180.0
@@ -86,22 +90,21 @@ class PickAndBringManager:
                 preempted_action_function=self._navigation_executor.move_base_abort,
                 feedback_state=PickAndBringFeedback.DRIVING_TO_TABLE,
             ),
-            # Doesn't work for bundle
-            # ActionProcedureStep(
-            #     start_procedure_function=lambda: None,
-            #     get_procedure_state_function=self.check_if_artag_position_is_stable,
-            #     preempted_action_function=lambda: None,
-            #     feedback_state=PickAndBringFeedback.PICKING_UP_OBJECT,
-            # ),
-            # checking if artag is stable isn't working perfectly yet
-            # so some delay is necessary before object position will be stable
-            # and correct
             ActionProcedureStep(
-                start_procedure_function=self._wait_before_picking_up_object,
-                get_procedure_state_function=lambda: GoalState.SUCCEEDED,
+                start_procedure_function=lambda: None,
+                get_procedure_state_function=self._check_if_artag_position_is_stable,
                 preempted_action_function=lambda: None,
                 feedback_state=PickAndBringFeedback.PICKING_UP_OBJECT,
             ),
+            # checking if artag is stable isn't working perfectly yet
+            # so some delay is necessary before object position will be stable
+            # and correct
+            # ActionProcedureStep(
+            #     start_procedure_function=self._wait_before_picking_up_object,
+            #     get_procedure_state_function=lambda: GoalState.SUCCEEDED,
+            #     preempted_action_function=lambda: None,
+            #     feedback_state=PickAndBringFeedback.PICKING_UP_OBJECT,
+            # ),
             ActionProcedureStep(
                 start_procedure_function=self._pick_up_object_executor.pick_object,
                 get_procedure_state_function=self._pick_up_object_executor.check_pick_object_state,
@@ -125,6 +128,9 @@ class PickAndBringManager:
             procedure_list,
         )
 
+        self._last_artag_position = None
+        self._stable_artag_position_start_time = None
+
     def _go_to_table(self):
         return self._navigation_executor.go_to_position(self._table_position_name)
 
@@ -146,30 +152,45 @@ class PickAndBringManager:
 
     def _check_if_artag_position_is_stable(self):
         try:
-            artag_pose = get_latest_position_from_transform(
-                "camera_up_link", "ar_marker_8", self._tf_buffer
-            )
-            artag_pose_filtered = get_latest_position_from_transform(
+            artag_position = get_latest_position_from_transform(
                 "camera_up_link", "artag_bundle_link", self._tf_buffer
             )
         except RuntimeError as e:
             rospy.logerr("Exception: " + str(e))
             return GoalState.IN_PROGRESS
 
-        trans_diff = math.sqrt(
-            (artag_pose.x - artag_pose_filtered.x) ** 2
-            + (artag_pose.y - artag_pose_filtered.y) ** 2
+        if not self._last_artag_position:
+            self._last_artag_position = artag_position
+            return GoalState.IN_PROGRESS
+
+        translation_diff = math.sqrt(
+            (artag_position.x - self._last_artag_position.x) ** 2
+            + (artag_position.y - self._last_artag_position.y) ** 2
         )
 
-        rot_diff = math.fabs(artag_pose.theta - artag_pose_filtered.theta)
+        rotation_diff = math.fabs(
+            artag_position.theta - self._last_artag_position.theta
+        )
 
         if (
-            trans_diff < self._artag_stable_position_threshold
-            and rot_diff < self._artag_stable_orientation_threshold
+            translation_diff < self._artag_stable_position_threshold
+            and rotation_diff < self._artag_stable_orientation_threshold
         ):
-            return GoalState.SUCCEEDED
+            if not self._stable_artag_position_start_time:
+                self._stable_artag_position_start_time = rospy.Time.now()
+
+            if (
+                rospy.Time.now() - self._stable_artag_position_start_time
+                > self._artag_stable_time_threshold
+            ):
+                self._stable_artag_position_start_time = None
+                self._last_artag_position = None
+                return GoalState.SUCCEEDED
         else:
-            return GoalState.IN_PROGRESS
+            self._stable_artag_position_start_time = None
+
+        self._last_artag_position = artag_position
+        return GoalState.IN_PROGRESS
 
     def _go_to_table_cb(self, req):
         res = TriggerResponse()
