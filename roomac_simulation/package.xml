@@ -23,6 +23,7 @@
   <exec_depend>roomac_rtabmap</exec_depend>
   <exec_depend>roomac_sensor_fusion</exec_depend>
   <exec_depend>roomac_utils</exec_depend>
+  <exec_depend>roomac_bringup</exec_depend>
 
   <exec_depend>gazebo_ros</exec_depend>
 </package>

@@ -13,7 +13,7 @@
   <include file="$(find roomac_description)/launch/description_simulation.launch" />
 
   <!-- Roomac scripts -->
-  <include file="$(find roomac)/launch/pick_and_bring_manager.launch">
+  <include file="$(find roomac_bringup)/launch/pick_and_bring_manager.launch">
     <arg name="positions_file" value="$(arg positions_file)" />
     <arg name="simulation" value="true" />
   </include>
@@ -58,5 +58,5 @@
   <node if="$(arg gui)" args="-d $(find roomac_move_base)/rviz/rviz_move_base.rviz" name="rviz" pkg="rviz" type="rviz" />
 
   <!-- ROS Mobile -->
-  <include file="$(find roomac)/launch/ros_mobile.launch" />
+  <include file="$(find roomac_bringup)/launch/ros_mobile.launch" />
 </launch>

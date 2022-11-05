@@ -1,27 +1,27 @@
 <launch>
-<!-- Gazebo -->
+  <!-- Gazebo -->
   <include file="$(find roomac_simulation)/launch/gazebo.launch">
-    <arg name="gazebo_gui" value="true"/>
-    <arg name="world_name" value="$(find roomac_simulation)/worlds/small_house.world"/>
+    <arg name="gazebo_gui" value="true" />
+    <arg name="world_name" value="$(find roomac_simulation)/worlds/small_house.world" />
   </include>
 
-<!-- Rtabmap -->
+  <!-- Rtabmap -->
   <include file="$(find roomac_rtabmap)/launch/rtabmap.launch">
-    <arg name="rgb_image_topic" value="/camera/color/image_raw"/>
-    <arg name="depth_image_topic" value="/camera/depth/image_raw"/>
-    <arg name="rgb_camera_info_topic" value="/camera/color/camera_info"/>
+    <arg name="rgb_image_topic" value="/camera/color/image_raw" />
+    <arg name="depth_image_topic" value="/camera/depth/image_raw" />
+    <arg name="rgb_camera_info_topic" value="/camera/color/camera_info" />
   </include>
 
-<!-- Robot localization -->
+  <!-- Robot localization -->
   <node pkg="robot_localization" type="ekf_localization_node" name="ekf_se" clear_params="true">
     <rosparam command="load" file="$(find roomac_sensor_fusion)/config/fusion.yaml" />
   </node>
 
-  <node args="-d $(find roomac_move_base)/rviz/rviz_move_base.rviz" name="rviz" pkg="rviz" type="rviz"/>
+  <node args="-d $(find roomac_move_base)/rviz/rviz_move_base.rviz" name="rviz" pkg="rviz" type="rviz" />
 
-<!-- ROS Mobile -->
-  <include file="$(find roomac)/launch/ros_mobile.launch"/>
+  <!-- ROS Mobile -->
+  <include file="$(find roomac_bringup)/launch/ros_mobile.launch" />
 
-<!-- Description -->
-  <include file="$(find roomac_description)/launch/description_simulation.launch"/>
+  <!-- Description -->
+  <include file="$(find roomac_description)/launch/description_simulation.launch" />
 </launch>
