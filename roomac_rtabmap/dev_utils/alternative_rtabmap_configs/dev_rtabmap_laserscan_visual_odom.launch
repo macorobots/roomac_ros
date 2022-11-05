@@ -13,7 +13,7 @@
   </node>
 
   <!-- Kinect cloud to laser scan -->
-  <!-- TODO: consider using nodelet -->
+  <!-- consider using nodelet instead -->
   <node pkg="pointcloud_to_laserscan" type="pointcloud_to_laserscan_node" name="pointcloud_to_laserscan_node">
     <remap from="cloud_in" to="/camera/depth_registered/points" />
     <remap from="scan" to="/kinect_scan" />

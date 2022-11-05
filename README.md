@@ -41,8 +41,6 @@ First startup simulation container, there are two possibilities:
   ```
 
 Nvidia configuration is recommended, as it has better performance.
-<!-- > **Tip**
-> If you have an Nvidia graphics card install Nvidia runtime (todo: describe) and use `compose_simulation_demo_nvidia.yaml` instead for better performance. -->
 
 
 Then to execute fetching bottle run: 

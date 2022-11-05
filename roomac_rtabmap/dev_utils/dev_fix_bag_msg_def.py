@@ -79,7 +79,6 @@ def main():
         sys.stderr.write("Cannot use both mappings and local defs.\n")
         sys.exit(os.EX_USAGE)
 
-    # TODO: make this nicer. Figure out the complete msg text without relying on external files
     msg_def_maps = {}
     if len(args.mappings) > 0:
         print("Mappings provided:")
@@ -144,7 +143,6 @@ def main():
                 continue
 
             # don't have mapping, but are allowed to use local msg def: retrieve
-            # TODO: properly deal with get_message_class failing
             sys_class = roslib.message.get_message_class(msg_type)
             if sys_class is None:
                 raise ValueError("Message class '" + msg_type + "' not found.")
@@ -190,7 +188,6 @@ def main():
     print("Writing out fixed bag ..")
 
     # write result to new bag
-    # TODO: can this be done more efficiently? We only changed the connection infos.
     with rosbag.Bag(args.outbag, "w") as outbag:
         # shamelessly copied from Rosbag itself
         meter = rosbag.rosbag_main.ProgressMeter(
