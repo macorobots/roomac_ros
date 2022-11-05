@@ -10,7 +10,22 @@ generate_dynamic_reconfigure_options(
 
 catkin_package()
 
-# todo: add install
+install(
+  DIRECTORY config launch
+  DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
+)
+
+install(DIRECTORY scripts/pick_and_bring_manager
+  DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
+)
+
+catkin_install_python(PROGRAMS
+  scripts/pick_and_bring_manager_node.py
+  scripts/pose_publisher_node.py
+  scripts/ros_mobile_bridge_node.py
+  scripts/wheel_joint_publisher_node.py
+  DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
+)
 
 # Full integration test in gazebo is disabled by default - tests are mainly used in github action
 # and because of camera, gazebo tests require GPU, which isn't provided in github actions and in result
