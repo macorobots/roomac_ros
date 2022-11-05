@@ -39,20 +39,16 @@ class PickAndBringManager:
         self._home_position_name = "home_position"
         self._table_position_name = "table_position"
 
-        self._wait_time_before_picking_action = rospy.get_param(
-            "~wait_time_before_picking_action", 5.0
-        )
         self._artag_stable_position_threshold = rospy.get_param(
             "~artag_stable_position_threshold", 0.04
         )
-        self._artag_stable_time_threshold = rospy.Duration(
-            rospy.get_param("~artag_stable_time_threshold", 0.5)
-        )
-
         self._artag_stable_orientation_threshold = (
             rospy.get_param("~artag_stable_orientation_threshold", 5.0)
             / 180.0
             * math.pi
+        )
+        self._artag_stable_time_threshold = rospy.Duration(
+            rospy.get_param("~artag_stable_time_threshold", 0.5)
         )
 
         self._dynamic_reconfigure_srv = Server(
@@ -96,15 +92,6 @@ class PickAndBringManager:
                 preempted_action_function=lambda: None,
                 feedback_state=PickAndBringFeedback.PICKING_UP_OBJECT,
             ),
-            # checking if artag is stable isn't working perfectly yet
-            # so some delay is necessary before object position will be stable
-            # and correct
-            # ActionProcedureStep(
-            #     start_procedure_function=self._wait_before_picking_up_object,
-            #     get_procedure_state_function=lambda: GoalState.SUCCEEDED,
-            #     preempted_action_function=lambda: None,
-            #     feedback_state=PickAndBringFeedback.PICKING_UP_OBJECT,
-            # ),
             ActionProcedureStep(
                 start_procedure_function=self._pick_up_object_executor.pick_object,
                 get_procedure_state_function=self._pick_up_object_executor.check_pick_object_state,
@@ -141,14 +128,6 @@ class PickAndBringManager:
         return self._navigation_executor.check_positions(
             [self._home_position_name, self._table_position_name]
         )
-
-    def _wait_before_picking_up_object(self):
-        rospy.loginfo(
-            "Waiting "
-            + str(self._wait_time_before_picking_action)
-            + " seconds before picking up object"
-        )
-        rospy.sleep(self._wait_time_before_picking_action)
 
     def _check_if_artag_position_is_stable(self):
         try:
@@ -229,10 +208,12 @@ class PickAndBringManager:
         return res
 
     def _dynamic_reconfigure_cb(self, config, level):
-        self._wait_time_before_picking_action = config.wait_time_before_picking_action
         self._artag_stable_position_threshold = config.artag_stable_position_threshold
         self._artag_stable_orientation_threshold = (
             config.artag_stable_orientation_threshold / 180.0 * math.pi
+        )
+        self._artag_stable_time_threshold = rospy.Duration(
+            config.artag_stable_time_threshold
         )
         return config
 
