@@ -1,5 +1,5 @@
 <launch>
-  <param name="robot_description" command="$(find xacro)/xacro $(find roomac_kinect)/urdf/base_kinect_calibration.urdf.xacro" />
+  <param name="robot_description" command="$(find xacro)/xacro $(find roomac_kinect)/dev_utils/dev_base_kinect_calibration.urdf.xacro" />
   <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" />
 
   <arg name="rvizconfig" default="$(find roomac_kinect)/rviz/roomac_kinect_calibration.rviz" />
