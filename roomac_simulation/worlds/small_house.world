@@ -594,7 +594,7 @@
     </include>
 
     <model name='kinect_up'>
-      <pose>4.3 -2.1 1.8 0 1.57 0</pose>
+      <pose>4.27 -2.10 1.8 0 1.57 0</pose>
 
       <static>true</static>
 
