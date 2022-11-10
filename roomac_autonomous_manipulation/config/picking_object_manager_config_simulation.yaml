@@ -5,4 +5,4 @@ object_position_correction_z: 0.02
 
 # How long to wait for gripper to open/close [s]
 open_gripper_wait_time: 0.0
-close_gripper_wait_time: 5.0
+close_gripper_wait_time: 1.0

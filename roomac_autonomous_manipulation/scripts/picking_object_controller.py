@@ -106,15 +106,15 @@ class PickingObjectController:
 
     def open_gripper(self, delay=1.0):
         rospy.loginfo("Sending open gripper command")
-        # todo: fix waiting
-        # self._open_gripper_wait_time
         self._moveit_manager.move_gripper(self._opened_gripper_value)
 
     def close_gripper(self, delay=1.0):
         rospy.loginfo("Sending close gripper command")
-        # todo: fix waiting
-        # self._close_gripper_wait_time
         self._moveit_manager.move_gripper(self._closed_gripper_value)
+        # move gripper already waits for finishing movement, but it is necessary
+        # to wait a little longer in simulation for proper detection of contact
+        # with object to pick it up
+        rospy.sleep(self._close_gripper_wait_time)
 
     def go_to_object_point(self):
         self._moveit_manager.go_to_point(self._object_point, self._gripper_frame)
