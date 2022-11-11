@@ -1,0 +1,34 @@
+- git:
+    local-name: aws_robomaker_small_house_world
+    uri: https://github.com/aws-robotics/aws-robomaker-small-house-world.git
+    version: ros1
+
+- git:
+    local-name: gazebo_pkgs
+    uri: https://github.com/JenniferBuehler/gazebo-pkgs.git
+    version: master
+
+- git:
+    local-name: general_message_pkgs
+    uri: https://github.com/JenniferBuehler/general-message-pkgs.git
+    version: master
+
+- git:
+    local-name: roboticsgroup_upatras_gazebo_plugins
+    uri: https://github.com/roboticsgroup/roboticsgroup_upatras_gazebo_plugins.git
+    version: master
+
+- git:
+    local-name: bio_ik
+    uri: https://github.com/TAMS-Group/bio_ik.git
+    version: master
+
+- git:
+    local-name: spatio_temporal_voxel_layer
+    uri: https://github.com/macstepien/spatio_temporal_voxel_layer.git
+    version: melodic-devel
+
+- git:
+    local-name: teb_local_planner
+    uri: https://github.com/rst-tu-dortmund/teb_local_planner.git
+    version: melodic-devel

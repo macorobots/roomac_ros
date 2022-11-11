@@ -12,4 +12,4 @@ services:
       - ROS_IP=10.42.0.160
     network_mode: host
     privileged: true
-    command: roslaunch roomac external_laptop_nav_picking.launch
+    command: roslaunch roomac_bringup external_laptop_nav_picking.launch

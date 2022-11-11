@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <package format="2">
-  <name>roomac_simulation</name>
-  <version>1.12.11</version>
-  <description>The roomac_simulation package</description>
+  <name>roomac_bringup</name>
+  <version>1.12.10</version>
+  <description>The roomac_bringup package</description>
 
   <author email="macorobots@gmail.com">Maciej Stępień</author>
   <maintainer email="macorobots@gmail.com">Maciej Stępień</maintainer>
@@ -14,19 +14,24 @@
 
   <buildtool_depend>catkin</buildtool_depend>
 
+  <depend>dynamic_reconfigure</depend>
+
+  <exec_depend>rospy</exec_depend>
+
   <exec_depend>roomac_ar_tag</exec_depend>
+  <exec_depend>roomac_arm</exec_depend>
   <exec_depend>roomac_autonomous_manipulation</exec_depend>
+  <exec_depend>roomac_base</exec_depend>
   <exec_depend>roomac_description</exec_depend>
+  <exec_depend>roomac_kinect</exec_depend>
   <exec_depend>roomac_move_base</exec_depend>
   <exec_depend>roomac_moveit</exec_depend>
   <exec_depend>roomac_msgs</exec_depend>
   <exec_depend>roomac_rtabmap</exec_depend>
   <exec_depend>roomac_sensor_fusion</exec_depend>
   <exec_depend>roomac_utils</exec_depend>
-  <exec_depend>roomac_bringup</exec_depend>
 
-  <exec_depend>gazebo_ros</exec_depend>
-  <exec_depend>aws_robomaker_small_house_world</exec_depend>
-  <exec_depend>gazebo_grasp_plugin</exec_depend>
-  <exec_depend>roboticsgroup_upatras_gazebo_plugins</exec_depend>
+  <exec_depend>python-yaml</exec_depend>
+
+  <test_depend>rostest</test_depend>
 </package>

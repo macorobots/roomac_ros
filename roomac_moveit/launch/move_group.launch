@@ -26,7 +26,7 @@
     <rosparam command="load" file="$(find roomac_moveit)/config/cartesian_limits.yaml" />
 
     <!-- Load padding -->
-    <!-- TODO: doesn't appear to be working correctly -->
+    <!-- ? doesn't appear to be working correctly -->
     <rosparam command="load" file="$(find roomac_moveit)/config/padding.yaml" />
   </group>
 
@@ -37,8 +37,6 @@
     <rosparam command="load" file="$(find roomac_moveit)/config/$(arg pipeline)_planning.yaml" />
     <rosparam file="$(find roomac_moveit)/config/trajectory_execution.yaml" />
     <rosparam file="$(find roomac_moveit)/config/moveit_controllers.yaml" />
-    <!-- todo is necessary? -->
-    <rosparam if="$(arg gazebo)" file="$(find roomac_simulation)/config/ros_controllers.yaml" />
 
     <!-- Sensors Functionality -->
     <!-- Don't load kinect sensor in simulation - it makes it run slower, there are issues with detecting bottle as an obstacle.
@@ -57,11 +55,5 @@
     <remap if="$(arg gazebo)" from="/joint_states" to="/roomac/joint_states" />
     <remap if="$(arg gazebo)" from="arm_position_controller/follow_joint_trajectory" to="/roomac/arm_position_controller/follow_joint_trajectory" />
     <remap if="$(arg gazebo)" from="gripper_controller/follow_joint_trajectory" to="/roomac/gripper_controller/follow_joint_trajectory" />
-
-    <!-- todo: it may no longer be necessary -->
-    <!-- For real robot: -->
-    <!-- Can't change fake execution for now, as I don't have controller defined for real robot -->
-    <!-- Probably would be nice to define controller eventually -->
-    <remap unless="$(arg gazebo)" from="/move_group/fake_controller_joint_states" to="/joint_states" />
   </node>
 </launch>

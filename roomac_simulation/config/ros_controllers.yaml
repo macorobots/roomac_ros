@@ -29,7 +29,6 @@ roomac:
     type: joint_state_controller/JointStateController
     publish_rate: 50
 
-  # todo: rename to arm_controller
   arm_position_controller:
     type: position_controllers/JointTrajectoryController
     joints:

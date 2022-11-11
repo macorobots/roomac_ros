@@ -5,6 +5,17 @@ find_package(catkin REQUIRED)
 
 catkin_package()
 
+install(
+  DIRECTORY config launch rviz
+  DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
+)
+
+catkin_install_python(PROGRAMS
+  scripts/artag_odom_publisher_node.py
+  scripts/artag_parallel_tf_publisher_node.py
+  DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
+)
+
 if(CATKIN_ENABLE_TESTING)
   find_package(rostest REQUIRED)
   add_rostest(test/robot_pose_detection.test.launch)
@@ -14,12 +25,14 @@ if(CATKIN_ENABLE_TESTING)
     https://drive.google.com/uc?export=download&id=192hhncAiv3lk4J8pc66VfoaUqSF8LMxD
     DESTINATION ${CATKIN_DEVEL_PREFIX}/${CATKIN_PACKAGE_SHARE_DESTINATION}/test
     FILENAME robot_pose_detection.bag
-    MD5 286e9025527307639e7b3e3bcbe26492)
+    MD5 286e9025527307639e7b3e3bcbe26492
+  )
 
   catkin_download_test_data(
     robot_pose_detection_correct_values.yaml
     https://drive.google.com/uc?export=download&id=1lYCZDSI3hSLt_jXhcQU7ufLMgmK-dTWj
     DESTINATION ${CATKIN_DEVEL_PREFIX}/${CATKIN_PACKAGE_SHARE_DESTINATION}/test
     FILENAME robot_pose_detection_correct_values.yaml
-    MD5 2ed3f868253a6aae20e871ce7c3c9e14)
+    MD5 2ed3f868253a6aae20e871ce7c3c9e14
+  )
 endif()

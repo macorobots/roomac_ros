@@ -15,7 +15,7 @@ from roomac_msgs.msg import (
 )
 
 from dynamic_reconfigure.server import Server
-from roomac.cfg import PickAndBringManagerSettingsConfig
+from roomac_bringup.cfg import PickAndBringManagerSettingsConfig
 
 from roomac_utils.action_procedure_executor import (
     ActionProcedureStep,
