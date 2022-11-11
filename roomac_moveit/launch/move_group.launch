@@ -1,6 +1,6 @@
 <launch>
   <arg name="pipeline" default="ompl" />
-  <arg name="gazebo" default="false" />
+  <arg name="simulation" default="false" />
 
   <!-- GDB Debug Option -->
   <arg name="debug" default="false" />
@@ -20,8 +20,8 @@
     <param name="shape_transform_cache_lookup_wait_time" value="1.0" />
 
     <!-- Load updated joint limits (override information from URDF) -->
-    <rosparam if="$(arg gazebo)" command="load" file="$(find roomac_moveit)/config/joint_limits_simulation.yaml" />
-    <rosparam unless="$(arg gazebo)" command="load" file="$(find roomac_moveit)/config/joint_limits.yaml" />
+    <rosparam if="$(arg simulation)" command="load" file="$(find roomac_moveit)/config/joint_limits_simulation.yaml" />
+    <rosparam unless="$(arg simulation)" command="load" file="$(find roomac_moveit)/config/joint_limits.yaml" />
 
     <rosparam command="load" file="$(find roomac_moveit)/config/cartesian_limits.yaml" />
 
@@ -42,7 +42,7 @@
     <!-- Don't load kinect sensor in simulation - it makes it run slower, there are issues with detecting bottle as an obstacle.
     As there is separate table detection, octomap obstacles are not really needed, there aren't any additional 
     obstacles in the workspace of the manipulator -->
-    <rosparam unless="$(arg gazebo)" command="load" file="$(find roomac_moveit)/config/sensors_3d.yaml" />
+    <rosparam unless="$(arg simulation)" command="load" file="$(find roomac_moveit)/config/sensors_3d.yaml" />
   </group>
 
   <node name="move_group" launch-prefix="$(arg launch_prefix)" pkg="moveit_ros_move_group" type="move_group" respawn="false" output="screen" args="$(arg command_args)">
@@ -52,8 +52,8 @@
     <rosparam command="load" file="$(find roomac_moveit)/config/move_group.yaml" />
 
     <!-- For simulation: -->
-    <remap if="$(arg gazebo)" from="/joint_states" to="/roomac/joint_states" />
-    <remap if="$(arg gazebo)" from="arm_position_controller/follow_joint_trajectory" to="/roomac/arm_position_controller/follow_joint_trajectory" />
-    <remap if="$(arg gazebo)" from="gripper_controller/follow_joint_trajectory" to="/roomac/gripper_controller/follow_joint_trajectory" />
+    <remap if="$(arg simulation)" from="/joint_states" to="/roomac/joint_states" />
+    <remap if="$(arg simulation)" from="arm_position_controller/follow_joint_trajectory" to="/roomac/arm_position_controller/follow_joint_trajectory" />
+    <remap if="$(arg simulation)" from="gripper_controller/follow_joint_trajectory" to="/roomac/gripper_controller/follow_joint_trajectory" />
   </node>
 </launch>

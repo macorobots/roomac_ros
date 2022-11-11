@@ -45,7 +45,7 @@
 
   <!-- MoveIt -->
   <include file="$(find roomac_moveit)/launch/roomac_moveit.launch">
-    <arg name="gazebo" value="true" />
+    <arg name="simulation" value="true" />
   </include>
 
   <!-- RViz -->
