@@ -36,7 +36,9 @@
   </include>
 
   <!-- Move base -->
-  <include file="$(find roomac_move_base)/launch/move_base.launch" />
+  <include file="$(find roomac_move_base)/launch/move_base.launch">
+    <arg name="simulation" value="true" />
+  </include>
 
   <!-- Robot localization -->
   <node pkg="robot_localization" type="ekf_localization_node" name="ekf_se" clear_params="true">

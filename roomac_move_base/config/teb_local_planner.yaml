@@ -2,35 +2,36 @@
 
 acc_lim_x: 0.2
 # (double, default: 0.5)
-# Maximum translational acceleration of the robot in meters/sec^2 
+# Maximum translational acceleration of the robot in meters/sec^2
 
 acc_lim_theta: 1.5
 # (double, default: 0.5)
-# Maximum angular acceleration of the robot in radians/sec^2 
+# Maximum angular acceleration of the robot in radians/sec^2
 
 max_vel_x: 0.2
 # (double, default: 0.4)
-# Maximum translational velocity of the robot in meters/sec 
+# Maximum translational velocity of the robot in meters/sec
 
 max_vel_x_backwards: 0.08
 # (double, default: 0.2)
-# Maximum absolute translational velocity of the robot while driving backwards in meters/sec. See optimization parameter weight_kinematics_forward_drive 
+# Maximum absolute translational velocity of the robot while driving backwards in meters/sec. See optimization parameter weight_kinematics_forward_drive
 
 max_vel_theta: 0.5
 # (double, default: 0.3)
-# Maximum angular velocity of the robot in radians/sec 
+# Maximum angular velocity of the robot in radians/sec
 
 #Deleted params for carlike and holonomic
 
 footprint_model/type: polygon
 # (string, default: "point")
-# Specify the robot footprint model type used for optimization. Different types are "point", "circular", "line", "two_circles" and "polygon." The type of the model significantly influences the required computation time. 
+# Specify the robot footprint model type used for optimization. Different types are "point", "circular", "line", "two_circles" and "polygon." The type of the model significantly influences the required computation time.
 
 #Deleted parametrs for circular, line, two_circles
- 
-footprint_model/vertices: [[0.15, 0.2875], [-0.355, 0.2875], [-0.355, -0.2875], [0.15, -0.2875]]
+
+footprint_model/vertices:
+  [[0.15, 0.2875], [-0.355, 0.2875], [-0.355, -0.2875], [0.15, -0.2875]]
 # (double[], default: [ [0.25,-0.05], [...], ...])
-# This parameter is only relevant for type "polygon". It contains the list of polygon vertices (2d coordinates each). The polygon is always closed: do not repeat the first vertex at the end. 
+# This parameter is only relevant for type "polygon". It contains the list of polygon vertices (2d coordinates each). The polygon is always closed: do not repeat the first vertex at the end.
 
 is_footprint_dynamic: false
 # (bool, default: false)
@@ -40,43 +41,43 @@ is_footprint_dynamic: false
 
 xy_goal_tolerance: 0.1
 # (double, default: 0.2)
-# Allowed final euclidean distance to the goal position in meters 
+# Allowed final euclidean distance to the goal position in meters
 
 yaw_goal_tolerance: 0.15 # 8.6 degrees
 # (double, default: 0.2)
-# Allowed final orientation error in radians 
+# Allowed final orientation error in radians
 
 free_goal_vel: false
 # (bool, default: false)
-# Remove the goal velocity constraint such that the robot can arrive at the goal with maximum speed 
+# Remove the goal velocity constraint such that the robot can arrive at the goal with maximum speed
 
 trans_stopped_vel: 0.05
 # (double, default: 0.1)
-# Below what maximum velocity we consider the robot to be stopped in translation. 
+# Below what maximum velocity we consider the robot to be stopped in translation.
 # Important - used only when stopping robot when goal is reached
 
 theta_stopped_vel: 0.1
 # (double, default: 0.1)
-# Below what maximum rotation velocity we consider the robot to be stopped in rotation. 
+# Below what maximum rotation velocity we consider the robot to be stopped in rotation.
 # Important - used only when stopping robot when goal is reached
 
 #! Trajectory Configuration Parameters
 
 dt_ref: 0.22
 # (double, default: 0.3)
-# Desired temporal resolution of the trajectory (the trajectory is not fixed to dt_ref since the temporal resolution is part of the optimization, but the trajectory will be resized between iterations if dt_ref +-dt_hysteresis is violated. 
+# Desired temporal resolution of the trajectory (the trajectory is not fixed to dt_ref since the temporal resolution is part of the optimization, but the trajectory will be resized between iterations if dt_ref +-dt_hysteresis is violated.
 
 dt_hysteresis: 0.044
 # (double, default: 0.1)
-# Hysteresis for automatic resizing depending on the current temporal resolution, usually approx. 10% of dt_ref is recommended 
+# Hysteresis for automatic resizing depending on the current temporal resolution, usually approx. 10% of dt_ref is recommended
 
 min_samples: 3
 # (int, default: 3)
-# Minimum number of samples (should be always greater than 2) 
+# Minimum number of samples (should be always greater than 2)
 
 global_plan_overwrite_orientation: true
 # (bool, default: true)
-# Overwrite orientation of local subgoals provided by the global planner (since they often provide only a 2D path) 
+# Overwrite orientation of local subgoals provided by the global planner (since they often provide only a 2D path)
 
 global_plan_viapoint_sep: 0.5
 # (double, default: -0.1 (disabled))
@@ -84,44 +85,42 @@ global_plan_viapoint_sep: 0.5
 
 max_global_plan_lookahead_dist: 1.2
 # (double, default: 3.0)
-# Specify the maximum length (cumulative Euclidean distances) of the subset of the global plan taken into account for optimization. The actual length is than determined by the logical conjunction of the local costmap size and this maximum bound. Set to zero or negative in order to deactivate this limitation. 
+# Specify the maximum length (cumulative Euclidean distances) of the subset of the global plan taken into account for optimization. The actual length is than determined by the logical conjunction of the local costmap size and this maximum bound. Set to zero or negative in order to deactivate this limitation.
 
 force_reinit_new_goal_dist: 1.0
 # (double, default: 1.0)
-# Reinitialize the trajectory if a previous goal is updated with a separation of more than the specified value in meters (skip hot-starting) 
+# Reinitialize the trajectory if a previous goal is updated with a separation of more than the specified value in meters (skip hot-starting)
 # Observation: it doesn't affect only when new goal is set, but it appears that when local goal of teb (sampled from global path) moves along the path. When I set it to really low value (0.001) often path was reinitialized when robot was moving to goal, which resulted in worse performance, as after some time local plan becomes better (it is optimized).
 
 feasibility_check_no_poses: 4
 # (int, default: 4)
-# Specify up to which pose on the predicted plan the feasibility should be checked each sampling interval. 
+# Specify up to which pose on the predicted plan the feasibility should be checked each sampling interval.
 
 publish_feedback: false
 # (bool, default: false)
-# Publish planner feedback containing the full trajectory and a list of active obstacles (should be enabled only for evaluation or debugging). See list of publishers above. 
+# Publish planner feedback containing the full trajectory and a list of active obstacles (should be enabled only for evaluation or debugging). See list of publishers above.
 
 shrink_horizon_backup: true
 # (bool, default: true)
-# Allows the planner to shrink the horizon temporary (50%) in case of automatically detected issues (e.g. infeasibility). Also see parameter shrink_horizon_min_duration. 
+# Allows the planner to shrink the horizon temporary (50%) in case of automatically detected issues (e.g. infeasibility). Also see parameter shrink_horizon_min_duration.
 
 allow_init_with_backwards_motion: false
 # (bool, default: false)
-# If true, underlying trajectories might be initialized with backwards motions in case the goal is behind the start within the local costmap (this is only recommended if the robot is equipped with rear sensors). 
+# If true, underlying trajectories might be initialized with backwards motions in case the goal is behind the start within the local costmap (this is only recommended if the robot is equipped with rear sensors).
 
 exact_arc_length: false
 # (bool, default: false)
-# If true, the planner uses the exact arc length in velocity, acceleration and turning rate computations (-> increased cpu time), otherwise the Euclidean approximation is used. 
+# If true, the planner uses the exact arc length in velocity, acceleration and turning rate computations (-> increased cpu time), otherwise the Euclidean approximation is used.
 
 shrink_horizon_min_duration: 10.0
 # (double, default: 10.0)
-# Specify minimum duration for the reduced horizon in case an infeasible trajectory is detected (refer to parameter shrink_horizon_backup in order to activate the reduced horizon mode). 
+# Specify minimum duration for the reduced horizon in case an infeasible trajectory is detected (refer to parameter shrink_horizon_backup in order to activate the reduced horizon mode).
 
 # look_ahead_poses = std::max(1, std::min(look_ahead_poses, teb_.sizePoses() - 1 - cfg_->trajectory.prevent_look_ahead_poses_near_goal));
 
-control_look_ahead_poses: 6
+control_look_ahead_poses: $(arg control_look_ahead_poses)
 # (int, default: 1)
 # Index of the pose used to extract the velocity command
-# Important - it allowed smoother execution without stops
-# I think that when max velocities are higher it should also be increased
 
 prevent_look_ahead_poses_near_goal: 1
 # (int, default: 0)
@@ -131,188 +130,188 @@ prevent_look_ahead_poses_near_goal: 1
 
 min_obstacle_dist: 0.1
 # (double, default: 0.5)
-# Minimum desired separation from obstacles in meters 
+# Minimum desired separation from obstacles in meters
 
 include_costmap_obstacles: true
 # (bool, default: true)
-# Specify if obstacles of the local costmap should be taken into account. Each cell that is marked as obstacle is considered as a point-obstacle. Therefore do not choose a very small resolution of the costmap since it increases computation time. In future releases this circumstance is going to be addressed as well as providing an additional api for dynamic obstacles. 
+# Specify if obstacles of the local costmap should be taken into account. Each cell that is marked as obstacle is considered as a point-obstacle. Therefore do not choose a very small resolution of the costmap since it increases computation time. In future releases this circumstance is going to be addressed as well as providing an additional api for dynamic obstacles.
 
 costmap_obstacles_behind_robot_dist: 1.0
 # (double, default: 1.0)
-# Limit the occupied local costmap obstacles taken into account for planning behind the robot (specify distance in meters). 
+# Limit the occupied local costmap obstacles taken into account for planning behind the robot (specify distance in meters).
 
 obstacle_poses_affected: 30
 # (int, default: 30)
-# Each obstacle position is attached to the closest pose on the trajectory in order to keep a distance. Additional neighbors can be taken into account as well. Note, this parameter might be removed in future versions, since the the obstacle association strategy has been modified in kinetic+. Refer to the parameter description of legacy_obstacle_association. 
+# Each obstacle position is attached to the closest pose on the trajectory in order to keep a distance. Additional neighbors can be taken into account as well. Note, this parameter might be removed in future versions, since the the obstacle association strategy has been modified in kinetic+. Refer to the parameter description of legacy_obstacle_association.
 
 inflation_dist: 0.6
 # (double, default: 0.6)
-# Buffer zone around obstacles with non-zero penalty costs (should be larger than min_obstacle_dist in order to take effect). Also refer to the weight weight_inflation. 
+# Buffer zone around obstacles with non-zero penalty costs (should be larger than min_obstacle_dist in order to take effect). Also refer to the weight weight_inflation.
 
 include_dynamic_obstacles: false
 # (bool, default: false)
-# If this parameter is set to true, the motion of obstacles with non-zero velocity (provided via user-supplied obstacles on topic ~/obstacles or obtained from the costmap_converter) is predicted and considered during optimization via a constant velocity model. New 
+# If this parameter is set to true, the motion of obstacles with non-zero velocity (provided via user-supplied obstacles on topic ~/obstacles or obtained from the costmap_converter) is predicted and considered during optimization via a constant velocity model. New
 
 legacy_obstacle_association: false
 # (bool, default: false)
-# The strategy of connecting trajectory poses with obstacles for optimization has been modified (see changelog). You can switch to the old/previous strategy by setting this parameter to true. Old strategy: for each obstacle, find the nearest TEB pose; new strategy: for each teb pose, find only "relevant" obstacles. 
+# The strategy of connecting trajectory poses with obstacles for optimization has been modified (see changelog). You can switch to the old/previous strategy by setting this parameter to true. Old strategy: for each obstacle, find the nearest TEB pose; new strategy: for each teb pose, find only "relevant" obstacles.
 
 obstacle_association_force_inclusion_factor: 1.5
 # (double, default: 1.5)
-# The non-legacy obstacle association strategy tries to connect only relevant obstacles with the discretized trajectory during optimization. But all obstacles within a specifed distance are forced to be included (as a multiple of min_obstacle_dist). E.g. choose 2.0 in order toenforce the consideration obstacles within a radius of 2.0*min_obstacle_dist. [This parameter is used only if parameter legacy_obstacle_association is false] 
+# The non-legacy obstacle association strategy tries to connect only relevant obstacles with the discretized trajectory during optimization. But all obstacles within a specifed distance are forced to be included (as a multiple of min_obstacle_dist). E.g. choose 2.0 in order toenforce the consideration obstacles within a radius of 2.0*min_obstacle_dist. [This parameter is used only if parameter legacy_obstacle_association is false]
 
 obstacle_association_cutoff_factor: 5
 # (double, default: 5)
-# See obstacle_association_force_inclusion_factor, but beyond a multiple of [value]*min_obstacle_dist all obstacles are ignored during optimization. Parameter obstacle_association_force_inclusion_factor is processed first. [This parameter is used only if parameter legacy_obstacle_association is false] 
+# See obstacle_association_force_inclusion_factor, but beyond a multiple of [value]*min_obstacle_dist all obstacles are ignored during optimization. Parameter obstacle_association_force_inclusion_factor is processed first. [This parameter is used only if parameter legacy_obstacle_association is false]
 
 #! The following parameters are relevant only if costmap_converter plugins are desired (see tutorial):
 
 costmap_converter_plugin: ""
 # (string, default: "")
-# Define plugin name in order to convert costmap cells to points/lines/polygons. Set an empty string to disable the conversion such that all cells are treated as point-obstacles. 
+# Define plugin name in order to convert costmap cells to points/lines/polygons. Set an empty string to disable the conversion such that all cells are treated as point-obstacles.
 
 costmap_converter_spin_thread: true
 # (bool, default: true)
-# If set to true, the costmap converter invokes its callback queue in a different thread. 
+# If set to true, the costmap converter invokes its callback queue in a different thread.
 
 costmap_converter_rate: 5.0
 # (double, default: 5.0)
-# Rate that defines how often the costmap_converter plugin processes the current costmap (the value should not be much higher than the costmap update rate) [in Hz]. 
+# Rate that defines how often the costmap_converter plugin processes the current costmap (the value should not be much higher than the costmap update rate) [in Hz].
 
 #! Optimization Parameters
 
 no_inner_iterations: 4
 # (int, default: 5)
-# Number of actual solver iterations called in each outerloop iteration. See param no_outer_iterations. 
+# Number of actual solver iterations called in each outerloop iteration. See param no_outer_iterations.
 
 no_outer_iterations: 2
 # (int, default: 4)
-# Each outerloop iteration automatically resizes the trajectory according to the desired temporal resolution dt_ref and invokes the internal optimizer (that performs no_inner_iterations). The total number of solver iterations in each planning cycle is therefore the product of both values. 
+# Each outerloop iteration automatically resizes the trajectory according to the desired temporal resolution dt_ref and invokes the internal optimizer (that performs no_inner_iterations). The total number of solver iterations in each planning cycle is therefore the product of both values.
 
 # Should be smaller than max_vel_x_backwards (warning from teb)
 penalty_epsilon: 0.04
 # (double, default: 0.1)
-# Add a small safety margin to penalty functions for hard-constraint approximations 
+# Add a small safety margin to penalty functions for hard-constraint approximations
 
 weight_max_vel_x: 100.0
 # (double, default: 2.0)
-# Optimization weight for satisfying the maximum allowed translational velocity 
+# Optimization weight for satisfying the maximum allowed translational velocity
 
 weight_max_vel_theta: 100.0
 # (double, default: 1.0)
-# Optimization weight for satisfying the maximum allowed angular velocity 
+# Optimization weight for satisfying the maximum allowed angular velocity
 
 weight_acc_lim_x: 1.0
 # (double, default: 1.0)
-# Optimization weight for satisfying the maximum allowed translational acceleration 
+# Optimization weight for satisfying the maximum allowed translational acceleration
 
 weight_acc_lim_theta: 1.0
 # (double, default: 1.0)
-# Optimization weight for satisfying the maximum allowed angular acceleration 
+# Optimization weight for satisfying the maximum allowed angular acceleration
 
 weight_kinematics_nh: 1000.0
 # (double, default: 1000.0)
-# Optimization weight for satisfying the non-holonomic kinematics (this parameter must be high since the kinematics equation constitutes an equality constraint, even a value of 1000 does not imply a bad matrix condition due to small 'raw' cost values in comparison to other costs). 
+# Optimization weight for satisfying the non-holonomic kinematics (this parameter must be high since the kinematics equation constitutes an equality constraint, even a value of 1000 does not imply a bad matrix condition due to small 'raw' cost values in comparison to other costs).
 
 weight_kinematics_forward_drive: 10.0
 # (double, default: 1.0)
-# Optimization weight for forcing the robot to choose only forward directions (positive transl. velocities). A small weight (e.g. 1.0) still allows driving backwards. A value around 1000 almost prevents backward driving (but cannot be guaranteed). 
+# Optimization weight for forcing the robot to choose only forward directions (positive transl. velocities). A small weight (e.g. 1.0) still allows driving backwards. A value around 1000 almost prevents backward driving (but cannot be guaranteed).
 
 weight_kinematics_turning_radius: 1.0
 # (double, default: 1.0)
-# Optimization weight for enforcing a minimum turning radius (only for carlike robots). 
+# Optimization weight for enforcing a minimum turning radius (only for carlike robots).
 
 weight_optimaltime: 1.0
 # (double, default: 1.0)
-# Optimization weight for contracting the trajectory w.r.t transition/execution time 
+# Optimization weight for contracting the trajectory w.r.t transition/execution time
 
 weight_obstacle: 100.0
 # (double, default: 50.0)
-# Optimization weight for keeping a minimum distance from obstacles 
+# Optimization weight for keeping a minimum distance from obstacles
 
 weight_viapoint: 2.0
 # (double, default: 1.0)
-# Optimization weight for minimzing the distance to via-points (resp. reference path). New in version 0.4 
+# Optimization weight for minimzing the distance to via-points (resp. reference path). New in version 0.4
 
 weight_inflation: 0.1
 # (double, default: 0.1)
-# Optimization weight for the inflation penalty (should be small). 
+# Optimization weight for the inflation penalty (should be small).
 
 weight_adapt_factor: 2.0
 # (double, default: 2.0)
-# Some special weights (currently weight_obstacle) are repeatedly scaled by this factor in each outer TEB iteration (weight_new = weight_old*factor). Increasing weights iteratively instead of setting a huge value a-priori leads to better numerical conditions of the underlying optimization problem. 
+# Some special weights (currently weight_obstacle) are repeatedly scaled by this factor in each outer TEB iteration (weight_new = weight_old*factor). Increasing weights iteratively instead of setting a huge value a-priori leads to better numerical conditions of the underlying optimization problem.
 
 #! Parallel Planning in distinctive Topologies
 
 enable_homotopy_class_planning: false
 # (bool, default: true)
-# Activate parallel planning in distinctive topologies (requires much more CPU resources, since multiple trajectories are optimized at once) 
+# Activate parallel planning in distinctive topologies (requires much more CPU resources, since multiple trajectories are optimized at once)
 
 enable_multithreading: true
 # (bool, default: true)
-# Activate multiple threading in order to plan each trajectory in a different thread 
+# Activate multiple threading in order to plan each trajectory in a different thread
 
 max_number_classes: 4
 # (int, default: 4)
-# Specify the maximum number of distinctive trajectories taken into account (limits computational effort) 
+# Specify the maximum number of distinctive trajectories taken into account (limits computational effort)
 
 selection_cost_hysteresis: 1.0
 # (double, default: 1.0)
-# Specify how much trajectory cost must a new candidate have w.r.t. a previously selected trajectory in order to be selected (selection if new_cost < old_cost*factor). 
+# Specify how much trajectory cost must a new candidate have w.r.t. a previously selected trajectory in order to be selected (selection if new_cost < old_cost*factor).
 
 selection_obst_cost_scale: 100.0
 # (double, default: 100.0)
-#  Extra scaling of obstacle cost terms just for selecting the 'best' candidate. 
+#  Extra scaling of obstacle cost terms just for selecting the 'best' candidate.
 
 selection_viapoint_cost_scale: 1.0
 # (double, default: 1.0)
-# Extra scaling of via-point cost terms just for selecting the 'best' candidate. New in version 0.4 
+# Extra scaling of via-point cost terms just for selecting the 'best' candidate. New in version 0.4
 
 selection_alternative_time_cost: false
 # (bool, default: false)
-# If true, time cost (sum of squared time differences) is replaced by the total transition time (sum of time differences). 
+# If true, time cost (sum of squared time differences) is replaced by the total transition time (sum of time differences).
 
 roadmap_graph_no_samples: 15
 # (int, default: 15)
-# Specify the number of samples generated for creating the roadmap graph 
+# Specify the number of samples generated for creating the roadmap graph
 
 roadmap_graph_area_width: 6
 # (double, default: 6)
-# Random keypoints/waypoints are sampled in a rectangular region between start and goal. Specify the width of that region in meters. 
+# Random keypoints/waypoints are sampled in a rectangular region between start and goal. Specify the width of that region in meters.
 
 h_signature_prescaler: 1.0
 # (double, default: 1.0)
-# Scale internal parameter (H-signature) that is used to distinguish between homotopy classes. Warning: reduce this parameter only, if you observe problems with too many obstacles in the local cost map, do not choose it extremly low, otherwise obstacles cannot be distinguished from each other (0.2<value<=1). 
+# Scale internal parameter (H-signature) that is used to distinguish between homotopy classes. Warning: reduce this parameter only, if you observe problems with too many obstacles in the local cost map, do not choose it extremly low, otherwise obstacles cannot be distinguished from each other (0.2<value<=1).
 
 h_signature_threshold: 0.1
 # (double, default: 0.1)
-# 4Two H-signatures are assumed to be equal, if both the difference of real parts and complex parts are below the specified threshold. 
+# 4Two H-signatures are assumed to be equal, if both the difference of real parts and complex parts are below the specified threshold.
 
 obstacle_heading_threshold: 1.0
 # (double, default: 1.0)
-# Specify the value of the scalar product between obstacle heading and goal heading in order to take them (obstacles) into account for exploration. 
+# Specify the value of the scalar product between obstacle heading and goal heading in order to take them (obstacles) into account for exploration.
 
 visualize_hc_graph: false
 # (bool, default: false)
-# Visualize the graph that is created for exploring distinctive trajectories (check marker message in rviz) 
+# Visualize the graph that is created for exploring distinctive trajectories (check marker message in rviz)
 
 viapoints_all_candidates: true
 # (bool, default: true)
-# If true, all trajectories of different topologies are attached to the set of via-points, otherwise only the trajectory sharing the same topology as the initial/global plan is connected with them (no effect on test_optim_node). New in version 0.4 
+# If true, all trajectories of different topologies are attached to the set of via-points, otherwise only the trajectory sharing the same topology as the initial/global plan is connected with them (no effect on test_optim_node). New in version 0.4
 
 switching_blocking_period: 0.0
 # (double, default: 0.0)
-# Specify a time duration in seconds that needs to be expired before a switch to a new equivalence class is allowed. 
+# Specify a time duration in seconds that needs to be expired before a switch to a new equivalence class is allowed.
 
 #! Miscellaneous Parameters
 
 odom_topic: odom
 # (string, default: "odom")
-# Topic name of the odometry message, provided by the robot driver or simulator. 
+# Topic name of the odometry message, provided by the robot driver or simulator.
 
 map_frame: map
 # (string, default: "odom")
-# Global planning frame (in case of a static map, this parameter must be usually changed to "/map". 
+# Global planning frame (in case of a static map, this parameter must be usually changed to "/map".
 
 # Regex for comenting out description
 # \((string|double|bool|int)(.*)\)\n(.*)
