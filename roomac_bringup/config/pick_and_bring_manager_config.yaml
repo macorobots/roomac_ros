@@ -5,3 +5,6 @@ artag_stable_position_threshold: 0.01 # [m]
 artag_stable_orientation_threshold: 1.0 # [degrees]
 # Within this time duration consecutive artag positions can't change more than threshold
 artag_stable_time_threshold: 0.5 # [s]
+
+# Max distance in z direction from camera
+artag_max_distance_from_camera: 1.0 # [m]
