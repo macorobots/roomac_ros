@@ -15,6 +15,9 @@ autonomous_manipulation:
 base:
   - roomac_base/**/*
 
+bringup:
+  - roomac_bringup/**/*
+
 description:
   - roomac_description/**/*
 
