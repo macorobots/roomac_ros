@@ -2,6 +2,12 @@
 Changelog for package roomac_base
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* Merge pull request `#68 <https://github.com/macstepien/roomac_ros/issues/68>`_ from macstepien/packages-cleanup
+  Packages cleanup
+* Contributors: Maciej Stępień
+
 1.12.11 (2022-11-04)
 --------------------
 * Merge branch 'master' into refactor-python-scripts

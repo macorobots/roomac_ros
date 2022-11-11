@@ -2,6 +2,9 @@
 Changelog for package roomac_msgs
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+
 1.12.11 (2022-11-04)
 --------------------
 * Merge branch 'master' into refactor-python-scripts
