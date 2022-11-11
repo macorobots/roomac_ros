@@ -2,8 +2,8 @@
 Changelog for package roomac_bringup
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+1.12.13 (2022-11-11)
+--------------------
 * Merge pull request `#70 <https://github.com/macstepien/roomac_ros/issues/70>`_ from macstepien/artag-stable-position-waiting
   Artag stable position detection waiting
 * Contributors: Maciej Stępień

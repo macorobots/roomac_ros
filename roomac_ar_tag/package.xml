@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <package format="2">
   <name>roomac_ar_tag</name>
-  <version>1.12.12</version>
+  <version>1.12.13</version>
   <description>The roomac_ar_tag package</description>
 
   <author email="macorobots@gmail.com">Maciej Stępień</author>
