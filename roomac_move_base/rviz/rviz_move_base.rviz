@@ -6,9 +6,8 @@ Panels:
       Expanded:
         - /Global Options1
         - /TF1/Frames1
-        - /cloud_map1
       Splitter Ratio: 0.5
-    Tree Height: 365
+    Tree Height: 793
   - Class: rviz/Selection
     Name: Selection
   - Class: rviz/Tool Properties
@@ -58,7 +57,7 @@ Visualization Manager:
       Color Scheme: map
       Draw Behind: false
       Enabled: true
-      Name: Map
+      Name: map
       Topic: /rtabmap/octomap_grid
       Unreliable: false
       Use Timestamp: false
@@ -127,52 +126,6 @@ Visualization Manager:
       Topic: /move_base_node/local_costmap/costmap
       Unreliable: false
       Use Timestamp: false
-      Value: true
-    - Alpha: 1
-      Buffer Length: 1
-      Class: rviz/Path
-      Color: 255; 0; 0
-      Enabled: true
-      Head Diameter: 0.30000001192092896
-      Head Length: 0.20000000298023224
-      Length: 0.30000001192092896
-      Line Style: Lines
-      Line Width: 0.029999999329447746
-      Name: dwa_local_plan
-      Offset:
-        X: 0
-        Y: 0
-        Z: 0
-      Pose Color: 255; 85; 255
-      Pose Style: None
-      Radius: 0.029999999329447746
-      Shaft Diameter: 0.10000000149011612
-      Shaft Length: 0.10000000149011612
-      Topic: /move_base_node/DWAPlannerROS/local_plan
-      Unreliable: false
-      Value: true
-    - Alpha: 1
-      Buffer Length: 1
-      Class: rviz/Path
-      Color: 25; 255; 0
-      Enabled: true
-      Head Diameter: 0.30000001192092896
-      Head Length: 0.20000000298023224
-      Length: 0.30000001192092896
-      Line Style: Lines
-      Line Width: 0.029999999329447746
-      Name: dwa_global_plan
-      Offset:
-        X: 0
-        Y: 0
-        Z: 0
-      Pose Color: 255; 85; 255
-      Pose Style: None
-      Radius: 0.029999999329447746
-      Shaft Diameter: 0.10000000149011612
-      Shaft Length: 0.10000000149011612
-      Topic: /move_base_node/DWAPlannerROS/global_plan
-      Unreliable: false
       Value: true
     - Alpha: 1
       Autocompute Intensity Bounds: true
@@ -439,7 +392,7 @@ Visualization Manager:
           Show Axes: false
           Show Trail: false
           Value: true
-      Name: RobotModel
+      Name: robot_model
       Robot Description: robot_description
       TF Prefix: ""
       Update Interval: 0
