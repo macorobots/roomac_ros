@@ -37,6 +37,10 @@ class ARTagParallelTransformPublisher:
         self.robot_link = rospy.get_param("~robot_link", "artag_bundle_link")
         self.object_link = rospy.get_param("~object_link", "detected_object")
 
+        self.transform_timeout = rospy.Duration(
+            rospy.get_param("~transform_timeout", 5.0)
+        )
+
         self.tf_buffer = tf2_ros.Buffer()
         self.tf_listener = tf2_ros.TransformListener(self.tf_buffer)
         self.tf_broadcaster = tf2_ros.TransformBroadcaster()
@@ -54,6 +58,12 @@ class ARTagParallelTransformPublisher:
             raise RuntimeError(
                 "Couldn't get " + camera_link + "->" + ar_marker_link + " transform"
             )
+
+        if rospy.Time.now() - transform.header.stamp > self.transform_timeout:
+            raise RuntimeError(
+                "Transform " + camera_link + "->" + ar_marker_link + " is too old"
+            )
+
         return transform
 
     def send_only_yaw_transform(
