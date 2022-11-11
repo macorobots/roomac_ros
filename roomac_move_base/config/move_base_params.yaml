@@ -45,7 +45,6 @@ recovery_behaviors:
       name: aggressive_reset,
       type: clear_costmap_recovery/ClearCostmapRecovery,
     },
-    { name: move_slow_and_clear, type: move_slow_and_clear/MoveSlowAndClear },
   ]
 
 clearing_rotation_allowed: true
