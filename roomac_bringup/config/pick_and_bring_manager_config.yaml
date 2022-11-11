@@ -1,8 +1,7 @@
 positions_file: $(arg positions_file)
 
-# How long to wait for stabilization of artag position before picking is started
-wait_time_before_picking_action: $(arg wait_time_before_picking_action) # [s]
-
 # How close filtered and real artag transform has to be to each other for detected position to be considered stable
 artag_stable_position_threshold: 0.04 # [m]
 artag_stable_orientation_threshold: 5.0 # [degrees]
+# Within this time duration consecutive artag positions can't change more than threshold
+artag_stable_time_threshold: 0.5 # [s]
