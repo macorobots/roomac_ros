@@ -2,6 +2,12 @@
 Changelog for package roomac_simulation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* Merge pull request `#70 <https://github.com/macstepien/roomac_ros/issues/70>`_ from macstepien/artag-stable-position-waiting
+  Artag stable position detection waiting
+* Contributors: Maciej Stępień
+
 1.12.12 (2022-11-11)
 --------------------
 * Merge pull request `#68 <https://github.com/macstepien/roomac_ros/issues/68>`_ from macstepien/packages-cleanup

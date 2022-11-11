@@ -2,6 +2,9 @@
 Changelog for package roomac_move_base
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+
 1.12.12 (2022-11-11)
 --------------------
 * Merge pull request `#68 <https://github.com/macstepien/roomac_ros/issues/68>`_ from macstepien/packages-cleanup

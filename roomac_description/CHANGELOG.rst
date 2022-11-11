@@ -2,6 +2,9 @@
 Changelog for package roomac_description
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+
 1.12.12 (2022-11-11)
 --------------------
 
