@@ -36,3 +36,4 @@ jobs:
         uses: "ros-industrial/industrial_ci@1b26c5ce19c2bccbf5ca8b220c7c29fb8daff941"
         env:
           DOCKER_IMAGE: macstepien/roomac:simulation
+          UPSTREAM_WORKSPACE: .github/workflows/upstream.rosinstall

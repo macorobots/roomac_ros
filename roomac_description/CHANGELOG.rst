@@ -2,6 +2,12 @@
 Changelog for package roomac_description
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+1.12.13 (2022-11-11)
+--------------------
+
+1.12.12 (2022-11-11)
+--------------------
+
 1.12.11 (2022-11-04)
 --------------------
 * Merge pull request `#67 <https://github.com/macstepien/roomac_ros/issues/67>`_ from macstepien/refactor-python-scripts
