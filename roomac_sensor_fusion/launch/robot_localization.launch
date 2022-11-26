@@ -3,5 +3,5 @@
     <rosparam command="load" file="$(find roomac_sensor_fusion)/config/fusion.yaml" />
   </node>
 
-  <node name="republish_odom_imu_msgs" pkg="roomac_sensor_fusion" type="republish_odom_imu_msgs.py"/>
+  <node name="republish_odom_imu_msgs_node" pkg="roomac_sensor_fusion" type="republish_odom_imu_msgs_node.py" />
 </launch>
