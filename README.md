@@ -7,13 +7,13 @@
 
 Roomac is a low-cost autonomous mobile manipulation robot. It consists of a differential drive mobile base and a 5-DoF manipulator with a gripper. The costs of the whole construction summed up to around 550$ and using this platform I was able to prepare a proof-of-concept application - bringing a bottle to the user. In this repository you can find software and package configurations used to achieve this goal, as well as a simulation in Gazebo, which you can use to test it yourself.
 
-<!-- ![roomac_logo](gihubreadme.jpg) -->
 <p align="center">
   <img src="https://drive.google.com/uc?export=download&id=1ZuP4w7tW_VWIHfj-qy7BVNyVtaTG9-dw" height="400" />
   <img src="https://drive.google.com/uc?export=download&id=1rTuLH-XS4gVUvIicEU5ieaAnlDPMW0UM" height="400" />
 </p>
 
-Here you can see some gifs demonstrating the robot's capabilities (for more you can visit my [instagram page](https://www.instagram.com/macorobots/))
+<!-- TODO youtube link -->
+Here you can see some gifs demonstrating the robot's capabilities ([here]() you can watch full demo).
 
 <p align="center">
   <img src="https://drive.google.com/uc?export=download&id=1QqZTh-4e_rQb-nHz5QIrDAGeiYUWy7WU" height="300" />
@@ -22,9 +22,9 @@ Here you can see some gifs demonstrating the robot's capabilities (for more you 
   <img src="https://drive.google.com/uc?export=download&id=12h62AJevcnTrKnjP31EyKXX0_Lz6-4fP" height="300" />
 </p>
 
-The recommended way of running simulation and real robot software is through docker containers, so first make sure that you have it installed.
-
 ## Simulation demo
+
+> The recommended way of running simulation and real robot software is through docker containers, so first make sure that you have it installed.
 
 If you would like to quickly run the application of bringing a bottle to the defined location you can use an already prepared map and config. 
 First startup simulation container, there are two possibilities:
@@ -51,6 +51,37 @@ docker exec roomac_simulation bash -c \
 ```
 
 And that's it! The robot should navigate to the table, pick up the bottle and return to starting position. Please note that the accuracy of this operation isn't 100% and the robot may fail (especially detecting the robot's position in Kinect above table is prone to failure).
+
+## Packages
+
+Packages in the repository can be divided into 3 sections:
+
+1. Manipulation:
+   * `roomac_arm` - low level hardware controller that provides `FollowJointTrajectoryAction` implementation.
+   * `roomac_moveit` - configuration for MoveIt package, destination points for end effector are requested and it calculates collision-free trajectory that is later executed by arm controller from `roomac_arm` package.
+   * `roomac_ar_tag` - provides position of the robot in upper camera coordinate frame (necessary to determine what is the position of the object in respect to the robot).
+   * `roomac_autonomous_manipulation` - provides object detection and pick up object action (sequence of destination points necessary to pick up object).
+
+2. Navigation:
+   * `roomac_base` - serial launch for communication with base controller and joystick teleoperation.
+   * `roomac_sensor_fusion` - provides fused odometry information based on wheel odometry and IMU data.
+   * `roomac_rtabmap` - RTABMap configuration (SLAM and localization).
+   * `roomac_move_base` - configuration for move_base package - autonomous navigation.
+
+3. General packages:
+   * `roomac` - metapackage providing source dependencies.
+   * `roomac_bringup` - launch configurations and action implementation for running whole fetch bottle application.
+   * `roomac_description` - URDF model of the robot.
+   * `roomac_kinect` - launch files for Kinect sensors (used both in navigation and manipulation)
+   * `roomac_msgs` - custom message, action and service definitions.
+   * `roomac_simulation` - configurations and launch files used in Gazebo simulation.
+   * `roomac_utils` - custom code libraries used in other packages.
+
+For more details refer to README file in each package.
+
+## Further reading
+
+To find out more about this project you can check out my [master's thesis](https://raw.githubusercontent.com/macstepien/macstepien.github.io/master/files/masters_thesis_maciej_stepien.pdf).
 
 ## Usage
 
@@ -243,10 +274,7 @@ And to return the arm to the home position:
 rosservice call /home_arm
 ```
 
-## Further reading
-
-To find out more about this project you can check out my master thesis.
-
+If you like this project consider supporting, thanks!
 <p align="center">
   <img src="https://drive.google.com/uc?export=download&id=1GaggM1wOW-irI4vqvEJq4knI8z77sjEJ" height="300" />
 </p>
