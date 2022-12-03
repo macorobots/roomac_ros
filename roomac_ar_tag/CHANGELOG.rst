@@ -2,8 +2,8 @@
 Changelog for package roomac_ar_tag
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+1.12.14 (2022-12-03)
+--------------------
 * Merge pull request `#71 <https://github.com/macstepien/roomac_ros/issues/71>`_ from macstepien/increase-simulation-action-success-rate
   Increase simulation action success rate
 * Merge branch 'master' into increase-simulation-action-success-rate

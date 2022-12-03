@@ -2,8 +2,8 @@
 Changelog for package roomac_rtabmap
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+1.12.14 (2022-12-03)
+--------------------
 * Merge branch 'master' into increase-simulation-action-success-rate
 * Contributors: Maciej Stepien
 
