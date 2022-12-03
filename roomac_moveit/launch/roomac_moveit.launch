@@ -1,11 +1,11 @@
 <launch>
-  <arg name="gazebo" default="false" />
-  <remap if="$(arg gazebo)" from="/camera_up/depth_registered/camera_info" to="/camera_up_ir/depth/camera_info" />
+  <arg name="simulation" default="false" />
+  <remap if="$(arg simulation)" from="/camera_up/depth_registered/camera_info" to="/camera_up_ir/depth/camera_info" />
 
   <include file="$(find roomac_moveit)/launch/move_group.launch">
     <arg name="info" value="false" />
     <arg name="debug" value="false" />
     <arg name="pipeline" value="ompl" />
-    <arg name="gazebo" value="$(arg gazebo)" />
+    <arg name="simulation" value="$(arg simulation)" />
   </include>
 </launch>

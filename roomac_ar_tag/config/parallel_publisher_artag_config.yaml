@@ -8,3 +8,6 @@ camera_link: "camera_up_link"
 ar_marker_robot_link: "ar_marker_8"
 parallel_transform_suffix: "_only_yaw"
 robot_link: "artag_bundle_link"
+
+check_transform_timeout: true
+transform_timeout: 5.0

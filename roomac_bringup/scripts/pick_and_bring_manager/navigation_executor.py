@@ -2,6 +2,8 @@
 
 import rospy
 
+from geometry_msgs.msg import Pose2D
+
 import tf2_ros
 from tf.transformations import quaternion_from_euler
 
@@ -15,7 +17,7 @@ from roomac_utils.action_procedure_executor import (
 )
 
 from destination_manager import DestinationManager
-from utils import get_latest_position_from_transform
+from pick_and_bring_manager.utils import get_latest_transform, get_yaw_angle
 
 
 class NavigationExecutor:
@@ -92,7 +94,13 @@ class NavigationExecutor:
         self._move_base_client.cancel_all_goals()
 
     def _get_current_robot_position(self):
-        return get_latest_position_from_transform("map", "base_link", self._tf_buffer)
+        transform = get_latest_transform("map", "base_link", self._tf_buffer)
+        yaw_angle = get_yaw_angle(transform.transform.rotation)
+        return Pose2D(
+            transform.transform.translation.x,
+            transform.transform.translation.y,
+            yaw_angle,
+        )
 
     def _send_move_base_goal(self, goal_pose):
         goal = MoveBaseGoal()

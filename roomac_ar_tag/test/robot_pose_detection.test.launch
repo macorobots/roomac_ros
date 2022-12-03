@@ -5,6 +5,11 @@
   </include>
   <include file="$(find roomac_ar_tag)/launch/roomac_ar_tag.launch" />
 
+  <!-- Because sim_time is not used in this test, there is a mismatch between timestamp and timeout can't be checked
+   properly. Sim time can't be used, because rosbag is too short and it has to be looped, which will cause errors with
+   sim time -->
+  <param name="/artag_parallel_tf_publisher_node/check_transform_timeout" type="bool" value="false" />
+
   <node pkg="rosbag" type="play" name="player" output="screen" args="-d 1 -l $(find roomac_ar_tag)/test/robot_pose_detection.bag" />
 
   <!-- wait for position to stabilize before running test -->

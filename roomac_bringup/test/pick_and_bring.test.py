@@ -87,7 +87,7 @@ class TestPickAndBring(unittest.TestCase):
         )
 
         goal_position = Pose2D()
-        goal_position.x = 0.3
+        goal_position.x = 0.6
         goal_position.y = 0.0
         goal_position.theta = 0.0
 
@@ -99,7 +99,9 @@ class TestPickAndBring(unittest.TestCase):
             "Robot is not close enough to goal position",
         )
 
-        goal_position.x = 0.45
+        goal_position.x = 0.75
+        goal_position.y = -0.1
+        goal_position.theta = 0.0
         self.assertEquals(
             self.check_if_position_is_close(
                 self.bottle_position,

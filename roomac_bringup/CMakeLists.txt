@@ -38,14 +38,14 @@ if(CATKIN_ENABLE_TESTING AND ENABLE_ROOMAC_SIMULATION_TESTS)
 
   catkin_download_test_data(
     rtabmap_test.db
-    https://drive.google.com/uc?export=download&id=1ou8t9e6P6E_EBbSAz9ypjZNlKJi0fJ2K
+    https://drive.google.com/uc?export=download&id=1sUFQO5aA1NmRSbUUtnGdYzK6Wf6WHKIX
     DESTINATION ${CATKIN_DEVEL_PREFIX}/${CATKIN_PACKAGE_SHARE_DESTINATION}/test
     FILENAME rtabmap_test.db
     MD5 435f09db30cd515fa41d68ba2cdac8a8)
 
   catkin_download_test_data(
     positions_test.yaml
-    https://drive.google.com/uc?export=download&id=1RENkEMJ5aNE3fq68uCzo9c_lkohD3slQ
+    https://drive.google.com/uc?export=download&id=1F2seLt4FGB7-DAur_KNwqejnmmhINZR1
     DESTINATION ${CATKIN_DEVEL_PREFIX}/${CATKIN_PACKAGE_SHARE_DESTINATION}/test
     FILENAME positions_test.yaml
     MD5 75c7950f5fc5da5c02c183577de97a18)

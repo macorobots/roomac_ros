@@ -1,8 +1,14 @@
 <launch>
+  <arg name="simulation" default="false" />
+
+  <!-- In simulation it should be 1, but due to imperfection of motors and control it is important 
+    to set it higher for real robot - it results in smoother execution without stops -->
+  <arg if="$(arg simulation)" name="control_look_ahead_poses" value="1" />
+  <arg unless="$(arg simulation)" name="control_look_ahead_poses" value="6" />
 
   <node pkg="move_base" type="move_base" name="move_base_node" output="screen" clear_params="true">
-    <remap from="map" to="rtabmap/octomap_grid"/>
-    <remap from="odom" to="odometry/filtered"/>
+    <remap from="map" to="rtabmap/octomap_grid" />
+    <remap from="odom" to="odometry/filtered" />
 
     <!-- dwa local planner-->
     <!-- DWA stopped working recently - only outputs DWA planner failed to produce path. -->
@@ -10,14 +16,14 @@
     <rosparam file="$(find roomac_move_base)/config/dwa_local_planner.yaml" command="load" ns="DWAPlannerROS" /> -->
 
     <param name="base_local_planner" value="teb_local_planner/TebLocalPlannerROS" />
-    <rosparam file="$(find roomac_move_base)/config/teb_local_planner.yaml" command="load" ns="TebLocalPlannerROS" />
+    <rosparam file="$(find roomac_move_base)/config/teb_local_planner.yaml" command="load" ns="TebLocalPlannerROS" subst_value="true" />
 
     <param name="base_global_planner" value="global_planner/GlobalPlanner" />
     <rosparam file="$(find roomac_move_base)/config/global_planner.yaml" command="load" ns="GlobalPlanner" />
-    
+
     <!-- <param name="base_global_planner" value="navfn/NavfnROS" />
     <rosparam file="$(find roomac_move_base)/config/navfn_global_planner.yaml" command="load" ns="NavfnROS" /> -->
-    
+
     <!-- <param name="base_global_planner" value="SBPLLatticePlanner" />
     <rosparam file="$(find roomac_move_base)/config/sbpl_global_planner.yaml" subst_value="true" command="load" ns="SBPLLatticePlanner" /> -->
 
@@ -31,8 +37,8 @@
     <rosparam file="$(find roomac_move_base)/config/move_base_params.yaml" command="load" />
 
     <!-- Footprint padding isn't loaded correctly, maybe only bug in kinetic, have to check it in melodic -->
-    <rosparam file="$(find roomac_move_base)/config/move_base_params.yaml" command="load" ns="local_costmap"/>
-    <rosparam file="$(find roomac_move_base)/config/move_base_params.yaml" command="load" ns="global_costmap"/>
+    <rosparam file="$(find roomac_move_base)/config/move_base_params.yaml" command="load" ns="local_costmap" />
+    <rosparam file="$(find roomac_move_base)/config/move_base_params.yaml" command="load" ns="global_costmap" />
 
     <!-- Load global navigation specific parameters -->
     <rosparam file="$(find roomac_move_base)/config/local_costmap_params.yaml" command="load" />

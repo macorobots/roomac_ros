@@ -59,7 +59,7 @@ oscillation_timeout: 10.0
 # (double, default: 0.0)
 # How long in seconds to allow for oscillation before executing recovery behaviors. A value of 0.0 corresponds to an infinite timeout.
 
-oscillation_distance: 0.05
+oscillation_distance: 0.25
 # (double, default: 0.5)
 # How far in meters the robot must move to be considered not to be oscillating. Moving this far resets the timer counting up to the ~oscillation_timeout
 
