@@ -273,6 +273,8 @@ And to return the arm to the home position:
 rosservice call /home_arm
 ```
 
+---
+
 If you like this project consider supporting, thanks!
 <p align="center">
   <img src="https://drive.google.com/uc?export=download&id=1GaggM1wOW-irI4vqvEJq4knI8z77sjEJ" height="300" />
