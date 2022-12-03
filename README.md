@@ -12,8 +12,7 @@ Roomac is a low-cost autonomous mobile manipulation robot. It consists of a diff
   <img src="https://drive.google.com/uc?export=download&id=1rTuLH-XS4gVUvIicEU5ieaAnlDPMW0UM" height="400" />
 </p>
 
-<!-- TODO youtube link -->
-Here you can see some gifs demonstrating the robot's capabilities ([here]() you can watch full demo).
+Here you can see some gifs demonstrating the robot's capabilities (and [here](https://youtu.be/toHzFQhAP44) you can watch the full demo).
 
 <p align="center">
   <img src="https://drive.google.com/uc?export=download&id=1QqZTh-4e_rQb-nHz5QIrDAGeiYUWy7WU" height="300" />
@@ -57,27 +56,27 @@ And that's it! The robot should navigate to the table, pick up the bottle and re
 Packages in the repository can be divided into 3 sections:
 
 1. Manipulation:
-   * `roomac_arm` - low level hardware controller that provides `FollowJointTrajectoryAction` implementation.
+   * `roomac_arm` - low-level hardware controller that provides `FollowJointTrajectoryAction` implementation.
    * `roomac_moveit` - configuration for MoveIt package, destination points for end effector are requested and it calculates collision-free trajectory that is later executed by arm controller from `roomac_arm` package.
-   * `roomac_ar_tag` - provides position of the robot in upper camera coordinate frame (necessary to determine what is the position of the object in respect to the robot).
-   * `roomac_autonomous_manipulation` - provides object detection and pick up object action (sequence of destination points necessary to pick up object).
+   * `roomac_ar_tag` - provides a position of the robot in the upper camera coordinate frame (necessary to determine what is the position of the object in respect to the robot).
+   * `roomac_autonomous_manipulation` - provides object detection and pick-up object action (sequence of destination points necessary to pick up an object).
 
 2. Navigation:
-   * `roomac_base` - serial launch for communication with base controller and joystick teleoperation.
+   * `roomac_base` - serial launch for communication with the base controller and joystick teleoperation.
    * `roomac_sensor_fusion` - provides fused odometry information based on wheel odometry and IMU data.
    * `roomac_rtabmap` - RTABMap configuration (SLAM and localization).
    * `roomac_move_base` - configuration for move_base package - autonomous navigation.
 
 3. General packages:
    * `roomac` - metapackage providing source dependencies.
-   * `roomac_bringup` - launch configurations and action implementation for running whole fetch bottle application.
+   * `roomac_bringup` - launch configurations and action implementation for running the whole fetch bottle application.
    * `roomac_description` - URDF model of the robot.
    * `roomac_kinect` - launch files for Kinect sensors (used both in navigation and manipulation)
    * `roomac_msgs` - custom message, action and service definitions.
    * `roomac_simulation` - configurations and launch files used in Gazebo simulation.
    * `roomac_utils` - custom code libraries used in other packages.
 
-For more details refer to README file in each package.
+For more details refer to the README file in each package.
 
 ## Further reading
 
@@ -111,7 +110,7 @@ First launch the docker container and run:
 docker compose -f \
  docker/compose_simulation_mapping_nvidia.yaml up
 ```
-Alternatively run `xhost local:root` and use `compose_simulation_mapping.yaml` config if you don't have Nvidia GPU.
+Alternatively run `xhost local:root` and use the `compose_simulation_mapping.yaml` config if you don't have Nvidia GPU.
 
 On the other terminal launch `teleop` to control the robot:
 ```
@@ -160,7 +159,7 @@ docker compose -f \
     </tbody>
 </table>
 
-After launching everything drive the robot around. When the area is mapped simply kill launch files with Ctrl+C and the map will be saved to `roomac_data` directory.
+After launching everything drive the robot around. When the area is mapped simply kill launch files with Ctrl+C and the map will be saved to the `roomac_data` directory.
 
 
 
