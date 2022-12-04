@@ -7,7 +7,7 @@
   <author email="macorobots@gmail.com">Maciej Stępień</author>
   <maintainer email="macorobots@gmail.com">Maciej Stępień</maintainer>
 
-  <license>TODO</license>
+  <license>GPLv3</license>
 
   <buildtool_depend>catkin</buildtool_depend>
 
