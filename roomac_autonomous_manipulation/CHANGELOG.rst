@@ -2,6 +2,20 @@
 Changelog for package roomac_autonomous_manipulation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+1.12.15 (2022-12-04)
+--------------------
+* Merge pull request `#72 <https://github.com/macstepien/roomac_ros/issues/72>`_ from macstepien/add-license
+  Add license
+* Merge branch 'master' into add-license
+* Contributors: Maciej Stepien, Maciej Stępień
+
+1.12.14 (2022-12-03)
+--------------------
+* Merge pull request `#71 <https://github.com/macstepien/roomac_ros/issues/71>`_ from macstepien/increase-simulation-action-success-rate
+  Increase simulation action success rate
+* Merge branch 'master' into increase-simulation-action-success-rate
+* Contributors: Maciej Stepien, Maciej Stępień
+
 1.12.13 (2022-11-11)
 --------------------
 

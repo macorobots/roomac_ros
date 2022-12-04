@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <package format="2">
   <name>roomac_moveit</name>
-  <version>1.12.13</version>
+  <version>1.12.15</version>
   <description>
      An automatically generated package with all the configuration and launch files for using the roomac with the MoveIt! Motion Planning Framework
   </description>
@@ -9,7 +9,7 @@
   <author email="macorobots@gmail.com">Maciej Stępień</author>
   <maintainer email="macorobots@gmail.com">Maciej Stępień</maintainer>
 
-  <license>BSD</license>
+  <license>GPLv3</license>
 
   <url type="website">http://moveit.ros.org/</url>
   <url type="bugtracker">https://github.com/ros-planning/moveit/issues</url>

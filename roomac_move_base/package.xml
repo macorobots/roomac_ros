@@ -1,16 +1,13 @@
 <?xml version="1.0"?>
 <package format="2">
   <name>roomac_move_base</name>
-  <version>1.12.13</version>
+  <version>1.12.15</version>
   <description>The roomac_move_base package</description>
 
   <author email="macorobots@gmail.com">Maciej Stępień</author>
   <maintainer email="macorobots@gmail.com">Maciej Stępień</maintainer>
 
-  <!-- One license tag required, multiple allowed, one license per tag -->
-  <!-- Commonly used license strings: -->
-  <!--   BSD, MIT, Boost Software License, GPLv2, GPLv3, LGPLv2.1, LGPLv3 -->
-  <license>TODO</license>
+  <license>GPLv3</license>
 
   <buildtool_depend>catkin</buildtool_depend>
 
