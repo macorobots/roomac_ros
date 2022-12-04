@@ -18,7 +18,7 @@ roslaunch roomac_bringup raspberry.launch
 
 The external laptop is used only during localization and picking: 
 ```
-roslaunch roomac_bringup external_laptop_nav_picking.launch
+roslaunch roomac_bringup external_laptop_localization_fetching.launch
 ```
 
 For the robot's laptop there are two configurations, one for creating a map:
@@ -27,7 +27,7 @@ roslaunch roomac_bringup laptop_mapping_manual.launch
 ```
 And second for running navigation and picking on created map
 ```
-roslaunch roomac_bringup laptop_nav_picking.launch
+roslaunch roomac_bringup laptop_localization_fetching.launch
 ```
 
 ### Nodes

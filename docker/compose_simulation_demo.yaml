@@ -13,6 +13,6 @@ services:
     environment:
       - DISPLAY=${DISPLAY}
       - LIBGL_ALWAYS_SOFTWARE=1
-    command: roslaunch roomac_simulation simulation_nav_pick.launch
+    command: roslaunch roomac_simulation simulation_localization_fetching.launch
       map_file:="/home/roomac/example_roomac_data/rtabmap.db"
       positions_file:="/home/roomac/example_roomac_data/positions.yaml"

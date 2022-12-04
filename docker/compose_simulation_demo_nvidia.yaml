@@ -12,6 +12,6 @@ services:
       - DISPLAY=${DISPLAY}
       - NVIDIA_VISIBLE_DEVICES=all
       - NVIDIA_DRIVER_CAPABILITIES=all
-    command: roslaunch roomac_simulation simulation_nav_pick.launch
+    command: roslaunch roomac_simulation simulation_localization_fetching.launch
       map_file:="/home/roomac/example_roomac_data/rtabmap.db"
       positions_file:="/home/roomac/example_roomac_data/positions.yaml"
