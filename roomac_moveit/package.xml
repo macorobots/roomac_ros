@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <package format="2">
   <name>roomac_moveit</name>
-  <version>1.12.14</version>
+  <version>1.12.15</version>
   <description>
      An automatically generated package with all the configuration and launch files for using the roomac with the MoveIt! Motion Planning Framework
   </description>

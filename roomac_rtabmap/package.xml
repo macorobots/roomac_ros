@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <package format="2">
   <name>roomac_rtabmap</name>
-  <version>1.12.14</version>
+  <version>1.12.15</version>
   <description>The roomac_rtabmap package</description>
 
   <author email="macorobots@gmail.com">Maciej Stępień</author>
