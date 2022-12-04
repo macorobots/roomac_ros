@@ -2,6 +2,13 @@
 Changelog for package roomac_arm
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* Merge pull request `#72 <https://github.com/macstepien/roomac_ros/issues/72>`_ from macstepien/add-license
+  Add license
+* Merge branch 'master' into add-license
+* Contributors: Maciej Stepien, Maciej Stępień
+
 1.12.14 (2022-12-03)
 --------------------
 * Merge branch 'master' into increase-simulation-action-success-rate
