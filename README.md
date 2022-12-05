@@ -1,9 +1,9 @@
 # Roomac ROS
 
-[![Build and push docker image](https://github.com/macstepien/roomac_ros/actions/workflows/build_and_push_docker_image.yml/badge.svg)](https://github.com/macstepien/roomac_ros/actions/workflows/build_and_push_docker_image.yml)
-[![CI](https://github.com/macstepien/roomac_ros_workflow_test/actions/workflows/industrial_ci_action.yml/badge.svg)](https://github.com/macstepien/roomac_ros_workflow_test/actions/workflows/industrial_ci_action.yml)
+[![Build and push docker image](https://github.com/macorobots/roomac_ros/actions/workflows/build_and_push_docker_image.yml/badge.svg)](https://github.com/macorobots/roomac_ros/actions/workflows/build_and_push_docker_image.yml)
+[![CI](https://github.com/macorobots/roomac_ros_workflow_test/actions/workflows/industrial_ci_action.yml/badge.svg)](https://github.com/macorobots/roomac_ros_workflow_test/actions/workflows/industrial_ci_action.yml)
 ![ROS Distro](https://img.shields.io/badge/ROS%20Distro-melodic-informational)
-[![Docker](https://img.shields.io/badge/dockerhub-images-informational)](https://hub.docker.com/repository/docker/macstepien/roomac)
+[![Docker](https://img.shields.io/badge/dockerhub-images-informational)](https://hub.docker.com/repository/docker/macorobots/roomac)
 
 Roomac is a low-cost autonomous mobile manipulation robot. It consists of a differential drive mobile base and a 5-DoF manipulator with a gripper. The costs of the whole construction summed up to around 550$ and using this platform I was able to prepare a proof-of-concept application - bringing a bottle to the user. In this repository you can find software and package configurations used to achieve this goal, as well as a simulation in Gazebo, which you can use to test it yourself.
 
