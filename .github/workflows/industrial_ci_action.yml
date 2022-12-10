@@ -25,15 +25,15 @@ jobs:
         # /home/runner/work/_actions/ros-industrial/industrial_ci/master/industrial_ci/src/folding/github_actions.sh: line 29: /home/runner/work/_temp/_runner_file_commands/set_output_...: Permission denied
         uses: "ros-industrial/industrial_ci@1b26c5ce19c2bccbf5ca8b220c7c29fb8daff941"
         env:
-          DOCKER_IMAGE: macstepien/roomac:simulation
+          DOCKER_IMAGE: macorobots/roomac:simulation
           CLANG_FORMAT_CHECK: file
       - name: Black check
         uses: "ros-industrial/industrial_ci@1b26c5ce19c2bccbf5ca8b220c7c29fb8daff941"
         env:
-          DOCKER_IMAGE: macstepien/roomac:simulation
+          DOCKER_IMAGE: macorobots/roomac:simulation
           BLACK_CHECK: true
       - name: Build and test check
         uses: "ros-industrial/industrial_ci@1b26c5ce19c2bccbf5ca8b220c7c29fb8daff941"
         env:
-          DOCKER_IMAGE: macstepien/roomac:simulation
+          DOCKER_IMAGE: macorobots/roomac:simulation
           UPSTREAM_WORKSPACE: .github/workflows/upstream.rosinstall

@@ -2,6 +2,9 @@
 Changelog for package roomac_sensor_fusion
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+1.12.16 (2022-12-05)
+--------------------
+
 1.12.15 (2022-12-04)
 --------------------
 * Merge pull request `#72 <https://github.com/macstepien/roomac_ros/issues/72>`_ from macstepien/add-license
