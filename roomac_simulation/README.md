@@ -14,7 +14,7 @@ To run navigation and picking on previously created map use:
 roslaunch roomac_simulation simulation_localization_fetching.launch
 ```
 
-There is another configuration, which spawns the robot next to the table, only MoveIt is run then, it can be used to check only how picking objects works
+There is another configuration, which spawns the robot next to the table and only packages necessary for manipulation are run in this case.
 ```
 roslaunch roomac_simulation simulation_only_picking.launch
 ```

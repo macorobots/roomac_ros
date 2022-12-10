@@ -5,7 +5,7 @@
 ![ROS Distro](https://img.shields.io/badge/ROS%20Distro-melodic-informational)
 [![Docker](https://img.shields.io/badge/dockerhub-images-informational)](https://hub.docker.com/repository/docker/macorobots/roomac)
 
-Roomac is a low-cost autonomous mobile manipulation robot. It consists of a differential drive mobile base and a 5-DoF manipulator with a gripper. The costs of the whole construction summed up to around 550$ and using this platform I was able to prepare a proof-of-concept application - bringing a bottle to the user. In this repository you can find software and package configurations used to achieve this goal, as well as a simulation in Gazebo, which you can use to test it yourself.
+Roomac is a low-cost autonomous mobile manipulation robot that consists of a differential drive mobile base and a 5-DoF manipulator with a gripper. The costs of the whole construction summed up to around 550$ and using this platform I was able to prepare a proof-of-concept application - fetching a bottle to the user. In this repository you can find software and package configurations used to achieve this goal, as well as a simulation in Gazebo, which you can use to test it yourself.
 
 <p align="center">
   <img src="https://drive.google.com/uc?export=download&id=1ZuP4w7tW_VWIHfj-qy7BVNyVtaTG9-dw" height="400" />
@@ -25,8 +25,8 @@ Here you can see some gifs demonstrating the robot's capabilities (and [here](ht
 
 > The recommended way of running simulation and real robot software is through docker containers, so first make sure that you have it installed.
 
-If you would like to quickly run the application of bringing a bottle to the defined location you can use an already prepared map and config. 
-First startup simulation container, there are two possibilities:
+If you would like to quickly run the application of fetching a bottle to the defined location you can use an already prepared map and config.
+First start simulation container, there are two possibilities:
 
 * Nvidia GPU config (make sure that you have Nvidia Container Runtime installed)
   ```
@@ -41,15 +41,14 @@ First startup simulation container, there are two possibilities:
 
 Nvidia configuration is recommended, as it has better performance.
 
-
-Then to execute fetching bottle run: 
+Then to execute fetch bottle run: 
 ```
 docker exec roomac_simulation bash -c \
  "source /home/roomac/catkin_ws/devel/setup.bash &&
   rostopic pub /pick_and_bring/goal roomac_msgs/PickAndBringActionGoal {}"
 ```
 
-And that's it! The robot should navigate to the table, pick up the bottle and return to starting position. Please note that the accuracy of this operation isn't 100% and the robot may fail (especially detecting the robot's position in Kinect above table is prone to failure).
+And that's it! The robot should navigate to the table, pick up the bottle and return to the starting position. Please note that the accuracy of this operation isn't 100% and the robot may fail (especially detecting the robot's position in Kinect above table is prone to failure).
 
 ## Packages
 
@@ -62,7 +61,7 @@ Packages in the repository can be divided into 3 sections:
    * `roomac_autonomous_manipulation` - provides object detection and pick-up object action (sequence of destination points necessary to pick up an object).
 
 2. Navigation:
-   * `roomac_base` - serial launch for communication with the base controller and joystick teleoperation.
+   * `roomac_base` - provides communication with the base microcontroller and joystick control.
    * `roomac_sensor_fusion` - provides fused odometry information based on wheel odometry and IMU data.
    * `roomac_rtabmap` - RTABMap configuration (SLAM and localization).
    * `roomac_move_base` - configuration for move_base package - autonomous navigation.
@@ -80,7 +79,7 @@ For more details refer to the README file in each package.
 
 ## Further reading
 
-To find out more about this project you can check out my [master's thesis](https://raw.githubusercontent.com/macstepien/macstepien.github.io/master/files/masters_thesis_maciej_stepien.pdf).
+To find out more about this project you can check out my [**master's thesis**](https://raw.githubusercontent.com/macstepien/macstepien.github.io/master/files/masters_thesis_maciej_stepien.pdf).
 
 ## Usage
 
@@ -151,7 +150,7 @@ docker compose -f \
 External laptop (used for visualization):
 ```
 docker compose -f \
- docker/compose_external_laptop_localization.yaml up
+ docker/compose_external_laptop_mapping.yaml up
 ```
 
 </td>
@@ -159,7 +158,7 @@ docker compose -f \
     </tbody>
 </table>
 
-After launching everything drive the robot around. When the area is mapped simply kill launch files with Ctrl+C and the map will be saved to the `roomac_data` directory.
+After launching everything drive the robot around. When the area is mapped simply kill launch files with Ctrl+C and the map will be saved in the `roomac_data` directory.
 
 
 
@@ -225,7 +224,7 @@ docker compose -f \
 </table>
 
 > **Tip**
-> All steps here will be referenced just if you had ROS installed natively. If you want to use only dockers instead you can use:
+> All following steps will assume that you have ROS installed natively. If you want to use only dockers, instead you can use:
 > ```
 > docker exec roomac_simulation bash -c \
 >  "source /home/roomac/catkin_ws/devel/setup.bash && HERE_COPY_COMMAND"
@@ -248,7 +247,7 @@ It is possible to cancel a goal using:
 rostopic pub /pick_and_bring/cancel actionlib_msgs/GoalID {}
 ```
 
-It is also possible to use partial actions, only navigation using services: 
+It is also possible to use partial actions, navigation using services: 
 ```
 rosservice call /go_to_table
 rosservice call /go_to_home
@@ -272,6 +271,8 @@ And to return the arm to the home position:
 ```
 rosservice call /home_arm
 ```
+
+## Links
 
 ---
 
