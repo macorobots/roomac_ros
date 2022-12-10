@@ -1,7 +1,7 @@
 version: "3.9"
 services:
   roomac:
-    image: macstepien/roomac:simulation
+    image: macorobots/roomac:simulation
     container_name: roomac_external_laptop
     volumes:
       - type: bind
