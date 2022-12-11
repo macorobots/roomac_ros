@@ -37,6 +37,22 @@
       <heading_deg>0</heading_deg>
     </spherical_coordinates>
 
+    <model name='AirconditionerA_01_001'>
+      <static>true</static>
+      <include>
+        <uri>model://aws_robomaker_residential_AirconditionerA_01</uri>
+      </include>
+      <pose frame=''>-9.199410 2.411230 2.084544 0 -0 0</pose>
+    </model>
+
+    <model name='AirconditionerB_01_001'>
+      <static>true</static>
+      <include>
+        <uri>model://aws_robomaker_residential_AirconditionerB_01</uri>
+      </include>
+      <pose frame=''>-2.004656 -5.226610 0.003485 0 -0 0</pose>
+    </model>
+
     <model name='Ball_01_001'>
       <static>true</static>
       <include>
@@ -190,6 +206,13 @@
       </include>
       <pose frame=''>2.854050 3.45 0.000585 0 -0 0</pose>
     </model>
+    <model name='SecurityCamera_01_001'>
+      <static>true</static>
+      <include>
+        <uri>model://aws_robomaker_residential_SecurityCamera_01</uri>
+      </include>
+      <pose frame=''>0.842134 -4.996294 0.495067 0 -0 -2.841039</pose>
+    </model>
     <model name='CoffeeTable_01_001'>
       <static>true</static>
       <include>
@@ -249,6 +272,13 @@
         <uri>model://aws_robomaker_residential_Dumbbell_01</uri>
       </include>
       <pose frame=''>2.512849 2.717787 0.002183 0 -0 0</pose>
+    </model>
+    <model name='Tablet_01_001'>
+      <static>true</static>
+      <include>
+        <uri>model://aws_robomaker_residential_Tablet_01</uri>
+      </include>
+      <pose frame=''>1.572830 -1.775857 0.401790 -0.020625 -0.000080 -0.006317</pose>
     </model>
     <model name='FitnessEquipment_01_001'>
       <static>true</static>
@@ -319,6 +349,13 @@
       </include>
       <pose frame=''>8.002009 -3.836509 0.012068 0 -0 -3.140001</pose>
     </model>
+    <model name='KitchenUtensils_01_001'>
+      <static>true</static>
+      <include>
+        <uri>model://aws_robomaker_residential_KitchenUtensils_01</uri>
+      </include>
+      <pose frame=''>9.285478 -5.021261 1.141805 0 -0 0</pose>
+    </model>
 
     <model name='LightC_01_001'>
       <static>true</static>
@@ -350,6 +387,13 @@
       </include>
       <pose frame=''>8.702731 -1.032031 0 0 -0 -1.563499</pose>
     </model>
+    <model name='SeasoningBox_01_001'>
+      <static>true</static>
+      <include>
+        <uri>model://aws_robomaker_residential_SeasoningBox_01</uri>
+      </include>
+      <pose frame=''>9.107968 -2.651726 0.902458 -0.000006 0.000034 0.001290</pose>
+    </model>
     <model name='ShoeRack_01_001'>
       <static>true</static>
       <include>
@@ -363,6 +407,13 @@
         <uri>model://aws_robomaker_residential_SofaC_01</uri>
       </include>
       <pose frame=''>0.330699 -1.902792 0.065992 0.000000 0.000000 1.571733</pose>
+    </model>
+    <model name='Tableware_01_001'>
+      <static>true</static>
+      <include>
+        <uri>model://aws_robomaker_residential_Tableware_01</uri>
+      </include>
+      <pose frame=''>7.15317 0.982767 0.817812 -0.001238 -0.000976 1.02476</pose>
     </model>
     <model name='Trash_01_001'>
       <static>true</static>
@@ -378,6 +429,20 @@
       </include>
       <pose frame=''>-8.704151 1.00058 0.011 0 -0 0</pose>
     </model>
+    <model name='TV_01_001'>
+      <static>true</static>
+      <include>
+        <uri>model://aws_robomaker_residential_TV_01</uri>
+      </include>
+      <pose frame=''>0.824259 -5.382968 0.676282 0 -0 -1.561744</pose>
+    </model>
+    <model name='TV_02_001'>
+      <static>true</static>
+      <include>
+        <uri>model://aws_robomaker_residential_TV_02</uri>
+      </include>
+      <pose frame=''>-6.197322 -1.388739 0.676282 0 -0 -1.561744</pose>
+    </model>
     <model name='TVCabinet_01_001'>
       <static>true</static>
       <include>
@@ -387,6 +452,13 @@
         <pose frame=''>0.615509 -5.105954 -0.011049 0 -0 1.5700</pose>
         -->
       <pose frame=''>0.629509 -5.183576 -0.017049 0 -0 1.5792</pose>
+    </model>
+    <model name='Vase_01_001'>
+      <static>true</static>
+      <include>
+        <uri>model://aws_robomaker_residential_Vase_01</uri>
+      </include>
+      <pose frame=''>3.055663 -5.413080 1.574958 0.000003 0.001700 0.000840</pose>
     </model>
 
     <model name='RoomWall_01_001'>
