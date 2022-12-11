@@ -272,8 +272,6 @@ And to return the arm to the home position:
 rosservice call /home_arm
 ```
 
-## Links
-
 ---
 
 <p align="center">
