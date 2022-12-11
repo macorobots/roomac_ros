@@ -1,4 +1,5 @@
 name: Build and push docker image
+
 on:
   workflow_call:
     inputs:

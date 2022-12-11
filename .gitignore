@@ -1,6 +1,7 @@
 .devcontainer/*
 !.devcontainer/devcontainer_template.json
 !.devcontainer/Dockerfile_template
+!.devcontainer/README.md
 
 .vscode/
 rosbags/

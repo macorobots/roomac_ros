@@ -4,8 +4,9 @@ ARG user=roomac
 
 RUN sudo apt-get update && \
     sudo apt-get install --no-install-recommends -y \
-    nano ros-melodic-swri-console ros-melodic-plotjuggler-ros \
-    gdb clang clang-format cppcheck python-autopep8 bash-completion python3-pip htop ros-melodic-hector-trajectory-server ros-melodic-tf-remapper-cpp && \
+        nano ros-melodic-swri-console ros-melodic-plotjuggler-ros \
+        gdb clang clang-format cppcheck python-autopep8 bash-completion \
+        python3-pip htop ros-melodic-hector-trajectory-server ros-melodic-tf-remapper-cpp && \
     /usr/bin/python3 -m pip install -U black --user
 
 RUN echo -e "defaults.ctl.card 0 \n\

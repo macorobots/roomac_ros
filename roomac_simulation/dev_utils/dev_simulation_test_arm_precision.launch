@@ -1,4 +1,4 @@
 <launch>
-  <include file="$(find roomac_simulation)/launch/simulation_nav_pick.launch" />
+  <include file="$(find roomac_simulation)/launch/simulation_localization_fetching.launch" />
   <node name="test_arm_precision_manager" pkg="roomac_autonomous_manipulation" type="dev_test_arm_precision_manager.py" output="screen" />
 </launch>

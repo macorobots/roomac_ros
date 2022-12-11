@@ -12,7 +12,7 @@
 
   <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher">
     <rosparam param="source_list">["/joint_states_controller"]</rosparam>
-    <rosparam param="source_list">["/joint_states_arm_stub"]</rosparam>
+    <rosparam param="source_list">["/joint_states_arm"]</rosparam>
   </node>
 
   <arg name="rvizconfig" default="$(find roomac_arm)/rviz/test_controller.rviz" />

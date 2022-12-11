@@ -40,7 +40,7 @@ class ServoJointStatePublisher:
         self._add_servos()
 
         self._joint_state_pub = rospy.Publisher(
-            "joint_states_arm_stub", JointState, queue_size=10
+            "joint_states_arm", JointState, queue_size=10
         )
 
     def run(self):

@@ -11,6 +11,6 @@ install(
 )
 
 catkin_install_python(PROGRAMS
-  scripts/republish_odom_imu_msgs.py
+  scripts/republish_odom_imu_msgs_node.py
   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
