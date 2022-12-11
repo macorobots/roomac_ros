@@ -2,6 +2,12 @@
 Changelog for package roomac_msgs
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* Merge branch 'master' into packages-readme
+* Merge branch 'master' into packages-readme
+* Contributors: Maciej Stepien
+
 1.12.16 (2022-12-05)
 --------------------
 
