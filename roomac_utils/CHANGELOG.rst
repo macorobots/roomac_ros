@@ -2,8 +2,8 @@
 Changelog for package roomac_utils
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+1.13.0 (2022-12-11)
+-------------------
 * Merge pull request `#74 <https://github.com/macorobots/roomac_ros/issues/74>`_ from macorobots/packages-readme
   Add packages readmes
 * Merge branch 'master' into packages-readme
