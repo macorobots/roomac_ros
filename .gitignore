@@ -6,4 +6,5 @@
 .vscode/
 rosbags/
 *.pyc
-docker/roomac_data/
+docker/roomac_data/*
+!docker/roomac_data/.gitkeep
