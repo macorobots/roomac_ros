@@ -2,6 +2,9 @@
 Changelog for package roomac
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+
 1.13.0 (2022-12-11)
 -------------------
 * Merge branch 'master' into packages-readme
