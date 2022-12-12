@@ -157,9 +157,11 @@ docker compose -f \
     </tbody>
 </table>
 
-After launching everything drive the robot around. When the area is mapped simply kill launch files with Ctrl+C and the map will be saved in the `roomac_data` directory.
+After launching everything drive the robot around. When the area is mapped simply kill docker with Ctrl+C and the map will be saved in the `roomac_data` directory.
 
+> **Tip** Currently there is a problem with creating larger maps in simulation, so driving for too long may break the map.
 
+> **Tip** Make sure to also map starting spot, as the robot is allowed to move autonomously only on the mapped area.
 
 ### Localization and manipulation
 
@@ -230,11 +232,13 @@ docker compose -f \
 > ```
 > Containers are run in network host mode, so you shouldn't have a problem running `rosservice` and `rostopic` locally (although remember that in some cases custom message types are used, which require built `roomac_msgs` package)
 
-First it is necessary to save the home and table position, drive the robot to these locations and use services:
+First it is necessary to save the home and table position, drive the robot to these locations (for example using `2D Nav Goal` or `teleop`) and use services:
 ```
 rosservice call /save_table_position
 rosservice call /save_home_position
 ```
+
+> **Tip** It may be necessary to fine-tune table position, to get proper detection on the upper Kinect sensor.
 
 To start pick and bring action use:
 ```
