@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <package format="2">
   <name>roomac</name>
-  <version>1.13.0</version>
+  <version>1.13.1</version>
   <description>The roomac package</description>
 
   <author email="macorobots@gmail.com">Maciej Stępień</author>
