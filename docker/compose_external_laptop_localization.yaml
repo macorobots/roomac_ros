@@ -4,12 +4,17 @@ services:
     image: macorobots/roomac:simulation
     container_name: roomac_external_laptop
     volumes:
+      - /tmp/.X11-unix:/tmp/.X11-unix
       - type: bind
         source: /dev
         target: /dev
     environment:
       - ROS_MASTER_URI=http://10.42.0.1:11311
       - ROS_IP=10.42.0.160
+      - DISPLAY=${DISPLAY}
+      - NVIDIA_VISIBLE_DEVICES=all
+      - NVIDIA_DRIVER_CAPABILITIES=all
+    runtime: nvidia
     network_mode: host
     privileged: true
     command: roslaunch roomac_bringup external_laptop_localization_fetching.launch

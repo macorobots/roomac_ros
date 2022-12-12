@@ -1,6 +1,3 @@
-# First run:
-# $ xhost local:root
-
 version: "3.9"
 services:
   roomac:
@@ -9,6 +6,9 @@ services:
     volumes:
       - /tmp/.X11-unix:/tmp/.X11-unix:rw
     network_mode: host
+    # it is necessary to enable privileged flag when using network_mode host and GUI
+    # if network_mode host isn't needed, privileged can be also disabled
+    # https://answers.ros.org/question/301056/ros2-rviz-in-docker-container/
     privileged: true
     environment:
       - DISPLAY=${DISPLAY}

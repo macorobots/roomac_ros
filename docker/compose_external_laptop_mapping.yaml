@@ -3,9 +3,17 @@ services:
   roomac:
     image: macorobots/roomac:simulation
     container_name: roomac_external_laptop
+    volumes:
+      - /tmp/.X11-unix:/tmp/.X11-unix
     environment:
       - ROS_MASTER_URI=http://10.42.0.1:11311
       - ROS_IP=10.42.0.160
+      - DISPLAY=${DISPLAY}
+      - NVIDIA_VISIBLE_DEVICES=all
+      - NVIDIA_DRIVER_CAPABILITIES=all
+    runtime: nvidia
     network_mode: host
+    # it is necessary to enable privileged flag when using network_mode host and GUI
+    # https://answers.ros.org/question/301056/ros2-rviz-in-docker-container/
     privileged: true
     command: roslaunch roomac_rtabmap rviz_rtabmap_mapping.launch
