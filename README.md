@@ -35,7 +35,6 @@ First start simulation container, there are two possibilities:
 
 * other GPUs
   ```
-  xhost local:root
   docker compose -f docker/compose_simulation_demo.yaml up
   ```
 
@@ -109,7 +108,7 @@ First launch the docker container and run:
 docker compose -f \
  docker/compose_simulation_mapping_nvidia.yaml up
 ```
-Alternatively run `xhost local:root` and use the `compose_simulation_mapping.yaml` config if you don't have Nvidia GPU.
+Alternatively use the `compose_simulation_mapping.yaml` config if you don't have Nvidia GPU.
 
 On the other terminal launch `teleop` to control the robot:
 ```
@@ -182,7 +181,7 @@ docker compose -f \
  docker/compose_simulation_localization_nvidia.yaml up
 ```
 
-Like in the previous step there is a config for other GPUs (`compose_simulation_localization.yaml`). Remember to first run `xhost local:root`
+Like in the previous step there is a config for other GPUs (`compose_simulation_localization.yaml`).
 
 </td>
 
