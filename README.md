@@ -113,8 +113,8 @@ Alternatively use the `compose_simulation_mapping.yaml` config if you don't have
 On the other terminal launch `teleop` to control the robot:
 ```
 docker exec -it roomac_simulation bash -c \
- "source /home/roomac/catkin_ws/devel/setup.bash
-  && roslaunch roomac_simulation teleop.launch"
+ "source /home/roomac/catkin_ws/devel/setup.bash &&
+  roslaunch roomac_simulation teleop.launch"
 ```
 
 </td>
