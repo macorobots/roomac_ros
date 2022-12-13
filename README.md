@@ -1,7 +1,7 @@
 # Roomac ROS
 
 [![Build and push docker image](https://github.com/macorobots/roomac_ros/actions/workflows/build_and_push_docker_image.yml/badge.svg)](https://github.com/macorobots/roomac_ros/actions/workflows/build_and_push_docker_image.yml)
-[![CI](https://github.com/macorobots/roomac_ros_workflow_test/actions/workflows/industrial_ci_action.yml/badge.svg)](https://github.com/macorobots/roomac_ros_workflow_test/actions/workflows/industrial_ci_action.yml)
+[![CI](https://github.com/macorobots/roomac_ros/actions/workflows/industrial_ci_action.yml/badge.svg)](https://github.com/macorobots/roomac_ros/actions/workflows/industrial_ci_action.yml)
 ![ROS Distro](https://img.shields.io/badge/ROS%20Distro-melodic-informational)
 [![Docker](https://img.shields.io/badge/dockerhub-images-informational)](https://hub.docker.com/repository/docker/macorobots/roomac)
 
