@@ -1,4 +1,4 @@
-FROM roomac:latest
+FROM macorobots/roomac:simulation
 
 ARG user=roomac
 
