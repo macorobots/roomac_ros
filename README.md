@@ -40,7 +40,7 @@ First start simulation container, there are two possibilities:
 
 Nvidia configuration is recommended, as it has better performance.
 
-Then to execute fetch bottle run: 
+After everything launches, to execute the fetch bottle action run: 
 ```
 docker exec roomac_simulation bash -c \
  "source /home/roomac/catkin_ws/devel/setup.bash &&
