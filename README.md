@@ -40,14 +40,14 @@ First start simulation container, there are two possibilities:
 
 Nvidia configuration is recommended, as it has better performance.
 
-Then to execute fetch bottle run: 
+After everything launches, to execute the fetch bottle action run: 
 ```
 docker exec roomac_simulation bash -c \
  "source /home/roomac/catkin_ws/devel/setup.bash &&
   rostopic pub /pick_and_bring/goal roomac_msgs/PickAndBringActionGoal {}"
 ```
 
-And that's it! The robot should navigate to the table, pick up the bottle and return to the starting position. Please note that the accuracy of this operation isn't 100% and the robot may fail (especially detecting the robot's position in Kinect above table is prone to failure).
+And that's it! The robot should navigate to the table, pick up the bottle and return to the starting position. Please note that the accuracy of this operation isn't 100% and the robot may fail (especially detecting the robot's position with Kinect above table is prone to failure).
 
 ## Packages
 
