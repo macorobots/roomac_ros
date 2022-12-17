@@ -3,7 +3,7 @@
 
   <!-- In simulation it should be 1, but due to imperfection of motors and control it is important 
     to set it higher for real robot - it results in smoother execution without stops -->
-  <arg if="$(arg simulation)" name="control_look_ahead_poses" value="1" />
+  <arg if="$(arg simulation)" name="control_look_ahead_poses" value="3" />
   <arg unless="$(arg simulation)" name="control_look_ahead_poses" value="6" />
 
   <node pkg="move_base" type="move_base" name="move_base_node" output="screen" clear_params="true">
