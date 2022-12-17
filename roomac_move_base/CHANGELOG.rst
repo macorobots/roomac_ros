@@ -2,8 +2,8 @@
 Changelog for package roomac_move_base
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+1.13.2 (2022-12-17)
+-------------------
 * Merge pull request `#76 <https://github.com/macorobots/roomac_ros/issues/76>`_ from macorobots/improve-simulation-navigation-control
   Improve simulation navigation control smoothness
 * Contributors: Maciej Stępień
