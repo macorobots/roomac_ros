@@ -1,0 +1,4 @@
+<launch>
+  <include file="$(find roomac_arm)/launch/serial.launch" />
+  <node name="leds_ros_mobile_bridge_node" pkg="roomac_bringup" type="leds_ros_mobile_bridge_node.py" output="screen" />
+</launch>
